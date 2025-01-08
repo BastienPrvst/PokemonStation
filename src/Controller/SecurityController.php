@@ -15,9 +15,9 @@ class SecurityController extends AbstractController
     #[Route(path: '/connexion/', name: 'app_connexion')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-         if ($this->getUser()) {
-             return $this->redirectToRoute('app_home');
-         }
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_home');
+        }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -35,8 +35,4 @@ class SecurityController extends AbstractController
         //le code ici ne sera jamais lu, car la page de déconnexion est deja géré en interne par le bundle security
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
-
-    
-    
-
 }
