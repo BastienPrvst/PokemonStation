@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil
+{% endblock %}
+
+{% block body %}
+
+
+{#     Première partie de la page d'accueil, avec Sacha et Pikachu  #}
+<div class="container-fluid project-contain">
+
+	<div class="project-div row">
+
+		<img class="sacha fade-up col-12 col-lg-6" src="{{ asset('images/Sacha-Pikachu.jpg') }}" alt="Sacha and Pikachu">
+
+		<div class="project fade-up col-12 col-lg-6">
+
+			<h2>Le Projet</h2>
+
+			<p>Dans un monde où tous les pokémons ont deja été capturés et laissés à l'abandon dans leurs pokéballs, vous, jeune dresseur, devez les aider à récupérer leur liberté ! Ouvrez ces pokéballs pour voir ce qu'elles contiennent, et pour peut-être apercevoir des pokémons d'une rareté sans pareil ! On espère que vous vous amuserez ! Libérez-les tous!
+				<br>
+			Vous serez récompensés toutes les heures de 2 pokéballs à ouvrir ! Et vous ne pourrez en porter que 100 en même temps, sans quoi vos poches déborderaient ! </p>
+		</div>
+
+	</div>
+
+
+</div>
+
+{#     Image de transition en background-fixed  #}
+<div class="container-fluid">
+
+	<div class="transition row">
+
+		<div class="col-12 cover-box">
+
+			<div
+				class="fixed-cover">{# La background en fixed #}
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="row">
+
+		<div class="col-12 second-part">
+
+			{# Deuxième partie de la page d'accueil avec Prof Chen et le bouton pour s'inscrire  #}
+			<div class="join-adventure text-center">
+
+				<div class="chen-border text-center row">
+
+					<div class="inactive1 col-0 col-lg-4"></div>
+
+					<div class="prof-chen text-center col-12 col-lg-4">
+
+						<img class="img-fluid" src="{{ asset('images/Professeur-Chen.png') }}" alt="Professeur Chen">
+
+					</div>
+
+					<div class="inactive2 col-0 col-lg-4"></div>
+
+				</div>
+
+				<button class="start-adventure-button">
+
+					<div class="second-border">
+
+						<a class="start-adventure" href="{{ path('app_register') }}"><img src="{{ asset('images/PokeBall.png') }}" alt="Poke Ball" width="50px">Commencez l'aventure
+
+							<i class="fa-solid fa-chevron-right"></i>
+						</a>
+
+					</div>
+
+				</button>
+
+				<p>"Rejoins l'aventure Pokémon, et deviens le meilleur dresseur en tentant de remplir ton Pokédex !"</p>
+
+			</div>
+
+		</div>
+
+	</div>
+	
+</div>
+
+
+{% endblock %}
+
+
+{% block js %}
+
+	<script src="{{ asset('js/home.js') }}"></script>
+	
+{% endblock %}
+

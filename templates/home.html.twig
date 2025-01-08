@@ -1,0 +1,163 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Welcome!
+			{% endblock %}
+		</title>
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link
+		href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap" rel="stylesheet">
+
+		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+		{% block stylesheets %}{% endblock %}
+		<link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+
+		{% block javascripts %}
+			{{ encore_entry_script_tags('app') }}
+		{% endblock %}
+	</head>
+	<body>
+		{% block body %}
+
+			<header class="banner">
+
+				<div class="title">
+
+					<h1 class="logo">Pokémon Station</h1>
+
+				</div>
+
+				<div class="header-img">
+
+					<img src="/images/Pikachu-Gang.png" alt="Pikachu-Gang">
+
+				</div>
+
+			</header>
+
+
+			<!-- Navbar avec les différents boutons de navigation -->
+			<nav class="navbar">
+
+				<button class="navigation-button">
+					<img src="/images/Accueil.png" alt="pokeball" width="50px">Accueil
+				</button>
+
+				<button class="navigation-button">
+					<img src="/images/Capture.png" alt="superball" width="50px">Capture
+				</button>
+
+				<button class="navigation-button">
+					<img src="/images/Pokedex.png" alt="masterball" width="50px">Pokedex
+				</button>
+
+				<button class="navigation-button">
+					<img src="/images/Profil.png" alt="pokeball" width="50px">Mon Profil
+				</button>
+
+			</nav>
+
+
+			<div class="container">
+				<img class="sacha" src="/images/Sacha-Pikachu.jpg" alt="Sacha and Pikachu">
+
+				<div class="project">
+				
+					<h2>Le Projet</h2>
+
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, eligendi tempora! Quam, molestiae. Cumque iure doloremque commodi veritatis ad temporibus blanditiis dicta perferendis ullam perspiciatis. Explicabo iure quod laudantium quae.
+					Magni, amet commodi! Obcaecati sequi optio, itaque est voluptatum accusamus cum dolores aut dolorum commodi natus porro inventore impedit laboriosam iure quidem? Quia tempore aperiam facere. Quisquam nesciunt aliquam repellat!
+					Provident, dolor autem in eveniet ullam explicabo vitae sed dolorum? Rerum sequi aut totam. Sequi laudantium ipsam mollitia, incidunt minima molestiae odio! Nulla totam aliquam sequi vitae officia veniam iste?</p>
+				</div>
+
+			</div>
+
+			<div class="transition" width="100%"></div>
+
+			<div class="bottom-container">
+
+				<div class="prof-chen">
+
+					<img src="/images/Professeur-Chen.png" alt="Professeur Chen">
+
+				</div>
+
+				<div class="join-adventure">
+
+					<button class="start-adventure-button"><img src="/images/PokeBall.png" alt="Poke Ball" width="50px">Commencez l'aventure
+						<i class="fa-solid fa-chevron-right"></i>
+					</button>
+
+					<p>"Rejoins l'aventure Pokémon, et deviens le meilleur dresseur en tentant de remplir ton Pokédex !"</p>
+
+				</div>
+
+			</div>
+
+
+			<footer>
+
+
+				<div class="footer-logo">
+
+					<h3>Pokémon Station</h3>
+
+				</div>
+
+				<div class="footer-blocks">
+
+					<div class="footer-block">
+
+						<ul>
+							<li>
+								<h4>Navigateur</h4>
+							</li>
+							<li>Bla</li>
+							<li>Blabla</li>
+							<li>Blablabla</li>
+						</ul>
+
+					</div>
+
+					<div class="footer-block">
+
+						<ul>
+							<li>
+								<h4>A propos de nous</h4>
+							</li>
+							<li>Bla</li>
+							<li>Blabla</li>
+							<li>Blablabla</li>
+						</ul>
+
+					</div>
+
+				</div>
+
+
+				<div class="social-media">
+
+					<button class="social-media-button">
+						<i class="fa-brands fa-twitter"></i>
+					</button>
+					<button class="social-media-button">
+						<i class="fa-brands fa-instagram"></i>
+					</button>
+					<button class="social-media-button">
+						<i class="fa-brands fa-facebook-messenger"></i>
+					</button>
+					<button class="social-media-button">
+						<i class="fa-brands fa-pinterest"></i>
+					</button>
+				</div>
+
+			</footer>
+
+
+		{% endblock %}
+	</body>
+</html>

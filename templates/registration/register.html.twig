@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription
+{% endblock %}
+
+{% block body %}
+
+	{# Container du formulaire d'inscription  #}
+	<div class=" register-form-block container mt-5 col-10">
+
+		<div class="row">
+
+			<div class="col-md-6 offset-md-3 style-form-register">
+
+				<h1 class="text-center h1-inscription">Inscription</h1>
+
+			</div>
+		</div>
+
+		{# Formulaire d'inscripton #}
+		<div
+			class="row">
+
+			<span class="col-12 col-md-6 mx-auto obligation">Obligatoire *</span>
+
+			{# Ouverture du formulaire #}
+			{{ form_start( registrationForm ) }}
+
+			{# Affichage des erreur générales du formulaire #}
+			{{ form_errors( registrationForm ) }}
+
+			<div
+				class="col-12 col-md-6 mx-auto style-form-register">
+				{# Champ email #}
+				<span class="obligation">*</span>{{ form_row( registrationForm.email ) }}
+			</div>
+
+			<div
+				class="col-12 col-md-6 mx-auto style-form-register">
+				{# Champ pseudo #}
+				<span class="obligation">*</span>
+				{{ form_row( registrationForm.pseudonym ) }}
+			</div>
+
+
+			<div
+				class="col-12 col-md-6 mx-auto style-form-register">
+				{# Champ mots de passe  #}
+				<span class="obligation">*</span> <i class="fa-solid fa-circle-info"></i>
+				<div class="password-infos inactive-info">
+					<p>Votre mot de passe doit contenir obligatoirement au moins 8 caractères dont une minuscule, une majuscule, un chiffre et un caractère spécial.</p>
+				</div>
+				{{ form_row( registrationForm.plainPassword ) }}
+			</div>
+
+
+			{# Affichage du captcha avec la clé publique récupérée directement grâce à la passerelle faite dans twig.yaml #}
+			<div class="mb-3">
+				<div style="color: white" class="mb-2"></div>
+
+				<div class="g-recaptcha" data-sitekey="{{ google_recaptcha_site_key }}"></div>
+			</div>
+
+
+			<div class="text-center mx-auto register-button"> 
+
+				<div class="second-border-register">
+
+					<button type="submit" class="register-button-valid d-block btn">
+					<img src="{{ asset('images/PokeBall.png') }}" alt="Poke Ball">
+
+					S'inscrire
+
+					<i class="fa-solid fa-chevron-right"></i>
+
+					</button>
+				</div>
+
+
+			</div>
+
+
+			{# Fermeture du formulaire  #}
+			{{ form_end( registrationForm ) }}
+		</div>
+	</div>
+
+	{% block js %}
+		<script src="{{ asset('js/register.js') }}"></script>
+	{% endblock %}
+
+
+{% endblock %}
+
+
+{% block css %}
+	{# Insertion du fichier JS dans le block stylesheets, ce n'est pas une erreur, la documentation de Recaptcha préconise en effet d'intégrer ce fichier JS dans le head #}
+	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}

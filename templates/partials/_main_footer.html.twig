@@ -1,0 +1,82 @@
+{# Footer de la page  #}
+<footer
+	class="footer mt-auto col-12">
+
+	{# Logo Pokemon Station  #}
+	<div class="footer-logo">
+
+		<h3>Pokémon Station</h3>
+
+	</div>
+
+	{# Blocs de texte  #}
+	<div class="footer-blocks col-lg-6">
+
+		<div class="footer-block">
+
+			<ul>
+				<li>
+					<h4>Navigateur</h4>
+				</li>
+				<li>
+					<a href="{{ path('app_home') }}">Accueil</a>
+				</li>
+				<li>
+					<a href="{{ path('app_capture') }}">Libération</a>
+				</li>
+				<li>
+					<a href="{{ path('app_pokedex', { pokeId : 1 }) }}">Pokédex</a>
+				</li>
+				<li>
+					<a href="{{ path('app_profil') }}">Mon Profil</a>
+				</li>
+				<li>
+					<a href="{{ path('app_types') }}">Types</a>
+				</li>
+				<li>
+					<a href="{{ path('app_legals') }}">Mentions légales</a>
+				</li>
+			</ul>
+
+		</div>
+
+		<div class="footer-block">
+
+			<ul>
+				<li>
+					<h4>A propos de nous</h4>
+				</li>
+				<li>
+					<a href="{{ path('app_about') }}">Qui sommes-nous</a>
+				</li>
+				<li>
+					<a href="{{ path('app_project') }}">Le Projet</a>
+				</li>
+			</ul>
+
+		</div>
+
+	</div>
+
+	{# Boutons de liens vers les réseaux sociaux  #}
+	<div class="social-media">
+
+		<a href="https://twitter.com/home" target="_blank">
+			<i class="social-media-button fa-brands fa-twitter"></i>
+		</a>
+
+		<a href="https://www.instagram.com/" target="_blank">
+			<i class="social-media-button fa-brands fa-instagram"></i>
+		</a>
+
+		<a href="https://www.messenger.com/" target="_blank">
+			<i class="social-media-button fa-brands fa-facebook-messenger"></i>
+		</a>
+
+		<a href="https://www.pinterest.fr/" target="_blank">
+			<i class="social-media-button fa-brands fa-pinterest"></i>
+		</a>
+
+	</div>
+
+</footer>

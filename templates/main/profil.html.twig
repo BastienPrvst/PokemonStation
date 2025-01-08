@@ -1,0 +1,297 @@
+{# Utilisation du squelette de page base.html.twig #}
+{% extends "base.html.twig" %}
+
+{# Titre de la page #}
+{% block title %}Gestion du profil
+{% endblock %}
+
+{# Contenu de la page #}
+{% block body %}
+
+	<div class="background">
+
+		<div class="dev-message">
+
+			<h1 class="text-center text-white">100 000 ! Merci énormément ! </h1>
+
+			<p class="dev-text">
+				C'est un chiffre énorme que nous avons atteint tous ensemble et j'aimerais vraiment vous remercier pour vos lancers quotidiens, pour votre ferveur et votre enthousiasme à chaque mise à jour !
+
+				<br>
+
+				La prochaine mise à jour sera centrée sur l'aspect communautaire, j'espère qu'elle vous plaira !
+
+				Pour ce qui est des remerciements, 25 000 Pokédollars vous sont donnés ainsi que 5 Hyper Balls, 5 Shiny Balls et 5 Master Balls !
+
+				<br>
+
+				Enfin, 150 lancers normaux sont également ajoutés !
+
+			</p>
+
+
+		</div>
+
+
+		{# statistique #}
+		<div class="container-fluid stats fade-up col-12">
+
+			<h1 class="profil-title col-12 text-center my-5">Mon profil</h1>
+
+			<div class="col-12 col-lg-12 stats-block">
+
+				<div class="left-block col-12 col-lg-4">
+
+					<h2 class="stats-title">Statistiques</h2>
+
+					{# Block de gauche, Infos de l'utilisateur #}
+					<ul class="list-group col-12 col-lg-12 text-center" id="utilisateur">
+						<li class="list-group-item">Pseudo
+						<span class="text-info">{{ app.user.pseudonym }}</span>
+						</li>
+
+						<li class="list-group-item ">Pokémons libérés :
+							<span class="text-info">{{ app.user.launchCount }}</span>
+
+						</li>
+
+
+						<li class="list-group-item ">Pokémons Très Rare(s) libéré(s) :
+							<span class="text-info">{{ nbTR }}</span>
+						</li>
+
+						<li class="list-group-item ">Pokémons Extrêmement Rare(s) libéré(s) :
+							<span class="text-info">{{ nbEX }}</span>
+						</li>
+
+						<li class="list-group-item ">Pokémons Secret Rare(s) libéré(s) :
+							<span class="text-info">{{ nbSR }}</span>
+						</li>
+
+						<li class="list-group-item ">Shiny obtenus :
+							<span class="text-info">{{ nbShiny }}</span>
+						</li>
+
+						<li class="list-group-item ">Pokédex rempli à  {{ nbPokemonUnique }}/{{ pokedexSize }}
+							<span class="text-info"></span>
+						</li>
+					</ul>
+				</div>
+
+				{# Carousel d'admin #}
+
+
+
+					<div id="carouselExample" class="carousel carousel-avatar slide">
+
+						<div class="carousel-inner carou-avatar">
+
+							<div class="carousel-item  justify-content-center avatar">
+								<img src="{{ asset('images/trainers/trainer1.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="1">
+							</div>
+
+							<div class="carousel-item avatar">
+								<img src="{{ asset('images/trainers/trainer2.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="2">
+							</div>
+
+							<div class="carousel-item avatar">
+								<img src="{{ asset('images/trainers/trainer3.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="3">
+							</div>
+
+							<div class="carousel-item avatar">
+								<img src="{{ asset('images/trainers/trainer4.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="4">
+							</div>
+
+							<div class="carousel-item avatar">
+								<img src="{{ asset('images/trainers/trainer5.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="5">
+							</div>
+
+							<div class="carousel-item avatar">
+								<img src="{{ asset('images/trainers/trainer6.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="6">
+							</div>
+
+							<div class="carousel-item avatar">
+								<img src="{{ asset('images/trainers/trainer7.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="7">
+							</div>
+
+							<div class="carousel-item avatar">
+								<img src="{{ asset('images/trainers/trainer8.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="8">
+							</div>
+
+							<div class="carousel-item avatar">
+								<img src="{{ asset('images/trainers/trainer9.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="9">
+							</div>
+
+							<div class="carousel-item avatar">
+								<img src="{{ asset('images/trainers/trainer10.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="10">
+							</div>
+
+							<div class="carousel-item avatar">
+								<img src="{{ asset('images/trainers/trainer11.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="11">
+							</div>
+
+							<div class="carousel-item avatar">
+								<img src="{{ asset('images/trainers/trainer12.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="12">
+							</div>
+
+							<div class="carousel-item avatar">
+								<img src="{{ asset('images/trainers/trainer13.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="13">
+							</div>
+
+							<div class="carousel-item avatar">
+								<img src="{{ asset('images/trainers/trainer14.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="14">
+							</div>
+
+							<div class="carousel-item avatar">
+								<img src="{{ asset('images/trainers/trainer15.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="15">
+							</div>
+
+							<div class="carousel-item avatar">
+								<img src="{{ asset('images/trainers/trainer16.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="16">
+							</div>
+
+							<div class="carousel-item avatar">
+								<img src="{{ asset('images/trainers/trainer17.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="17">
+							</div>
+
+							<div class="carousel-item avatar">
+								<img src="{{ asset('images/trainers/trainer18.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="18">
+							</div>
+
+							<div class="carousel-item avatar">
+								<img src="{{ asset('images/trainers/trainer19.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="19">
+							</div>
+
+							<div class="carousel-item avatar">
+								<img src="{{ asset('images/trainers/trainer20.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="20">
+							</div>
+
+							{% if is_granted('ROLE_ADMIN') %}
+
+							<div class="carousel-item avatar">
+								<img src="{{ asset('images/trainers/Spirit.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="Spirit">
+							</div>
+
+							<div class="carousel-item avatar">
+								<img src="{{ asset('images/trainers/LD.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="LD">
+							</div>
+
+							<div class="carousel-item avatar">
+								<img src="{{ asset('images/trainers/Tarti.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="Tarti">
+							</div>
+
+							{% endif %}
+
+						</div>
+
+						<button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+							<span class="visually-hidden">Previous</span>
+						</button>
+
+						<button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+							<span class="carousel-control-next-icon" aria-hidden="true"></span>
+							<span class="visually-hidden">Next</span>
+						</button>
+
+						<div class="select-character text-center text-white">
+							<button class="select-character-button">
+							Choisir ce personnage
+							</button>
+						</div>
+
+					</div>
+
+
+
+
+
+
+				<div class="right-block col-12 col-lg-4">
+
+					<h2 class="informations-account-title">Informations du compte</h2>
+
+					{# Block de droite, Infos du compte #}
+					<ul class="list-group col-12 col-lg-12" id="compte">
+
+						<li class="list-group-item ">Adresse E-mail :
+							<span class="text-info">{{ app.user.email }}</span>
+						</li>
+						<li class="list-group-item ">Début de l'aventure :
+							<span class="text-info">{{ app.user.creationDate|date('d/m/Y')}}</span>
+						</li>
+
+
+						<li class="list-group-item ">
+							Compte :
+							<span class="text-info">{{ is_granted('ROLE_ADMIN') ? 'Administrateur' : 'Utilisateur' }}</span>
+						</li>
+					</ul>
+
+					<div class="modify-info">
+						{# NE PAS OUBLIER DE CREER LE LIEN QUI REDIRIGE VERS LA PAGE DE MODIFICATION #}
+						<button class="modify-button">
+
+							<div class="second-border-modify">
+
+								<a href="{{ path('app_modify') }}" class="modify-button-link"><img src="{{ asset('images/PokeBall.png') }}" alt="Poke Ball" width="50px">Modifier
+
+									<i class="fa-solid fa-chevron-right"></i>
+
+								</a>
+
+							</div>
+
+						</button>
+					</div>
+				</div>
+			</div>
+
+
+
+			{# Tableau des 10 meilleurs pokédex #}
+			<div class="left-block col-12 col-lg-10 top-10-pokedex-box row">
+				<h2 class="stats-title">Les 10 meilleurs Pokédex !</h2>
+				<table class="table-pokedex">
+					<thead class="thead-top10">
+						<tr>
+							<th class="text-center" scope="col">N°</th>
+							<th class="text-center" scope="col">Pseudo</th>
+							<th class="text-center" scope="col">Complétion du Pokédex</th>
+							<th class="text-center" scope="col">Total de pokéballs ouvertes</th>
+						</tr>
+					</thead>
+					<tbody>
+					{% for userData in topUserSpeciesSeen %}
+
+						<tr class="pokedex-top-10">
+	        				<td class="text-center">{{ loop.index }}</td>
+							<td class="text-center">{{ userData.user.pseudonym }} </td>
+							<td class="text-center">{{ userData.total_species_seen }}/{{ pokedexSize }}</td>
+							<td class="text-center">{{ userData.launch_count }} </td>
+						</tr>
+					{% endfor %}
+
+					</tbody>
+				</table>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+
+{# Fermeture langague twig #}{% endblock %}
+
+{% block js %}
+
+	<script>
+		const profilPageApi = '{{ url('app_profil_api') }}';
+		const avatar = '{{ app.user.avatar }}';
+	</script>
+
+	<script src="{{ asset('js/profil.js') }}">
+	</script>
+{% endblock %}

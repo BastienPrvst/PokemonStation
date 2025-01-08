@@ -1,0 +1,34 @@
+{# Utilisation du squelette de page base.html.twig #}
+{% extends "base.html.twig" %}
+
+{# Titre de la page #}
+{% block title %}Le Projet
+{% endblock %}
+
+{# Contenu de la page #}
+{% block body %}
+
+<div class="container-fluid project-background p-0">
+
+    <div class="row project-presentation fade-up col-12 col-lg-4">
+
+        <h1 class="mx-auto mt-5" style="color: white; font-size: 3rem;">Le Projet</h1>
+
+        <div class="project-poke-ball col-12 col-lg-6">
+
+            <img src="{{ asset('images/Accueil.png') }}" alt="PokeBall">
+
+            <img src="/images/Capture.png" alt="PokeBall">
+
+            <img src="/images/Pokedex.png" alt="PokeBall">
+
+            <img src="/images/Profil.png" alt="PokeBall">
+
+        </div>
+
+        <p class="col-12 col-lg-10">Avec ce projet Pokemon Station, nous avons cherché à recréer tout ce qui fait l'essence des jeux Pokémon en combinant challenge et amusement ! Quand on pense Pokémon, on pense capture, mais est ce que le contraire ne serait pas également amusant ? Sur ce site, vous pouvez libérer les Pokémon avec l'enthousiasme intact d'un jeune dresseur, et ce sans avoir à vous déplacer de chez vous ! <br>Né du fruit de la collaboration d'une équipe de passionnés, investis dans un projet commun dans le cadre d'une formation, ce projet Pokemon Station est une occasion pour tous les amoureux des Pokémon de pouvoir faire ce qu'ils ont toujours fait : <br>Faire vivre cet univers qui leur tient tant à coeur.</p>
+
+    </div>
+    
+</div>
+{% endblock %}

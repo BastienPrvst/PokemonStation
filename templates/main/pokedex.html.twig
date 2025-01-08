@@ -1,0 +1,771 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pokédex
+{% endblock %}
+
+{% block body %}
+
+{# Container principal  #}
+<div class="main-block">
+
+	{# Container bouton précédent et suivant en mobile first, container de la liste en écran large  #}
+	<div class="poke-list container-fluid col-lg-4">
+
+		<div class="list row">
+
+			{# Div qui contient la liste des Pokémon  #}
+			<div class="ul-list pokedex-nav">
+
+				<ul class="col-12">
+
+					{# Première Gen #}
+
+					<button class="first-gen-button gen"><span class="gen-title">Première Génération</span> <br>
+
+						<span id="activeCountG1"></span>/151 ||
+
+						<img src="{{ asset('images/sparkle/shinyOK.png') }}" alt="">: <span id="shinyG1"></span>/151
+						<i class="fa-solid fa-play"> </i>
+					</button>
+
+					{% for poke in pokemons %}
+
+						{% if poke.pokeId >= 1 and poke.pokeId <= 151 %}
+
+
+
+							{% if poke.captured %}
+								<button class="poke-li captured col-12 pokemon-pokedex type-none gen-1" data-pokemon="{{ poke.pokeId }}" >
+									{{ poke.name|capitalize }} #{{ poke.pokeId }}
+
+									{% if poke.shiny %}
+										<img class="gen-1-shiny" src="{{ asset('images/sparkle/shinyOK.png') }}" alt="">
+									{% endif %}
+
+								</button>
+							{% else %}
+								<button disabled class="poke-li col-12 not-captured type-none gen-1">
+
+									???
+
+								</button>
+
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+
+
+
+
+				</ul>
+				<ul class="col-12">
+
+					{# Deuxieme Gen #}
+
+					<button class="second-gen-button gen"><span class="gen-title">Deuxieme Génération</span>  <br>
+
+						<span id="activeCountG2"></span>/100 ||
+
+						<img src="{{ asset('images/sparkle/shinyOK.png') }}" alt="">: <span id="shinyG2"></span>/100
+						<i class="fa-solid fa-play"> </i></button>
+
+					{% for poke in pokemons %}
+
+						{% if poke.pokeId >= '152' and poke.pokeId <= 251 %}
+
+
+
+							{% if poke.captured %}
+								<button class="poke-li captured col-12 pokemon-pokedex type-none gen-2" data-pokemon="{{ poke.pokeId }}" >
+									{{ poke.name|capitalize }} #{{ poke.pokeId }}
+
+									{% if poke.shiny %}
+										<img class="gen-2-shiny" src="{{ asset('images/sparkle/shinyOK.png') }}" alt="">
+									{% endif %}
+
+								</button>
+							{% else %}
+								<button disabled class="poke-li col-12 not-captured gen-2 type-none">
+
+									???
+
+								</button>
+
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+
+
+
+
+				</ul>
+				<ul class="col-12">
+
+					{# Troisième Gen #}
+
+					<button class="third-gen-button gen"><span class="gen-title">Troisième Génération</span>  <br>
+
+						<span id="activeCountG3"></span>/135 ||
+
+						<img src="{{ asset('images/sparkle/shinyOK.png') }}" alt="">: <span id="shinyG3"></span>/135
+						<i class="fa-solid fa-play"> </i></button>
+
+					{% for poke in pokemons %}
+
+						{% if poke.pokeId >= 252 and poke.pokeId <= 386 %}
+
+
+
+							{% if poke.captured %}
+								<button class="poke-li captured col-12 pokemon-pokedex type-none gen-3" data-pokemon="{{ poke.pokeId }}" >
+									{{ poke.name|capitalize }} #{{ poke.pokeId }}
+
+									{% if poke.shiny %}
+										<img class="gen-3-shiny" src="{{ asset('images/sparkle/shinyOK.png') }}" alt="">
+									{% endif %}
+
+								</button>
+							{% else %}
+								<button disabled class="poke-li col-12 not-captured type-none gen-3">
+
+									???
+
+								</button>
+
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+
+
+
+
+				</ul>
+				<ul class="col-12">
+
+					{# Quatrième Gen #}
+
+					<button class="fourth-gen-button gen"><span class="gen-title">Quatrième Génération</span>  <br>
+
+						<span id="activeCountG4"></span>/107 ||
+
+						<img src="{{ asset('images/sparkle/shinyOK.png') }}" alt="">: <span id="shinyG4"></span>/107
+						<i class="fa-solid fa-play"> </i></button>
+
+					{% for poke in pokemons %}
+
+						{% if poke.pokeId >= 387 and poke.pokeId <= 493 %}
+
+
+
+							{% if poke.captured %}
+								<button class="poke-li captured col-12 pokemon-pokedex type-none gen-4" data-pokemon="{{ poke.pokeId }}" >
+									{{ poke.name|capitalize }} #{{ poke.pokeId }}
+
+									{% if poke.shiny %}
+										<img class="gen-4-shiny" src="{{ asset('images/sparkle/shinyOK.png') }}" alt="">
+									{% endif %}
+
+								</button>
+							{% else %}
+								<button disabled class="poke-li col-12 not-captured  type-none gen-4">
+
+									???
+
+								</button>
+
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+
+
+
+
+				</ul>
+				<ul class="col-12">
+
+					{# Cinquème Gen #}
+
+					<button class="fifth-gen-button gen"><span class="gen-title">Cinquième Génération</span>  <br>
+
+						<span id="activeCountG5"></span>/156 ||
+
+						<img src="{{ asset('images/sparkle/shinyOK.png') }}" alt="">: <span id="shinyG5"></span>/156
+						<i class="fa-solid fa-play"> </i></button>
+
+					{% for poke in pokemons %}
+
+						{% if poke.pokeId >= 494 and poke.pokeId <= 649 %}
+
+
+
+							{% if poke.captured %}
+								<button class="poke-li captured col-12 pokemon-pokedex type-none gen-5" data-pokemon="{{ poke.pokeId }}" >
+									{{ poke.name|capitalize }} #{{ poke.pokeId }}
+
+									{% if poke.shiny %}
+										<img class="gen-5-shiny" src="{{ asset('images/sparkle/shinyOK.png') }}" alt="">
+									{% endif %}
+
+								</button>
+							{% else %}
+								<button disabled class="poke-li col-12 not-captured type-none gen-5">
+
+									???
+
+								</button>
+
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+
+
+
+
+				</ul>
+				<ul class="col-12">
+
+					{# Sixème Gen #}
+
+					<button class="six-gen-button gen"><span class="gen-title">Sixième Génération</span>  <br>
+
+						<span id="activeCountG6"></span>/72 ||
+
+						<img src="{{ asset('images/sparkle/shinyOK.png') }}" alt="">: <span id="shinyG6"></span>/72
+						<i class="fa-solid fa-play"> </i></button>
+
+					{% for poke in pokemons %}
+
+						{% if poke.pokeId >= 650 and poke.pokeId <= 721 %}
+
+
+
+							{% if poke.captured %}
+								<button class="poke-li captured col-12 pokemon-pokedex type-none gen-6" data-pokemon="{{ poke.pokeId }}" >
+									{{ poke.name|capitalize }} #{{ poke.pokeId }}
+
+									{% if poke.shiny %}
+										<img class="gen-6-shiny" src="{{ asset('images/sparkle/shinyOK.png') }}" alt="">
+									{% endif %}
+
+								</button>
+							{% else %}
+								<button disabled class="poke-li col-12 not-captured type-none gen-6">
+
+									???
+
+								</button>
+
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+
+
+
+
+				</ul>
+
+
+				<ul class="col-12">
+
+					{# Septième Gen #}
+
+					<button class="seven-gen-button gen"><span class="gen-title">Septième Génération</span>  <br>
+
+						<span id="activeCountG7"></span>/86 ||
+
+						<img src="{{ asset('images/sparkle/shinyOK.png') }}" alt="">: <span id="shinyG7"></span>/86
+						<i class="fa-solid fa-play"> </i></button>
+
+					{% for poke in pokemons %}
+
+						{% if poke.pokeId >= 722 and poke.pokeId <= 809 %}
+
+
+
+							{% if poke.captured %}
+								<button class="poke-li captured col-12 pokemon-pokedex type-none gen-7" data-pokemon="{{ poke.pokeId }}" >
+									{{ poke.name|capitalize }} #{{ poke.pokeId }}
+
+									{% if poke.shiny %}
+										<img class="gen-7-shiny" src="{{ asset('images/sparkle/shinyOK.png') }}" alt="">
+									{% endif %}
+
+								</button>
+							{% else %}
+								<button disabled class="poke-li col-12 not-captured type-none gen-7">
+
+									???
+
+								</button>
+
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+
+
+
+
+				</ul>
+
+
+
+				<ul class="col-12">
+
+					{# Huitième Gen #}
+
+					<button class="eight-gen-button gen"><span class="gen-title">Huitième Génération</span>  <br>
+
+						<span id="activeCountG8"></span>/89 ||
+
+						<img src="{{ asset('images/sparkle/shinyOK.png') }}" alt="">: <span id="shinyG8"></span>/89
+						<i class="fa-solid fa-play"> </i></button>
+
+					{% for poke in pokemons %}
+
+						{% if poke.pokeId >= 810 and poke.pokeId <= 898 %}
+
+
+
+							{% if poke.captured %}
+								<button class="poke-li captured col-12 pokemon-pokedex type-none gen-8" data-pokemon="{{ poke.pokeId }}" >
+									{{ poke.name|capitalize }} #{{ poke.pokeId }}
+
+									{% if poke.shiny %}
+										<img class="gen-8-shiny" src="{{ asset('images/sparkle/shinyOK.png') }}" alt="">
+									{% endif %}
+
+								</button>
+							{% else %}
+								<button disabled class="poke-li col-12 not-captured type-none gen-8">
+
+									???
+
+								</button>
+
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+
+				</ul>
+
+
+
+
+
+				<ul class="col-12">
+
+					{# Forme REGIONALES #}
+
+					<button class="ALO-button gen"><span class="gen-title">Formes Régionales</span>  <br>
+
+						<span id="activeCountALO"></span>/35 ||
+
+						<img src="{{ asset('images/sparkle/shinyOK.png') }}" alt="">: <span id="shinyALO"></span>/35
+						<i class="fa-solid fa-play"> </i></button>
+
+					{% for poke in pokemons %}
+
+						{% if poke.pokeId >= 1500 and poke.pokeId <= 1534 %}
+
+
+
+							{% if poke.captured %}
+								<button class="poke-li captured col-12 pokemon-pokedex type-none ALO" data-pokemon="{{ poke.pokeId }}" >
+									{{ poke.name|capitalize }} #{{ poke.pokeId }}
+
+									{% if poke.shiny %}
+										<img class="ALO-shiny" src="{{ asset('images/sparkle/shinyOK.png') }}" alt="">
+									{% endif %}
+
+								</button>
+							{% else %}
+								<button disabled class="poke-li col-12 not-captured type-none ALO">
+
+									???
+
+								</button>
+
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+
+
+
+
+				</ul>
+
+
+
+
+
+
+				<ul class="col-12">
+
+					{# Mégas Evolutions #}
+
+					<button class="ME-button gen"><span class="gen-title">Mégas Evolutions</span><br>
+
+						<span id="activeCountME"></span>/41 ||
+
+						<img src="{{ asset('images/sparkle/shinyOK.png') }}" alt="">: <span id="shinyME"></span>/41
+						<i class="fa-solid fa-play"> </i></button>
+
+					{% for poke in pokemons %}
+
+						{% if poke.rarity == 'ME' %}
+
+
+
+							{% if poke.captured %}
+								<button class="poke-li captured col-12 pokemon-pokedex type-none gen-ME ME" data-pokemon="{{ poke.pokeId }}" >
+									{{ poke.name|capitalize }} #{{ poke.pokeId }}
+
+									{% if poke.shiny %}
+										<img class="gen-ME-shiny" src="{{ asset('images/sparkle/shinyOK.png') }}" alt="">
+									{% endif %}
+
+								</button>
+							{% else %}
+								<button disabled class="poke-li col-12 not-captured ME type-none">
+
+									???
+
+								</button>
+
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+
+
+
+
+				</ul>
+
+
+				<ul class="col-12">
+
+					{# Secret Rares #}
+
+					<button class="SR-button gen"><span class="gen-title">Secret Rares</span><br>
+
+						<span id="activeCountSR"></span>/16 ||
+
+						<img src="{{ asset('images/sparkle/shinyOK.png') }}" alt="">: <span id="shinySR"></span>/16
+						<i class="fa-solid fa-play"> </i></button>
+
+					{% for poke in pokemons %}
+
+						{% if poke.rarity == 'SR' %}
+
+
+
+							{% if poke.captured %}
+								<button class="poke-li captured col-12 pokemon-pokedex type-none gen-SR SR" data-pokemon="{{ poke.pokeId }}" >
+									{{ poke.name|capitalize }} #{{ poke.pokeId }}
+
+									{% if poke.shiny %}
+										<img class="gen-SR-shiny" src="{{ asset('images/sparkle/shinyOK.png') }}" alt="">
+									{% endif %}
+
+								</button>
+							{% else %}
+								<button disabled class="poke-li col-12 not-captured SR type-none">
+
+									???
+
+								</button>
+
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+
+
+
+
+				</ul>
+
+
+				<ul class="col-12">
+
+					{# Ultra Rares #}
+
+					<button class="UR-button gen"><span class="gen-title">Ultra Rares</span><br>
+
+						<span id="activeCountUR"></span>/25 ||
+
+						<img src="{{ asset('images/sparkle/shinyOK.png') }}" alt="">: <span id="shinyUR"></span>/25
+						<i class="fa-solid fa-play"> </i></button>
+
+					{% for poke in pokemons %}
+
+						{% if poke.rarity == 'UR' %}
+
+
+
+							{% if poke.captured %}
+								<button class="poke-li captured col-12 pokemon-pokedex type-none gen-UR UR" data-pokemon="{{ poke.pokeId }}" >
+									{{ poke.name|capitalize }} #{{ poke.pokeId }}
+
+									{% if poke.shiny %}
+										<img class="gen-UR-shiny" src="{{ asset('images/sparkle/shinyOK.png') }}" alt="">
+									{% endif %}
+
+								</button>
+							{% else %}
+								<button disabled class="poke-li col-12 not-captured UR type-none">
+
+									???
+
+								</button>
+
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+
+
+
+
+				</ul>
+
+
+
+
+			</div>
+
+
+
+		</div>
+
+	</div>
+
+	{# Div qui englobe toutes les infos du Pokédex (infos du pokémon, son image, son/ses type(s) et sa description)  #}
+
+
+	<div class="pokedex-background col-12 col-lg-7">
+
+		<div class="pokedex-style-buttons col-10">
+
+			<div class="blue-button-second-border">
+
+				<div class="blue-button">
+
+					<div class="blue-button-reflect"></div>
+
+				</div>
+
+			</div>	
+
+
+				<div class="mini-buttons">
+
+					<div class="mini-button-second-border">
+
+						<div class="mini-button-red">
+
+							<div class="mini-button-reflect"></div>
+
+						</div>
+
+					</div>	
+
+					<div class="mini-button-second-border">
+
+						<div class="mini-button-yellow">
+
+							<div class="mini-button-reflect"></div>
+
+						</div>
+
+					</div>
+
+					<div class="mini-button-second-border">
+
+						<div class="mini-button-green">
+
+							<div class="mini-button-reflect"></div>
+
+						</div>
+
+					</div>	
+				
+				</div>
+			
+			</div>
+
+
+
+		<div class="pokedex-pic-and-description col-lg-10">
+
+			<div class="pokedex col-lg-12">
+
+				{# Container des infos Pokémon (nom, nom-en et numéro Pokédex) ainsi que l'image GIF du pokémon  #}
+				<div class="poke-info-pic d-flex flex-column justify-content-center align-items-center col-lg-12">
+
+					<div
+						class="row col-12 poke-name">
+
+
+						{# Infos du nom, du nom-en et du numéro Pokémon  #}
+						<div class="poke-info d-flex flex-row justify-content-center align-items-center">
+
+							<div class="info col-12 col-lg-12 d-flex flex-row justify-content-center align-items-center">
+
+								<div class="info-tile-1 col-4">
+
+									<p class="firstName"></p>
+
+								</div>
+
+								<div class="info-tile-2 col-4">
+
+									<p class="secondName"></p>
+
+								</div>
+
+								<div class="info-tile-3 col-4">
+
+									<p class="thirdName"></p>
+
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+
+
+					{# Image Pokémon  #}
+					<div class="pokemon col-12 col-lg-10">
+
+						
+
+						<div class="column pokepic col-12 ">
+
+
+
+								<div class="fond taille-fond"></div>
+
+
+								<img class="poke-gif" src="{{ asset('images/sparkle/invisible-sparkle.gif') }}" alt="Pokémon">
+
+							<button class="shiny-button-mobile type-none">
+
+								<img src="{{ asset('images/sparkle/etoiles-shiny.png') }}" alt="shiny-logo">
+							
+							</button>
+
+							<div class="overlay">
+
+								<p>PAUSE</p>
+
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>	
+
+			</div>
+			
+		
+			{# Container du/des types, et de la description du Pokémon  #}
+			<div class="container-fluid digital col-12 col-lg-8">
+
+				{# h3 avec le titre "Type"  #}
+				<div class="row type-h3 col-12">
+
+					<h3>Type(s)</h3>
+
+				</div>
+
+				{# Div qui contient les logos avec les types des Pokémon  #}
+				<div class="row type col-12 d-flex flex-row justify-content-evenly">
+
+
+
+
+					<a href="{{ path('app_types') }}" class="type-img-a"><img class="type-img type1" src="{{ asset('images/types/Normal.png') }}" alt="Type"></a>
+
+					<a href="{{ path('app_types') }}" class="type-img-a"><img class="type-img type2" src="{{ asset('images/types/Normal.png') }}" alt="Type"></a>
+
+
+
+
+				</div>
+
+				{# Div qui contient le contenu de la description du Pokémon  #}
+				<div class="row description col-12">
+
+					<h3>Description</h3>
+
+					<p></p>
+
+				</div>
+
+			</div>
+
+		</div>
+
+
+
+
+		{# Div qui contient toute l'interface "gameboy" avec la croix et les boutons  #}
+		<div class="col-lg-12 gameboy">
+
+			{# Image de la croix directionnelle  #}
+			<img class="col-lg-4" src="{{ asset('images/Cross.png') }}" alt="Croix de Gameboy">
+
+			{# Div qui contient les boutons start et select du milieu (affichés uniquement en écran large)  #}
+			<div class="start-select-buttons col-lg-4">
+
+				<button class="select"></button>
+
+				<button class="start"></button>
+
+			</div>
+
+			{# Div qui contient les boutons B et A comme sur gameboy  #}
+			<div class="gameboy-buttons col-lg-4">
+
+				<button class="gb-button-b">
+					<p class="a-b">B</p>
+				</button>
+
+				<button class="gb-button-a">
+					<p class="a-b">A</p>
+				</button>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
+
+
+
+{% endblock %}
+
+
+{% block js %}
+
+	<script>
+		const pokedexPageApi = '{{ url('app_pokedex_api') }}';
+		const pokemonsGifDir = '{{ asset('images/gifs') }}';
+		window.pokemonBackground = 'forest2-background';
+		const pokemonsTypeDir = '{{ asset('images/types/') }}';
+
+	</script>
+
+	<script src="{{ asset('js/pokedex.js') }}"></script>
+	
+{% endblock %}
+
+
+
+
+
+

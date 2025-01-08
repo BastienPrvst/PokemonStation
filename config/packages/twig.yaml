@@ -1,0 +1,12 @@
+twig:
+    form_themes: ['bootstrap_5_layout.html.twig']
+    default_path: '%kernel.project_dir%/templates'
+    globals:
+        site_name: 'pokemon station'
+        google_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
+when@test:
+    twig:
+        strict_variables: true
+
+
+

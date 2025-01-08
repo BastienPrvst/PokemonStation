@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier mon compte
+{% endblock %}
+
+{% block body %}
+
+
+	{# Container du formulaire de modification  #}
+	<div class=" register-form-block container mt-5 col-10">
+
+		<div class="row">
+
+			<div class="col-md-6 offset-md-3 style-form-register">
+
+				<h1 class="text-center h1-inscription">Modifier mon compte</h1>
+
+			</div>
+		</div>
+
+		{# Formulaire de modification #}
+		<div
+				class="row">
+
+			{# Ouverture du formulaire #}
+			{{ form_start( editModifyProfilForm ) }}
+
+
+			{# Affichage des erreur générales du formulaire #}
+			{{ form_errors( editModifyProfilForm ) }}
+
+
+			<div
+					class="col-12 col-md-6 mx-auto style-form-register">
+				{# Champ pseudo #}
+				{{ form_row( editModifyProfilForm.pseudonym ) }}
+			</div>
+
+			<div
+
+					class="col-12 col-md-6 mx-auto style-form-register display">
+
+				{{ form_row( editModifyProfilForm.currentPassword ) }}
+			</div>
+
+
+
+			<div
+					class="col-12 col-md-6 mx-auto style-form-register">
+				{# Champ mots de passe  #}
+				{{ form_row( editModifyProfilForm.plainPassword ) }}
+			</div>
+
+
+
+			<div class="text-center mx-auto register-button">
+
+				<div class="second-border-register">
+
+					<img src="{{ asset('images/PokeBall.png') }}" alt="Poke Ball">
+
+					<button type="submit" class="register-button-valid d-block btn">Modifier</button>
+
+					<i class="fa-solid fa-chevron-right"></i>
+
+				</div>
+
+
+			</div>
+
+
+			{# Fermeture du formulaire  #}
+			{{ form_end( editModifyProfilForm ) }}
+		</div>
+	</div>
+{% endblock %}
+
+

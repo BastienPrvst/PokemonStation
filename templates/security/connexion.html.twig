@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion
+{% endblock %}
+
+{% block body %}
+
+	{# Container du formulaire de connexion  #}
+	<div class="container-fluid h-100 login-form-container ">
+
+		<div class="row h-100">
+
+			<div class="col-12 col-lg-8 mx-auto login-form">
+
+				<h1 class="connexion-h1 text-center">Connexion</h1>
+
+				<form
+					method="post" class="d-flex flex-column justify-content-center align-items-center col-12">
+
+					{# Si le formulaire de connexion possède une erreur, on l'affiche #}
+					{% if error %}
+						<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+					{% endif %}
+
+					{# Champ email #}
+
+					<div class="form-group-connexion text-center col-8 col-lg-6">
+
+						<label for="email"></label>
+						<input type="email" value="{{ last_username }}" class="form-control" id="email" name="email" placeholder="Adresse e-mail">
+
+					</div>
+
+					{# Champ mot de passe#}
+					<div class="form-group-connexion text-center  col-8 col-lg-6">
+
+						<label for="password"></label>
+						<input type="password" class="form-control" id="password" name="password" placeholder="Mot de passe">
+						<br>
+						<span class="no-account">Pas encore de compte ? </span><a href="{{ path('app_register') }}"> Inscrivez-vous!</a>
+					</div>
+
+					{# Champ invisible token anti attaque CSRF #}
+					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+					<div class="text-center">
+
+						<button class="connexion-button">
+
+							<div class="second-border-connexion">
+
+								<a class="connexion-button-link"><img src="{{ asset('images/PokeBall.png') }}" alt="Poke Ball" width="50px">Se connecter
+
+									<i class="fa-solid fa-chevron-right"></i>
+
+								</a>
+
+							</div>
+
+						</button>
+
+					</div>
+
+				</form>
+
+			</div>
+
+		</div>
+
+	</div>
+
+{% endblock %}

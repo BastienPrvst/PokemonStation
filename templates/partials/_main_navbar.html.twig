@@ -1,0 +1,74 @@
+{# Banniere #}
+<div class="container-fluid">
+	<header class="banner row">
+
+
+		<div class="banner-title col-12 col-lg-2">
+
+			<h1 class="logo">Pokémon Station</h1>
+
+		</div>
+
+		<div class="header-img col-12 col-lg-8">
+
+			<img class="img-fluid" src="{{ asset('images/Pikachu-Gang.png') }}" alt="Pikachu-Gang">
+
+		</div>
+
+		<div class="connexion-deconnexion col-lg-2">
+
+			{# Affichage des liens réservés aux utilisateurs connectés #}
+			{% if app.user %}
+			<a href="{{ path('app_deconnexion') }}">Se deconnecter</a>
+			{% else %}
+			<a href="{{ path('app_register') }}">S'inscrire</a>
+			<a href="{{ path('app_connexion') }}">Se connecter</a>
+			{% endif %}
+		</div>
+	</header>
+
+</div>
+
+{# Barre de navigation #}
+<nav class="navbar navbar-expand-lg bg-body-tertiary main-navbar">
+
+	<div class="container-fluid bar-nav">
+
+		<div class="coloration">
+
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+				<span class="navbar-toggler-icon"></span>
+
+			</button>
+
+		</div>
+
+		<div class="collapse navbar-collapse background-color-nav" id="navbarSupportedContent">
+
+
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0-0 background-color-nav">
+
+				<li class="nav-item background-color-nav">
+					<a class="nav-link background-color-nav" href="{{ path('app_home') }}"><img src="{{ asset('images/Accueil.png') }}" alt="">Accueil</a>
+				</li>
+
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('app_capture') }}"><img src="{{ asset('images/Capture.png') }}" alt="">Libération !</a>
+				</li>
+
+
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('app_pokedex')}}"><img src="{{ asset('images/Pokedex.png') }}" alt="">Pokédex</a>
+				</li>
+
+
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('app_profil') }}">
+						<img src="{{ asset('images/Profil.png') }}" alt="">Mon Profil</a>
+				</li>
+
+			</ul>
+		</div>
+	</div>
+</nav>
