@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\CapturedPokemon;
 use App\Entity\Items;
 use App\Entity\Pokemon;
+use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
