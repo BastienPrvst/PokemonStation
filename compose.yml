@@ -1,0 +1,30 @@
+services:
+###> doctrine/doctrine-bundle ###
+  database:
+    image: mysql:5.7.29
+    command: --max_allowed_packet=500M
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 3306:3306
+    volumes:
+      - './docker/mysql:/var/lib/mysql'
+    environment:
+      MYSQL_DATABASE: pokestation
+      MYSQL_USER: pokestation
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+###< doctrine/doctrine-bundle ###
+
+###> symfony/mailer ###
+  mailer:
+    image: schickling/mailcatcher
+    ports: ["1025", "1080"]
+###< symfony/mailer ###
+
+volumes:
+###> doctrine/doctrine-bundle ###
+  db-data:
+###< doctrine/doctrine-bundle ###

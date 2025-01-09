@@ -24,3 +24,7 @@ migrations/*.php
 ###< symfony/phpunit-bridge ###
 
 public/images/gifs/*.gif
+
+###> docker ###
+docker/mysql
+###< docker ###
