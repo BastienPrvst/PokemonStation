@@ -22,6 +22,7 @@ class UserController extends AbstractController
     {
         $userRepo = $doctrine->getRepository(User::class);
         $pokeRepo = $doctrine->getRepository(Pokemon::class);
+        /** @var User $currentConnectedUser */
         $currentConnectedUser = $this->getUser();
 
         return $this->render('main/profil.html.twig', [
@@ -46,6 +47,7 @@ class UserController extends AbstractController
         /**
          * page de modification du profil de l'utilisateur (pseudonym et mot de passe).
          */
+        /** @var User $currentConnectedUser */
         $connectedUser = $this->getUser();
         $form = $this->createForm(EditModifyProfilFormType::class, $connectedUser);
         $form->handleRequest($request);
@@ -73,26 +75,6 @@ class UserController extends AbstractController
 
         return $this->render('main/modify_profil.html.twig', [
             'editModifyProfilForm' => $form->createView(),
-        ]);
-    }
-
-    #[Route('/mon-profil-api/', name: 'app_profil_api')]
-    #[IsGranted('ROLE_USER')]
-    public function profilApi(Request $request, ManagerRegistry $doctrine): Response
-    {
-        $user = $this->getUser();
-        $avatarId = $request->get('avatarId');
-        $user->setAvatar($avatarId);
-
-        // Enregistre les changements en base de données
-        $em = $doctrine->getManager();
-        $em->persist($user);
-        $em->flush();
-
-        return $this->json([
-            'avatarId' => $user->getAvatar(),
-            'error' => 'Erreur lors du changement d\'avatar!',
-            'success' => 'Votre avatar a bien été changé !',
         ]);
     }
 }

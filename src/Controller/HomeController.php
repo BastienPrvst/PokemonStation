@@ -46,7 +46,6 @@ class HomeController extends AbstractController
     public function legals(): Response
     {
         return $this->render('main/legals.html.twig', [
-
         ]);
     }
 }

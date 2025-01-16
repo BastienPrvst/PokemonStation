@@ -14,7 +14,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 // Importation de notre service de validation du captcha
-
 // Importation de la classe permettant de créer des erreurs dans les formulaires
 
 class RegistrationController extends AbstractController
@@ -24,7 +23,7 @@ class RegistrationController extends AbstractController
      * @param Request $request
      * @param UserPasswordHasherInterface $userPasswordHasher
      * @param EntityManagerInterface $entityManager
-     * @param $recaptcha
+     * @param RecaptchaValidator $recaptcha
      * @return Response
      */
     #[Route('/register/', name: 'app_register')]
@@ -35,8 +34,7 @@ class RegistrationController extends AbstractController
         RecaptchaValidator          $recaptcha
     ): Response {
 
-        // si l'utilisateur est deja connecter, on le redirige de force sur la page d'acceuil du site
-
+        // Si l'utilisateur est deja connecter, on le redirige de force sur la page d'acceuil du site
         if ($this->getUser()) {
             return $this->redirectToRoute('app_home');
         }
@@ -57,7 +55,7 @@ class RegistrationController extends AbstractController
 
             //si le captcha est null ou s'il est invalide on ajoute une erreur dans le formulaire
 
-            if ($recaptchaResponse == null ||
+            if ($recaptchaResponse === null ||
                 !$recaptcha->verify($recaptchaResponse, $request->server->get('REMOTE_ADDR'))) {
                 // Ajout d'une nouvelle erreur manuellement dans le formulaire
                 $form->addError(new FormError('Le Captcha doit être validé !'));
@@ -79,16 +77,10 @@ class RegistrationController extends AbstractController
                     ->setMasterBall(0)
                     ->setShinyBall(0);
 
-
                 //hydratation de la date d'inscription du nouvel utilisateur
-
                 $user->setCreationDate(new \DateTime);
-
                 $entityManager->persist($user);
-
                 $entityManager->flush();
-
-
                 $this->addFlash('success', 'Votre compte à bien été créé!');
 
                 return $this->redirectToRoute('app_connexion');

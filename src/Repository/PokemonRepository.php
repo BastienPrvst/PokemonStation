@@ -2,13 +2,10 @@
 
 namespace App\Repository;
 
-use App\Entity\CapturedPokemon;
 use App\Entity\Pokemon;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Security\Core\User\UserInterface;
-use function Symfony\Component\String\u;
 
 /**
  * @extends ServiceEntityRepository<Pokemon>
@@ -53,9 +50,7 @@ class PokemonRepository extends ServiceEntityRepository
             ->setFirstResult($offset)
             ->setMaxResults(1)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
-
+            ->getOneOrNullResult();
     }
 
     public function findNext(Pokemon $currentPokemon, int $offset = 0): ?Pokemon
@@ -68,14 +63,11 @@ class PokemonRepository extends ServiceEntityRepository
             ->setFirstResult($offset)
             ->setMaxResults(1)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
-
+            ->getOneOrNullResult();
     }
 
     public function findNextSpecieEncounter(Pokemon $currentPokemon, User $user): ?Pokemon
     {
-
         // SELECT * FROM pokemon INNER JOIN captured_pokemon ON pokemon.id = captured_pokemon.pokemon_id ORDER BY pokemon.id ASC
         return $this->createQueryBuilder('p')
             ->innerJoin('p.capturedPokemon', 'cp')
@@ -86,9 +78,7 @@ class PokemonRepository extends ServiceEntityRepository
             ->orderBy('p.id', 'ASC')
             ->setMaxResults(1)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
-
+            ->getOneOrNullResult();
     }
 
     public function findPreviousSpecieEncounter(Pokemon $currentPokemon, User $user): ?Pokemon
@@ -104,31 +94,20 @@ class PokemonRepository extends ServiceEntityRepository
             ->orderBy('p.id', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
-
+            ->getOneOrNullResult();
     }
-
-
-
 
 
     public function getSpeciesEncounter(User $user): array
     {
-
-        // SELECT *
-        // FROM pokemon
-        // INNER JOIN captured_pokemon ON
-        // captured_pokemon.pokemon_id = pokemon.id
-        // WHERE captured_pokemon.owner_id = cet utilisateur
         return $this->createQueryBuilder('p')
+            ->select('DISTINCT p.pokeId')
             ->innerJoin('p.capturedPokemon', 'cp')
             ->where('cp.owner = :userId')
             ->setParameter('userId', $user->getId())
             ->orderBy('p.pokeId', 'ASC')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     public function getShinyCaptured(User $user): array
@@ -142,8 +121,7 @@ class PokemonRepository extends ServiceEntityRepository
             ->setParameter('userId', $user->getId())
             ->orderBy('p.pokeId', 'ASC')
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
 
     public function getFullPokedexSize(): int
@@ -152,9 +130,7 @@ class PokemonRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
             ->select('COUNT(p)')
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
-
+            ->getSingleScalarResult();
     }
 
     public function getCountEncounteredBy(User $user): int
@@ -167,9 +143,7 @@ class PokemonRepository extends ServiceEntityRepository
             ->where('u.id = :userId')
             ->setParameter('userId', $user->getId())
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
-
+            ->getSingleScalarResult();
     }
 
     public function getCountUniqueEncounteredBy(User $user): int
@@ -182,9 +156,7 @@ class PokemonRepository extends ServiceEntityRepository
             ->where('u.id = :userId')
             ->setParameter('userId', $user->getId())
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
-
+            ->getSingleScalarResult();
     }
 
     public function getCountShiniesEncounteredBy(User $user): int
@@ -198,9 +170,7 @@ class PokemonRepository extends ServiceEntityRepository
             ->andWhere('cp.shiny = 1')
             ->setParameter('userId', $user->getId())
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
-
+            ->getSingleScalarResult();
     }
 
     public function getCountByRarityEncounteredBy(User $user, string $rarity): int
@@ -215,9 +185,6 @@ class PokemonRepository extends ServiceEntityRepository
             ->setParameter('userId', $user->getId())
             ->setParameter('rarity', $rarity)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
-
+            ->getSingleScalarResult();
     }
-
 }

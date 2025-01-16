@@ -41,8 +41,6 @@ class CapturedPokemonRepository extends ServiceEntityRepository
         }
     }
 
-
-
     public function findShinyCaptured(User $user): array
     {
         return $this->createQueryBuilder('cp')
@@ -57,6 +55,19 @@ class CapturedPokemonRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findSpeciesCaptured (User $user): array
+    {
+        $result = $this->createQueryBuilder('cp')
+            ->select('DISTINCT p.pokeId')
+            ->innerJoin('cp.pokemon', 'p')
+            ->where('cp.owner = :userId')
+            ->setParameter(':userId', $user->getId())
+            ->orderBy('p.pokeId', 'ASC')
+            ->getQuery()
+            ->getArrayResult();
+
+        return array_column($result, 'pokeId');
+    }
 
 
 }
