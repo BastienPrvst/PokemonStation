@@ -34,10 +34,8 @@ class PokemonOdds extends AbstractController
                 ]);
             }
             $rarity = $this->getCommonRarity($randomRarity);
-            //Calculs shiny
             $isShiny = $this->isItShiny();
-            //On retire un lancer à l'utilisateur
-            $user->setLaunchs($user->getLaunchs() - 1);
+            $user->setLaunchs($user->getLaunchs() - 1);//On retire un lancer à l'utilisateur
         } elseif ($pokeballId === 2) { //HYPER BALL
             if ($user->getHyperBall() < 1) {
                 return $this->json([
@@ -79,13 +77,10 @@ class PokemonOdds extends AbstractController
             ]);
         }
 
-        //Recherche du pokémon
         $pokemons = $this->pokemonRepository->findByRarity($rarity);
         $randomPoke = random_int(0, count($pokemons) - 1);
         $pokemonSpeciesCaptured = $pokemons[$randomPoke];
         $pokemonCaptured = new CapturedPokemon();
-
-        //Hydratation BDD
         $pokemonCaptured
             ->setPokemon($pokemonSpeciesCaptured)
             ->setOwner($user)
@@ -101,8 +96,6 @@ class PokemonOdds extends AbstractController
         } else {
             $this->setCoinByRarity($user, $pokemonCaptured);
         }
-
-        //On compte un lancer en plus pour l'utilisateur
         $user->setLaunchCount($user->getLaunchCount() + 1);
         $this->entityManager->flush();
 

@@ -8,8 +8,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Pokemon>
- *
  * @method Pokemon|null find($id, $lockMode = null, $lockVersion = null)
  * @method Pokemon|null findOneBy(array $criteria, array $orderBy = null)
  * @method Pokemon[]    findAll()
@@ -22,27 +20,8 @@ class PokemonRepository extends ServiceEntityRepository
         parent::__construct($registry, Pokemon::class);
     }
 
-    public function save(Pokemon $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
-    public function remove(Pokemon $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
     public function findPrev(Pokemon $currentPokemon, int $offset = 0): ?Pokemon
     {
-
         // SELECT * FROM `pokemon` WHERE id < xxx ORDER BY id DESC LIMIT 1
         return $this->createQueryBuilder('p')
             ->andWhere('p.pokeId < ' . $currentPokemon->getPokeId())
@@ -55,7 +34,6 @@ class PokemonRepository extends ServiceEntityRepository
 
     public function findNext(Pokemon $currentPokemon, int $offset = 0): ?Pokemon
     {
-
         // SELECT * FROM `pokemon` WHERE id > xxx ORDER BY id LIMIT 1
         return $this->createQueryBuilder('p')
             ->andWhere('p.pokeId > ' . $currentPokemon->getPokeId())
@@ -83,7 +61,6 @@ class PokemonRepository extends ServiceEntityRepository
 
     public function findPreviousSpecieEncounter(Pokemon $currentPokemon, User $user): ?Pokemon
     {
-
         // SELECT * FROM pokemon INNER JOIN captured_pokemon ON pokemon.id = captured_pokemon.pokemon_id ORDER BY pokemon.id DESC
         return $this->createQueryBuilder('p')
             ->innerJoin('p.capturedPokemon', 'cp')
@@ -97,7 +74,6 @@ class PokemonRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-
     public function getSpeciesEncounter(User $user): array
     {
         return $this->createQueryBuilder('p')
@@ -110,23 +86,8 @@ class PokemonRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function getShinyCaptured(User $user): array
-    {
-
-        return $this->createQueryBuilder('p')
-            ->select('DISTINCT p.pokeId')
-            ->innerJoin('p.capturedPokemon', 'cp')
-            ->where('cp.owner = :userId')
-            ->andWhere('cp.shiny = true')
-            ->setParameter('userId', $user->getId())
-            ->orderBy('p.pokeId', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
     public function getFullPokedexSize(): int
     {
-
         return $this->createQueryBuilder('p')
             ->select('COUNT(p)')
             ->getQuery()
@@ -135,7 +96,6 @@ class PokemonRepository extends ServiceEntityRepository
 
     public function getCountEncounteredBy(User $user): int
     {
-
         return $this->createQueryBuilder('p')
             ->select('COUNT(p)')
             ->innerJoin('p.capturedPokemon', 'cp')
@@ -148,7 +108,6 @@ class PokemonRepository extends ServiceEntityRepository
 
     public function getCountUniqueEncounteredBy(User $user): int
     {
-
         return $this->createQueryBuilder('p')
             ->select('COUNT(DISTINCT p)')
             ->innerJoin('p.capturedPokemon', 'cp')
@@ -161,7 +120,6 @@ class PokemonRepository extends ServiceEntityRepository
 
     public function getCountShiniesEncounteredBy(User $user): int
     {
-
         return $this->createQueryBuilder('p')
             ->select('COUNT(p)')
             ->innerJoin('p.capturedPokemon', 'cp')
@@ -175,7 +133,6 @@ class PokemonRepository extends ServiceEntityRepository
 
     public function getCountByRarityEncounteredBy(User $user, string $rarity): int
     {
-
         return $this->createQueryBuilder('p')
             ->select('COUNT(p)')
             ->innerJoin('p.capturedPokemon', 'cp')

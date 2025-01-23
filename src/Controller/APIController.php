@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\CapturedPokemon;
 use App\Entity\Items;
 use App\Entity\Pokemon;
 use App\Entity\User;
@@ -12,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use function PHPUnit\Framework\isEmpty;
 
 class APIController extends AbstractController
 {
@@ -37,24 +39,18 @@ class APIController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function pokedexApi(Request $request, ManagerRegistry $doctrine): Response
     {
+        /* @var User $user */
         $user = $this->getUser();
         $pokeRepo = $doctrine->getRepository(Pokemon::class);
+        $cpRepo = $doctrine->getRepository(CapturedPokemon::class);
         $pokemonPokeId = $request->get('pokemonId');
-        // Récupération du Pokémon correspondant à l'ID envoyé depuis le JSON
         $pokemonToDisplay = $pokeRepo->findOneBy(['pokeId' => $pokemonPokeId]);
-        $shinyObtained = $pokeRepo->getShinyCaptured($user);
+        $shinyObtained = $cpRepo->findShinyCaptured($user);
         $isShiny = false;
 
         //Si l'utilisateur possède au moins un pokémon shiny, on compare les pokéID avec celui récupéré en requête
-
-        if ($shinyObtained) {
-            foreach ($shinyObtained as $shiny) {
-                foreach ($shiny as $shinyId) {
-                    if ($shinyId == $pokemonPokeId) {
-                        $isShiny = true;
-                    }
-                }
-            }
+        if (!isEmpty($shinyObtained) && in_array($pokemonPokeId, $shinyObtained, true)) {
+            $isShiny = true;
         }
 
         if ($pokemonToDisplay !== null) {
@@ -70,12 +66,11 @@ class APIController extends AbstractController
                     'shiny' => $isShiny,
                 ]
             ]);
-        } else {
-            // Si le résultat est nul, retourner une réponse d'erreur
-            return $this->json([
-                'error' => 'Impossible d\'accéder au pokémon séléctionné',
-            ]);
         }
+
+        return $this->json([
+            'error' => 'Impossible d\'accéder au pokémon séléctionné',
+        ]);
     }
 
     #[Route('/capture-shop-api/', name: 'app_shop_api')]

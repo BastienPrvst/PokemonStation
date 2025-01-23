@@ -10,29 +10,6 @@
 
 	<div class="background">
 
-		<div class="dev-message">
-
-			<h1 class="text-center text-white">100 000 ! Merci énormément ! </h1>
-
-			<p class="dev-text">
-				C'est un chiffre énorme que nous avons atteint tous ensemble et j'aimerais vraiment vous remercier pour vos lancers quotidiens, pour votre ferveur et votre enthousiasme à chaque mise à jour !
-
-				<br>
-
-				La prochaine mise à jour sera centrée sur l'aspect communautaire, j'espère qu'elle vous plaira !
-
-				Pour ce qui est des remerciements, 25 000 Pokédollars vous sont donnés ainsi que 5 Hyper Balls, 5 Shiny Balls et 5 Master Balls !
-
-				<br>
-
-				Enfin, 150 lancers normaux sont également ajoutés !
-
-			</p>
-
-
-		</div>
-
-
 		{# statistique #}
 		<div class="container-fluid stats fade-up col-12">
 
@@ -86,101 +63,13 @@
 
 						<div class="carousel-inner carou-avatar">
 
+							{% for avatar in avatars %}
+
 							<div class="carousel-item  justify-content-center avatar">
-								<img src="{{ asset('images/trainers/trainer1.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="1">
+								<img src="{{ asset('images/trainers/' ~ avatar ~'.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="{{ avatar }}">
 							</div>
 
-							<div class="carousel-item avatar">
-								<img src="{{ asset('images/trainers/trainer2.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="2">
-							</div>
-
-							<div class="carousel-item avatar">
-								<img src="{{ asset('images/trainers/trainer3.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="3">
-							</div>
-
-							<div class="carousel-item avatar">
-								<img src="{{ asset('images/trainers/trainer4.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="4">
-							</div>
-
-							<div class="carousel-item avatar">
-								<img src="{{ asset('images/trainers/trainer5.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="5">
-							</div>
-
-							<div class="carousel-item avatar">
-								<img src="{{ asset('images/trainers/trainer6.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="6">
-							</div>
-
-							<div class="carousel-item avatar">
-								<img src="{{ asset('images/trainers/trainer7.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="7">
-							</div>
-
-							<div class="carousel-item avatar">
-								<img src="{{ asset('images/trainers/trainer8.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="8">
-							</div>
-
-							<div class="carousel-item avatar">
-								<img src="{{ asset('images/trainers/trainer9.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="9">
-							</div>
-
-							<div class="carousel-item avatar">
-								<img src="{{ asset('images/trainers/trainer10.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="10">
-							</div>
-
-							<div class="carousel-item avatar">
-								<img src="{{ asset('images/trainers/trainer11.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="11">
-							</div>
-
-							<div class="carousel-item avatar">
-								<img src="{{ asset('images/trainers/trainer12.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="12">
-							</div>
-
-							<div class="carousel-item avatar">
-								<img src="{{ asset('images/trainers/trainer13.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="13">
-							</div>
-
-							<div class="carousel-item avatar">
-								<img src="{{ asset('images/trainers/trainer14.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="14">
-							</div>
-
-							<div class="carousel-item avatar">
-								<img src="{{ asset('images/trainers/trainer15.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="15">
-							</div>
-
-							<div class="carousel-item avatar">
-								<img src="{{ asset('images/trainers/trainer16.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="16">
-							</div>
-
-							<div class="carousel-item avatar">
-								<img src="{{ asset('images/trainers/trainer17.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="17">
-							</div>
-
-							<div class="carousel-item avatar">
-								<img src="{{ asset('images/trainers/trainer18.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="18">
-							</div>
-
-							<div class="carousel-item avatar">
-								<img src="{{ asset('images/trainers/trainer19.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="19">
-							</div>
-
-							<div class="carousel-item avatar">
-								<img src="{{ asset('images/trainers/trainer20.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="20">
-							</div>
-
-							{% if is_granted('ROLE_ADMIN') %}
-
-							<div class="carousel-item avatar">
-								<img src="{{ asset('images/trainers/Spirit.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="Spirit">
-							</div>
-
-							<div class="carousel-item avatar">
-								<img src="{{ asset('images/trainers/LD.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="LD">
-							</div>
-
-							<div class="carousel-item avatar">
-								<img src="{{ asset('images/trainers/Tarti.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="Tarti">
-							</div>
-
-							{% endif %}
+							{% endfor %}
 
 						</div>
 
@@ -281,15 +170,13 @@
 
 	</div>
 
-
-
 {# Fermeture langague twig #}{% endblock %}
 
 {% block js %}
 
 	<script>
 		const profilPageApi = '{{ url('app_profil_api') }}';
-		const avatar = '{{ app.user.avatar }}';
+		const avatar = '{{ user.avatar }}';
 	</script>
 
 	<script src="{{ asset('js/profil.js') }}">

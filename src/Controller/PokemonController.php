@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\CapturedPokemon;
 use App\Entity\Items;
 use App\Entity\Pokemon;
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,14 +15,23 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class PokemonController extends AbstractController
 {
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager)
+    {
+
+    }
+
     #[Route('/pokedex/', name: 'app_pokedex')]
     #[IsGranted('ROLE_USER')]
-    public function pokedex(ManagerRegistry $doctrine): Response
+    public function pokedex(): Response
     {
-        $pokeRepo = $doctrine->getRepository(Pokemon::class);
+        /* @var User $user*/
+        $user = $this->getUser();
+        $cpRepo = $this->entityManager->getRepository(CapturedPokemon::class);
+        $pokeRepo = $this->entityManager->getRepository(Pokemon::class);
         $pokemons = $pokeRepo->findBy([], ['pokeId' => 'ASC']);
-        $pokemonsCaptured = $pokeRepo->getSpeciesEncounter($this->getUser());
-        $shinyObtained = $pokeRepo->getShinyCaptured($this->getUser());
+        $pokemonsCaptured = $cpRepo->findSpeciesCaptured($user);
+        $shinyObtained = $cpRepo->findShinyCaptured($user);
 
         // Créer un tableau contenant les informations de tous les pokémons
         $allPokemonInfo = [];
@@ -38,16 +49,12 @@ class PokemonController extends AbstractController
         // Mettre à jour le tableau pour les pokémons capturés par l'utilisateur
         foreach ($allPokemonInfo as &$pokeInfo) {
             //vérification si l'utilisateur à libéré le pokemon
-            foreach ($pokemonsCaptured as $captured) {
-                if ($pokeInfo['id'] === $captured->getId()) {
-                    $pokeInfo['captured'] = true; // mettre à jour à true
-                }
+            if (in_array($pokeInfo['pokeId'], $pokemonsCaptured, true)) {
+                $pokeInfo['captured'] = true;
             }
             //vérification si l'utilisateur le possède en shiny
-            foreach ($shinyObtained as $shinies) {
-                if ($pokeInfo['pokeId'] === $shinies['pokeId']) {
-                    $pokeInfo['shiny'] = true;
-                }
+            if (in_array($pokeInfo['pokeId'], $shinyObtained, true)) {
+                $pokeInfo['shiny'] = true;
             }
         }
 
