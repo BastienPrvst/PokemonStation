@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 class PokemonOdds extends AbstractController
 {
     public function __construct(
-        private readonly PokemonRepository      $pokemonRepository,
+        private readonly PokemonRepository $pokemonRepository,
         private readonly CapturedPokemonRepository $capturedPokemonRepository,
         private readonly EntityManagerInterface $entityManager,
     ) {
