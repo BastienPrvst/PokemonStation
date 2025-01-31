@@ -6,6 +6,7 @@
 /.env
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
+/public/images/gifs/
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
@@ -22,8 +23,6 @@ migrations/*.php
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
-
-public/images/gifs/*.gif
 
 ###> docker ###
 docker/mysql
