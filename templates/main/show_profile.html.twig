@@ -1,10 +1,75 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Profil de {{ user.pseudonym }}
+{% endblock %}
+
 {% block body %}
 
+    <div class="background">
+
+        {# statistique #}
+        <div class="container-fluid stats fade-up col-12">
+
+            <h1 class="profil-title col-12 text-center my-5"> Profil de {{ user.pseudonym }}</h1>
+
+            <div class="col-12 col-lg-12 stats-block">
+
+                <div class="left-block col-12 col-lg-4">
+
+                    <h2 class="stats-title">Statistiques</h2>
+
+                    {# Block de gauche, Infos de l'utilisateur #}
+                    <ul class="list-group col-12 col-lg-12 text-center" id="utilisateur">
+                        <li class="list-group-item">Pseudo
+                            <span class="text-info">{{ user.pseudonym }}</span>
+                        </li>
+
+                        <li class="list-group-item ">Pokémons libérés :
+                            <span class="text-info">{{ user.launchCount }}</span>
+
+                        </li>
+
+                        <li class="list-group-item ">Pokémons Très Rare(s) libéré(s) :
+                            <span class="text-info">{{ nbTR }}</span>
+                        </li>
+
+                        <li class="list-group-item ">Pokémons Extrêmement Rare(s) libéré(s) :
+                            <span class="text-info">{{ nbEX }}</span>
+                        </li>
+
+                        <li class="list-group-item ">Pokémons Secret Rare(s) libéré(s) :
+                            <span class="text-info">{{ nbSR }}</span>
+                        </li>
+
+                        <li class="list-group-item ">Shiny obtenus :
+                            <span class="text-info">{{ nbShiny }}</span>
+                        </li>
+
+                        <li class="list-group-item ">Pokédex rempli à  {{ nbPokemonUnique }}/{{ pokedexSize }}
+                            <span class="text-info"></span>
+                        </li>
+                    </ul>
+                </div>
+
+
+
+                <div id="carouselExample" class="carousel carousel-avatar slide">
+
+                    <div class="justify-content-center avatar">
+                        <img src="{{ asset('images/trainers/' ~ user.avatar ~'.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="{{ user.avatar }}">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+
+{% block js %}
+
 {% endblock %}
 
-{% block title %}
 
-{% endblock %}
 

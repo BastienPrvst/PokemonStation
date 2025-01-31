@@ -1,16 +1,12 @@
-{# Utilisation du squelette de page base.html.twig #}
 {% extends "base.html.twig" %}
 
-{# Titre de la page #}
 {% block title %}Gestion du profil
 {% endblock %}
 
-{# Contenu de la page #}
 {% block body %}
 
 	<div class="background">
 
-		{# statistique #}
 		<div class="container-fluid stats fade-up col-12">
 
 			<h1 class="profil-title col-12 text-center my-5">Mon profil</h1>
@@ -21,7 +17,6 @@
 
 					<h2 class="stats-title">Statistiques</h2>
 
-					{# Block de gauche, Infos de l'utilisateur #}
 					<ul class="list-group col-12 col-lg-12 text-center" id="utilisateur">
 						<li class="list-group-item">Pseudo
 						<span class="text-info">{{ app.user.pseudonym }}</span>
@@ -31,7 +26,6 @@
 							<span class="text-info">{{ app.user.launchCount }}</span>
 
 						</li>
-
 
 						<li class="list-group-item ">Pokémons Très Rare(s) libéré(s) :
 							<span class="text-info">{{ nbTR }}</span>
@@ -54,10 +48,6 @@
 						</li>
 					</ul>
 				</div>
-
-				{# Carousel d'admin #}
-
-
 
 					<div id="carouselExample" class="carousel carousel-avatar slide">
 
@@ -91,16 +81,10 @@
 
 					</div>
 
-
-
-
-
-
 				<div class="right-block col-12 col-lg-4">
 
 					<h2 class="informations-account-title">Informations du compte</h2>
 
-					{# Block de droite, Infos du compte #}
 					<ul class="list-group col-12 col-lg-12" id="compte">
 
 						<li class="list-group-item ">Adresse E-mail :
@@ -118,12 +102,12 @@
 					</ul>
 
 					<div class="modify-info">
-						{# NE PAS OUBLIER DE CREER LE LIEN QUI REDIRIGE VERS LA PAGE DE MODIFICATION #}
+
 						<button class="modify-button">
 
 							<div class="second-border-modify">
 
-								<a href="{{ path('app_modify') }}" class="modify-button-link"><img src="{{ asset('images/PokeBall.png') }}" alt="Poke Ball" width="50px">Modifier
+								<a href="{{ path('app_profil-modify') }}" class="modify-button-link"><img src="{{ asset('images/PokeBall.png') }}" alt="Poke Ball" width="50px">Modifier
 
 									<i class="fa-solid fa-chevron-right"></i>
 
@@ -136,9 +120,6 @@
 				</div>
 			</div>
 
-
-
-			{# Tableau des 10 meilleurs pokédex #}
 			<div class="left-block col-12 col-lg-10 top-10-pokedex-box row">
 				<h2 class="stats-title">Les 10 meilleurs Pokédex !</h2>
 				<table class="table-pokedex">
@@ -155,7 +136,7 @@
 
 						<tr class="pokedex-top-10">
 	        				<td class="text-center">{{ loop.index }}</td>
-							<td class="text-center">{{ userData.user.pseudonym }} </td>
+							<td class="text-center"><a href="{{ path('app_user_showprofile', { pseudonym : userData.user.pseudonym })}}"> {{ userData.user.pseudonym }}</a> </td>
 							<td class="text-center">{{ userData.total_species_seen }}/{{ pokedexSize }}</td>
 							<td class="text-center">{{ userData.launch_count }} </td>
 						</tr>
@@ -170,7 +151,7 @@
 
 	</div>
 
-{# Fermeture langague twig #}{% endblock %}
+{% endblock %}
 
 {% block js %}
 

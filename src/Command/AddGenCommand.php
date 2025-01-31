@@ -2,8 +2,10 @@
 
 namespace App\Command;
 
+use App\Entity\Generation;
 use App\Entity\Pokemon;
 use Doctrine\ORM\EntityManagerInterface;
+use JetBrains\PhpStorm\NoReturn;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,10 +22,15 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 )]
 class AddGenCommand extends Command
 {
-
     private int $updates = 0;
     /** @see https://pokeapi.co/ */
     private string $apiUrl = 'https://pokeapi.co/api/v2';
+
+    private array $ultraChimeres = [
+        "nihilego", "buzzwole", "pheromosa", "xurkitree",
+        "celesteela", "kartana", "guzzlord", "poipole",
+        "naganadel", "stakataka", "blacephalon"
+    ];
 
     public function __construct(
         private readonly EntityManagerInterface $em,
@@ -38,121 +45,214 @@ class AddGenCommand extends Command
         $this->addArgument('generation', InputArgument::REQUIRED, 'Le numéro de la génération à ajouter');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    #[NoReturn] protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $gen = $input->getArgument('generation');
-
-        // Récupère la liste de tous les pokemons de la génération
-        $response = (new CurlHttpClient)->request('GET', "{$this->apiUrl}/generation/{$gen}");
+        $response = (new CurlHttpClient())->request('GET', "{$this->apiUrl}/generation/{$gen}");
         $json = json_decode($response->getContent());
         $varieties = [];
-        $forms = [];
+        $generation = new Generation();
+        $generation->setGenNumber($gen);
+        $generation->setGenRegion($json->main_region->name);
+        $this->em->persist($generation);
 
         foreach ($json->pokemon_species as $pokemon) {
-
-            $name_en = $pokemon->name;
-            $poke_id = explode('/', $pokemon->url)[6];
-
-            // Récupère les 2 fiches d'informations détaillées pour un pokemon
-            $speciesResponse = (new CurlHttpClient)->request('GET', $pokemon->url);
-            $pokemonResponse = (new CurlHttpClient)->request('GET', "{$this->apiUrl}/pokemon/{$poke_id}");
+            $speciesResponse = (new CurlHttpClient())->request('GET', $pokemon->url);
             $speciesJson = json_decode($speciesResponse->getContent());
+            $poke_id = $speciesJson->id;
+
+            $pokemonResponse = (new CurlHttpClient())->request('GET', "{$this->apiUrl}/pokemon/{$poke_id}");
             $pokemonJson = json_decode($pokemonResponse->getContent());
 
-            $type1_en = isset($pokemonJson->types[0]) ? $pokemonJson->types[0]->type->name : null;
-            $type2_en = isset($pokemonJson->types[1]) ? $pokemonJson->types[1]->type->name : null;
-            $type1 = $this->translator->trans($type1_en, domain: 'types') ?: null;
-            $type2 = $this->translator->trans($type2_en, domain: 'types') ?: null;
+            $pokemon = $this->generatePokemon($speciesJson, $pokemonJson, $generation);
 
-            $descriptions = array_filter(
-                $speciesJson->flavor_text_entries,
-                fn($flavor) => $flavor->language->name === 'fr'
-            );
-            $description = current($descriptions)?->flavor_text ?? '';
-            $description = preg_replace('/\s+/', ' ', trim($description));
-
-            $names = array_filter(
-                $speciesJson->names,
-                fn($name) => $name->language->name === 'fr'
-            );
-            $name = current($names)?->name ?? '';
-            $name = strtolower($name);
-
-            $gifUrl = $pokemonJson->sprites->other->showdown?->front_default;
-            $gifShinyUrl = $pokemonJson->sprites->other->showdown?->front_shiny;
-
-            $megas = array_filter(
-                $speciesJson->varieties,
-                function($var) {
-                    return str_contains($var->pokemon->name, '-primal') ||
-                    str_contains($var->pokemon->name, '-mega') ||
-                    str_contains($var->pokemon->name, '-gmax');
-                }
-            );
-
-            // Stock les formes alternatives
             if (count($speciesJson->varieties) > 1) {
-                $varieties[$poke_id] = array_filter(
-                    $speciesJson->varieties,
-                    fn($var) => !$var->is_default
-                );
+                $varieties[$poke_id] = [
+                    'filtered_varieties' => array_filter(
+                        $speciesJson->varieties,
+                        fn($var) => !$var->is_default
+                    ),
+                    'is_legendary' => $speciesJson->is_legendary,
+                    'is_mythical' => $speciesJson->is_mythical,
+                    'capture_rate' => $speciesJson->capture_rate,
+                    'name' => $this->getFrenchName($speciesJson),
+                    'speciesJson' => $speciesJson,
+                ];
             }
-
-            // Stock les formes spéciales
-            if (count($pokemonJson->forms) > 1) {
-                $forms[$poke_id] = $pokemonJson->forms;
-            }
-
-            // Détermine le niveau de rareté 
-            if ($speciesJson->is_legendary || $speciesJson->is_mythical) {
-                $rarity = 'EX';
-            } else if ($speciesJson->varieties) {
-
-            } else {
-                $rarity = 'C';
-            }
-
-            // Récupère les .gif default et shiny
-            if ($gifUrl) {
-                $gifResponse = (new CurlHttpClient)->request('GET', $gifUrl);
-                $gifShinyResponse = (new CurlHttpClient)->request('GET', $gifShinyUrl);
-                $filePath = $this->kernel->getProjectDir() . "/public/images/gifs/{$name_en}.gif";
-                $filePathShiny = $this->kernel->getProjectDir() . "/public/images/gifs/shiny-{$name_en}.gif";
-
-                file_put_contents($filePath, $gifResponse->getContent());
-                file_put_contents($filePathShiny, $gifShinyResponse->getContent());
-            }
-
-            $pokemon = (new Pokemon)
-                ->setName($name)
-                ->setType($type1)
-                ->setType2($type2)
-                ->setDescription($description)
-                ->setGif("{$name_en}.gif")
-                ->setNameEn($name_en)
-                ->setRarity($rarity)
-                ->setPokeId($poke_id);
 
             $this->em->persist($pokemon);
-            $this->updates++;
-
-            // Temporiser 1/3 seconde entre chaque Pokemon pour ne pas spam l'API
-            usleep(333333);
+            $this->em->flush();
         }
 
         foreach ($varieties as $poke_id => $variety) {
-            // TODO: récupérer les valeurs depuis /pokemon
-        }
+            foreach ($variety['filtered_varieties'] as $filtered_variety) {
+                $name = $filtered_variety->pokemon->name;
+                $pokemonResponse = (new CurlHttpClient())->request('GET', $filtered_variety->pokemon->url);
+                $pokemonFormResponse = (new CurlHttpClient())->request('GET', "{$this->apiUrl}/pokemon-form/{$name}");
+                $pokemonJson = json_decode($pokemonResponse->getContent());
+                $speciesJson = $variety['speciesJson'];
+                $pokemonFormJson = json_decode($pokemonFormResponse->getContent());
+                $isLegendary = $variety['is_legendary'];
+                $isMythical = $variety['is_mythical'];
+                $isMega = $pokemonFormJson->is_mega;
+                $pokemon = $this->generatePokemon($speciesJson, $pokemonJson, $generation, $pokemonFormJson);
+                $rarity = null;
 
-        foreach ($forms as $poke_id => $form) {
-            // TODO: récupérer les valeurs depuis /pokemon
-        }
+                if ($isLegendary || $isMythical) {
+                    $rarity = 'UR';
+                } elseif ($isMega === true) {
+                    $rarity = 'ME';
+                } elseif ($pokemonFormJson->form_name === 'gmax') {
+                    $rarity = 'GMAX';
+                }
 
-        $this->em->flush();
+                if ($rarity !== null) {
+                    $pokemon->setRarity($rarity);
+                }
+
+                $this->em->persist($pokemon);
+                $this->em->flush();
+            }
+        }
 
         $io->success("Vous avez ajouté {$this->updates} Pokemons de la #{$gen} génération.");
-
         return Command::SUCCESS;
+    }
+
+
+    private function generatePokemon(
+        \stdClass $speciesJson,
+        \stdClass $pokemonJson,
+        Generation $generation,
+        ?\stdClass $pokemonFormJson = null,
+    ): Pokemon {
+        $type1_en = isset($pokemonJson->types[0]) ? $pokemonJson->types[0]->type->name : null;
+        $type2_en = isset($pokemonJson->types[1]) ? $pokemonJson->types[1]->type->name : null;
+        $type1 = $this->translator->trans($type1_en, domain: 'types') ?: null;
+        $type2 = $this->translator->trans($type2_en, domain: 'types') ?: null;
+
+        $pokemon = (new Pokemon())
+                ->setName($this->getFrenchName($speciesJson))
+                ->setType($type1)
+                ->setType2($type2)
+                ->setDescription($this->getFrenchDescription($speciesJson))
+                ->setNameEn($pokemonJson->name)
+                ->setPokeId($pokemonJson->id)
+                ->setGen($generation);
+
+        if (
+            $speciesJson->is_legendary === true
+            || $speciesJson->is_mythical === true
+            || in_array(($pokemonJson->name), $this->ultraChimeres, true)
+        ) {
+            $pokemon->setRarity('EX');
+        } else {
+            $pokemon->setRarity($this->defineRarity($pokemonJson->stats, $speciesJson->capture_rate));
+        }
+
+        $this->em->persist($pokemon);
+        $this->em->flush();
+
+        //Si forme spéciale
+        if ($pokemonFormJson !== null) {
+            $pokemonToRelate = $this->em->getRepository(Pokemon::class)->findOneBy(['pokeId' => $speciesJson->id]);
+            $pokemon->setRelateTo($pokemonToRelate);
+            $pokemon->setName($pokemonFormJson->names[0]->name);
+        }
+
+            $this->updates++;
+            $this->generateCry($pokemonJson);
+            $this->generateGifs($pokemonJson);
+
+            return $pokemon;
+    }
+    private function getFrenchName(\stdClass $speciesJson): string
+    {
+        $names = array_filter(
+            $speciesJson->names,
+            static fn($name) => $name->language->name === 'fr'
+        );
+        $name = current($names)?->name ?? '';
+        return strtolower($name);
+    }
+
+    private function getFrenchDescription(\stdClass $speciesJson): string
+    {
+        $descriptions = array_filter(
+            $speciesJson->flavor_text_entries,
+            fn($flavor) => $flavor->language->name === 'fr'
+        );
+        $description = current($descriptions)?->flavor_text ?? '';
+        return preg_replace('/\s+/', ' ', trim($description));
+    }
+
+    private function defineRarity(array $arrayStats, int $captureRate, bool $ex = false): string
+    {
+        if ($ex === true) {
+            return 'EX';
+        }
+
+        $score = 0;
+        $totalStats = 0;
+        foreach ($arrayStats as $stat) {
+            $totalStats += $stat->base_stat;
+        }
+
+        if ($totalStats < 400) {
+            $score += 1;
+        } elseif ($totalStats < 500) {
+            $score += 2;
+        } elseif ($totalStats < 600) {
+            $score += 4;
+        } elseif ($totalStats < 700) {
+            $score += 5;
+        }
+
+        if ($captureRate > 150) {
+            $score += 1;
+        } elseif ($captureRate > 100) {
+            $score += 2;
+        } elseif ($captureRate > 50) {
+            $score += 3;
+        } elseif ($captureRate > 30) {
+            $score += 5;
+        }
+
+        if ($score < 3) {
+            return 'C';
+        }
+        if ($score < 6) {
+            return 'PC';
+        }
+        if ($score < 9) {
+            return 'R';
+        }
+        return 'TR';
+    }
+
+    private function generateGifs(\stdClass $pokemonJson)
+    {
+        $gifUrl = $pokemonJson->sprites->other->showdown?->front_default;
+        $gifShinyUrl = $pokemonJson->sprites->other->showdown?->front_shiny;
+        if ($gifUrl) {
+            $gifResponse = (new CurlHttpClient())->request('GET', $gifUrl);
+            $gifShinyResponse = (new CurlHttpClient())->request('GET', $gifShinyUrl);
+            $filePath = $this->kernel->getProjectDir() . "/public/images/gifs/{$pokemonJson->name}.gif";
+            $filePathShiny = $this->kernel->getProjectDir() . "/public/images/gifs/shiny-{$pokemonJson->name}.gif";
+
+            file_put_contents($filePath, $gifResponse->getContent());
+            file_put_contents($filePathShiny, $gifShinyResponse->getContent());
+        }
+    }
+
+    private function generateCry(\stdClass $pokemonJson)
+    {
+        $cryUrl = $pokemonJson->cries->latest;
+        if ($cryUrl) {
+            $cryResponse = (new CurlHttpClient())->request('GET', $cryUrl);
+            $filePath = $this->kernel->getProjectDir() . "/public/cries/{$pokemonJson->name}-cry.mp3";
+            file_put_contents($filePath, $cryResponse->getContent());
+        }
     }
 }

@@ -28,10 +28,10 @@ class RegistrationController extends AbstractController
      */
     #[Route('/register/', name: 'app_register')]
     public function register(
-        Request                     $request,
+        Request $request,
         UserPasswordHasherInterface $userPasswordHasher,
-        EntityManagerInterface      $entityManager,
-        RecaptchaValidator          $recaptcha
+        EntityManagerInterface $entityManager,
+        RecaptchaValidator $recaptcha
     ): Response {
 
         // Si l'utilisateur est deja connecter, on le redirige de force sur la page d'acceuil du site
@@ -55,8 +55,10 @@ class RegistrationController extends AbstractController
 
             //si le captcha est null ou s'il est invalide on ajoute une erreur dans le formulaire
 
-            if ($recaptchaResponse === null ||
-                !$recaptcha->verify($recaptchaResponse, $request->server->get('REMOTE_ADDR'))) {
+            if (
+                $recaptchaResponse === null ||
+                !$recaptcha->verify($recaptchaResponse, $request->server->get('REMOTE_ADDR'))
+            ) {
                 // Ajout d'une nouvelle erreur manuellement dans le formulaire
                 $form->addError(new FormError('Le Captcha doit être validé !'));
             }
@@ -78,7 +80,7 @@ class RegistrationController extends AbstractController
                     ->setShinyBall(0);
 
                 //hydratation de la date d'inscription du nouvel utilisateur
-                $user->setCreationDate(new \DateTime);
+                $user->setCreationDate(new \DateTime());
                 $entityManager->persist($user);
                 $entityManager->flush();
                 $this->addFlash('success', 'Votre compte à bien été créé!');

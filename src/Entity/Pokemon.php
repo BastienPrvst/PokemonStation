@@ -5,9 +5,7 @@ namespace App\Entity;
 use App\Repository\PokemonRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
 
 #[ORM\Entity(repositoryClass: PokemonRepository::class)]
 class Pokemon
@@ -31,17 +29,6 @@ class Pokemon
     #[ORM\OneToMany(mappedBy: 'pokemon', targetEntity: CapturedPokemon::class, orphanRemoval: true)]
     private Collection $capturedPokemon;
 
-    public function __construct()
-    {
-        $this->capturedPokemon = new ArrayCollection();
-    }
-
-
-
-
-    #[ORM\Column(length: 50)]
-    private ?string $gif = null;
-
     #[ORM\Column(length: 50)]
     private ?string $name_en = null;
 
@@ -51,8 +38,22 @@ class Pokemon
     #[ORM\Column]
     private ?int $pokeId = null;
 
+    #[ORM\ManyToOne(targetEntity: self::class, cascade: ['persist'], inversedBy: 'relatedPokemon')]
+    #[ORM\JoinColumn(name: 'relate_to_id', referencedColumnName: 'id', nullable: true)]
+    private ?self $relateTo = null;
 
-    
+    #[ORM\OneToMany(mappedBy: 'relateTo', targetEntity: self::class)]
+    private Collection $relatedPokemon;
+
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'pokemon')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Generation $gen = null;
+
+    public function __construct()
+    {
+        $this->capturedPokemon = new ArrayCollection();
+        $this->relatedPokemon = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -125,20 +126,6 @@ class Pokemon
         return $this;
     }
 
-
-    public function getGif(): ?string
-    {
-        return $this->gif;
-    }
-
-    public function setGif(string $gif): self
-    {
-        $this->gif = $gif;
-
-        return $this;
-
-    }
-
     public function removeCapturedPokemon(CapturedPokemon $capturedPokemon): self
     {
         if ($this->capturedPokemon->removeElement($capturedPokemon)) {
@@ -188,12 +175,55 @@ class Pokemon
         return $this;
     }
 
+    public function getRelateTo(): ?self
+    {
+        return $this->relateTo;
+    }
 
+    public function setRelateTo(?self $relateTo): self
+    {
+        $this->relateTo = $relateTo;
 
+        return $this;
+    }
 
+    /**
+     * @return Collection<int, self>
+     */
+    public function getRelatedPokemon(): Collection
+    {
+        return $this->relatedPokemon;
+    }
+
+    public function addRelatedPokemon(self $relatedPokemon): self
+    {
+        if (!$this->relatedPokemon->contains($relatedPokemon)) {
+            $this->relatedPokemon->add($relatedPokemon);
+            $relatedPokemon->setRelateTo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRelatedPokemon(self $relatedPokemon): self
+    {
+        // set the owning side to null (unless already changed)
+        if ($this->relatedPokemon->removeElement($relatedPokemon) && $relatedPokemon->getRelateTo() === $this) {
+            $relatedPokemon->setRelateTo(null);
+        }
+
+        return $this;
+    }
+
+    public function getGen(): ?Generation
+    {
+        return $this->gen;
+    }
+
+    public function setGen(?Generation $gen): self
+    {
+        $this->gen = $gen;
+
+        return $this;
+    }
 }
-
-
-
-
-

@@ -16,9 +16,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class PokemonController extends AbstractController
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager)
-    {
-
+        private readonly EntityManagerInterface $entityManager
+    ) {
     }
 
     #[Route('/pokedex/', name: 'app_pokedex')]

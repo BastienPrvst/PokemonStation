@@ -9,6 +9,7 @@ use App\Repository\PokemonRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,10 +21,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class UserController extends AbstractController
 {
     public function __construct(
-        private readonly PokemonRepository      $pokemonRepository,
-        private readonly UserRepository         $userRepository,
+        private readonly PokemonRepository $pokemonRepository,
+        private readonly UserRepository $userRepository,
         private readonly EntityManagerInterface $entityManager,
-    ){
+    ) {
     }
 
     #[Route('/mon-profil/', name: 'app_profil')]
@@ -40,16 +41,17 @@ class UserController extends AbstractController
             $this->entityManager->flush();
         }
 
-        return $this->render('main/profil.html.twig',
+        return $this->render(
+            'main/profil.html.twig',
             [...$this->prepareUserInfo($user), ...['avatars' => $allAvatars,]],
         );
     }
 
-    #[Route('/modifier-mon-profil/', name: 'app_modify')]
+    #[Route('/modifier-mon-profil/', name: 'app_profil-modify')]
     #[IsGranted('ROLE_USER')]
     public function modifyProfil(
         UserPasswordHasherInterface $encoder,
-        Request                     $request,
+        Request $request,
     ): Response {
         /** @var User $user */
         $user = $this->getUser();
@@ -81,11 +83,12 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/profil/{id}/{pseudonym}', name: '')]
+    #[Route(path: '/profil/{pseudonym}', name: 'app_user_showprofile')]
     #[IsGranted('ROLE_USER')]
     public function showProfile(User $user): Response
     {
-        return $this->render('main/show_profile.html.twig',
+        return $this->render(
+            'main/show_profile.html.twig',
             $this->prepareUserInfo($user)
         );
     }
@@ -105,17 +108,16 @@ class UserController extends AbstractController
         ];
     }
 
-    private function getAllAvatars() : array
+    private function getAllAvatars(): array
     {
         $dirPath = dirname(__DIR__, 2) . "/public/images/trainers";
         $files = scandir($dirPath, SCANDIR_SORT_ASCENDING);
         $realFiles = [];
         foreach ($files as $file) {
-            if (is_file($dirPath . '/' . $file)){
+            if (is_file($dirPath . '/' . $file)) {
                 $realFiles[] = $file;
             }
         }
         return $realFiles;
     }
-
 }

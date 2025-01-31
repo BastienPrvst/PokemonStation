@@ -13,15 +13,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+
 use function PHPUnit\Framework\isEmpty;
 
 class APIController extends AbstractController
 {
-    private PokemonOdds $pokemonOdds;
-
-    public function __construct(PokemonOdds $pokemonOdds)
+    public function __construct(private readonly PokemonOdds $pokemonOdds)
     {
-        $this->pokemonOdds = $pokemonOdds;
     }
 
 
