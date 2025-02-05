@@ -58,13 +58,12 @@ class AddGenCommand extends Command
         $this->em->persist($generation);
 
         foreach ($json->pokemon_species as $pokemon) {
+            $hasForm = false;
             $speciesResponse = (new CurlHttpClient())->request('GET', $pokemon->url);
             $speciesJson = json_decode($speciesResponse->getContent());
             $poke_id = $speciesJson->id;
-
             $pokemonResponse = (new CurlHttpClient())->request('GET', "{$this->apiUrl}/pokemon/{$poke_id}");
             $pokemonJson = json_decode($pokemonResponse->getContent());
-
             $pokemon = $this->generatePokemon($speciesJson, $pokemonJson, $generation);
 
             if (count($speciesJson->varieties) > 1) {
@@ -79,13 +78,17 @@ class AddGenCommand extends Command
                     'name' => $this->getFrenchName($speciesJson),
                     'speciesJson' => $speciesJson,
                 ];
+
+                $hasForm = true;
             }
 
             $this->em->persist($pokemon);
-            $this->em->flush();
+            if ($hasForm) {
+                $this->em->flush();
+            }
         }
 
-        foreach ($varieties as $poke_id => $variety) {
+        foreach ($varieties as $variety) {
             foreach ($variety['filtered_varieties'] as $filtered_variety) {
                 $name = $filtered_variety->pokemon->name;
                 $pokemonResponse = (new CurlHttpClient())->request('GET', $filtered_variety->pokemon->url);
@@ -112,14 +115,13 @@ class AddGenCommand extends Command
                 }
 
                 $this->em->persist($pokemon);
-                $this->em->flush();
             }
         }
 
+        $this->em->flush();
         $io->success("Vous avez ajouté {$this->updates} Pokemons de la #{$gen} génération.");
         return Command::SUCCESS;
     }
-
 
     private function generatePokemon(
         \stdClass $speciesJson,
@@ -152,13 +154,12 @@ class AddGenCommand extends Command
         }
 
         $this->em->persist($pokemon);
-        $this->em->flush();
 
         //Si forme spéciale
         if ($pokemonFormJson !== null) {
             $pokemonToRelate = $this->em->getRepository(Pokemon::class)->findOneBy(['pokeId' => $speciesJson->id]);
             $pokemon->setRelateTo($pokemonToRelate);
-            $pokemon->setName($pokemonFormJson->names[0]->name);
+            $pokemon->setName(strtolower($pokemonFormJson->names[0]->name));
         }
 
             $this->updates++;
@@ -238,8 +239,8 @@ class AddGenCommand extends Command
         if ($gifUrl) {
             $gifResponse = (new CurlHttpClient())->request('GET', $gifUrl);
             $gifShinyResponse = (new CurlHttpClient())->request('GET', $gifShinyUrl);
-            $filePath = $this->kernel->getProjectDir() . "/public/images/gifs/{$pokemonJson->name}.gif";
-            $filePathShiny = $this->kernel->getProjectDir() . "/public/images/gifs/shiny-{$pokemonJson->name}.gif";
+            $filePath = $this->kernel->getProjectDir() . "/public/medias/images/gifs/{$pokemonJson->name}.gif";
+            $filePathShiny = $this->kernel->getProjectDir() . "/public/medias/images/gifs/shiny-{$pokemonJson->name}.gif";
 
             file_put_contents($filePath, $gifResponse->getContent());
             file_put_contents($filePathShiny, $gifShinyResponse->getContent());
@@ -251,7 +252,7 @@ class AddGenCommand extends Command
         $cryUrl = $pokemonJson->cries->latest;
         if ($cryUrl) {
             $cryResponse = (new CurlHttpClient())->request('GET', $cryUrl);
-            $filePath = $this->kernel->getProjectDir() . "/public/cries/{$pokemonJson->name}-cry.mp3";
+            $filePath = $this->kernel->getProjectDir() . "/public/medias/cries/{$pokemonJson->name}-cry.mp3";
             file_put_contents($filePath, $cryResponse->getContent());
         }
     }

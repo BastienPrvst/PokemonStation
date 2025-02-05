@@ -2,14 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\Pokemon;
 use App\Entity\User;
 use App\Form\EditModifyProfilFormType;
 use App\Repository\PokemonRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -110,7 +107,7 @@ class UserController extends AbstractController
 
     private function getAllAvatars(): array
     {
-        $dirPath = dirname(__DIR__, 2) . "/public/images/trainers";
+        $dirPath = dirname(__DIR__, 2) . "/public/medias/images/trainers";
         $files = scandir($dirPath, SCANDIR_SORT_ASCENDING);
         $realFiles = [];
         foreach ($files as $file) {

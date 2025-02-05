@@ -178,6 +178,8 @@ pokeballButton.forEach(function (button) {
                             typesBackgroundArray[data.captured_pokemon.type],
                         );
 
+                        console.log(data.captured_pokemon.rarityRandom);
+
                         pokemonInfo.innerHTML = "";
 
                 //Affichage des infos du pokemon libéré

@@ -219,12 +219,12 @@ body {
 @media screen and (min-width: 992px) {
 
     .inactive1 {
-        background: url(../images/pikavener.png) no-repeat center;
+        background: url(../medias/images/elements/pikavener.png) no-repeat center;
         transform: scaleX(-1)
     }
 
     .inactive2 {
-        background: url(../images/salameche2.png) no-repeat center;
+        background: url(../medias/images/elements/salameche2.png) no-repeat center;
     }
 
     .project-div {
@@ -405,7 +405,7 @@ footer {
 
 .fixed-cover {
     height: 350px;
-    background-image: url(../images/Transition.png);
+    background-image: url(../medias/images/elements/Transition.png);
     background-attachment: fixed;
     background-size: cover;
     background-repeat: no-repeat;
@@ -417,7 +417,7 @@ footer {
 }
 
 .project-div {
-    background: url(../images/Poke-Background.png);
+    background: url(../medias/images/background/Poke-Background.png);
     color: #FFFFFF;
 }
 
@@ -515,124 +515,6 @@ footer {
 
 
 
-
-/* ----------------------------------------------------------------------------------------------------------- */
-/*Modifications de la page d'accueil*/
-
-
-.fixed-cover {
-    height: 350px;
-    background-image: url(../images/Transition.png);
-    background-attachment: fixed;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-}
-
-
-
-
-.cover-box {
-    padding: 0;
-}
-
-.project-div {
-    background: url(../images/Poke-Background.png);
-    color: #FFFFFF;
-}
-
-.project-div img {
-    border-radius: 50px;
-}
-
-.project-div img {
-    margin-top: 20px;
-    margin-bottom: 50px;
-    border-radius: 60px;
-    padding: 30px;
-
-}
-
-.project h2 {
-    text-align: center;
-    text-transform: capitalize;
-    text-decoration-line: underline;
-    text-decoration-color: #294c5e;
-    color: #FFFFFF;
-
-}
-
-.join-adventure {
-    background-color: #092A3B;
-}
-
-.second-part {
-    padding: 0;
-
-}
-
-.second-part p {
-    color: #FFFFFF;
-    margin: 0;
-    font-style: italic;
-    padding: 20px 10px 50px;
-
-}
-
-.prof-chen {
-    padding-bottom: 40px;
-    padding-top: 50px;
-}
-
-.join-adventure {
-    padding-top: 20px;
-}
-
-.chen-border {
-    border: dotted #000000;
-    border-radius: 40px;
-    margin: 50px;
-    padding-top: 30px;
-}
-
-.start-adventure-button {
-    background-color: #DD4242;
-    padding: 10px;
-    border-radius: 40px;
-    border: solid #AF374D;
-}
-
-.start-adventure-button:hover {
-    border: solid white;
-}
-
-.start-adventure-button a {
-    text-decoration: none;
-    color: #FFFFFF;
-    font-size: 1.2rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
-}
-
-.start-adventure img {
-    margin-right: 10px;
-}
-
-.second-border {
-    padding: 5px;
-    border: solid #FFFFFF;
-    border-radius: 40px;
-    background-color: #AF374D;
-}
-
-
-
-
-
-
-
 /* --------------------------------------------------------------------------------------------- */
 
 /* Page de Profil */
@@ -682,7 +564,7 @@ footer {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    background-image: url(../images/pokeball-bg.png);
+    background-image: url(../medias/images/background/pokeball-bg.png);
     background-size: cover;
     background-position: center;
     background-color: #DD4242;
@@ -699,7 +581,7 @@ footer {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    background-image: url(../images/pokeball-bg.png);
+    background-image: url(../medias/images/background/pokeball-bg.png);
     background-size: cover;
     background-position: center;
     background-color: #DD4242;
@@ -878,7 +760,7 @@ footer {
     }
 
     .background {
-        background: url(../images/Poke-Background.png) fixed;
+        background: url(../medias/images/background/Poke-Background.png) fixed;
     }
 
 
@@ -973,7 +855,7 @@ i.fa-chevron-right {
 }
 
 .login-form-container {
-    background-image: url(../images/Poke-Background.png);
+    background-image: url(../medias/images/background/Poke-Background.png);
 }
 
 .login-form {
@@ -1068,80 +950,80 @@ i.fa-chevron-right {
 }
 
 .pourpre-background{
-    background: url(../images/fonds/pourpre.jpg) center;
+    background: url(../medias/images/fonds/pourpre.jpg) center;
     background-size: cover;
 }
 
 .montagne-background{
-    background: url(../images/fonds/montagne.jpg) center;
+    background: url(../medias/images/fonds/montagne.jpg) center;
     background-size: cover;
 }
 
 .cabane-background{
-    background: url(../images/fonds/cabane.jpg) center;
+    background: url(../medias/images/fonds/cabane.jpg) center;
     background-size: cover;
 }
 
 .cimetière-background{
-    background: url(../images/fonds/cimetière.png) center;
+    background: url(../medias/images/fonds/cimetière.png) center;
     background-size: cover;
 }
 
 .desert-background{
-    background: url(../images/fonds/desert.jpg) center;
+    background: url(../medias/images/fonds/desert.jpg) center;
     background-size: cover;
 }
 
 .fire-background{
-    background: url(../images/fonds/feu.jpg) center;
+    background: url(../medias/images/fonds/feu.jpg) center;
     background-size: cover;
 }
 
 .dragon-background{
-    background: url(../images/fonds/dragon.jpg) center;
+    background: url(../medias/images/fonds/dragon.jpg) center;
     background-size: cover;
 }
 
 
 
 .neige-background{
-    background: url(../images/fonds/neige.jpg) center;
+    background: url(../medias/images/fonds/neige.jpg) center;
     background-size: cover;
 }
 
 
 .cave-background {
-    background: url(../images/fonds/fond-grottejpg.jpg) center;
+    background: url(../medias/images/fonds/fond-grottejpg.jpg) center;
     background-size: cover;
 }
 
 .forest-background {
-    background: url(../images/fonds/fond-foret.png) no-repeat center;
+    background: url(../medias/images/fonds/fond-foret.png) no-repeat center;
     background-size: cover;
 }
 
 .sea-background {
-    background: url(../images/fonds/fond-mer.png) no-repeat center;
+    background: url(../medias/images/fonds/fond-mer.png) no-repeat center;
     background-size: cover;
 }
 
 .night-background {
-    background: url(../images/fonds/fond-nuit.jpg) no-repeat center;
+    background: url(../medias/images/fonds/fond-nuit.jpg) no-repeat center;
     background-size: cover;
 }
 
 .cave2-background {
-    background: url(../images/fonds/fond-grotte2-transformed.jpeg) no-repeat center;
+    background: url(../medias/images/fonds/fond-grotte2-transformed.jpeg) no-repeat center;
     background-size: cover;
 }
 
 .poison-background{
-    background: url(../images/fonds/fond-foret-nuit.jpg) no-repeat center;
+    background: url(../medias/images/fonds/fond-foret-nuit.jpg) no-repeat center;
     background-size: cover;
 }
 
 .forest2-background {
-    background: url(../images/fonds/fond-foret2.png) no-repeat center;
+    background: url(../medias/images/fonds/fond-foret2.png) no-repeat center;
     background-size: cover;
 }
 
@@ -1873,7 +1755,7 @@ tfoot tr td{
     .main-block {
         display: flex;
         flex-direction: row;
-        background-image: url(../images/Poke-Background.png);
+        background-image: url(../medias/images/background/Poke-Background.png);
         /*animation: background-movement 30s linear infinite;*/
     }
 

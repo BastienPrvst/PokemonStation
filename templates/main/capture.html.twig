@@ -14,10 +14,10 @@
                         À ce jour, <span>{{ totalPokemon }}</span> Pokémons ont été libérés dans le monde !<br>
 
                         <span>(C)</span> = Commun ≈ 45%  <span>(PC)</span> = Peu Commun ≈ 30%  <span>(R)</span> = Rare ≈ 15% <br> <span>(TR)</span> = Très Rare ≈ 8.5%
-                        <img src="{{ asset('/images/sparkle/etoiles-tres-rare.png') }}" alt="Pokemon tres rare">   <span>(EX)</span> = Extrêmement Rare ≈ 1%
-                        <img src="{{ asset('/images/sparkle/etoiles-extremement-rare.png') }}" alt="Pokemon extrêmement rare">   <span>(SR)</span> = Secret Rare ≈ ???
-                        <img src="{{ asset('/images/sparkle/etoiles-secret-rare.png') }}" alt="Pokemon Secret Rare"> <span>Shiny</span> ≈ ???
-                        <img src="{{ asset('/images/sparkle/etoiles-shiny.png') }}" alt="Rareté shiny">
+                        <img src="{{ asset('medias/images/sparkle/etoiles-tres-rare.png') }}" alt="Pokemon tres rare">   <span>(EX)</span> = Extrêmement Rare ≈ 1%
+                        <img src="{{ asset('medias/images/sparkle/etoiles-extremement-rare.png') }}" alt="Pokemon extrêmement rare">   <span>(SR)</span> = Secret Rare ≈ ???
+                        <img src="{{ asset('medias/images/sparkle/etoiles-secret-rare.png') }}" alt="Pokemon Secret Rare"> <span>Shiny</span> ≈ ???
+                        <img src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt="Rareté shiny">
                     </p>
                 </div>
 
@@ -43,10 +43,10 @@
 
                     <div class="carousel-item justify-content-center active">
                         <button class="capture-poke-button" data-ball="1">
-                            <img src="{{ asset('images/poke-capture.png') }}" class="pokeball-animate too-big" alt="..." >
+                            <img src="{{ asset('medias/images/balls/poke-capture.png') }}" class="pokeball-animate too-big" alt="..." >
                         </button>
                         <br>
-                        <img class="multiple" src="{{ asset('images/multiple.png') }}" alt="nombre de lancer">
+                        <img class="multiple" src="{{ asset('medias/images/elements/multiple.png') }}" alt="nombre de lancer">
                         <div class="launch-items launch-1">
                             {{ app.user.launchs}}
                         </div>
@@ -56,10 +56,10 @@
 
                     <div class="carousel-item justify-content-center">
                         <button class="capture-poke-button" data-ball="2">
-                            <img src="{{ asset('images/balls/hyper_ball.png') }}" class="pokeball-animate" alt="..." >
+                            <img src="{{ asset('medias/images/balls/hyper_ball.png') }}" class="pokeball-animate" alt="..." >
                         </button>
                         <br>
-                        <img class="multiple" src="{{ asset('images/multiple.png') }}" alt="nombre de lancer">
+                        <img class="multiple" src="{{ asset('medias/images/elements/multiple.png') }}" alt="nombre de lancer">
                         <div class="launch-items launch-2">
                             {{ app.user.hyperBall}}
                         </div>
@@ -69,10 +69,10 @@
 
                     <div class="carousel-item justify-content-center">
                         <button class="capture-poke-button" data-ball="3">
-                            <img src="{{ asset('images/balls/shiny_ball.png') }}" class="pokeball-animate" alt="..." >
+                            <img src="{{ asset('medias/images/balls/shiny_ball.png') }}" class="pokeball-animate" alt="..." >
                         </button>
                         <br>
-                        <img class="multiple" src="{{ asset('images/multiple.png') }}" alt="nombre de lancer">
+                        <img class="multiple" src="{{ asset('medias/images/elements/multiple.png') }}" alt="nombre de lancer">
                         <div class="launch-items launch-3">
                             {{ app.user.shinyBall}}
                         </div>
@@ -82,10 +82,10 @@
 
                     <div class="carousel-item justify-content-center">
                         <button class="capture-poke-button" data-ball="4">
-                            <img src="{{ asset('images/balls/master_ball.png') }}" class="pokeball-animate" alt="..." >
+                            <img src="{{ asset('medias/images/balls/master_ball.png') }}" class="pokeball-animate" alt="..." >
                         </button>
                         <br>
-                        <img class="multiple" src="{{ asset('images/multiple.png') }}" alt="nombre de lancer">
+                        <img class="multiple" src="{{ asset('medias/images/elements/multiple.png') }}" alt="nombre de lancer">
                         <div class="launch-items launch-4">
                             {{ app.user.masterBall}}
                         </div>
