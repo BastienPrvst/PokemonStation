@@ -1,12 +1,6 @@
 let captureInProcess = false;
 let elem = document.querySelector(".pokeball-animate");
 
-function backToPlace()
-{
-    elem.style.bottom = "0px";
-    elem.style.rotate = "0deg";
-}
-
 const typesBackgroundArray = {
     eau: "sea-background",
     feu: "fire-background",
@@ -72,9 +66,7 @@ pokeballButton.forEach(function (button) {
           //ON enleve une pokeball lancée
 
             let activeCarousel = document.querySelector(".carousel-item.active");
-
             let launchs = activeCarousel.querySelector(".launch-items").textContent;
-
             launchs = parseInt(launchs);
 
             if (launchs > 0) {
@@ -110,9 +102,7 @@ pokeballButton.forEach(function (button) {
                             document
                             .querySelector(".pokeball-animate")
                             .classList.add("pokeball-animated");
-
                             clearInterval(id);
-
                             resolve();
                         } else {
                             let image = button.querySelector("img");
@@ -129,6 +119,7 @@ pokeballButton.forEach(function (button) {
             let pokemonIsCaptured = false;
 
             let getPokemonPromise = new Promise((resolve, reject) => {
+
                   //Affichage du gif du pokémon
                   fetch(capturedPageApi, {
                         method: "POST",
@@ -148,7 +139,7 @@ pokeballButton.forEach(function (button) {
                         pokemonsGifDir +
                         "/" +
                         (data.captured_pokemon.shiny ? "shiny-" : "") +
-                        data.captured_pokemon.gif;
+                        data.captured_pokemon.nameEN + '.gif';
 
                 //Effets en fonction de la rareté
                         if (data.captured_pokemon.shiny === true) {
@@ -195,11 +186,7 @@ pokeballButton.forEach(function (button) {
                             UR: 250,
                         };
 
-                        pokemonInfo.innerHTML =
-                        'Vous avez libéré <span class="text-capitalize">' +
-                        data.captured_pokemon.name +
-                        "</span>" +
-                        (data.captured_pokemon.shiny ? " Shiny" : "") +
+                        pokemonInfo.innerHTML = 'Vous avez libéré <span class="text-capitalize">' + data.captured_pokemon.name + "</span>" + (data.captured_pokemon.shiny ? " Shiny" : "") +
                         " (" +
                         data.captured_pokemon.rarity +
                         ") ! " +
@@ -215,7 +202,6 @@ pokeballButton.forEach(function (button) {
                             pokemonIsNew = true;
                         } else {
                           //Comptage des pièces
-
                             const rarityScale = {
                                 C: 1,
                                 PC: 3,
@@ -229,14 +215,12 @@ pokeballButton.forEach(function (button) {
 
                             let actualCoin =
                             document.querySelector(".coin-count").textContent;
-
                             actualCoin = parseInt(actualCoin);
-
                             document.querySelector(".coin-count").textContent =
                             actualCoin + rarityScale[data.captured_pokemon.rarity];
                         }
                     }
-            //Resolve de la promesse
+                    //Resolve de la promesse
                     resolve();
                   });
             });
@@ -249,11 +233,8 @@ pokeballButton.forEach(function (button) {
                   pokemonShining.src = pokemonShine;
                   pokemonNewLogo.src = newLogo;
                   pokeCoin.src = coin;
-
                   pokeCoin.classList.add("coin-width");
-
                   pokemonDiv.classList.add("poke-capture-div");
-
                   pokemonDiv.append(pokemonShining, pokemonImage);
 
                 if (pokemonIsNew === true) {
@@ -265,7 +246,6 @@ pokeballButton.forEach(function (button) {
 
                 document.querySelector(".view-pokemon").append(pokemonDiv);
             }
-
             document.querySelector(".description-poke-capture").append(pokemonInfo);
             let image = button.querySelector("img");
             image.style.bottom = "0px";
@@ -283,46 +263,44 @@ pokeballButton.forEach(function (button) {
 
 //Fonctions
 
-function add(number)
-{
-    document
-    .querySelector(".plus-" + number)
-    .addEventListener("click", function () {
-        let $i = document.querySelector(".quantity-" + number);
-        $i.innerHTML = parseInt($i.innerHTML) + 1;
-        let totalShop = document.querySelector(".total_shop");
-        let price = document.querySelector(".price-" + number);
+// function add(number)
+// {
+//     document.querySelector(".plus-" + number).addEventListener("click", function () {
+//         let $i = document.querySelector(".quantity-" + number);
+//         $i.innerHTML = parseInt($i.innerHTML) + 1;
+//         let totalShop = document.querySelector(".total_shop");
+//         let price = document.querySelector(".price-" + number);
+//
+//         totalShop.innerHTML =
+//         parseInt(totalShop.innerHTML) + parseInt(price.innerHTML);
+//     });
+// }
+//
+// function unset(number)
+// {
+//     document
+//     .querySelector(".minus-" + number)
+//     .addEventListener("click", function () {
+//         let $i = document.querySelector(".quantity-" + number);
+//         $i.innerHTML = parseInt($i.innerHTML);
+//
+//         if ($i.innerHTML > 0) {
+//             $i.innerHTML = parseInt($i.innerHTML) - 1;
+//             let totalShop = document.querySelector(".total_shop");
+//             let price = document.querySelector(".price-" + number);
+//             totalShop.innerHTML =
+//             parseInt(totalShop.innerHTML) - parseInt(price.innerHTML);
+//         }
+//     });
+// }
 
-        totalShop.innerHTML =
-        parseInt(totalShop.innerHTML) + parseInt(price.innerHTML);
-    });
-}
-
-function unset(number)
-{
-    document
-    .querySelector(".minus-" + number)
-    .addEventListener("click", function () {
-        let $i = document.querySelector(".quantity-" + number);
-        $i.innerHTML = parseInt($i.innerHTML);
-
-        if ($i.innerHTML > 0) {
-            $i.innerHTML = parseInt($i.innerHTML) - 1;
-            let totalShop = document.querySelector(".total_shop");
-            let price = document.querySelector(".price-" + number);
-            totalShop.innerHTML =
-            parseInt(totalShop.innerHTML) - parseInt(price.innerHTML);
-        }
-    });
-}
-
-add(1);
-add(2);
-add(3);
-
-unset(1);
-unset(2);
-unset(3);
+// add(1);
+// add(2);
+// add(3);
+//
+// unset(1);
+// unset(2);
+// unset(3);
 
 //Utilisation AJAX
 

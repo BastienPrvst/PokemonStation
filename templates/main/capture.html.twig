@@ -21,7 +21,6 @@
                     </p>
                 </div>
 
-
                 <div class="col-12 col-lg-10 mx-auto view-pokemon forest2-background">
                 </div>
                 
@@ -92,8 +91,6 @@
 
                     </div>
 
-
-
                 </div>
 
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
@@ -112,8 +109,6 @@
 
     <div class="description-poke-capture my-auto mx-auto col-12 col-lg-4">
 
-
-
     </div>
 
 
@@ -124,7 +119,7 @@
         <h2 class="text-center shop-title text-white">Boutique</h2>
 
         <div class="coin-container text-end">
-            <img class="coin-width-2" src="{{ asset('images/real-coin.png') }}" alt="">
+            <img class="coin-width-2" src="{{ asset('medias/images/elements/real-coin.png') }}" alt="">
 
             <p class="text-center coin-count"> {{ app.user.money }}</p>
 
@@ -149,7 +144,7 @@
 
                     <tr>
                         <td class="item-name">{{ item.name }}</td>
-                        <td class="price price-{{ loop.index }}">{{ item.price }}<img class="coin-width" src="{{ asset('images/real-coin.png') }}" alt=""></td>
+                        <td class="price price-{{ loop.index }}">{{ item.price }}<img class="coin-width" src="{{ asset('medias/images/elements/real-coin.png') }}" alt=""></td>
                         <td>{{ item.description }}</td>
                         <td><button class="minus minus-{{ loop.index }}">-</button></td>
                         <td class="quantity quantity-{{ loop.index }}">0</td>
@@ -174,10 +169,6 @@
 
     </div>
 
-
-
-
-
 {% endblock %}
 
 
@@ -187,12 +178,12 @@
     <script>
         const capturedPageApi = '{{ url('app_capture_api') }}';
         const capturedShopApi = '{{ url('app_shop_api') }}';
-        const pokemonsGifDir = '{{ asset('images/gifs') }}';
-        const pokemonsShineDir = '{{ asset('images/sparkle') }}';
+        const pokemonsGifDir = '{{ asset('medias/images/gifs') }}';
+        const pokemonsShineDir = '{{ asset('medias/images/sparkle') }}';
         const pokemonUppercase = '{{ ''|capitalize }}';
         const launchCounter = '{{ app.user.launchs}}';
-        const newLogo = '{{ asset('images/sparkle/new3.png') }}';
-        const coin = '{{ asset('images/real-coin.png') }}';
+        const newLogo = '{{ asset('medias/images/sparkle/new3.png') }}';
+        const coin = '{{ asset('medias/images/elements/real-coin.png') }}';
         window.pokemonBackground = 'forest2-background';
     </script>
     <script src="{{ asset('js/capture.js') }}"></script>

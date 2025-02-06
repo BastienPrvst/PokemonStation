@@ -145,33 +145,26 @@ let displayInProgress = false;
 let currentPokeId = null;
 
 // Attache l'événement 'click' à chaque élément de la liste
-    buttons.forEach(function(button) {
-        button.addEventListener("click", function(event) {
+    buttons.forEach(function (button) {
+        button.addEventListener("click", function (event) {
 
 
-            if(displayInProgress === false){
-
-
-
-
+            if (displayInProgress === false) {
                 displayInProgress = true;
 
                 let pokemonId = event.target.getAttribute("data-pokemon");
 
                 //Code pour eviter de recharger si on clique sur le meme bouton/pokémon
 
-                if (pokemonId === currentPokeId){
-
+                if (pokemonId === currentPokeId) {
                     displayInProgress = false;
                     return;
+                } else {
+                    currentPokeId = pokemonId;
 
-                }else{
+                    let postData = new FormData();
 
-                currentPokeId = pokemonId;
-
-                let postData = new FormData();
-
-                postData.append('pokemonId', pokemonId);
+                    postData.append('pokemonId', pokemonId);
 
 
 
@@ -241,16 +234,12 @@ let currentPokeId = null;
                             type1.src = pokemonsTypeDir + type1Element[data.pokemonToDisplay.type1];
 
 
-                            if(data.pokemonToDisplay.type2 != null){
-
+                            if (data.pokemonToDisplay.type2 != null) {
                                 type2.classList.remove('type-none');
 
                                 type2.src = pokemonsTypeDir + type1Element[data.pokemonToDisplay.type2];
-
-                            }else{
-
+                            } else {
                                 type2.classList.add('type-none');
-
                             }
 
                             //Bouton de shiny si l'utilisateur possède le shiny de ce pokémon
@@ -259,18 +248,14 @@ let currentPokeId = null;
 
                             mobileShinyButton.classList.add('type-none');
 
-                            if(data.pokemonToDisplay.shiny === true){
-
+                            if (data.pokemonToDisplay.shiny === true) {
                                 mobileShinyButton.classList.remove('type-none');
 
                                 mobileShinyButton.classList.add('type-on');
-
-                            }else{
-
+                            } else {
                                 mobileShinyButton.classList.remove('type-on');
 
                                 mobileShinyButton.classList.add('type-none');
-
                             }
 
 
@@ -289,9 +274,8 @@ let currentPokeId = null;
 
 
                         displayInProgress = false;
-
                 }
-                }
+            }
         });
     });
 
@@ -304,31 +288,27 @@ let currentPokeId = null;
 
 
 // Animation du bouton Shiny sur mobile
-let shinyButton = document.querySelector(".shiny-button-mobile");
+    let shinyButton = document.querySelector(".shiny-button-mobile");
 
-let pokeGif = document.querySelector('.poke-gif');
+    let pokeGif = document.querySelector('.poke-gif');
 
 
 
 
 // Ajout de l'événement "click" du bouton shiny
-shinyButton.addEventListener("click", function () {
+    shinyButton.addEventListener("click", function () {
 
 
-    let currentSrc = pokeGif.src;
+        let currentSrc = pokeGif.src;
 
-    let currentFileName = currentSrc.substring(currentSrc.lastIndexOf("/") + 1);
+        let currentFileName = currentSrc.substring(currentSrc.lastIndexOf("/") + 1);
 
-    if (currentSrc.includes('/shiny-')) {
-
-        pokeGif.src = currentSrc.replace('/shiny-', '/').replace('shiny-', '');
-
-
-    } else {
-
-        pokeGif.src = currentSrc.replace(currentFileName, 'shiny-' + currentFileName);
-    }
-});
+        if (currentSrc.includes('/shiny-')) {
+            pokeGif.src = currentSrc.replace('/shiny-', '/').replace('shiny-', '');
+        } else {
+            pokeGif.src = currentSrc.replace(currentFileName, 'shiny-' + currentFileName);
+        }
+    });
 
 
 
@@ -340,111 +320,112 @@ shinyButton.addEventListener("click", function () {
 
 //Creation de la fonction d'affichage a adapter à chaque bouton
 
-function toggleButtons(button, arrow, buttons) {
-    let isButtonOpen = false;
+    function toggleButtons(button, arrow, buttons)
+    {
+        let isButtonOpen = false;
 
-    button.addEventListener("click", function () {
-        isButtonOpen = !isButtonOpen;
+        button.addEventListener("click", function () {
+            isButtonOpen = !isButtonOpen;
 
-        buttons.forEach(function (button) {
-            button.classList.toggle('type-none', !isButtonOpen);
-            button.classList.toggle('type-flex', isButtonOpen);
+            buttons.forEach(function (button) {
+                button.classList.toggle('type-none', !isButtonOpen);
+                button.classList.toggle('type-flex', isButtonOpen);
+            });
+
+            arrow.style.transform = isButtonOpen ? "rotate(90deg)" : "rotate(0deg)";
+            arrow.classList.toggle('rotate-transition', isButtonOpen);
         });
-
-        arrow.style.transform = isButtonOpen ? "rotate(90deg)" : "rotate(0deg)";
-        arrow.classList.toggle('rotate-transition', isButtonOpen);
-    });
-}
+    }
 
 
 //Premiere gen
 
-let button1Gen = document.querySelector('.first-gen-button');
-let arrow1Gen = document.querySelector('.first-gen-button .fa-solid');
-let allGenOneButtons = document.querySelectorAll('.gen-1');
+    let button1Gen = document.querySelector('.first-gen-button');
+    let arrow1Gen = document.querySelector('.first-gen-button .fa-solid');
+    let allGenOneButtons = document.querySelectorAll('.gen-1');
 
-toggleButtons(button1Gen, arrow1Gen, allGenOneButtons);
+    toggleButtons(button1Gen, arrow1Gen, allGenOneButtons);
 
 
 //Deuxieme gen
 
 
-let button2Gen = document.querySelector('.second-gen-button');
-let arrow2Gen = document.querySelector('.second-gen-button .fa-solid');
-let allGenTwoButtons = document.querySelectorAll('.gen-2');
+    let button2Gen = document.querySelector('.second-gen-button');
+    let arrow2Gen = document.querySelector('.second-gen-button .fa-solid');
+    let allGenTwoButtons = document.querySelectorAll('.gen-2');
 
-toggleButtons(button2Gen, arrow2Gen, allGenTwoButtons);
+    toggleButtons(button2Gen, arrow2Gen, allGenTwoButtons);
 
 //Troisième gen
 
 
-let button3Gen = document.querySelector('.third-gen-button');
-let arrow3Gen = document.querySelector('.third-gen-button .fa-solid');
-let allGenThreeButtons = document.querySelectorAll('.gen-3');
+    let button3Gen = document.querySelector('.third-gen-button');
+    let arrow3Gen = document.querySelector('.third-gen-button .fa-solid');
+    let allGenThreeButtons = document.querySelectorAll('.gen-3');
 
-toggleButtons(button3Gen, arrow3Gen, allGenThreeButtons);
+    toggleButtons(button3Gen, arrow3Gen, allGenThreeButtons);
 
 
 
 //Quatrieme gen
 
 
-let button4Gen = document.querySelector('.fourth-gen-button');
-let arrow4Gen = document.querySelector('.fourth-gen-button .fa-solid');
-let allGenFourButtons = document.querySelectorAll('.gen-4');
+    let button4Gen = document.querySelector('.fourth-gen-button');
+    let arrow4Gen = document.querySelector('.fourth-gen-button .fa-solid');
+    let allGenFourButtons = document.querySelectorAll('.gen-4');
 
-toggleButtons(button4Gen, arrow4Gen, allGenFourButtons);
+    toggleButtons(button4Gen, arrow4Gen, allGenFourButtons);
 
 
 //Cinquieme gen
 
 
-let button5Gen = document.querySelector('.fifth-gen-button');
-let arrow5Gen = document.querySelector('.fifth-gen-button .fa-solid');
-let allGenFiveButtons = document.querySelectorAll('.gen-5');
+    let button5Gen = document.querySelector('.fifth-gen-button');
+    let arrow5Gen = document.querySelector('.fifth-gen-button .fa-solid');
+    let allGenFiveButtons = document.querySelectorAll('.gen-5');
 
-toggleButtons(button5Gen, arrow5Gen, allGenFiveButtons);
+    toggleButtons(button5Gen, arrow5Gen, allGenFiveButtons);
 
 
 //Sixieme gen
 
 
-let button6Gen = document.querySelector('.six-gen-button');
-let arrow6Gen = document.querySelector('.six-gen-button .fa-solid');
-let allGenSixButtons = document.querySelectorAll('.gen-6');
+    let button6Gen = document.querySelector('.six-gen-button');
+    let arrow6Gen = document.querySelector('.six-gen-button .fa-solid');
+    let allGenSixButtons = document.querySelectorAll('.gen-6');
 
-toggleButtons(button6Gen, arrow6Gen, allGenSixButtons);
+    toggleButtons(button6Gen, arrow6Gen, allGenSixButtons);
 
 
 //Septième gen
 
 
-let button7Gen = document.querySelector('.seven-gen-button');
-let arrow7Gen = document.querySelector('.seven-gen-button .fa-solid');
-let allGenSevenButtons = document.querySelectorAll('.gen-7');
+    let button7Gen = document.querySelector('.seven-gen-button');
+    let arrow7Gen = document.querySelector('.seven-gen-button .fa-solid');
+    let allGenSevenButtons = document.querySelectorAll('.gen-7');
 
-toggleButtons(button7Gen, arrow7Gen, allGenSevenButtons);
+    toggleButtons(button7Gen, arrow7Gen, allGenSevenButtons);
 
 
 
 //Huitième gen
 
-let button8Gen = document.querySelector('.eight-gen-button');
-let arrow8Gen = document.querySelector('.eight-gen-button .fa-solid');
-let allGenEightButtons = document.querySelectorAll('.gen-8');
+    let button8Gen = document.querySelector('.eight-gen-button');
+    let arrow8Gen = document.querySelector('.eight-gen-button .fa-solid');
+    let allGenEightButtons = document.querySelectorAll('.gen-8');
 
-toggleButtons(button8Gen, arrow8Gen, allGenEightButtons);
+    toggleButtons(button8Gen, arrow8Gen, allGenEightButtons);
 
 
 
 //Forme reg
 
 
-let buttonALO = document.querySelector('.ALO-button');
-let arrowALO = document.querySelector('.ALO-button .fa-solid');
-let allALOButtons = document.querySelectorAll('.ALO');
+    let buttonALO = document.querySelector('.ALO-button');
+    let arrowALO = document.querySelector('.ALO-button .fa-solid');
+    let allALOButtons = document.querySelectorAll('.ALO');
 
-toggleButtons(buttonALO, arrowALO, allALOButtons);
+    toggleButtons(buttonALO, arrowALO, allALOButtons);
 
 
 
@@ -453,32 +434,32 @@ toggleButtons(buttonALO, arrowALO, allALOButtons);
 //Megas Evolutions
 
 
-let buttonME = document.querySelector('.ME-button');
-let arrowME = document.querySelector('.ME-button .fa-solid');
-let allMEButtons = document.querySelectorAll('.ME');
+    let buttonME = document.querySelector('.ME-button');
+    let arrowME = document.querySelector('.ME-button .fa-solid');
+    let allMEButtons = document.querySelectorAll('.ME');
 
-toggleButtons(buttonME, arrowME, allMEButtons);
+    toggleButtons(buttonME, arrowME, allMEButtons);
 
 
 //Secret rares
 
 
-let buttonSR = document.querySelector('.SR-button');
-let arrowSR = document.querySelector('.SR-button .fa-solid');
-let allSRButtons = document.querySelectorAll('.SR');
+    let buttonSR = document.querySelector('.SR-button');
+    let arrowSR = document.querySelector('.SR-button .fa-solid');
+    let allSRButtons = document.querySelectorAll('.SR');
 
-toggleButtons(buttonSR, arrowSR, allSRButtons);
+    toggleButtons(buttonSR, arrowSR, allSRButtons);
 
 
 //Ultra rares
 
 
-let buttonUR = document.querySelector('.UR-button');
-let arrowUR = document.querySelector('.UR-button .fa-solid');
-let allURButtons = document.querySelectorAll('.UR');
+    let buttonUR = document.querySelector('.UR-button');
+    let arrowUR = document.querySelector('.UR-button .fa-solid');
+    let allURButtons = document.querySelectorAll('.UR');
 
 
-toggleButtons(buttonUR, arrowUR, allURButtons);
+    toggleButtons(buttonUR, arrowUR, allURButtons);
 
 
 //Comptage des boutons actifs pour chaque gen
@@ -488,17 +469,17 @@ toggleButtons(buttonUR, arrowUR, allURButtons);
 
 
 //Completion
-const activeButtonsG1 = document.querySelectorAll(".captured.gen-1");
-const activeCountG1 = document.getElementById("activeCountG1");
+    const activeButtonsG1 = document.querySelectorAll(".captured.gen-1");
+    const activeCountG1 = document.getElementById("activeCountG1");
 
-activeCountG1.textContent = activeButtonsG1.length;
+    activeCountG1.textContent = activeButtonsG1.length;
 
 //Shiny
 
-const activeShinyG1 = document.querySelectorAll(".gen-1-shiny");
-const activeCountShinyG1 = document.getElementById("shinyG1");
+    const activeShinyG1 = document.querySelectorAll(".gen-1-shiny");
+    const activeCountShinyG1 = document.getElementById("shinyG1");
 
-activeCountShinyG1.textContent = activeShinyG1.length;
+    activeCountShinyG1.textContent = activeShinyG1.length;
 
 
 
@@ -506,102 +487,102 @@ activeCountShinyG1.textContent = activeShinyG1.length;
 
 
 //Completion
-const activeButtonsG2 = document.querySelectorAll(".captured.gen-2");
-const activeCountG2 = document.getElementById("activeCountG2");
+    const activeButtonsG2 = document.querySelectorAll(".captured.gen-2");
+    const activeCountG2 = document.getElementById("activeCountG2");
 
-activeCountG2.textContent = activeButtonsG2.length;
+    activeCountG2.textContent = activeButtonsG2.length;
 
 //Shiny
 
-const activeShinyG2 = document.querySelectorAll(".gen-2-shiny");
-const activeCountShinyG2 = document.getElementById("shinyG2");
+    const activeShinyG2 = document.querySelectorAll(".gen-2-shiny");
+    const activeCountShinyG2 = document.getElementById("shinyG2");
 
-activeCountShinyG2.textContent = activeShinyG2.length;
+    activeCountShinyG2.textContent = activeShinyG2.length;
 
 
 //Gen 3
 
 
 //Completion
-const activeButtonsG3 = document.querySelectorAll(".captured.gen-3");
-const activeCountG3 = document.getElementById("activeCountG3");
+    const activeButtonsG3 = document.querySelectorAll(".captured.gen-3");
+    const activeCountG3 = document.getElementById("activeCountG3");
 
-activeCountG3.textContent = activeButtonsG3.length;
+    activeCountG3.textContent = activeButtonsG3.length;
 
 //Shiny
 
-const activeShinyG3 = document.querySelectorAll(".gen-3-shiny");
-const activeCountShinyG3 = document.getElementById("shinyG3");
+    const activeShinyG3 = document.querySelectorAll(".gen-3-shiny");
+    const activeCountShinyG3 = document.getElementById("shinyG3");
 
-activeCountShinyG3.textContent = activeShinyG3.length;
+    activeCountShinyG3.textContent = activeShinyG3.length;
 
 
 //Gen 4
 
 
 //Completion
-const activeButtonsG4 = document.querySelectorAll(".captured.gen-4");
-const activeCountG4 = document.getElementById("activeCountG4");
+    const activeButtonsG4 = document.querySelectorAll(".captured.gen-4");
+    const activeCountG4 = document.getElementById("activeCountG4");
 
-activeCountG4.textContent = activeButtonsG4.length;
+    activeCountG4.textContent = activeButtonsG4.length;
 
 //Shiny
 
-const activeShinyG4 = document.querySelectorAll(".gen-4-shiny");
-const activeCountShinyG4 = document.getElementById("shinyG4");
+    const activeShinyG4 = document.querySelectorAll(".gen-4-shiny");
+    const activeCountShinyG4 = document.getElementById("shinyG4");
 
-activeCountShinyG4.textContent = activeShinyG4.length;
+    activeCountShinyG4.textContent = activeShinyG4.length;
 
 
 //Gen 5
 
 
 //Completion
-const activeButtonsG5 = document.querySelectorAll(".captured.gen-5");
-const activeCountG5 = document.getElementById("activeCountG5");
+    const activeButtonsG5 = document.querySelectorAll(".captured.gen-5");
+    const activeCountG5 = document.getElementById("activeCountG5");
 
-activeCountG5.textContent = activeButtonsG5.length;
+    activeCountG5.textContent = activeButtonsG5.length;
 
 //Shiny
 
-const activeShinyG5 = document.querySelectorAll(".gen-5-shiny");
-const activeCountShinyG5 = document.getElementById("shinyG5");
+    const activeShinyG5 = document.querySelectorAll(".gen-5-shiny");
+    const activeCountShinyG5 = document.getElementById("shinyG5");
 
-activeCountShinyG5.textContent = activeShinyG5.length;
+    activeCountShinyG5.textContent = activeShinyG5.length;
 
 
 //Gen 6
 
 
 //Completion
-const activeButtonsG6 = document.querySelectorAll(".captured.gen-6");
-const activeCountG6 = document.getElementById("activeCountG6");
+    const activeButtonsG6 = document.querySelectorAll(".captured.gen-6");
+    const activeCountG6 = document.getElementById("activeCountG6");
 
-activeCountG6.textContent = activeButtonsG6.length;
+    activeCountG6.textContent = activeButtonsG6.length;
 
 //Shiny
 
-const activeShinyG6 = document.querySelectorAll(".gen-6-shiny");
-const activeCountShinyG6 = document.getElementById("shinyG6");
+    const activeShinyG6 = document.querySelectorAll(".gen-6-shiny");
+    const activeCountShinyG6 = document.getElementById("shinyG6");
 
-activeCountShinyG6.textContent = activeShinyG6.length;
+    activeCountShinyG6.textContent = activeShinyG6.length;
 
 
 //Gen 7
 
 
 //Completion
-const activeButtonsG7 = document.querySelectorAll(".captured.gen-7");
-const activeCountG7 = document.getElementById("activeCountG7");
+    const activeButtonsG7 = document.querySelectorAll(".captured.gen-7");
+    const activeCountG7 = document.getElementById("activeCountG7");
 
-activeCountG7.textContent = activeButtonsG7.length;
+    activeCountG7.textContent = activeButtonsG7.length;
 
 //Shiny
 
-const activeShinyG7 = document.querySelectorAll(".gen-7-shiny");
-const activeCountShinyG7 = document.getElementById("shinyG7");
+    const activeShinyG7 = document.querySelectorAll(".gen-7-shiny");
+    const activeCountShinyG7 = document.getElementById("shinyG7");
 
-activeCountShinyG7.textContent = activeShinyG7.length;
+    activeCountShinyG7.textContent = activeShinyG7.length;
 
 
 
@@ -609,51 +590,51 @@ activeCountShinyG7.textContent = activeShinyG7.length;
 
 
 //Completion
-const activeButtonsG8 = document.querySelectorAll(".captured.gen-8");
-const activeCountG8 = document.getElementById("activeCountG8");
+    const activeButtonsG8 = document.querySelectorAll(".captured.gen-8");
+    const activeCountG8 = document.getElementById("activeCountG8");
 
-activeCountG8.textContent = activeButtonsG8.length;
+    activeCountG8.textContent = activeButtonsG8.length;
 
 //Shiny
 
-const activeShinyG8 = document.querySelectorAll(".gen-8-shiny");
-const activeCountShinyG8 = document.getElementById("shinyG8");
+    const activeShinyG8 = document.querySelectorAll(".gen-8-shiny");
+    const activeCountShinyG8 = document.getElementById("shinyG8");
 
-activeCountShinyG8.textContent = activeShinyG8.length;
+    activeCountShinyG8.textContent = activeShinyG8.length;
 
 
 //Formes ALOLA
 
 
 //Completion
-const activeButtonsALO = document.querySelectorAll(".captured.ALO");
-const activeCountALO = document.getElementById("activeCountALO");
+    const activeButtonsALO = document.querySelectorAll(".captured.ALO");
+    const activeCountALO = document.getElementById("activeCountALO");
 
-activeCountALO.textContent = activeButtonsALO.length;
+    activeCountALO.textContent = activeButtonsALO.length;
 
 //Shiny
 
-const activeShinyALO = document.querySelectorAll(".ALO-shiny");
-const activeCountShinyALO = document.getElementById("shinyALO");
+    const activeShinyALO = document.querySelectorAll(".ALO-shiny");
+    const activeCountShinyALO = document.getElementById("shinyALO");
 
-activeCountShinyALO.textContent = activeShinyALO.length;
+    activeCountShinyALO.textContent = activeShinyALO.length;
 
 
 //ME
 
 
 //Completion
-const activeButtonsME = document.querySelectorAll(".captured.gen-ME");
-const activeCountME = document.getElementById("activeCountME");
+    const activeButtonsME = document.querySelectorAll(".captured.gen-ME");
+    const activeCountME = document.getElementById("activeCountME");
 
-activeCountME.textContent = activeButtonsME.length;
+    activeCountME.textContent = activeButtonsME.length;
 
 //Shiny
 
-const activeShinyME = document.querySelectorAll(".gen-ME-shiny");
-const activeCountShinyME = document.getElementById("shinyME");
+    const activeShinyME = document.querySelectorAll(".gen-ME-shiny");
+    const activeCountShinyME = document.getElementById("shinyME");
 
-activeCountShinyME.textContent = activeShinyME.length;
+    activeCountShinyME.textContent = activeShinyME.length;
 
 
 
@@ -661,31 +642,31 @@ activeCountShinyME.textContent = activeShinyME.length;
 
 
 //Completion
-const activeButtonsSR = document.querySelectorAll(".captured.gen-SR");
-const activeCountSR = document.getElementById("activeCountSR");
+    const activeButtonsSR = document.querySelectorAll(".captured.gen-SR");
+    const activeCountSR = document.getElementById("activeCountSR");
 
-activeCountSR.textContent = activeButtonsSR.length;
+    activeCountSR.textContent = activeButtonsSR.length;
 
 //Shiny
 
-const activeShinySR = document.querySelectorAll(".gen-SR-shiny");
-const activeCountShinySR = document.getElementById("shinySR");
+    const activeShinySR = document.querySelectorAll(".gen-SR-shiny");
+    const activeCountShinySR = document.getElementById("shinySR");
 
-activeCountShinySR.textContent = activeShinySR.length;
+    activeCountShinySR.textContent = activeShinySR.length;
 
 
 //UR
 
 
 //Completion
-const activeButtonsUR = document.querySelectorAll(".captured.gen-UR");
-const activeCountUR = document.getElementById("activeCountUR");
+    const activeButtonsUR = document.querySelectorAll(".captured.gen-UR");
+    const activeCountUR = document.getElementById("activeCountUR");
 
-activeCountUR.textContent = activeButtonsUR.length;
+    activeCountUR.textContent = activeButtonsUR.length;
 
 //Shiny
 
-const activeShinyUR = document.querySelectorAll(".gen-UR-shiny");
-const activeCountShinyUR = document.getElementById("shinyUR");
+    const activeShinyUR = document.querySelectorAll(".gen-UR-shiny");
+    const activeCountShinyUR = document.getElementById("shinyUR");
 
-activeCountShinyUR.textContent = activeShinyUR.length;
+    activeCountShinyUR.textContent = activeShinyUR.length;

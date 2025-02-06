@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\CapturedPokemon;
+use App\Entity\Pokemon;
 use App\Entity\User;
 use App\Repository\CapturedPokemonRepository;
 use App\Repository\PokemonRepository;
@@ -33,6 +34,7 @@ class PokemonOdds extends AbstractController
                     'error' => 'Vous n\'avez plus de lancers disponibles, veuillez réessayer plus tard !'
                 ]);
             }
+
             $rarity = $this->getCommonRarity($randomRarity);
             $isShiny = $this->isItShiny();
             $user->setLaunchs($user->getLaunchs() - 1);//On retire un lancer à l'utilisateur
@@ -87,26 +89,31 @@ class PokemonOdds extends AbstractController
             ->setCaptureDate(new DateTime())
             ->setShiny($isShiny);
 
+        /* @var Pokemon $pokemon*/
+        $pokemon = $pokemonCaptured->getPokemon();
+
         //Voir si un dresseur a deja vu ce pokémon ou pas
         $alreadyCapturedPokemon = $this->capturedPokemonRepository->findSpeciesCaptured($user);
-        $pokemonCapturedId = $pokemonCaptured->getPokemon()->getPokeId();
+        $pokemonCapturedId = $pokemon->getPokeId();
         in_array($pokemonCapturedId, $alreadyCapturedPokemon, true) ? $isNew = false : $isNew = true;
+
         if ($isNew || $isShiny) {
             $this->entityManager->persist($pokemonCaptured);
         } else {
             $this->setCoinByRarity($user, $pokemonCaptured);
         }
+
         $user->setLaunchCount($user->getLaunchCount() + 1);
         $this->entityManager->flush();
 
         return $this->json([
             'captured_pokemon' => [
-                'id' => $pokemonCaptured->getPokemon()->getId(),
-                'name' => $pokemonCaptured->getPokemon()->getName(),
-                'gif' => $pokemonCaptured->getPokemon()->getGif(),
-                'type' => $pokemonCaptured->getPokemon()->getType(),
-                'type2' => $pokemonCaptured->getPokemon()->getType2(),
-                'description' => $pokemonCaptured->getPokemon()->getDescription(),
+                'id' => $pokemon->getId(),
+                'name' => $pokemon->getName(),
+                'type' => $pokemon->getType(),
+                'type2' => $pokemon->getType2(),
+                'description' => $pokemon->getDescription(),
+                'nameEN' => $pokemon->getNameEN(),
                 'shiny' => $pokemonCaptured->getShiny(),
                 'rarity' => $rarity,
                 'rarityRandom' => $randomRarity,
