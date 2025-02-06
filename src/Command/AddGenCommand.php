@@ -14,6 +14,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\HttpClient\CurlHttpClient;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsCommand(
@@ -23,9 +26,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class AddGenCommand extends Command
 {
     private int $updates = 0;
+    private int $skipped = 0;
     /** @see https://pokeapi.co/ */
     private string $apiUrl = 'https://pokeapi.co/api/v2';
 
+    private array $skipArray = [];
     private array $ultraChimeres = [
         "nihilego", "buzzwole", "pheromosa", "xurkitree",
         "celesteela", "kartana", "guzzlord", "poipole",
@@ -82,59 +87,96 @@ class AddGenCommand extends Command
                 $hasForm = true;
             }
 
-            $this->em->persist($pokemon);
-            if ($hasForm) {
-                $this->em->flush();
+            if ($pokemon !== false) {
+                $this->em->persist($pokemon);
+                if ($hasForm) {
+                    $this->em->flush();
+                }
             }
         }
-
+        //Formes alternatives
         foreach ($varieties as $variety) {
             foreach ($variety['filtered_varieties'] as $filtered_variety) {
                 $name = $filtered_variety->pokemon->name;
-                $pokemonResponse = (new CurlHttpClient())->request('GET', $filtered_variety->pokemon->url);
-                $pokemonFormResponse = (new CurlHttpClient())->request('GET', "{$this->apiUrl}/pokemon-form/{$name}");
-                $pokemonJson = json_decode($pokemonResponse->getContent());
+
+                try {
+                    $httpClient = new CurlHttpClient();
+
+                    $pokemonResponse = $httpClient->request('GET', $filtered_variety->pokemon->url);
+                    if ($pokemonResponse->getStatusCode() !== 200) {
+                        error_log("Erreur HTTP sur {$filtered_variety->pokemon->url}");
+                        continue;
+                    }
+
+                    $pokemonFormResponse = $httpClient->request('GET', "{$this->apiUrl}/pokemon-form/{$name}");
+                    if ($pokemonFormResponse->getStatusCode() !== 200) {
+                        error_log("Erreur HTTP sur {$this->apiUrl}/pokemon-form/{$name}");
+                        continue;
+                    }
+
+                    $pokemonJson = json_decode($pokemonResponse->getContent(), false, 512, JSON_THROW_ON_ERROR);
+                    $pokemonFormJson = json_decode($pokemonFormResponse->getContent(), false, 512, JSON_THROW_ON_ERROR);
+                } catch (
+                    ClientExceptionInterface |
+                    ServerExceptionInterface |
+                    \JsonException |
+                    TransportExceptionInterface $e
+                ) {
+                    error_log($e->getMessage());
+                    continue;
+                }
+
                 $speciesJson = $variety['speciesJson'];
-                $pokemonFormJson = json_decode($pokemonFormResponse->getContent());
                 $isLegendary = $variety['is_legendary'];
                 $isMythical = $variety['is_mythical'];
                 $isMega = $pokemonFormJson->is_mega;
                 $pokemon = $this->generatePokemon($speciesJson, $pokemonJson, $generation, $pokemonFormJson);
                 $rarity = null;
 
-                if ($isLegendary || $isMythical) {
-                    $rarity = 'UR';
-                } elseif ($isMega === true) {
-                    $rarity = 'ME';
-                } elseif ($pokemonFormJson->form_name === 'gmax') {
-                    $rarity = 'GMAX';
-                }
+                if ($pokemon !== false) {
+                    if ($isLegendary || $isMythical) {
+                        $rarity = 'UR';
+                    } elseif ($isMega === true) {
+                        $rarity = 'ME';
+                    } elseif ($pokemonFormJson->form_name === 'gmax') {
+                        $rarity = 'GMAX';
+                    }
 
-                if ($rarity !== null) {
-                    $pokemon->setRarity($rarity);
-                }
+                    if ($rarity !== null) {
+                        $pokemon->setRarity($rarity);
+                    }
 
-                $this->em->persist($pokemon);
+                    $this->em->persist($pokemon);
+                }
             }
         }
 
         $this->em->flush();
         $io->success("Vous avez ajouté {$this->updates} Pokemons de la #{$gen} génération.");
+        if ($this->skipped > 0) {
+            $str = implode(',', $this->skipArray);
+            $io->info(sprintf(" %d Pokémon(s) n'avaient pas de gif et ont donc été skip. \n %s", $this->skipped, $str));
+        }
+
         return Command::SUCCESS;
     }
+
 
     private function generatePokemon(
         \stdClass $speciesJson,
         \stdClass $pokemonJson,
         Generation $generation,
         ?\stdClass $pokemonFormJson = null,
-    ): Pokemon {
-        $type1_en = isset($pokemonJson->types[0]) ? $pokemonJson->types[0]->type->name : null;
-        $type2_en = isset($pokemonJson->types[1]) ? $pokemonJson->types[1]->type->name : null;
-        $type1 = $this->translator->trans($type1_en, domain: 'types') ?: null;
-        $type2 = $this->translator->trans($type2_en, domain: 'types') ?: null;
+    ): Pokemon|false {
 
-        $pokemon = (new Pokemon())
+        if ($this->generateGifs($pokemonJson)) {
+            $type1_en = isset($pokemonJson->types[0]) ? $pokemonJson->types[0]->type->name : null;
+            $type2_en = isset($pokemonJson->types[1]) ? $pokemonJson->types[1]->type->name : null;
+            $type1 = $this->translator->trans($type1_en, domain: 'types') ?: null;
+            $type2 = $this->translator->trans($type2_en, domain: 'types') ?: null;
+            $this->generateCry($pokemonJson);
+
+            $pokemon = (new Pokemon())
                 ->setName($this->getFrenchName($speciesJson))
                 ->setType($type1)
                 ->setType2($type2)
@@ -143,30 +185,32 @@ class AddGenCommand extends Command
                 ->setPokeId($pokemonJson->id)
                 ->setGen($generation);
 
-        if (
-            $speciesJson->is_legendary === true
-            || $speciesJson->is_mythical === true
-            || in_array(($pokemonJson->name), $this->ultraChimeres, true)
-        ) {
-            $pokemon->setRarity('EX');
-        } else {
-            $pokemon->setRarity($this->defineRarity($pokemonJson->stats, $speciesJson->capture_rate));
-        }
+            if (
+                $speciesJson->is_legendary === true
+                || $speciesJson->is_mythical === true
+                || in_array(($pokemonJson->name), $this->ultraChimeres, true)
+            ) {
+                $pokemon->setRarity('EX');
+            } else {
+                $pokemon->setRarity($this->defineRarity($pokemonJson->stats, $speciesJson->capture_rate));
+            }
 
-        $this->em->persist($pokemon);
+            $this->em->persist($pokemon);
 
-        //Si forme spéciale
-        if ($pokemonFormJson !== null) {
-            $pokemonToRelate = $this->em->getRepository(Pokemon::class)->findOneBy(['pokeId' => $speciesJson->id]);
-            $pokemon->setRelateTo($pokemonToRelate);
-            $pokemon->setName(strtolower($pokemonFormJson->names[0]->name));
-        }
+            //Si forme spéciale
+            if ($pokemonFormJson !== null) {
+                $pokemonToRelate = $this->em->getRepository(Pokemon::class)->findOneBy(['pokeId' => $speciesJson->id]);
+                $pokemon->setRelateTo($pokemonToRelate);
+                $pokemon->setName(strtolower($pokemonFormJson->names[0]->name));
+            }
 
             $this->updates++;
-            $this->generateCry($pokemonJson);
-            $this->generateGifs($pokemonJson);
-
             return $pokemon;
+        }
+
+        $this->skipped++;
+        $this->skipArray[] = $pokemonJson->name;
+        return false;
     }
     private function getFrenchName(\stdClass $speciesJson): string
     {
@@ -232,7 +276,7 @@ class AddGenCommand extends Command
         return 'TR';
     }
 
-    private function generateGifs(\stdClass $pokemonJson)
+    private function generateGifs(\stdClass $pokemonJson): bool
     {
         $gifUrl = $pokemonJson->sprites->other->showdown?->front_default;
         $gifShinyUrl = $pokemonJson->sprites->other->showdown?->front_shiny;
@@ -244,10 +288,13 @@ class AddGenCommand extends Command
 
             file_put_contents($filePath, $gifResponse->getContent());
             file_put_contents($filePathShiny, $gifShinyResponse->getContent());
+
+            return true;
         }
+        return false;
     }
 
-    private function generateCry(\stdClass $pokemonJson)
+    private function generateCry(\stdClass $pokemonJson): void
     {
         $cryUrl = $pokemonJson->cries->latest;
         if ($cryUrl) {
