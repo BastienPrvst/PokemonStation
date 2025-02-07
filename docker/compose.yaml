@@ -1,0 +1,78 @@
+name: PokemonStation
+
+services:
+    caddy:
+        build:
+            context: .
+            dockerfile: ./caddy/caddy.dockerfile
+        depends_on:
+            - php
+        env_file: config.env
+        restart: unless-stopped
+        volumes:
+          - php_socket:/var/run/php
+          - caddy_data:/data
+          - caddy_config:/config
+          - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+          - ../public:/srv/app/public:ro
+        ports:
+          # HTTP
+          - target: 80
+            published: ${HTTP_PORT:-80}
+            protocol: tcp
+          # HTTPS
+          - target: 443
+            published: ${HTTPS_PORT:-443}
+            protocol: tcp
+          # HTTP/3
+          - target: 443
+            published: ${HTTP3_PORT:-443}
+            protocol: udp
+
+    php:
+        build:
+            context: .
+            dockerfile: ./php/php.dockerfile
+        restart: unless-stopped
+        volumes:
+            - php_socket:/var/run/php
+            - vendor:/srv/app/vendor
+            - var:/srv/app/var
+            - ./php/conf.d/php.ini:/usr/local/etc/php/conf.d/php.ini
+            - ./php/conf.d/symfony.dev.ini:/usr/local/etc/php/conf.d/symfony.ini
+            - ./db/test:/srv/app/var/data:rw
+            - ..:/srv/app:rw,cached
+            - ../var:/srv/app/var
+        env_file: config.env
+
+    database:
+        image: mysql:5.7.29
+        command: --max_allowed_packet=500M
+        restart: always
+        tty: true
+        ports:
+            - 3306:3306
+        volumes:
+            - './mysql:/var/lib/mysql'
+        env_file: config.env
+
+    mailer:
+        image: schickling/mailcatcher
+        ports: [ "1025", "1080" ]
+
+    phpmyadmin:
+        depends_on:
+            - database
+        image: phpmyadmin
+        restart: always
+        ports:
+            - "8090:80"
+        env_file: config.env
+
+volumes:
+    php_socket:
+    vendor:
+    var:
+    caddy_data:
+    caddy_config:
+    db-data:
