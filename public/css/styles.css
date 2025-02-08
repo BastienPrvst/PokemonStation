@@ -1478,6 +1478,7 @@ tfoot tr td{
 
 .pokedex-nav ul {
     display: flex;
+    margin-block: 2px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -1675,7 +1676,10 @@ tfoot tr td{
 /*Boutons des gens du dex*/
 
 .gen{
-    padding: 25px;
+    position: sticky;
+    top: 5px;
+    padding-inline: 15px;
+    padding-block: 20px;
     color: #FFFFFF;
     text-align: center;
     background-color: #AF374D;
@@ -1685,6 +1689,14 @@ tfoot tr td{
     font-weight: bold;
     font-size: 1.2rem;
     margin-top: 15px;
+}
+
+.gen.active {
+    box-shadow: 0px 0px 10px black;
+}
+
+.gen-shiny {
+    max-width: 30px;
 }
 
 .gen-title{
@@ -1697,14 +1709,7 @@ tfoot tr td{
 
 .rotate{
     rotate: 90deg;
-    transition: 1s;
 }
-
-.un-rotate{
-    rotate: -90deg;
-    transition: 1s;
-}
-
 
 .type-flex{
     display: flex !important;
@@ -1822,7 +1827,7 @@ tfoot tr td{
 
     .poke-li {
         box-shadow: -10px 10px 0 black;
-        height: 80px;
+        height: 50px;
         width: 400px;
         margin-top: 10px;
         display: flex;
@@ -1836,7 +1841,7 @@ tfoot tr td{
 
     .poke-li li {
         width: 400px;
-        height: 80px;
+        height: 50px;
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -2673,4 +2678,24 @@ tfoot tr td{
         margin: 50px;
         padding: 40px;
     }
+}
+
+/* ----------------------------------------------------------------------------------------------------------- */
+/* Modification des scroll bar  */
+
+::-webkit-scrollbar-track
+{
+    border: 1px solid #092A3B;
+    background-color: #092A3B;
+}
+
+::-webkit-scrollbar
+{
+    width: 10px;
+    background-color: gray;
+}
+
+::-webkit-scrollbar-thumb
+{
+    background-color: gray;
 }

@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\CapturedPokemon;
+use App\Entity\Generation;
 use App\Entity\Items;
 use App\Entity\Pokemon;
 use App\Entity\User;
+use App\Repository\GenerationRepository;
+use App\Repository\PokemonRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,43 +26,47 @@ class PokemonController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function pokedex(): Response
     {
-        /* @var User $user*/
+        /** @var User $user */
         $user = $this->getUser();
-        $cpRepo = $this->entityManager->getRepository(CapturedPokemon::class);
+        /** @var PokemonRepository $pokeRepo */
         $pokeRepo = $this->entityManager->getRepository(Pokemon::class);
+        /** @var GenerationRepository $genRepo */
+        $genRepo = $this->entityManager->getRepository(Generation::class);
+
         $pokemons = $pokeRepo->findBy([], ['pokeId' => 'ASC']);
-        $pokemonsCaptured = $cpRepo->findSpeciesCaptured($user);
-        $shinyObtained = $cpRepo->findShinyCaptured($user);
+        $pokemonsCaptured = $pokeRepo->getSpeciesEncounter($user);
+        $pokemonShiniesCaptured = $pokeRepo->getShinySpeciesEncounter($user);
+        $rawGenerations = $genRepo->findAll();
 
-        // Créer un tableau contenant les informations de tous les pokémons
-        $allPokemonInfo = [];
-        foreach ($pokemons as $poke) {
-            $allPokemonInfo[] = [
-                'id' => $poke->getId(),
-                'pokeId' => $poke->getPokeId(),
-                'name' => $poke->getName(),
-                'rarity' => $poke->getRarity(),
-                'captured' => false, // initialisé à false
-                'shiny' => false,
-            ];
+        $specialGroup = ['ME', 'SR', 'UR', 'GMAX'];
+
+        foreach ($rawGenerations as $generation) {
+            $generationId = $generation->getId();
+
+            foreach ($pokemons as $poke) {
+                $pokeRarity = $poke->getRarity();
+                $key = $generationId;
+
+                // grouper à part les ME, SR, UR, GMAX
+                if (in_array($pokeRarity, $specialGroup)) {
+                    $key = $pokeRarity;
+                // grouper à part les formes régionnales
+                } else if ($poke->getRelateTo()) {
+                    $key = 'ALT';
+                }
+
+                $generations[$key][] = [
+                    'id'       => $poke->getId(),
+                    'pokeId'   => $poke->getPokeId(),
+                    'name'     => $poke->getName(),
+                    'rarity'   => $poke->getRarity(),
+                    'captured' => in_array($poke, $pokemonsCaptured),
+                    'shiny'    => in_array($poke, $pokemonShiniesCaptured),
+                ];
+            }
         }
 
-        // Mettre à jour le tableau pour les pokémons capturés par l'utilisateur
-        foreach ($allPokemonInfo as &$pokeInfo) {
-            //vérification si l'utilisateur à libéré le pokemon
-            if (in_array($pokeInfo['pokeId'], $pokemonsCaptured, true)) {
-                $pokeInfo['captured'] = true;
-            }
-            //vérification si l'utilisateur le possède en shiny
-            if (in_array($pokeInfo['pokeId'], $shinyObtained, true)) {
-                $pokeInfo['shiny'] = true;
-            }
-        }
-
-        return $this->render('main/pokedex.html.twig', [
-            'pokemons' => $allPokemonInfo,
-            'pokemonsCaptured' => $pokemonsCaptured,
-        ]);
+        return $this->render('main/pokedex.html.twig', ['generations' => $generations]);
     }
 
     #[Route('/capture/', name: 'app_capture')]

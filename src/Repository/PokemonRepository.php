@@ -77,9 +77,20 @@ class PokemonRepository extends ServiceEntityRepository
     public function getSpeciesEncounter(User $user): array
     {
         return $this->createQueryBuilder('p')
-            ->select('DISTINCT p.pokeId')
             ->innerJoin('p.capturedPokemon', 'cp')
             ->where('cp.owner = :userId')
+            ->setParameter('userId', $user->getId())
+            ->orderBy('p.pokeId', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getShinySpeciesEncounter(User $user): array
+    {
+        return $this->createQueryBuilder('p')
+            ->innerJoin('p.capturedPokemon', 'cp')
+            ->where('cp.owner = :userId')
+            ->andWhere('cp.shiny = TRUE')
             ->setParameter('userId', $user->getId())
             ->orderBy('p.pokeId', 'ASC')
             ->getQuery()
