@@ -123,6 +123,7 @@ class AddGenCommand extends Command
                     TransportExceptionInterface $e
                 ) {
                     error_log($e->getMessage());
+                    $this->skipArray[] = $name;
                     continue;
                 }
 
@@ -161,6 +162,7 @@ class AddGenCommand extends Command
         return Command::SUCCESS;
     }
 
+    
 
     private function generatePokemon(
         \stdClass $speciesJson,
