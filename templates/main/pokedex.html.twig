@@ -15,17 +15,17 @@
 					<ul class="col-12">
 						<div class="gen-{{ generation }}-button gen">
 							<span class="gen-title">{{ generation|trans }}</span> <br>
-							<span id="activeCountG1"></span>{{ pokemons|filter(p => p.captured)|length }}/{{ pokemons|length }} ||
-							<img class="gen-shiny" src="{{ asset('medias/images/sparkle/shinyOK.png') }}" alt="">: <span id="shinyG{{ generation }}"></span>{{ pokemons|filter(p => p.shiny)|length }}/{{ pokemons|length }}
+							<span id="activeCountG1"></span>{{ pokemonsCaptured|filter(p => p.gen.id == generation)|length }}/{{ pokemons|length }} ||
+							<img class="gen-shiny" src="{{ asset('medias/images/sparkle/shinyOK.png') }}" alt="">: <span id="shinyG{{ generation }}"></span>{{ pokemonShiniesCaptured|filter(p => p.gen.id == generation)|length }}/{{ pokemons|length }}
 							<i class="fa-solid fa-play"> </i>
 						</div>
 
 						<div class="pokemons-gen type-none">
 							{% for poke in pokemons %}
-								{% if poke.captured %}
+								{% if poke in pokemonsCaptured or poke in pokemonShiniesCaptured %}
 									<div class="poke-li captured col-12 pokemon-pokedex gen-{{ generation }}" data-pokemon="{{ poke.pokeId }}" >
 										{{ poke.name|capitalize }} #{{ poke.pokeId }}
-										{% if poke.shiny %}
+										{% if poke in pokemonShiniesCaptured %}
 											<img class="gen-{{ generation }}-shiny" src="{{ asset('medias/images/sparkle/shinyOK.png') }}" alt="">
 										{% endif %}
 									</div>

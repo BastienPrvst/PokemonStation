@@ -33,40 +33,24 @@ class PokemonController extends AbstractController
         /** @var GenerationRepository $genRepo */
         $genRepo = $this->entityManager->getRepository(Generation::class);
 
-        $pokemons = $pokeRepo->findBy([], ['pokeId' => 'ASC']);
-        $pokemonsCaptured = $pokeRepo->getSpeciesEncounter($user);
-        $pokemonShiniesCaptured = $pokeRepo->getShinySpeciesEncounter($user);
-        $rawGenerations = $genRepo->findAll();
+        $generations = [];
+        $generationEntities = $genRepo->findAll([], ['pokeId' => 'ASC']);
 
-        $specialGroup = ['ME', 'SR', 'UR', 'GMAX'];
-
-        foreach ($rawGenerations as $generation) {
-            $generationId = $generation->getId();
-
-            foreach ($pokemons as $poke) {
-                $pokeRarity = $poke->getRarity();
-                $key = $generationId;
-
-                // grouper à part les ME, SR, UR, GMAX
-                if (in_array($pokeRarity, $specialGroup)) {
-                    $key = $pokeRarity;
-                // grouper à part les formes régionnales
-                } else if ($poke->getRelateTo()) {
-                    $key = 'ALT';
-                }
-
-                $generations[$key][] = [
-                    'id'       => $poke->getId(),
-                    'pokeId'   => $poke->getPokeId(),
-                    'name'     => $poke->getName(),
-                    'rarity'   => $poke->getRarity(),
-                    'captured' => in_array($poke, $pokemonsCaptured),
-                    'shiny'    => in_array($poke, $pokemonShiniesCaptured),
-                ];
-            }
+        foreach ($generationEntities as $generationEntity) {
+            $poke = $generationEntity->getPokemon()->filter(
+                fn(Pokemon $p) => $p->getRelateTo() === null
+            );
+            $generations[$generationEntity->getGenNumber()] = $poke;
         }
 
-        return $this->render('main/pokedex.html.twig', ['generations' => $generations]);
+        $pokemonsCaptured = $pokeRepo->getSpeciesEncounter($user);
+        $pokemonShiniesCaptured = $pokeRepo->getShinySpeciesEncounter($user);
+
+        return $this->render('main/pokedex.html.twig', [
+            'generations'             => $generations,
+            'pokemonsCaptured'        => $pokemonsCaptured,
+            'pokemonShiniesCaptured' => $pokemonShiniesCaptured,
+        ]);
     }
 
     #[Route('/capture/', name: 'app_capture')]
