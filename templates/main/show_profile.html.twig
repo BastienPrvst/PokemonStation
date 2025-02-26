@@ -9,7 +9,7 @@
     <div class="background">
 
         {# statistique #}
-        <div class="container-fluid stats fade-up col-12">
+        <div class="container-fluid stats fade-up col-12 profil-public">
 
             <h1 class="profil-title col-12 text-center my-5"> Profil de {{ user.pseudonym }}</h1>
 
@@ -57,7 +57,7 @@
                 <div id="carouselExample" class="carousel carousel-avatar slide">
 
                     <div class="justify-content-center avatar">
-                        <img src="{{ asset('images/trainers/' ~ user.avatar ~'.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="{{ user.avatar }}">
+                        <img src="{{ asset('medias/images/trainers/' ~ user.avatar ~'.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="{{ user.avatar }}">
                     </div>
 
                 </div>

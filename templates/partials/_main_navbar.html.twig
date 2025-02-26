@@ -19,7 +19,7 @@
 
 			{# Affichage des liens réservés aux utilisateurs connectés #}
 			{% if app.user %}
-			<a href="{{ path('app_deconnexion') }}">Se deconnecter</a>
+			<a href="{{ path('app_deconnexion') }}">Déconnexion</a>
 			{% else %}
 			<a href="{{ path('app_register') }}">S'inscrire</a>
 			<a href="{{ path('app_connexion') }}">Se connecter</a>
@@ -50,22 +50,22 @@
 			<ul class="navbar-nav me-auto mb-2 mb-lg-0-0 background-color-nav">
 
 				<li class="nav-item background-color-nav">
-					<a class="nav-link background-color-nav" href="{{ path('app_home') }}"><img src="{{ asset('medias/images/balls/Accueil.png') }}" alt="">Accueil</a>
+					<a class="nav-link background-color-nav" href="{{ path('app_home') }}"><img src="{{ asset('medias/images/balls/poke-ball.png') }}" alt="">Accueil</a>
 				</li>
 
 				<li class="nav-item">
-					<a class="nav-link" href="{{ path('app_capture') }}"><img src="{{ asset('medias/images/balls/Capture.png') }}" alt="">Libération !</a>
+					<a class="nav-link" href="{{ path('app_capture') }}"><img src="{{ asset('medias/images/balls/great-ball.png') }}" alt="">Libération !</a>
 				</li>
 
 
 				<li class="nav-item">
-					<a class="nav-link" href="{{ path('app_pokedex')}}"><img src="{{ asset('medias/images/balls/Pokedex.png') }}" alt="">Pokédex</a>
+					<a class="nav-link" href="{{ path('app_pokedex')}}"><img src="{{ asset('medias/images/balls/ultra-ball.png') }}" alt="">Pokédex</a>
 				</li>
 
 
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('app_profil') }}">
-						<img src="{{ asset('medias/images/balls/Profil.png') }}" alt="">Mon Profil</a>
+						<img src="{{ asset('medias/images/balls/master-ball.png') }}" alt="">Mon Profil</a>
 				</li>
 
 			</ul>

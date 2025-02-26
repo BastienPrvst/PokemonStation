@@ -162,8 +162,6 @@ class AddGenCommand extends Command
         return Command::SUCCESS;
     }
 
-    
-
     private function generatePokemon(
         \stdClass $speciesJson,
         \stdClass $pokemonJson,
