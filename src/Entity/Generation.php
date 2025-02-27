@@ -22,6 +22,7 @@ class Generation
     private ?string $genRegion = null;
 
     #[ORM\OneToMany(mappedBy: 'gen', targetEntity: Pokemon::class, orphanRemoval: true)]
+    #[ORM\OrderBy(['pokeId' => 'ASC'])]
     private Collection $pokemon;
 
     public function __construct()

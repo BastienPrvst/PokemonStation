@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-
 use function PHPUnit\Framework\isEmpty;
 
 class APIController extends AbstractController
@@ -57,7 +56,6 @@ class APIController extends AbstractController
                     'pokeId' => $pokemonToDisplay->getPokeId(),
                     'name' => $pokemonToDisplay->getName(),
                     'nameEN' => $pokemonToDisplay->getNameEn(),
-                    'gif' => $pokemonToDisplay->getGif(),
                     'type1' => $pokemonToDisplay->getType(),
                     'type2' => $pokemonToDisplay->getType2(),
                     'description' => $pokemonToDisplay->getDescription(),

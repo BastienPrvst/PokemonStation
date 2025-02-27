@@ -8,35 +8,54 @@
 <div class="main-block">
 	<div class="poke-list container-fluid col-lg-4">
 		<div class="list row">
-			<div class="ul-list pokedex-nav">
 
+			<label for="generations"></label>
+			<select class="select-gen" name="generations" id="generations">
 				{% for generation, pokemons in generations %}
+					<option class="genOption" value="{{ generation }}">{{ generation|trans }}
+				{% endfor %}
+			</select>
 
+			{% for generation, pokemons in generations %}
+				<div class="gen-content content-{{ generation }} {% if loop.first %} active {% else %} type-none {% endif %}">
+					<div>
+						<span id="activeCountG1">Pokédex :</span>  {{ pokemonsCaptured|filter(p => p.gen.id == generation)|length }} sur {{ pokemons|length }}
+					</div>
+					<div>
+						<span class="shinydex" id="shinyG{{ generation }}">ShinyDex :</span>
+						<span>{{ pokemonShiniesCaptured|filter(p => p.gen.id == generation)|length }} sur {{ pokemons|length }} <img class="gen-shiny" src="{{ asset('medias/images/sparkle/shinyOK.png') }}" alt=""></span>
+					</div>
+				</div>
+			{% endfor %}
+
+			<label for="search"></label>
+			<input class="search" id="search" type="text" placeholder="Chercher un Pokémon">
+
+
+			<div class="ul-list pokedex-nav">
 					<ul class="col-12">
-						<div class="gen-{{ generation }}-button gen">
-							<span class="gen-title">{{ generation|trans }}</span> <br>
-							<span id="activeCountG1"></span>{{ pokemonsCaptured|filter(p => p.gen.id == generation)|length }}/{{ pokemons|length }} ||
-							<img class="gen-shiny" src="{{ asset('medias/images/sparkle/shinyOK.png') }}" alt="">: <span id="shinyG{{ generation }}"></span>{{ pokemonShiniesCaptured|filter(p => p.gen.id == generation)|length }}/{{ pokemons|length }}
-							<i class="fa-solid fa-play"> </i>
-						</div>
 
-						<div class="pokemons-gen type-none">
+						{% for generation, pokemons in generations %}
+						<li class="pokemons-gen {% if loop.first %} active {% else %} type-none {% endif %}">
 							{% for poke in pokemons %}
-								{% if poke in pokemonsCaptured or poke in pokemonShiniesCaptured %}
+
+								{% if poke in pokemonsCaptured or poke in pokemonShiniesCaptured or poke in formBase%}
+
 									<div class="poke-li captured col-12 pokemon-pokedex gen-{{ generation }}" data-pokemon="{{ poke.pokeId }}" >
-										{{ poke.name|capitalize }} #{{ poke.pokeId }}
-										{% if poke in pokemonShiniesCaptured %}
-											<img class="gen-{{ generation }}-shiny" src="{{ asset('medias/images/sparkle/shinyOK.png') }}" alt="">
-										{% endif %}
-									</div>
+											{{ poke.name|capitalize }} #{{ poke.pokeId }}
+											{% if poke in pokemonShiniesCaptured %}
+												<img class="gen-{{ generation }}-shiny" src="{{ asset('medias/images/sparkle/shinyOK.png') }}" alt="">
+											{% endif %}
+										</div>
 								{% else %}
 									<div class="poke-li col-12 not-captured gen-{{ generation }}">???</div>
 								{% endif %}
 							{% endfor %}
-						</div>
+						</li>
+						{% endfor %}
 					</ul>
 
-				{% endfor %}
+
 			</div>
 		</div>
 	</div>

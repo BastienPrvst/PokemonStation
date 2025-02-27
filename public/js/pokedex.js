@@ -90,7 +90,7 @@ buttons.forEach(function (button) {
                         document.querySelector('.thirdName').innerHTML = '#' + data.pokemonToDisplay.pokeId;
 
                         //Changement du gif
-                        pokemonGif = pokemonsGifDir + '/' + data.pokemonToDisplay.gif;
+                        pokemonGif = pokemonsGifDir + '/' + data.pokemonToDisplay.nameEN + '.gif';
                         pokemonImage.src = pokemonGif;
                         //Changement de la description
                         document.querySelector('.description p').innerHTML = '';
@@ -155,37 +155,36 @@ shinyButton.addEventListener("click", function () {
     }
 });
 
-//Bouton d'affichage des générations
-const buttonGens = document.querySelectorAll('.gen');
+//Select des générations
 
-buttonGens.forEach(buttonGen => {
+document.querySelector('#generations').addEventListener('change', function () {
 
-    let container = buttonGen.parentElement;
-    let arrow = container.querySelector('.fa-solid');
-    let pokeContainer = container.querySelector('.pokemons-gen');
+//Encadré
+    document.querySelectorAll('.gen-content').forEach((element) => {
+        element.classList.replace('active', 'type-none');
+    })
 
-    buttonGen.addEventListener("click", function () {
+    document.querySelector('.content-' + this.value).classList.replace('type-none', 'active');
 
-        // Fermer toute les générations ouvertes
-        buttonGens.forEach(btn => {
 
-            if (btn === buttonGen) return;
-
-            let ctn = btn.parentElement
-            let pokeCtn = ctn.querySelector('.pokemons-gen');
-            let arr = ctn.querySelector('.fa-solid');
-
-            if (btn.classList.contains('active')) {
-                btn.classList.toggle('active');
-                pokeCtn.classList.toggle('type-none');
-                arr.classList.toggle('rotate');
-            }
-        })
-
-        buttonGen.classList.toggle('active');
-        pokeContainer.classList.toggle('type-none');
-        arrow.classList.toggle('rotate');
+//Boutons Poké
+    document.querySelectorAll('.poke-li').forEach(po => {
+        po.parentElement.classList.replace('active', 'type-none');
     });
-});
 
+    document.querySelectorAll('.gen-' + this.value).forEach(po => {
+        po.parentElement.classList.replace('type-none', 'active');
+    });
+
+})
+
+//Recherche
+
+    const input = document.querySelector('.search')
+
+    input.addEventListener('change', function () {
+
+
+
+    })
 
