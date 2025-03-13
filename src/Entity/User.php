@@ -305,8 +305,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getFriendships(): Collection
     {
-        $this->friends->add(...$this->friendsA);
-        $this->friends->add(...$this->friendsB);
+        $this->friends = new ArrayCollection(
+            array_merge($this->friendsA->toArray(), $this->friendsB->toArray())
+        );
 
         return $this->friends;
     }

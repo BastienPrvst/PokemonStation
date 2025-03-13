@@ -33,7 +33,6 @@ body {
     transform: scale(0.9);
 }
 
-
 .connexion-deconnexion {
     margin: 0;
     display: flex;
@@ -63,7 +62,6 @@ body {
     transition: 0.5s;
 }
 
-
 @media screen and (min-width: 992px) {
 
     .banner {
@@ -87,7 +85,6 @@ body {
         margin-top: 50px;
     }
 }
-
 
 /* ----------------------------------------------------------------------------------------------------------- */
 /*Modification de la navbar */
@@ -122,7 +119,6 @@ body {
 
 }
 
-
 .navbar-collapse .collapse .show,
 .collapse .navbar-collapse,
 .navbar-nav,
@@ -131,22 +127,18 @@ body {
     background-color: #0C3348;
 }
 
-
 .nav-item {
     width: 100%;
     height: 100%;
 }
 
-
 .nav-item img {
     margin: 6px 3%;
 }
 
-
 .nav-item img {
     margin: 6px 3%;
 }
-
 
 .nav-link {
     color: #FFFFFF;
@@ -176,7 +168,6 @@ body {
 .main-navbar {
     z-index: 9999;
 }
-
 
 .nav-link img {
     width: 100px;
@@ -249,7 +240,6 @@ body {
     }
 }
 
-
 /* ----------------------------------------------------------------------------------------------------------- */
 /* Modification du footer  */
 
@@ -316,7 +306,6 @@ footer {
     color: white;
 }
 
-
 @media screen and (min-width: 992px) {
 
     .footer {
@@ -335,7 +324,6 @@ footer {
         flex-wrap: wrap;
         margin-top: -50px;
     }
-
 
     .footer-blocks {
         display: flex;
@@ -367,7 +355,6 @@ footer {
         border-radius: 50px;
         transition: all 0.4s ease;
 
-
     }
 
     .social-media-button:hover {
@@ -377,7 +364,6 @@ footer {
     }
 
 }
-
 
 /* ----------------------------------------------------------------------------------------------------------- */
 
@@ -483,12 +469,9 @@ footer {
 
 }
 
-
 /* MEDIAS QUERY A PARTIR DE 992px */
 
-
 /* Media Query de la bannière */
-
 
 /* --------------------------------------------------------------------------------------------- */
 
@@ -502,67 +485,25 @@ footer {
     font-weight: bold;
 }
 
-
 .dev-text {
     padding: 10px 50px 10px 50px;
 
 }
 
-
 .profil-title {
+    margin-bottom: .5rem;
     color: white;
-    font-size: 3rem;
 }
 
-.stats-title {
-    color: white;
-    margin-bottom: 20px;
-}
-
-.stats {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-}
-
-.stats-block {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-
-.left-block {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+.profile-container {
     background-image: url(../medias/images/background/pokeball-bg.png);
-    background-size: cover;
-    background-position: center;
-    background-color: #DD4242;
+    background-size: 50px;
+    background-position: top right;
+    background-repeat: no-repeat;
+    background-color: #E06666;
     border: solid #A62840 5px;
     border-radius: 30px;
     padding: 30px;
-}
-
-.informations-account-title {
-    color: white;
-}
-
-.right-block {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    background-image: url(../medias/images/background/pokeball-bg.png);
-    background-size: cover;
-    background-position: center;
-    background-color: #DD4242;
-    border: solid #A62840 5px;
-    border-radius: 30px;
-    padding: 15px 20px 7px 20px;
 }
 
 .list-group-item {
@@ -575,12 +516,6 @@ footer {
 }
 
 /*Modifs Carousel Gif Avatar*/
-
-
-.carousel-avatar {
-    padding: 50px 0;
-    transform: scale(1.35);
-}
 
 .carou-avatar {
     text-align: center;
@@ -621,7 +556,6 @@ footer {
     }
 }
 
-
 .message-avatar p {
 
     padding: 7px;
@@ -637,13 +571,10 @@ footer {
     margin-bottom: 25px;
 }
 
-
 /*Modif stats top 10 pokedex*/
 
 .table-pokedex {
     border-collapse: collapse;
-    margin: 10px;
-
 }
 
 .table-pokedex tr th {
@@ -667,20 +598,11 @@ footer {
     padding-bottom: 10px;
 }
 
-.top-10-pokedex-box {
-    margin-top: 50px;
-    margin-bottom: 50px;
-    padding-left: 0;
-    padding-right: 0;
-    overflow-x: scroll;
-}
-
 .thead-top10 tr th {
 
     border-bottom: #E06666 solid 25px;
     padding: 0 30px 0 30px;
 }
-
 
 .modify-info {
     text-align: center;
@@ -720,25 +642,15 @@ footer {
     background-color: #AF374D;
 }
 
-
 @media screen and (min-width: 992px) {
 
     .profil-title {
         padding: 0;
-        margin: 0;
-        font-size: 3rem
+        margin-bottom: 1rem;
     }
 
     .background {
         background: url(../medias/images/background/Poke-Background.png) fixed;
-    }
-
-
-    .stats-block {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-        align-items: center;
     }
 
     .list-group-item {
@@ -773,7 +685,6 @@ footer {
         font-size: 0.8rem;
     }
 }
-
 
 /* --------------------------------------------------------------------------------------------- */
 
@@ -954,12 +865,10 @@ i.fa-chevron-right {
     background-size: cover;
 }
 
-
 .neige-background {
     background: url(../medias/images/fonds/neige.jpg) center;
     background-size: cover;
 }
-
 
 .cave-background {
     background: url(../medias/images/fonds/fond-grottejpg.jpg) center;
@@ -995,7 +904,6 @@ i.fa-chevron-right {
     background: url(../medias/images/fonds/fond-foret2.png) no-repeat center;
     background-size: cover;
 }
-
 
 .pokemon-captured-infos {
     background-color: #A62840;
@@ -1063,7 +971,6 @@ i.fa-chevron-right {
     margin-top: 10px !important;
 }
 
-
 .logo-new {
     width: 125px;
     position: absolute;
@@ -1078,7 +985,6 @@ i.fa-chevron-right {
     justify-content: center;
     align-items: center;
     position: relative;
-
 
 }
 
@@ -1139,7 +1045,6 @@ i.fa-chevron-right {
     overflow: visible !important;
 }
 
-
 .multiple {
     transform: scale(0.5);
     text-align: center;
@@ -1171,9 +1076,7 @@ i.fa-chevron-right {
     display: flex;
 }
 
-
 /*Shop de la page*/
-
 
 .shop {
     display: flex;
@@ -1185,7 +1088,6 @@ i.fa-chevron-right {
     border-radius: 15px;
     margin-top: 150px;
     position: static;
-
 
 }
 
@@ -1209,7 +1111,6 @@ i.fa-chevron-right {
 
     font-size: 0.7rem;
     padding: 10px;
-
 
 }
 
@@ -1244,7 +1145,6 @@ i.fa-chevron-right {
 
 }
 
-
 tfoot tr td {
     padding: 20px 0;
 }
@@ -1272,7 +1172,6 @@ tfoot tr td {
     border-radius: 10px;
 
 }
-
 
 @media screen and (min-width: 992px) {
 
@@ -1333,9 +1232,7 @@ tfoot tr td {
 
 }
 
-
 /*Animation de la pokeball qui se shake*/
-
 
 .pokeball-animated {
 
@@ -1344,7 +1241,6 @@ tfoot tr td {
     animation-name: shake;
 
 }
-
 
 @keyframes shake {
     from {
@@ -1372,7 +1268,6 @@ tfoot tr td {
         transform: none;
     }
 }
-
 
 /* --------------------------------------------------------------------------------------------- */
 
@@ -1547,7 +1442,6 @@ tfoot tr td {
 
 }
 
-
 .info {
     padding: 0;
     color: black;
@@ -1605,7 +1499,6 @@ tfoot tr td {
     position: relative;
 }
 
-
 .pokepic {
     display: flex;
     flex-direction: column;
@@ -1620,7 +1513,6 @@ tfoot tr td {
     width: 100%;
     height: 100%;
 }
-
 
 .poke-gif {
     object-fit: cover;
@@ -1719,7 +1611,6 @@ tfoot tr td {
     display: block;
 }
 
-
 .type-img-a {
     width: 80px;
     cursor: pointer;
@@ -1749,7 +1640,6 @@ tfoot tr td {
     display: none;
 }
 
-
 /* Premier media querry qui démarre à 992px, car problèmes d'affichage en responsive (div trop petites, manque de cohérence dans l'affichage)  */
 @media screen and (min-width: 992px) {
 
@@ -1763,7 +1653,6 @@ tfoot tr td {
         background-image: url(../medias/images/background/Poke-Background.png);
         /*animation: background-movement 30s linear infinite;*/
     }
-
 
     .poke-list {
         display: flex;
@@ -2030,7 +1919,6 @@ tfoot tr td {
         height: 100%;
     }
 
-
     .type-h3,
     .type,
     .description,
@@ -2153,7 +2041,6 @@ tfoot tr td {
 
 }
 
-
 /* Deuxieme media querry pour écran large avec l'affichage "complet"  */
 @media screen and (min-width: 1700px) {
 
@@ -2171,7 +2058,6 @@ tfoot tr td {
         align-items: center;
     }
 
-
     .pokedex {
         width: 40%;
         margin-top: -50px;
@@ -2188,7 +2074,6 @@ tfoot tr td {
     .info-tile-3 {
         font-size: 0.8vw;
     }
-
 
     .digital {
         width: 50%;
@@ -2260,7 +2145,6 @@ tfoot tr td {
         width: 250px;
     }
 }
-
 
 /* --------------------------------------------------------------------------------------------- */
 
@@ -2347,7 +2231,6 @@ tfoot tr td {
     padding: 0 0 15px 1%;
 }
 
-
 /* ------------------------------------------------------------------------------------------  */
 
 /* Page des types Pokémon  */
@@ -2402,16 +2285,13 @@ tfoot tr td {
     font-size: 1rem;
 }
 
-
 .image-type p {
     color: white;
 }
 
-
 .type-description.show {
     max-height: 500px;
 }
-
 
 @media screen and (min-width: 992px) {
 
@@ -2437,7 +2317,6 @@ tfoot tr td {
         margin-bottom: 100px;
     }
 }
-
 
 /* ------------------------------------------------------------------------------------------  */
 
@@ -2502,7 +2381,6 @@ tfoot tr td {
     margin: 0px 30px 30px 30px;
 }
 
-
 .perso-1 {
     width: 350px;
 }
@@ -2522,7 +2400,6 @@ tfoot tr td {
     position: absolute;
 }
 
-
 .poke-perso-2 {
     transform: scale(2);
     position: absolute;
@@ -2534,7 +2411,6 @@ tfoot tr td {
     position: absolute;
 
 }
-
 
 @media screen and (min-width: 992px) {
 
@@ -2553,7 +2429,6 @@ tfoot tr td {
         align-items: center;
     }
 
-
     .yann p {
         font-size: 1rem;
     }
@@ -2564,7 +2439,6 @@ tfoot tr td {
         justify-content: center;
         align-items: center;
     }
-
 
     .bastien p {
         font-size: 1rem;
@@ -2582,12 +2456,10 @@ tfoot tr td {
         color: white;
     }
 
-
     .louis p {
         font-size: 1rem;
     }
 }
-
 
 /* ------------------------------------------------------------------------------------------  */
 
@@ -2622,7 +2494,6 @@ tfoot tr td {
     transform: scale(1.3);
 }
 
-
 .project-presentation p {
     color: black;
     background-color: white;
@@ -2638,7 +2509,6 @@ tfoot tr td {
     background: url(../medias/images/background/Poke-Background.png) fixed;
     animation: background-movement 30s linear infinite;
 }
-
 
 @media screen and (min-width: 992px) {
 
