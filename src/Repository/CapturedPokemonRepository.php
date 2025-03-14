@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\CapturedPokemon;
-use App\Entity\Pokemon;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -40,7 +39,7 @@ class CapturedPokemonRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-    public function findSpeciesCaptured (User $user): array
+    public function findSpeciesCaptured(User $user): array
     {
         $result = $this->createQueryBuilder('cp')
             ->select('DISTINCT p.pokeId')
@@ -69,7 +68,17 @@ class CapturedPokemonRepository extends ServiceEntityRepository
         return array_column($result, 'pokeId');
     }
 
-
-
-
+    public function getLastRareCaptured(): array
+    {
+        return $this->createQueryBuilder('cp')
+            ->innerJoin('cp.pokemon', 'p')
+            ->innerJoin('cp.owner', 'u')
+            ->where('p.rarity IN (:rarities)')
+            ->orWhere('cp.shiny = true')
+            ->setParameter('rarities', ['UR', 'EX'])
+            ->orderBy('cp.captureDate', 'DESC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -1,5 +1,30 @@
+document.addEventListener("DOMContentLoaded", function () {
+    if (localStorage.getItem("soundOn") === "false") {
+        const soundOff = document.querySelector(".soundOff");
+        const soundOn = document.querySelector(".soundOn");
+        soundOff.classList.replace("type-none", "active");
+        soundOn.classList.replace("active", "type-none");
+    }
+    if (localStorage.getItem("soundOff") === "") {
+        localStorage.setItem("soundOff", "true");
+    }
+})
+
+const soundButton = document.querySelector('.volume');
+soundButton.addEventListener('click', () => {
+    if (localStorage.getItem("soundOn") === "true" || localStorage.getItem("soundOn") === "") {
+        localStorage.setItem("soundOn", "false");
+    } else {
+        localStorage.setItem("soundOn", "true");
+    }
+    let childs = soundButton.children
+    for ( const child of childs ) {
+        child.classList.toggle('active');
+        child.classList.toggle('type-none');
+    }
+})
+
 let captureInProcess = false;
-let elem = document.querySelector(".pokeball-animate");
 
 const typesBackgroundArray = {
     eau: "sea-background",
@@ -39,7 +64,7 @@ pokeballButton.forEach(function (button) {
 
             carousel.classList.add("overflow-visible");
 
-          //Si il y'a deja un pokemon, on l'enleve
+            //Si il y'a deja un pokemon, on l'enleve
             let currentPoke = document.querySelector(".displayed-pokemon");
             if (currentPoke) {
                 currentPoke.remove();
@@ -49,8 +74,9 @@ pokeballButton.forEach(function (button) {
                 currentShiny.remove();
             }
             let currentInfo = document.querySelector(".pokemon-captured-infos");
-            if (currentInfo) {
-                currentInfo.remove();
+            if (currentInfo.classList.contains('.visi-one')) {
+                currentInfo.innerHTML = "";
+                currentInfo.classList.add(".visi-zeri");
             }
 
             let currentNew = document.querySelector(".logo-new");
@@ -63,7 +89,7 @@ pokeballButton.forEach(function (button) {
                 currentPokeDiv.remove();
             }
 
-          //ON enleve une pokeball lancée
+            //ON enleve une pokeball lancée
 
             let activeCarousel = document.querySelector(".carousel-item.active");
             let launchs = activeCarousel.querySelector(".launch-items").textContent;
@@ -75,178 +101,303 @@ pokeballButton.forEach(function (button) {
 
             let pokemonImage = document.createElement("img");
             let pokemonShining = document.createElement("img");
-            let pokemonInfo = document.createElement("p");
             let pokemonNewLogo = document.createElement("img");
             let pokeCoin = document.createElement("img");
             let pokemonDiv = document.createElement("div");
             pokemonImage.classList.add("displayed-pokemon");
             pokemonShining.classList.add("shining-effect");
-            pokemonInfo.classList.add("pokemon-captured-infos");
             pokemonImage.alt = "";
             pokemonShining.alt = "";
             let pokemonGif;
             let pokemonShine;
             let pokemonIsNew;
 
-            let animatePromise = new Promise((resolve, reject) => {
-                (() => {
-                    let pos = 0;
-                    let angle = 0;
-                    let id = setInterval(frame, 5);
-                    clearInterval(id);
-                    id = setInterval(frame, 10);
-
-                    function frame()
-                    {
-                        if (pos === 250) {
-                            document
-                            .querySelector(".pokeball-animate")
-                            .classList.add("pokeball-animated");
-                            clearInterval(id);
-                            resolve();
-                        } else {
-                            let image = button.querySelector("img");
-
-                            pos += 5;
-                            angle += 22;
-                            image.style.bottom = pos + "px";
-                            image.style.rotate = angle + "deg";
-                        }
-                    }
-                })();
-            });
 
             let pokemonIsCaptured = false;
 
             let getPokemonPromise = new Promise((resolve, reject) => {
 
-                  //Affichage du gif du pokémon
-                  fetch(capturedPageApi, {
-                        method: "POST",
-                        body: postData,
-                    })
-                .then((response) => response.json())
-                .then((data) => {
-                  //Vérification du nombre de lancers
+                //Affichage du gif du pokémon
+                fetch(capturedPageApi, {
+                    method: "POST",
+                    body: postData,
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        //Vérification du nombre de lancers
 
-                    if (data.error != null) {
-                        pokemonInfo.innerHTML = data.error;
-                    } else {
-                        pokemonIsCaptured = true;
-
-                //Si le pokemon est shiny on change la route du gif
-                        pokemonGif =
-                        pokemonsGifDir +
-                        "/" +
-                        (data.captured_pokemon.shiny ? "shiny-" : "") +
-                        data.captured_pokemon.nameEN + '.gif';
-
-                //Effets en fonction de la rareté
-                        if (data.captured_pokemon.shiny === true) {
-                            pokemonShine = pokemonsShineDir + "/shiny-sparkle.gif";
-                        } else if (data.captured_pokemon.rarity === "TR") {
-                            pokemonShine = pokemonsShineDir + "/sparkle.gif";
-                        } else if (data.captured_pokemon.rarity === "EX") {
-                            pokemonShine = pokemonsShineDir + "/orange-sparkle.gif";
-                        } else if (data.captured_pokemon.rarity === "SR") {
-                            pokemonShine = pokemonsShineDir + "/red-sparkle.gif";
+                        if (data.error != null) {
+                            pokemonInfo.innerHTML = data.error;
                         } else {
-                            pokemonShine = pokemonsShineDir + "/invisible-sparkle.gif";
+                            pokemonIsCaptured = true;
+                            const rarity = data.captured_pokemon.rarity;
+                            //Si le pokemon est shiny on change la route du gif
+                            pokemonGif =
+                                pokemonsGifDir +
+                                "/" +
+                                (data.captured_pokemon.shiny ? "shiny-" : "") +
+                                data.captured_pokemon.nameEN + '.gif';
+
+                            //Effets en fonction de la rareté
+                            if (data.captured_pokemon.shiny === true) {
+                                pokemonShine = pokemonsShineDir + "/shiny-sparkle.gif";
+                            } else if (rarity === "TR") {
+                                pokemonShine = pokemonsShineDir + "/sparkle.gif";
+                            } else if (rarity === "EX") {
+                                pokemonShine = pokemonsShineDir + "/orange-sparkle.gif";
+                            } else if (rarity === "SR") {
+                                pokemonShine = pokemonsShineDir + "/red-sparkle.gif";
+                            } else {
+                                pokemonShine = pokemonsShineDir + "/invisible-sparkle.gif";
+                            }
+
+                            //Fonds en fonction des types
+
+                            document
+                                .querySelector(".view-pokemon")
+                                .classList.remove(window.pokemonBackground);
+
+                            window.pokemonBackground =
+                                typesBackgroundArray[data.captured_pokemon.type];
+
+                            document
+                                .querySelector(".view-pokemon")
+                                .classList.add(
+                                    typesBackgroundArray[data.captured_pokemon.type],
+                                );
+
+                            document
+                                .querySelector(".pokeball-animate")
+                                .classList.remove("pokeball-animated");
+
+                            if (data.captured_pokemon.new === true) {
+                                pokemonIsNew = true;
+                            } else {
+                                //Comptage des pièces
+                                const rarityScale = {
+                                    C: 1,
+                                    PC: 3,
+                                    R: 5,
+                                    TR: 10,
+                                    ME: 25,
+                                    SR: 50,
+                                    EX: 50,
+                                    UR: 250,
+                                };
+
+                                let actualCoin =
+                                    document.querySelector(".coin-count").textContent;
+                                actualCoin = parseInt(actualCoin);
+                                document.querySelector(".coin-count").textContent =
+                                    actualCoin + rarityScale[data.captured_pokemon.rarity];
+                            }
                         }
-
-                //Fonds en fonction des types
-
-                        document
-                        .querySelector(".view-pokemon")
-                        .classList.remove(window.pokemonBackground);
-
-                        window.pokemonBackground =
-                        typesBackgroundArray[data.captured_pokemon.type];
-
-                        document
-                        .querySelector(".view-pokemon")
-                        .classList.add(
-                            typesBackgroundArray[data.captured_pokemon.type],
-                        );
-
-                        console.log(data.captured_pokemon.rarityRandom);
-
-                        pokemonInfo.innerHTML = "";
-
-                //Affichage des infos du pokemon libéré
-
-                        const rarityScale = {
-                            C: 1,
-                            PC: 3,
-                            R: 5,
-                            TR: 10,
-                            ME: 25,
-                            SR: 50,
-                            EX: 50,
-                            UR: 250,
-                        };
-
-                        pokemonInfo.innerHTML = 'Vous avez libéré <span class="text-capitalize">' + data.captured_pokemon.name + "</span>" + (data.captured_pokemon.shiny ? " Shiny" : "") +
-                        " (" +
-                        data.captured_pokemon.rarity +
-                        ") ! " +
-                        (data.captured_pokemon.new
-                        ? ""
-                        : "+" + rarityScale[data.captured_pokemon.rarity]);
-
-                        document
-                        .querySelector(".pokeball-animate")
-                        .classList.remove("pokeball-animated");
-
-                        if (data.captured_pokemon.new === true) {
-                            pokemonIsNew = true;
-                        } else {
-                          //Comptage des pièces
-                            const rarityScale = {
-                                C: 1,
-                                PC: 3,
-                                R: 5,
-                                TR: 10,
-                                ME: 25,
-                                SR: 50,
-                                EX: 50,
-                                UR: 250,
-                            };
-
-                            let actualCoin =
-                            document.querySelector(".coin-count").textContent;
-                            actualCoin = parseInt(actualCoin);
-                            document.querySelector(".coin-count").textContent =
-                            actualCoin + rarityScale[data.captured_pokemon.rarity];
-                        }
-                    }
-                    //Resolve de la promesse
-                    resolve();
-                  });
+                        //Resolve de la promesse
+                        resolve(data.captured_pokemon);
+                    });
             });
 
+            let pokemon = await getPokemonPromise;
+
+            const motionPathArray = {
+                1: "M0 0C-895-382-119-691 5-421c35 62-5 91.3333-5 134",
+                2: "M0 0C474-414-119-691 0-286",
+                3: "M0 0C103.1319 33.5995 41.5327-143.7313-58.3325-63.4658-97.5319-18.6664-76 24-37.3328 64.3991-6 96 109.6651 38.2661 102.1985-28.9329 94.2653-94.2653 1.8666-128.3315 0-280",
+            };
+
+            let totalPaths = Object.keys(motionPathArray).length;
+            let rand = Math.floor(Math.random() * totalPaths) + 1;
+            let raRand = pokemon.rarityRandom;
+
+            //Partie audio
+
+            let rareSound = new Audio(newRare)
+            let cry = new Audio(crySound + pokemon.nameEN + "-cry.mp3");
+            if (localStorage.getItem('soundOn') === "true") {
+                rareSound.volume = 0.025
+                cry.volume = 0.02
+            } else {
+                rareSound.muted = true;
+                cry.muted = true;
+            }
+
+
+            let animatePromise = new Promise((resolve, reject) => {
+                (() => {
+                    let tl = gsap.timeline()
+                    let pathRandom = motionPathArray[rand]
+                    let rotationDegree = -2500
+                    if (pathRandom.includes('0C-') || pathRandom.includes('0C0-')) {
+                        rotationDegree = 2500
+                    }
+                    let initialPosition = {
+                        x: gsap.getProperty(".pokeball-animate", "x"),
+                        y: gsap.getProperty(".pokeball-animate", "y"),
+                        rotation: gsap.getProperty(".pokeball-animate", "rotation")
+                    };
+
+                    let finalPosition = {}
+
+                    tl.to(
+                        ".pokeball-animate",
+                        {duration: 0.5,
+                            rotation: rotationDegree,
+                            motionPath: pathRandom,
+                            ease: "power1.in",}
+                    )
+
+                    tl.add(() => {
+                        finalPosition.x = gsap.getProperty(".pokeball-animate", "x");
+                        finalPosition.y = gsap.getProperty(".pokeball-animate", "y");
+                    },
+                    ">")
+
+                    tl.to(
+                        ".pokeball-animate",
+                        {
+                            duration: 0.2,
+                            y: () => finalPosition.y - 100,
+                            ease: "power2.out",
+                        },
+                        ">"
+                    )
+
+                    tl.to(
+                        ".pokeball-animate",
+                        {
+                            y : () => finalPosition.y,
+                            ease: "bounce.out",
+                            duration: 0.3},
+                        ">"
+                    )
+                // if (pokemon.shiny) {
+                //     tl.to(
+                //         ".pokeball-animate",
+                //         {
+                //             className: "pokeball-animate",
+                //         }
+                //     )
+                // }
+
+
+                if (raRand >= 90) {
+                    tl.to('.logo-what', {
+                        autoAlpha: 1,
+                        duration: 0.6,
+                    }, ">")
+
+                    tl.to(
+                        ".pokeball-animate",
+                        {
+                            duration: 0.4,
+                            rotation: rotationDegree + 15,
+                            ease: 'back',
+                            repeat: 1,
+                            x: '+= 10',
+                            yoyo: true,
+                            },
+                        ">"
+                    )
+                    tl.to('.logo-what', {
+                        autoAlpha: 0,
+                        duration: 0.8,
+                    }, ">")
+                }
+
+                if (raRand >= 99) {
+                    tl.to('.logo-oh', {
+                        autoAlpha: 1,
+                        duration: 0.6,
+                    }, ">")
+
+                    tl.to(
+                        ".pokeball-animate",
+                        {
+                            rotation: rotationDegree + 15,
+                            duration: 0.4,
+                            ease: 'back',
+                            repeat: 1,
+                            x: '+= 10',
+                            yoyo: true,
+                        }
+                    )
+                    tl.to('.logo-oh', {
+                        autoAlpha: 0,
+                        duration: 0.4,
+                        onComplete: function () {
+                            rareSound.play();
+                            gsap.set(".pokeball-animate", initialPosition);
+                            resolve();
+                        }
+                    },)
+                } else {
+                    tl.to(
+                        ".pokeball-animate",
+                        {
+                            onComplete: function () {
+                                gsap.set(".pokeball-animate", initialPosition);
+                                resolve();
+                            }
+                        },
+                        ">"
+                    )
+                }
+
+                })();
+            });
+
+
             await animatePromise;
-            await getPokemonPromise;
+
+            try {
+                await cry.play();
+            } catch (error) {
+                console.warn("Impossible de lire l'audio du pokemon " + pokemon.name + " " + cry, error);
+            }
+
+            //Affichage des infos du pokemon libéré
+
+            const rarityScale = {
+                C: 1,
+                PC: 3,
+                R: 5,
+                TR: 10,
+                ME: 25,
+                SR: 50,
+                EX: 50,
+                UR: 250,
+            };
+
+            currentInfo.classList.replace("visi-zero", "visi-one")
+
+            currentInfo.innerHTML = 'Vous avez libéré  <span class="text-capitalize info-margin">' + pokemon.name + "</span>" + (pokemon.shiny ? " Shiny" : "") +
+                " (" +
+                pokemon.rarity +
+                ") ! " +
+                (pokemon.new
+                    ? ""
+                    : "+" + rarityScale[pokemon.rarity]
+                );
+
 
             if (pokemonIsCaptured) {
-                  pokemonImage.src = pokemonGif;
-                  pokemonShining.src = pokemonShine;
-                  pokemonNewLogo.src = newLogo;
-                  pokeCoin.src = coin;
-                  pokeCoin.classList.add("coin-width");
-                  pokemonDiv.classList.add("poke-capture-div");
-                  pokemonDiv.append(pokemonShining, pokemonImage);
+                pokemonImage.src = pokemonGif;
+                pokemonShining.src = pokemonShine;
+                pokemonNewLogo.src = newLogo;
+                pokeCoin.src = coin;
+                pokeCoin.classList.add("coin-width");
+                pokemonDiv.classList.add("poke-capture-div");
+                pokemonDiv.append(pokemonShining, pokemonImage);
 
                 if (pokemonIsNew === true) {
                     pokemonNewLogo.classList.add("logo-new");
                     pokemonDiv.append(pokemonNewLogo);
                 } else {
-                    pokemonInfo.append(pokeCoin);
+                    currentInfo.append(pokeCoin);
                 }
 
                 document.querySelector(".view-pokemon").append(pokemonDiv);
             }
-            document.querySelector(".description-poke-capture").append(pokemonInfo);
             let image = button.querySelector("img");
             image.style.bottom = "0px";
             image.style.rotate = "0deg";
@@ -254,7 +405,7 @@ pokeballButton.forEach(function (button) {
 
             setTimeout(() => {
                 captureInProcess = false;
-            }, 1000);
+            });
         }
     });
 });
@@ -386,3 +537,4 @@ buyButton.addEventListener("click", function () {
         });
     }
 });
+
