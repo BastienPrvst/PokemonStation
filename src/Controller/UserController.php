@@ -39,7 +39,7 @@ class UserController extends AbstractController
         }
 
         return $this->render(
-            'main/profil.html.twig',
+            'main/profile.html.twig',
             [...$this->prepareUserInfo($user), ...['avatars' => $allAvatars,]],
         );
     }
@@ -75,7 +75,7 @@ class UserController extends AbstractController
             }
         }
 
-        return $this->render('main/modify_profil.html.twig', [
+        return $this->render('main/modify_profile.html.twig', [
             'editModifyProfilForm' => $form->createView(),
         ]);
     }
@@ -93,15 +93,15 @@ class UserController extends AbstractController
     private function prepareUserInfo(User $user): array
     {
         return [
-            'nbPokemon' => $this->pokemonRepository->getCountEncounteredBy($user),
-            'nbPokemonUnique' => $this->pokemonRepository->getCountUniqueEncounteredBy($user),
-            'nbShiny' => $this->pokemonRepository->getCountShiniesEncounteredBy($user),
-            'nbTR' => $this->pokemonRepository->getCountByRarityEncounteredBy($user, 'TR'),
-            'nbEX' => $this->pokemonRepository->getCountByRarityEncounteredBy($user, 'EX'),
-            'nbSR' => $this->pokemonRepository->getCountByRarityEncounteredBy($user, 'SR'),
-            'pokedexSize' => $this->pokemonRepository->getFullPokedexSize(),
+            'nbPokemon'          => $this->pokemonRepository->getCountEncounteredBy($user),
+            'nbPokemonUnique'    => $this->pokemonRepository->getCountUniqueEncounteredBy($user),
+            'nbShiny'            => $this->pokemonRepository->getCountShiniesEncounteredBy($user),
+            'nbTR'               => $this->pokemonRepository->getCountByRarityEncounteredBy($user, 'TR'),
+            'nbEX'               => $this->pokemonRepository->getCountByRarityEncounteredBy($user, 'EX'),
+            'nbSR'               => $this->pokemonRepository->getCountByRarityEncounteredBy($user, 'SR'),
+            'pokedexSize'        => $this->pokemonRepository->getFullPokedexSize(),
             'topUserSpeciesSeen' => $this->userRepository->top10TotalSpeciesSeen(),
-            'user' => $user,
+            'user'               => $user,
         ];
     }
 
