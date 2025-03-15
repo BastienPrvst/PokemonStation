@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Friendship;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -37,5 +38,20 @@ class FriendshipRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function existingFriendship(User $friendA, User $friendB): bool
+    {
+        $result = $this->createQueryBuilder('f')
+            ->where('(f.friendA = :user1 AND f.friendB = :user2)')
+            ->orWhere('(f.friendA = :user2 AND f.friendB = :user1)')
+            ->setParameters([
+                'user1' => $friendA,
+                'user2' => $friendB
+            ])
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return !!$result;
     }
 }

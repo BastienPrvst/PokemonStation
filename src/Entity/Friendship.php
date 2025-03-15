@@ -4,9 +4,13 @@ namespace App\Entity;
 
 use App\Repository\FriendshipRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation\Timestampable;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FriendshipRepository::class)]
+#[ORM\UniqueConstraint(
+    name: "unique_friendship",
+    columns: ["friend_a_id", "friend_b_id"]
+)]
 class Friendship
 {
     #[ORM\Id]
@@ -20,9 +24,9 @@ class Friendship
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[Assert\NotEqualTo(propertyPath: "friendA", message: "Vous ne pouvez pas être ami avec vous-même.")]
     private User $friendB;
 
-    #[Timestampable(on: 'create')]
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
@@ -58,9 +62,16 @@ class Friendship
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createAt): self
+    {
+        $this->createdAt = $createAt;
+
+        return $this;
     }
 
     public function isAccepted(): bool

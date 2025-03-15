@@ -8,46 +8,41 @@
 	<div class="background">
 
 		<div class="container fade-up">
-			<h1 class="profil-title text-center my-5">Mon profil</h1>
-			<div class="d-flex justify-content-between align-items-center mb-5">
-				<div class="profile-container col-12 col-lg-4 row">
-					<h2 class="profil-title">Liste d'ami(es)</h2>
-					<table class="table-pokedex">
-						<thead class="thead-top10">
-							<tr>
-								<th class="text-center" scope="col">Pseudo</th>
-								<th class="text-center" scope="col">Statut</th>
-								<th class="text-center" scope="col">Date de l'ajout</th>
-							</tr>
-						</thead>
-						<tbody>
-						{% for friend in user.friendships %}
+			<h1 class="profile-title text-center my-5">Mon profil</h1>
+			<div class="row justify-content-between align-items-stretch mb-5">
 
-							<tr class="pokedex-top-10">
-								<td class="text-center"><a href="{{ path('app_user_showprofile', { pseudonym : friend.pseudonym })}}"> {{ friend.pseudonym }}</a> </td>
-								<td class="text-center">{{ friend.createdAt|date('d/m/Y') }}/{{ pokedexSize }}</td>
-								<td class="text-center">{{ friend.isAccepted }} </td>
-							</tr>
-						{% endfor %}
-
-						</tbody>
-					</table>
+				<div class="profile-container d-flex flex-column justify-content-between mx-2 col-12 col-lg-4">
+					<div>
+						<h2 class="profile-title">Informations du compte</h2>
+						<ul class="list-group col-12 col-lg-12" id="compte">
+							<li class="list-group-item">Pseudo
+							<span class="text-info">{{ app.user.pseudonym }}</span>
+							<li class="list-group-item ">Adresse E-mail&nbsp;:
+								<span class="text-info">{{ app.user.email }}</span>
+							</li>
+							<li class="list-group-item ">Début de l'aventure&nbsp;:
+								<span class="text-info">{{ app.user.creationDate|date('d/m/Y')}}</span>
+							</li>
+							<li class="list-group-item ">
+								Compte&nbsp;:
+								<span class="text-info">{{ is_granted('ROLE_ADMIN') ? 'Administrateur' : 'Utilisateur' }}</span>
+							</li>
+						</ul>
+					</div>
 					<div class="modify-info">
 						<button class="modify-button">
 							<div class="second-border-modify">
-								<a href="{{ path('app_profil-modify') }}" class="modify-button-link"><img src="{{ asset('medias/images/elements/PokeBall.png') }}" alt="Poke Ball" width="50px">
-									Ajouter
+								<a href="{{ path('app_profil-modify') }}" class="modify-button-link"><img src="{{ asset('medias/images/elements/PokeBall.png') }}" alt="Poke Ball" width="50px">Modifier
 									<i class="fa-solid fa-chevron-right"></i>
 								</a>
 							</div>
 						</button>
 					</div>
 				</div>
-
-				<div id="carouselExample" class="carousel slide">
+				<div id="carouselExample" class="carousel slide col-12 col-lg-3">
 					<div class="carousel-inner carou-avatar">
 						{% for avatar in avatars %}
-						<div class="carousel-item  justify-content-center avatar">
+						<div class="carousel-item justify-content-center avatar">
 							<img src="{{ asset('medias/images/trainers/' ~ avatar ~'.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="{{ avatar }}">
 						</div>
 						{% endfor %}
@@ -69,25 +64,33 @@
 
 				</div>
 
-				<div class="profile-container col-12 col-lg-4">
-					<h2 class="profil-title">Informations du compte</h2>
-					<ul class="list-group col-12 col-lg-12" id="compte">
-						<li class="list-group-item ">Adresse E-mail&nbsp;:
-							<span class="text-info">{{ app.user.email }}</span>
-						</li>
-						<li class="list-group-item ">Début de l'aventure&nbsp;:
-							<span class="text-info">{{ app.user.creationDate|date('d/m/Y')}}</span>
-						</li>
-						<li class="list-group-item ">
-							Compte&nbsp;:
-							<span class="text-info">{{ is_granted('ROLE_ADMIN') ? 'Administrateur' : 'Utilisateur' }}</span>
-						</li>
-					</ul>
-
+				<div class="profile-container d-flex flex-column justify-content-between mx-2 col-12 col-lg-4">
+					<div>
+						<h2 class="profile-title">Liste d'ami(es)</h2>
+						<table class="table-pokedex">
+							<thead class="thead-top10">
+								<tr>
+									<th class="text-center" scope="col">Pseudo</th>
+									<th class="text-center" scope="col">Statut</th>
+									<th class="text-center" scope="col">Date de l'ajout</th>
+								</tr>
+							</thead>
+							<tbody>
+							{% for friend in user.friendships %}
+								<tr class="pokedex-top-10">
+									<td class="text-center"><a href="{{ path('app_user_showprofile', { pseudonym : friend.friendB.pseudonym })}}"> {{ friend.friendB.pseudonym }}</a> </td>
+									<td class="text-center">{{ friend.isAccepted }} </td>
+									<td class="text-center">{{ friend.createdAt|date('d/m/y') }}</td>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+					</div>
 					<div class="modify-info">
 						<button class="modify-button">
 							<div class="second-border-modify">
-								<a href="{{ path('app_profil-modify') }}" class="modify-button-link"><img src="{{ asset('medias/images/elements/PokeBall.png') }}" alt="Poke Ball" width="50px">Modifier
+								<a href="{{ path('app_friendship') }}" class="modify-button-link"><img src="{{ asset('medias/images/elements/PokeBall.png') }}" alt="Poke Ball" width="50px">
+									Ajouter
 									<i class="fa-solid fa-chevron-right"></i>
 								</a>
 							</div>
@@ -96,12 +99,10 @@
 				</div>
 			</div>
 
-			<div class="d-flex justify-content-between  align-items-center mb-5">
-				<div class="profile-container col-12 col-lg-4">
-					<h2 class="profil-title">Statistiques</h2>
+			<div class="row justify-content-between  align-items-stretch mb-5">
+				<div class="profile-container mx-2 mb-5 col-12 col-lg-4">
+					<h2 class="profile-title">Statistiques</h2>
 					<ul class="list-group col-12 col-lg-12 text-center" id="utilisateur">
-						<li class="list-group-item">Pseudo
-						<span class="text-info">{{ app.user.pseudonym }}</span>
 						</li>
 						<li class="list-group-item ">Pokémons libérés&nbsp;:
 							<span class="text-info">{{ app.user.launchCount }}</span>
@@ -123,8 +124,8 @@
 						</li>
 					</ul>
 				</div>
-				<div class="profile-container col-12 col-lg-8 row">
-					<h2 class="profil-title">Top 10 joueurs</h2>
+				<div class="profile-container mx-2 mb-5 col-12 col-lg-7">
+					<h2 class="profile-title">Top 10 joueurs</h2>
 					<table class="table-pokedex">
 						<thead class="thead-top10">
 							<tr>

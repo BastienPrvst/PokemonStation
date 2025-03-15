@@ -9,14 +9,14 @@
     <div class="background">
 
         {# statistique #}
-        <div class="container-fluid fade-up col-12 profil-public">
-            <h1 class="profil-title col-12 text-center my-5"> Profil de {{ user.pseudonym }}</h1>
-            <div class="col-12 col-lg-12">
-                <div class="profil-container col-12 col-lg-4">
-                    <h2 class="profil-title">Statistiques</h2>
+        <div class="fade-up profil-public">
+            <h1 class="profile-title text-center my-5"> Profil de {{ user.pseudonym }}</h1>
+            <div class="container">
+                <div class="profile-container row col-12 col-lg-6 mx-auto">
+                    <h2 class="profile-title">Statistiques</h2>
 
                     {# Block de gauche, Infos de l'utilisateur #}
-                    <ul class="list-group col-12 col-lg-12 text-center" id="utilisateur">
+                    <ul class="list-group text-center" id="utilisateur">
                         <li class="list-group-item">Pseudo
                             <span class="text-info">{{ user.pseudonym }}</span>
                         </li>
@@ -41,12 +41,9 @@
                     </ul>
                 </div>
 
-
-
                 <div id="carouselExample" class="carousel slide">
-
-                    <div class="justify-content-center avatar">
-                        <img src="{{ asset('medias/images/trainers/' ~ user.avatar ~'.gif') }}" class="d-block trainer-gif" alt="..." data-avatar="{{ user.avatar }}">
+                    <div class="avatar">
+                        <img src="{{ asset('medias/images/trainers/' ~ user.avatar ~'.gif') }}" class="d-block trainer-gif mx-auto mb-5" alt="..." data-avatar="{{ user.avatar }}">
                     </div>
 
                 </div>
