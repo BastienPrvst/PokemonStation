@@ -66,10 +66,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?int $master_ball = null;
 
+    #[ORM\ManyToMany(targetEntity: Items::class, mappedBy: 'Users')]
+    private Collection $items;
+
 
     public function __construct()
     {
         $this->capturedPokemon = new ArrayCollection();
+        $this->items = new ArrayCollection();
     }
 
 
@@ -137,10 +141,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+//         $this->plainPassword = null;
     }
 
     public function getPseudonym(): ?string
@@ -257,43 +261,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getHyperBall(): ?int
+    /**
+     * @return Collection<int, Items>
+     */
+    public function getItems(): Collection
     {
-        return $this->hyper_ball;
+        return $this->items;
     }
 
-    public function setHyperBall(?int $hyper_ball): self
+    public function addItem(Items $item): self
     {
-        $this->hyper_ball = $hyper_ball;
+        if (!$this->items->contains($item)) {
+            $this->items->add($item);
+            $item->addUser($this);
+        }
 
         return $this;
     }
 
-    public function getShinyBall(): ?int
+    public function removeItem(Items $item): self
     {
-        return $this->shiny_ball;
-    }
-
-    public function setShinyBall(?int $shiny_ball): self
-    {
-        $this->shiny_ball = $shiny_ball;
+        if ($this->items->removeElement($item)) {
+            $item->removeUser($this);
+        }
 
         return $this;
     }
 
-    public function getMasterBall(): ?int
-    {
-        return $this->master_ball;
-    }
-
-    public function setMasterBall(?int $master_ball): self
-    {
-        $this->master_ball = $master_ball;
-
-        return $this;
-    }
-
-
-
-    
 }
