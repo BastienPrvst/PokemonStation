@@ -10,6 +10,28 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: PokemonRepository::class)]
 class Pokemon
 {
+    /** @var array<array-key, string> */
+    public const TYPES = [
+        'eau',
+        'feu',
+        'plante',
+        'insecte',
+        'roche',
+        'sol',
+        'glace',
+        'acier',
+        'dragon',
+        'combat',
+        'tenebres',
+        'psy',
+        'vol',
+        'fee',
+        'poison',
+        'electrik',
+        'normal',
+        'spectre',
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
