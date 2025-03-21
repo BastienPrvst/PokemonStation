@@ -66,16 +66,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?int $master_ball = null;
 
+    private Collection $friends;
+
+    #[ORM\OneToMany(mappedBy: 'friendA', targetEntity: Friendship::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $friendsA;
+
+    #[ORM\OneToMany(mappedBy: 'friendB', targetEntity: Friendship::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $friendsB;
+
     #[ORM\ManyToMany(targetEntity: Items::class, mappedBy: 'Users')]
     private Collection $items;
-
 
     public function __construct()
     {
         $this->capturedPokemon = new ArrayCollection();
+        $this->friends = new ArrayCollection();
         $this->items = new ArrayCollection();
     }
-
 
     public function getId(): ?int
     {
@@ -288,4 +295,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @return Collection<int, Friendship>
+     */
+    public function getFriendships(): Collection
+    {
+        $this->friends = new ArrayCollection(
+            array_merge($this->friendsA->toArray(), $this->friendsB->toArray())
+        );
+
+        return $this->friends;
+    }
+
+    public function addFriendship(User $newFriendship): self
+    {
+        $this->friends = $this->getFriendships();
+
+        $friend = new Friendship;
+
+        if (!$this->friends->contains($friend)) {
+            $this->friends->add($friend);
+
+            $friend->setFriendA($this);
+            $friend->setFriendB($newFriendship);
+        }
+
+        return $this;
+    }
+
+    public function removeFriendship(Friendship $friend): self
+    {
+        $this->friends->removeElement($friend);
+
+        return $this;
+    }
 }

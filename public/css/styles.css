@@ -306,6 +306,39 @@ footer {
     margin: 0;
   }
 
+  .footer {
+      background-color: #0C3348;
+      color: #FFFFFF;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+      align-items: center;
+      padding: 70px;
+      margin: 0;
+  }
+
+  .footer-logo {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: -50px;
+  }
+
+  .footer-blocks {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+      align-items: flex-start;
+  }
+
+  .footer-block ul h4 {
+      font-weight: bold;
+      font-size: 1.5rem;
+  }
+
+  .footer-block ul {
+      padding: 0;
+  }
+
   .footer-logo {
     display: flex;
     flex-wrap: wrap;
@@ -469,6 +502,21 @@ footer {
   padding: 10px 50px 10px 50px;
 }
 
+.profile-title {
+    margin-bottom: .5rem;
+    color: white;
+}
+
+.profile-container {
+    background-image: url(../medias/images/background/pokeball-bg.png);
+    background-size: 50px;
+    background-position: top right;
+    background-repeat: no-repeat;
+    background-color: #E06666;
+    border: solid #A62840 5px;
+    border-radius: 30px;
+    padding: 15px;
+
 .profil-title {
   color: white;
   font-size: 3rem;
@@ -534,6 +582,11 @@ footer {
 
 /*Modifs Carousel Gif Avatar*/
 
+.carou-avatar {
+    margin: 0 auto;
+    max-width: 200px;
+    padding: 30px 0;
+
 .carousel-avatar {
   padding: 50px 0;
   transform: scale(1.35);
@@ -559,15 +612,32 @@ footer {
     padding: 50px 0;
   }
 
-  .avatar img {
-    margin: 0 50px;
-  }
+    .trainer-gif {
 
-  .carou-avatar {
-    text-align: center;
-    max-width: 300px;
-    padding: 30px 0;
-  }
+        transform: scale(1.2);
+        padding: 50px 0;
+
+    }
+
+    .avatar img {
+        margin: 0 50px;
+
+    }
+
+    .carou-avatar {
+        margin: 0 auto;
+        max-width: 300px;
+        padding: 30px 0;
+      
+    .avatar img {
+      margin: 0 50px;
+    }
+
+    .carou-avatar {
+      text-align: center;
+      max-width: 300px;
+      padding: 30px 0;
+    }
 }
 
 .message-avatar p {
@@ -587,8 +657,10 @@ footer {
 /*Modif stats top 10 pokedex*/
 
 .table-pokedex {
-  border-collapse: collapse;
-  margin: 10px;
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+    margin: 10px;
 }
 
 .table-pokedex tr th {
@@ -670,6 +742,11 @@ footer {
     font-size: 3rem;
   }
 
+  .profile-title {
+      padding: 0;
+      margin-bottom: 1rem;
+  }
+
   .background {
     background: url(../medias/images/background/Poke-Background.png) fixed;
   }
@@ -679,6 +756,15 @@ footer {
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
+  }
+
+  .list-group-item {
+      font-family: 'Press Start 2P', sans-serif;
+      font-size: 0.8rem;
+      background-color: white;
+      opacity: 0.8;
+      margin: 5px;
+      border-radius: 5px;
   }
 
   .list-group-item {
@@ -711,6 +797,18 @@ footer {
 
   .table-pokedex tr th {
     font-size: 0.8rem;
+  }
+
+  .pokedex-top-10 td {
+      padding: 10px;
+  }
+
+  .table-pokedex tr th {
+      font-size: 0.6rem;
+  }
+
+  .table-pokedex tr td {
+      font-size: 0.8rem;
   }
 }
 
@@ -830,6 +928,42 @@ i.fa-chevron-right {
 .fa-circle-info {
   transform: scale(1.2);
   padding-left: 5px;
+}
+
+/* ----------------------------------------------------------------------------------------------------------- */
+/* Forms  */
+
+.search-input {
+    border-radius: 0;
+    border-radius: 0;
+    border: none;
+    opacity: .8;
+}
+
+.search-input + .invalid-feedback {
+    color: white;
+    position: absolute;
+    bottom: -1.5rem;
+}
+
+.search-input:focus {
+    box-shadow: none;
+    border: none;
+}
+
+.search-button {
+    font-family: 'Press Start 2P', sans-serif;
+    color: white;
+    min-width: 10rem;
+    width: 20%;
+    border: none;
+    background-color: #A62840;
+    transition-property: opacity;
+    transition-duration: .5s;
+}
+
+.search-button:disabled {
+    opacity: .5;
 }
 
 /* ----------------------------------------------------------------------------------------------------------- */
@@ -1102,6 +1236,10 @@ i.fa-chevron-right {
   margin-top: 10px !important;
 }
 
+.logo-new {
+    width: 125px;
+}
+
 .volume {
     width: 50px;
     height: 50px;
@@ -1236,7 +1374,7 @@ i.fa-chevron-right {
   align-items: center;
   justify-content: center;
   padding: 50px 20px;
-  background-color: #af374d;
+  background-color: #AF374D;
   border-radius: 15px;
   margin-top: 150px;
   position: static;
@@ -1779,6 +1917,14 @@ tfoot tr td {
     flex-direction: row;
     background-image: url(../medias/images/background/Poke-Background.png);
     /*animation: background-movement 30s linear infinite;*/
+  }
+
+  .poke-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 300px;
   }
 
   .poke-list {

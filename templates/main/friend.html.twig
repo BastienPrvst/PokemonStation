@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste d'ami(es)
+{% endblock %}
+
+{% block body %}
+
+	<div class=" register-form-block container mt-5 col-10">
+		<div class="row">
+			<div class="col-md-6 offset-md-3 style-form-register">
+				<h1 class="text-center h1-inscription">Liste d'ami(es)</h1>
+			</div>
+		</div>
+
+		<div class="profile-container mb-5">
+			<h2 class="profile-title">Liste d'ami(es)</h2>
+			<table class="table-pokedex">
+				<thead class="thead-top10">
+					<tr>
+						<th class="text-center" scope="col">Pseudo</th>
+						<th class="text-center" scope="col">Statut</th>
+						<th class="text-center" scope="col">Date de l'ajout</th>
+						<th class="text-center" scope="col">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+				{% for friend in user.friendships %}
+					{% set sender = friend.friendA.id == user.id %}
+					{% set targetFriend = sender ? friend.friendB : friend.friendA %}
+					<tr class="pokedex-top-10">
+						<td class="text-center"><a href="{{ path('app_user_showprofile', { pseudonym : targetFriend.pseudonym })}}">{{ targetFriend.pseudonym }}</a></td>
+						<td class="text-center">{{ friend.isAccepted ? 'Confirmé' : 'En attente' }}</td>
+						<td class="text-center">{{ friend.createdAt|date('d/m/Y') }}</td>
+						<td class="text-center">
+							<a onClick="confirm('Êtes vous sûr de vouloir supprimer cet ami ?')" href="{{ path('app_friendship_remove', {friendship: friend.id}) }}" class="text-danger">Supprimer</a>
+							{% if not friend.isAccepted and not sender %}
+								<a href="{{ path('app_friendship_accept', {friendship: friend.id}) }}">Accepter</a>
+							{% endif %}
+						</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+			<div class="my-4">
+			{{ form_start(form) }}
+				{{ form_row(form.friendB) }}
+				{{ form_errors(form) }}
+			{{ form_end(form) }}
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+
+{% block js %}
+
+    <script src="{{ asset('js/components/search.js') }}"></script>
+
+{% endblock %}
