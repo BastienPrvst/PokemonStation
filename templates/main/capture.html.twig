@@ -4,33 +4,43 @@
 
 {% block body %}
 
-    <div class="capture-effect">
-        <!--Affichage du pokémon capturé-->
+    <section class="capture-effect">
         <div class="container-fluid container-view">
 
-            <div class="row">
+            <!-- Informations sur la rareté -->
+            <header class="row">
                 <div class="col-12 col-lg-10 mx-auto rarity-scale">
                     <p>
                         À ce jour, <span>{{ totalPokemon }}</span> Pokémons ont été libérés dans le monde !<br>
-
-                        <span>(C)</span> = Commun ≈ 45%  <span>(PC)</span> = Peu Commun ≈ 30%  <span>(R)</span> = Rare ≈ 15% <br> <span>(TR)</span> = Très Rare ≈ 8.5%
-                        <img src="{{ asset('medias/images/sparkle/etoiles-tres-rare.png') }}" alt="Pokemon tres rare">   <span>(EX)</span> = Extrêmement Rare ≈ 1%
-                        <img src="{{ asset('medias/images/sparkle/etoiles-extremement-rare.png') }}" alt="Pokemon extrêmement rare">   <span>(SR)</span> = Secret Rare ≈ ???
-                        <img src="{{ asset('medias/images/sparkle/etoiles-secret-rare.png') }}" alt="Pokemon Secret Rare"> <span>Shiny</span> ≈ ???
-                        <img src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt="Rareté shiny">
                     </p>
                 </div>
+            </header>
 
+            <!-- Affichage du Pokémon capturé -->
+            <article class="row">
                 <div class="col-12 col-lg-10 mx-auto view-pokemon forest2-background">
+
+
+                    <button class="volume">
+                        <img class="active sound soundOn" src="{{ asset('medias/images/elements/volume.up.png') }}" alt="Activer le son">
+                        <img class="type-none sound soundOff" src="{{ asset('medias/images/elements/volume.off.png') }}" alt="Désactiver le son">
+                    </button>
+
+                    <img class="logo-oh" src="{{ asset('medias/images/elements/oh.png') }}" alt="Oh!">
+                    <img class="logo-what" src="{{ asset('medias/images/elements/what.png') }}" alt="Qu'est-ce que c'est ?">
+
                 </div>
-                
-            </div>
-
-
+            </article>
 
         </div>
+    </section>
 
-{#        Nombre de pièces #}
+
+
+
+
+
+    {#        Nombre de pièces #}
 
         <!--Bouton de capture-->
         <div class="mx-auto capture-ball text-center">
@@ -42,7 +52,7 @@
 
                     <div class="carousel-item justify-content-center active">
                         <button class="capture-poke-button" data-ball="1">
-                            <img src="{{ asset('medias/images/balls/poke-ball.png') }}" class="pokeball-animate too-big" alt="..." >
+                            <img src="{{ asset('medias/images/balls/poke-ball.png') }}" id="pokeball-animate" class="pokeball-animate too-big" alt="..." >
                         </button>
                         <br>
                         <img class="multiple" src="{{ asset('medias/images/elements/multiple.png') }}" alt="nombre de lancer">
@@ -105,11 +115,83 @@
             </div>
         </div>
 
-    </div>
-
     <div class="description-poke-capture my-auto mx-auto col-12 col-lg-4">
+        <p class="pokemon-captured-infos visi-zero"></p>
 
     </div>
+
+{#    Partie slider#}
+
+    <div class="col-12 col-lg-10 mx-auto slider">
+
+
+                    {% if fiveLast is not empty %}
+
+                        <div class="lastpokemon">
+                            <div class="fivelast">
+
+                                {% for pokemonCaptured in fiveLast%}
+
+                                    <div class="pokemon-five">
+                                        <div class="mini-infos">
+                                            <span>{{ pokemonCaptured.pokemon.name|capitalize }}</span> ~
+                                            <a href="{{ path('app_user_showprofile', {pseudonym:pokemonCaptured.owner.pseudonym})}}">{{ pokemonCaptured.owner.pseudonym | capitalize }}</a>
+                                        </div>
+
+                                        <div class="mini-images">
+                                            <div>
+                                                <img class="mini-gif"
+                                                     src="{{ asset('medias/images/gifs/' ~ (pokemonCaptured.shiny is same as true ? 'shiny-' : '') ~ pokemonCaptured.pokemon.nameEN ~ '.gif') }}"
+                                                     alt="">
+                                                {% if pokemonCaptured.shiny is same as true %}
+                                                    <img class="mini-shiny" src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt="">
+                                                {% endif %}
+                                            </div>
+                                            <img class="mini-trainer" src="{{ asset('medias/images/trainers/') ~ pokemonCaptured.owner.avatar ~ ".gif" }}" alt="">
+                                        </div>
+
+                                        <span class="time-five">Le {{ pokemonCaptured.captureDate |date("d-m-Y H:i:s")  }}</span>
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                            <div class="fivelast">
+
+                                {% for pokemonCaptured in fiveLast%}
+
+                                    <div class="pokemon-five">
+                                        <div class="mini-infos">
+                                            <span>{{ pokemonCaptured.pokemon.name|capitalize }}</span> ~
+                                            <a href="{{ path('app_user_showprofile', {pseudonym:pokemonCaptured.owner.pseudonym})}}">{{ pokemonCaptured.owner.pseudonym | capitalize }}</a>
+                                        </div>
+
+                                        <div class="mini-images">
+                                            <div>
+                                                <img class="mini-gif"
+                                                     src="{{ asset('medias/images/gifs/' ~ (pokemonCaptured.shiny is same as true ? 'shiny-' : '') ~ pokemonCaptured.pokemon.nameEN ~ '.gif') }}"
+                                                     alt="">
+                                                {% if pokemonCaptured.shiny is same as true %}
+                                                    <img class="mini-shiny" src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt="">
+                                                {% endif %}
+                                            </div>
+                                            <img class="mini-trainer" src="{{ asset('medias/images/trainers/') ~ pokemonCaptured.owner.avatar ~ ".gif" }}" alt="">
+                                        </div>
+
+                                        <span class="time-five">Le {{ pokemonCaptured.captureDate |date("d-m-Y H:i:s")  }}</span>
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+
+
+                        </div>
+                    {% endif %}
+
+                </div>
 
 
 {#    Shop #}
@@ -185,6 +267,8 @@
         const newLogo = '{{ asset('medias/images/sparkle/new3.png') }}';
         const coin = '{{ asset('medias/images/elements/real-coin.png') }}';
         window.pokemonBackground = 'forest2-background';
+        const newRare = '{{ asset('medias/cries/sounds/06-caught-a-pokemon.mp3') }}'
+        const crySound = '{{ asset('medias/cries/') }}'
     </script>
     <script src="{{ asset('js/capture.js') }}"></script>
 

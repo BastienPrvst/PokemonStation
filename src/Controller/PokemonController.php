@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\CapturedPokemon;
 use App\Entity\Generation;
 use App\Entity\Items;
 use App\Entity\Pokemon;
@@ -75,6 +76,8 @@ class PokemonController extends AbstractController
             $totalPokemon = $totalPokemon + $userLaunch;
         }
 
+        $fiveLast = $this->entityManager->getRepository(CapturedPokemon::class)->getLastRareCaptured();
+
         //Coté Shop
         //Envoi de la liste des articles
         $itemsRepo = $doctrine->getRepository(Items::class);
@@ -83,6 +86,7 @@ class PokemonController extends AbstractController
         return $this->render('main/capture.html.twig', [
             'totalPokemon' => $totalPokemon,
             'items' => $items,
+            'fiveLast' => $fiveLast,
         ]);
     }
 

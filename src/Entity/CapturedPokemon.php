@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\CapturedPokemonRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Persistence\ManagerRegistry;
 
 #[ORM\Entity(repositoryClass: CapturedPokemonRepository::class)]
 class CapturedPokemon
@@ -19,7 +18,7 @@ class CapturedPokemon
     #[ORM\JoinColumn(nullable: false)]
     private ?User $owner = null;
 
-    #[ORM\ManyToOne(inversedBy: 'capturedPokemon')]
+    #[ORM\ManyToOne(fetch: "EAGER", inversedBy: 'capturedPokemon')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Pokemon $pokemon = null;
 

@@ -28,58 +28,26 @@ class PokemonOdds extends AbstractController
     public function calculationOdds(User $user, int $pokeballId): Response
     {
         $randomRarity = random_int(10, 1000) / 10;
-        if ($pokeballId === 1) { //LANCERS NORMAUX
-            if ($user->getLaunchs() < 1) {
-                return $this->json([
-                    'error' => 'Vous n\'avez plus de lancers disponibles, veuillez réessayer plus tard !'
-                ]);
-            }
 
-            $rarity = $this->getCommonRarity($randomRarity);
-            $isShiny = $this->isItShiny();
-            $user->setLaunchs($user->getLaunchs() - 1);//On retire un lancer à l'utilisateur
-        } elseif ($pokeballId === 2) { //HYPER BALL
-            if ($user->getHyperBall() < 1) {
-                return $this->json([
-                    'error' => 'Vous n\'avez plus de lancers disponibles, veuillez réessayer plus tard !'
-                ]);
-            }
-
-            if ($randomRarity <= 70) {
-                $rarity = 'TR'; //70%
-            } elseif ($randomRarity <= 95) {
-                $rarity = 'ME'; //25%
-            } else {
-                $rarity = 'SR';
-            }
-            $isShiny = $this->isItShiny();
-            $user->setHyperBall($user->getHyperBall() - 1); //On retire un lancer à l'utilisateur
-        } elseif ($pokeballId === 3) { //SHINY BALL
-            if ($user->getShinyBall() < 1) {
-                return $this->json([
-                    'error' => 'Vous n\'avez plus de lancers disponibles, veuillez réessayer plus tard !'
-                ]);
-            }
-            $rarity = $this->getCommonRarity($randomRarity);
-            $isShiny = true;
-            $user->setShinyBall($user->getShinyBall() - 1);
-        } elseif ($pokeballId === 4) { //MASTER BALL
-            if ($user->getMasterBall() < 1) {
-                return $this->json([
-                    'error' => 'Vous n\'avez plus de lancers disponibles, veuillez réessayer plus tard !'
-                ]);
-            }
-            $randomRarity <= 80 ? $rarity = 'EX' : $rarity = 'UR';
-            $isShiny = $this->isItShiny();
-            $user->setMasterBall($user->getMasterBall() - 1);
-        } else {
+        if ($user->getLaunchs() < 1) {
             return $this->json([
-                'error' => 'Lancer invalide.',
-                'bug' => $pokeballId,
+                'error' => 'Vous n\'avez plus de lancers disponibles, veuillez réessayer plus tard !'
             ]);
         }
 
+        $rarity = $this->getCommonRarity($randomRarity);
+        $isShiny = $this->isItShiny();
+        $user->setLaunchs($user->getLaunchs() - 1);//On retire un lancer à l'utilisateur
+
+        /* @var $pokemons Pokemon[] */
         $pokemons = $this->pokemonRepository->findByRarity($rarity);
+        if (empty($pokemons)) {
+            do {
+                $randomRarity = random_int(10, 1000) / 10;
+                $rarity = $this->getCommonRarity($randomRarity);
+                $pokemons = $this->pokemonRepository->findByRarity($rarity);
+            } while (empty($pokemons));
+        }
         $randomPoke = random_int(0, count($pokemons) - 1);
         $pokemonSpeciesCaptured = $pokemons[$randomPoke];
         $pokemonCaptured = new CapturedPokemon();
@@ -133,9 +101,11 @@ class PokemonOdds extends AbstractController
             90 => 'R',
             98 => 'TR',
             99 => 'ME',
-            99.5 => 'EX',
+            99.2 => 'GMAX',
+            99.7 => 'EX',
             99.9 => 'SR',
             100 => 'UR',
+
         ];
 
         foreach ($rarities as $threshold => $rarity) {
@@ -152,7 +122,7 @@ class PokemonOdds extends AbstractController
      */
     private function isItShiny(): bool
     {
-        rand(1, 200) === 1 ? $isShiny = true : $isShiny = false;
+        random_int(1, 200) === 1 ? $isShiny = true : $isShiny = false;
         return $isShiny;
     }
 
@@ -165,8 +135,9 @@ class PokemonOdds extends AbstractController
             'R' => 5,
             'TR' => 10,
             'ME' => 25,
-            'SR' => 50,
-            'EX' => 50,
+            'GMAX' => 50,
+            'SR' => 100,
+            'EX' => 100,
             'UR' => 250
         ];
 
