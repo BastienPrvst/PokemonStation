@@ -307,36 +307,36 @@ footer {
   }
 
   .footer {
-      background-color: #0C3348;
-      color: #FFFFFF;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-evenly;
-      align-items: center;
-      padding: 70px;
-      margin: 0;
+    background-color: #0C3348;
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 70px;
+    margin: 0;
   }
 
   .footer-logo {
-      display: flex;
-      flex-wrap: wrap;
-      margin-top: -50px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: -50px;
   }
 
   .footer-blocks {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-evenly;
-      align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: flex-start;
   }
 
   .footer-block ul h4 {
-      font-weight: bold;
-      font-size: 1.5rem;
+    font-weight: bold;
+    font-size: 1.5rem;
   }
 
   .footer-block ul {
-      padding: 0;
+    padding: 0;
   }
 
   .footer-logo {
@@ -503,19 +503,20 @@ footer {
 }
 
 .profile-title {
-    margin-bottom: .5rem;
-    color: white;
+  margin-bottom: .5rem;
+  color: white;
 }
 
 .profile-container {
-    background-image: url(../medias/images/background/pokeball-bg.png);
-    background-size: 50px;
-    background-position: top right;
-    background-repeat: no-repeat;
-    background-color: #E06666;
-    border: solid #A62840 5px;
-    border-radius: 30px;
-    padding: 15px;
+  background-image: url(../medias/images/background/pokeball-bg.png);
+  background-size: 50px;
+  background-position: top right;
+  background-repeat: no-repeat;
+  background-color: #E06666;
+  border: solid #A62840 5px;
+  border-radius: 30px;
+  padding: 15px;
+}
 
 .profil-title {
   color: white;
@@ -583,9 +584,10 @@ footer {
 /*Modifs Carousel Gif Avatar*/
 
 .carou-avatar {
-    margin: 0 auto;
-    max-width: 200px;
-    padding: 30px 0;
+  margin: 0 auto;
+  max-width: 200px;
+  padding: 30px 0;
+}
 
 .carousel-avatar {
   padding: 50px 0;
@@ -612,32 +614,33 @@ footer {
     padding: 50px 0;
   }
 
-    .trainer-gif {
+  .trainer-gif {
 
-        transform: scale(1.2);
-        padding: 50px 0;
+    transform: scale(1.2);
+    padding: 50px 0;
 
-    }
+  }
 
-    .avatar img {
-        margin: 0 50px;
+  .avatar img {
+    margin: 0 50px;
 
-    }
+  }
 
-    .carou-avatar {
-        margin: 0 auto;
-        max-width: 300px;
-        padding: 30px 0;
-      
-    .avatar img {
-      margin: 0 50px;
-    }
+  .carou-avatar {
+    margin: 0 auto;
+    max-width: 300px;
+    padding: 30px 0;
+  }
 
-    .carou-avatar {
-      text-align: center;
-      max-width: 300px;
-      padding: 30px 0;
-    }
+  .avatar img {
+    margin: 0 50px;
+  }
+
+  .carou-avatar {
+    text-align: center;
+    max-width: 300px;
+    padding: 30px 0;
+  }
 }
 
 .message-avatar p {
@@ -657,10 +660,10 @@ footer {
 /*Modif stats top 10 pokedex*/
 
 .table-pokedex {
-    border-collapse: collapse;
-    table-layout: fixed;
-    width: 100%;
-    margin: 10px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  margin: 10px;
 }
 
 .table-pokedex tr th {
@@ -743,8 +746,8 @@ footer {
   }
 
   .profile-title {
-      padding: 0;
-      margin-bottom: 1rem;
+    padding: 0;
+    margin-bottom: 1rem;
   }
 
   .background {
@@ -759,12 +762,12 @@ footer {
   }
 
   .list-group-item {
-      font-family: 'Press Start 2P', sans-serif;
-      font-size: 0.8rem;
-      background-color: white;
-      opacity: 0.8;
-      margin: 5px;
-      border-radius: 5px;
+    font-family: 'Press Start 2P', sans-serif;
+    font-size: 0.8rem;
+    background-color: white;
+    opacity: 0.8;
+    margin: 5px;
+    border-radius: 5px;
   }
 
   .list-group-item {
@@ -800,15 +803,15 @@ footer {
   }
 
   .pokedex-top-10 td {
-      padding: 10px;
+    padding: 10px;
   }
 
   .table-pokedex tr th {
-      font-size: 0.6rem;
+    font-size: 0.6rem;
   }
 
   .table-pokedex tr td {
-      font-size: 0.8rem;
+    font-size: 0.8rem;
   }
 }
 
@@ -890,6 +893,7 @@ i.fa-chevron-right {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -915,6 +919,7 @@ i.fa-chevron-right {
   from {
     opacity: 1;
   }
+
   to {
     opacity: 0;
   }
@@ -934,36 +939,35 @@ i.fa-chevron-right {
 /* Forms  */
 
 .search-input {
-    border-radius: 0;
-    border-radius: 0;
-    border: none;
-    opacity: .8;
+  border-radius: 0;
+  border: none;
+  opacity: .8;
 }
 
-.search-input + .invalid-feedback {
-    color: white;
-    position: absolute;
-    bottom: -1.5rem;
+.search-input+.invalid-feedback {
+  color: white;
+  position: absolute;
+  bottom: -1.5rem;
 }
 
 .search-input:focus {
-    box-shadow: none;
-    border: none;
+  box-shadow: none;
+  border: none;
 }
 
 .search-button {
-    font-family: 'Press Start 2P', sans-serif;
-    color: white;
-    min-width: 10rem;
-    width: 20%;
-    border: none;
-    background-color: #A62840;
-    transition-property: opacity;
-    transition-duration: .5s;
+  font-family: 'Press Start 2P', sans-serif;
+  color: white;
+  min-width: 10rem;
+  width: 20%;
+  border: none;
+  background-color: #A62840;
+  transition-property: opacity;
+  transition-duration: .5s;
 }
 
 .search-button:disabled {
-    opacity: .5;
+  opacity: .5;
 }
 
 /* ----------------------------------------------------------------------------------------------------------- */
@@ -978,18 +982,18 @@ i.fa-chevron-right {
   padding-top: 30px;
 }
 
-.lastpokemon{
-  overflow:hidden;
+.lastpokemon {
+  overflow: hidden;
   display: flex;
   white-space: nowrap;
 }
 
-.fivelast{
+.fivelast {
   display: flex;
   animation: 60s scrollText infinite linear;
 }
 
-.pokemon-five{
+.pokemon-five {
   margin: 15px 10px;
   height: 180px;
   width: 200px;
@@ -1002,15 +1006,15 @@ i.fa-chevron-right {
   border-radius: 20px;
 }
 
-.pokemon-five:nth-child(odd){
+.pokemon-five:nth-child(odd) {
   background: #8C051C;
 }
 
-.pokemon-five:nth-child(even){
+.pokemon-five:nth-child(even) {
   background: #E04142;
 }
 
-.lastpokemon:hover .fivelast{
+.lastpokemon:hover .fivelast {
   animation-play-state: paused;
 }
 
@@ -1026,7 +1030,7 @@ i.fa-chevron-right {
   color: #D3AD42;
 }
 
-.mini-images{
+.mini-images {
   display: flex;
 }
 
@@ -1039,12 +1043,12 @@ i.fa-chevron-right {
   max-height: 100px;
 }
 
-.mini-trainer{
+.mini-trainer {
   width: 60px;
   height: 60px;
 }
 
-.mini-shiny{
+.mini-shiny {
   width: 30px;
   position: absolute;
   left: 90px;
@@ -1127,8 +1131,7 @@ i.fa-chevron-right {
 }
 
 .cave2-background {
-  background: url(../medias/images/fonds/fond-grotte2-transformed.jpeg)
-    no-repeat center;
+  background: url(../medias/images/fonds/fond-grotte2-transformed.jpeg) no-repeat center;
   background-size: cover;
 }
 
@@ -1157,20 +1160,20 @@ i.fa-chevron-right {
   flex-wrap: wrap;
 }
 
-.info-margin{
+.info-margin {
   margin: 0 4px;
 }
 
-.visi-zero{
+.visi-zero {
   visibility: hidden;
 }
 
-.visi-one{
+.visi-one {
   visibility: visible;
 }
 
 .rarity-scale,
-.slider{
+.slider {
   color: #ffffff;
   text-align: center;
   background-color: #af374d;
@@ -1189,11 +1192,12 @@ i.fa-chevron-right {
 }
 
 .slider span,
-.slider a{
+.slider a {
   font-family: "Jersey 10", serif;
   font-size: 1.2rem;
   font-weight: lighter;
 }
+
 .rarity-scale p,
 .rarity-scale span {
   font-family: "Jersey 10", serif;
@@ -1237,25 +1241,25 @@ i.fa-chevron-right {
 }
 
 .logo-new {
-    width: 125px;
+  width: 125px;
 }
 
 .volume {
-    width: 50px;
-    height: 50px;
-    border-color: #DE0C30;
-    background-color: #AF374D;
-    border-bottom-right-radius: 25px;
-    position: absolute;
-    top : 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-color: #DE0C30;
+  background-color: #AF374D;
+  border-bottom-right-radius: 25px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .volume img {
-    width: 30px;
+  width: 30px;
 }
 
 .logo-new {
@@ -2169,9 +2173,6 @@ tfoot tr td {
     align-items: center;
     padding: 20px;
     margin-top: 20px;
-  }
-
-  .info {
   }
 
   .poke-name {
