@@ -2,6 +2,9 @@
 
 namespace App\Command;
 
+use App\Entity\Category;
+use App\Entity\Items;
+use Doctrine\ORM\EntityManagerInterface;
 use Imagick;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -19,12 +22,12 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 )]
 class GetItemsCommand extends Command
 {
-    private KernelInterface $kernel;
-
-    public function __construct(KernelInterface $kernel, string $name = null)
-    {
+    public function __construct(
+        private readonly KernelInterface $kernel,
+        private readonly EntityManagerInterface $em,
+        string $name = null,
+    ) {
         parent::__construct($name);
-        $this->kernel = $kernel;
     }
 
     protected function configure(): void
@@ -41,9 +44,9 @@ class GetItemsCommand extends Command
         $curl = new CurlHttpClient();
         $errors = [];
 
-        $objectsResponse = $curl->request('GET', 'https://pokeapi.co/api/v2/item-category/?limit=2000');
+        $objectsResponse = $curl->request('GET', 'https://pokeapi.co/api/v2/item-category/?limit=200');
         if ($objectsResponse->getStatusCode() !== 200) {
-            $io->error('Impossible de communiquer avec l\'API.');
+            $io->error('Impossible de communiquer avec l\'API.' . $objectsResponse->getStatusCode());
             return Command::FAILURE;
         }
 
@@ -75,6 +78,10 @@ class GetItemsCommand extends Command
             $categoryResponse = $curl->request('GET', $url);
             $category = json_decode($categoryResponse->getContent());
 
+            $categoryEntity = new Category();
+            $categoryEntity->setName($category->name);
+            $this->em->persist($categoryEntity);
+
             foreach ($category->items as $item) {
                 try {
                     $object = $curl->request('GET', $item->url);
@@ -88,6 +95,14 @@ class GetItemsCommand extends Command
                     if (str_contains($category->name, 'ball')) {
                         $directory =
                         $this->kernel->getProjectDir() . '/public/medias/images/balls/' . $object->name . '.png';
+
+                        $newItem =  new Items();
+                        $newItem->setName($object->name);
+                        $newItem->setCategory($categoryEntity);
+                        $newItem->setImage($object->name . '.png');
+                        $newItem->setPrice(1000);
+                        $newItem->setStats($this->createStats());
+                        $this->em->persist($newItem);
                     } else {
                         $directory =
                         $this->kernel->getProjectDir() . '/public/medias/images/items/' . $object->name . '.png';
@@ -110,12 +125,42 @@ class GetItemsCommand extends Command
             return Command::FAILURE;
         }
 
-            $io->success('Les objets ont bien été téléchargés.');
+
+        $io->success('Les objets ont bien été téléchargés.');
         if (count($errors) > 0) {
             $str = implode(',', $errors);
             $io->info(sprintf(" %d objets ont étés ignorés  \n %s", count($errors), $str));
         }
 
+        $this->em->flush();
         return Command::SUCCESS;
+    }
+
+    private function createStats(): array
+    {
+        $types = [
+            'eau', 'feu', 'plante', 'insecte', 'roche', 'sol', 'glace', 'acier',
+            'dragon', 'combat', 'tenèbres', 'psy', 'vol', 'fée', 'poison',
+            'électrik', 'normal', 'spectre'
+        ];
+
+        $typePercentage = 100 / count($types);
+        $typeStats = array_fill_keys($types, $typePercentage);
+
+        $rarityStats = [
+            'C' => 40,
+            'PC' => 70,
+            'R' => 85,
+            'TR' => 95,
+            'ME' => 97,
+            'GMAX' => 99,
+            'EX' => 99.9,
+            'UR' => 100
+        ];
+
+        return [
+            'type' => $typeStats,
+            'rarity' => $rarityStats
+        ];
     }
 }

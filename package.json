@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "@hotwired/stimulus": "^3.0.0",
+    "@symfony/stimulus-bridge": "^3.2.0",
+    "chart.js": "^3.4.1 || ^4.0",
+    "gsap": "^3.12.7"
+  }
+}

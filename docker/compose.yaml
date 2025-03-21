@@ -69,6 +69,7 @@ services:
             - "8090:80"
         env_file: config.env
 
+
 volumes:
     php_socket:
     vendor:
