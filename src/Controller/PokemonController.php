@@ -81,7 +81,7 @@ class PokemonController extends AbstractController
         //Coté Shop
         //Envoi de la liste des articles
         $itemsRepo = $doctrine->getRepository(Items::class);
-        $items = $itemsRepo->findAll();
+        $items = $itemsRepo->findBy(["active" => true]);
 
         return $this->render('main/capture.html.twig', [
             'totalPokemon' => $totalPokemon,

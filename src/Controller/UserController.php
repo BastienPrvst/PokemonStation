@@ -32,7 +32,7 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $allAvatars = str_replace('.gif', '', $this->getAllAvatars());
 
-        if (!in_array(trim($user->getAvatar()), $allAvatars, true)) {
+        if ($user->getAvatar() === null || !in_array(trim($user->getAvatar()), $allAvatars, true)) {
             $user->setAvatar('trainer1');
             $this->entityManager->persist($user);
             $this->entityManager->flush();
@@ -84,6 +84,12 @@ class UserController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function showProfile(User $user): Response
     {
+        if ($user->getAvatar() === null) {
+            $user->setAvatar('trainer1');
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+        }
+
         return $this->render(
             'main/show_profile.html.twig',
             $this->prepareUserInfo($user)
