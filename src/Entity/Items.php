@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ItemsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -23,20 +24,24 @@ class Items
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'items')]
-    private Collection $Users;
-
     #[ORM\Column]
     private array $stats = [];
 
     #[ORM\Column(length: 500)]
     private ?string $image = null;
 
-    #[ORM\ManyToOne(inversedBy: 'items')]
-    private ?Category $category = null;
+    #[ORM\Column]
+    private ?bool $active = false;
+
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'Items')]
+    private Collection $users;
 
     public function __construct()
     {
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -103,14 +108,41 @@ class Items
         return $this;
     }
 
-    public function getCategory(): ?Category
+    public function isActive(): ?bool
     {
-        return $this->category;
+        return $this->active;
     }
 
-    public function setCategory(?Category $category): self
+    public function setActive(bool $active): static
     {
-        $this->category = $category;
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeItem($this);
+        }
 
         return $this;
     }

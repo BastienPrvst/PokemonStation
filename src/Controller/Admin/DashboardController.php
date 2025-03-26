@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Items;
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -36,10 +37,14 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::section('Items');
-        yield MenuItem::subMenu('Item', 'fas fa-bars')->setSubItems([
-            MenuItem::linkToCrud('Add Item', 'fas fa-plus', Items::class)->setAction(Crud::PAGE_NEW),
-            MenuItem::linkToCrud('List Items', 'fas fa-list', Items::class)->setAction(Crud::PAGE_INDEX),
+        yield MenuItem::section('Données');
+        yield MenuItem::subMenu('Items', 'fas fa-bars')->setSubItems([
+            MenuItem::linkToCrud('Ajouter un Item', 'fas fa-plus', Items::class)->setAction(Crud::PAGE_NEW),
+            MenuItem::linkToCrud('Liste des Items', 'fas fa-list', Items::class)->setAction(Crud::PAGE_INDEX),
+        ]);
+        yield MenuItem::subMenu('Utilisateurs', 'fas fa-bars')->setSubItems([
+            MenuItem::linkToCrud('Ajouter un utilisateur', 'fas fa-plus', User::class)->setAction(Crud::PAGE_NEW),
+            MenuItem::linkToCrud('Liste Utilisateurs', 'fas fa-list', User::class)->setAction(Crud::PAGE_INDEX),
         ]);
     }
 }

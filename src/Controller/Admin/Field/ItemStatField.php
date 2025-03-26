@@ -6,6 +6,7 @@ use App\Form\StatForm;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FieldTrait;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 final class ItemStatField implements FieldInterface
 {

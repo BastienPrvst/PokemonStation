@@ -29,7 +29,7 @@ class ItemsCrudController extends AbstractCrudController
         $price = NumberField::new('price');
         $stats = ItemStatField::new('stats');
         $image = ImageField::new('image')
-            ->setBasePath('public/medias/images/balls/')
+            ->setBasePath('/medias/images/balls/')
             ->setUploadDir('public/medias/images/balls/')
             ->setRequired(false);
 
@@ -41,16 +41,19 @@ class ItemsCrudController extends AbstractCrudController
             return [$name, $description, $price, $stats];
         }
 
+        if (Crud::PAGE_NEW === $pageName) {
+            return [$name, $description, $price, $stats, $image->setRequired(true)];
+        }
+
+
         return [
             IdField::new('id')->hideOnForm(),
             TextField::new('Name'),
             TextEditorField::new('Description'),
             IntegerField::new('Price', 'Prix'),
-            ItemStatField::new('stats'),
             ImageField::new('Image')
-                ->setBasePath('public/medias/images/balls/')
-                ->setUploadDir('public/medias/images/balls/')
-                ->setRequired(true)
+                ->setBasePath('/medias/images/balls/')
+                ->setUploadDir('public/medias/images/balls/'),
         ];
     }
 }
