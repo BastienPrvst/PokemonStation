@@ -1,6 +1,5 @@
 <?php
 
-// Table de donées des utilisateurs du site
 namespace App\Entity;
 
 use App\Repository\UserRepository;
@@ -30,7 +29,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
-    #[ORM\Column(length: 50, unique: true)]
+    #[ORM\Column(length: 20, unique: true)]
     private ?string $pseudonym = null;
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $creationDate = null;
@@ -51,20 +50,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $friendsA;
     #[ORM\OneToMany(mappedBy: 'friendB', targetEntity: Friendship::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $friendsB;
-    #[ORM\ManyToMany(targetEntity: Items::class, mappedBy: 'Users')]
-    private Collection $items;
 
     /**
-     * @var Collection<int, Items>
+     * @var Collection<int, UserItems>
      */
-    #[ORM\ManyToMany(targetEntity: Items::class, inversedBy: 'users')]
-    private Collection $Items;
+    #[ORM\OneToMany(mappedBy: 'userId', targetEntity: UserItems::class, fetch: "EAGER", orphanRemoval: true)]
+    private Collection $userItems;
+
     public function __construct()
     {
         $this->capturedPokemon = new ArrayCollection();
         $this->friends = new ArrayCollection();
-        $this->items = new ArrayCollection();
-        $this->Items = new ArrayCollection();
+        $this->userItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -99,7 +96,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-// guarantee every user at least has ROLE_USER
+        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
         return array_unique($roles);
     }
@@ -176,7 +173,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeCapturedPokemon(CapturedPokemon $capturedPokemon): self
     {
         if ($this->capturedPokemon->removeElement($capturedPokemon)) {
-// set the owning side to null (unless already changed)
+            // set the owning side to null (unless already changed)
             if ($capturedPokemon->getOwner() === $this) {
                 $capturedPokemon->setOwner(null);
             }
@@ -269,25 +266,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Items>
+     * @return Collection<int, UserItems>
      */
-    public function getItems(): Collection
+    public function getUserItems(): Collection
     {
-        return $this->Items;
+        return $this->userItems;
     }
 
-    public function addItem(Items $item): static
+    public function addUserItem(UserItems $userItem): static
     {
-        if (!$this->Items->contains($item)) {
-            $this->Items->add($item);
+        if (!$this->userItems->contains($userItem)) {
+            $this->userItems->add($userItem);
+            $userItem->setUserId($this);
         }
 
         return $this;
     }
 
-    public function removeItem(Items $item): static
+    public function removeUserItem(UserItems $userItem): static
     {
-        $this->Items->removeElement($item);
+        if ($this->userItems->removeElement($userItem)) {
+            // set the owning side to null (unless already changed)
+            if ($userItem->getUserId() === $this) {
+                $userItem->setUserId(null);
+            }
+        }
 
         return $this;
     }

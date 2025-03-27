@@ -3,21 +3,27 @@
 namespace App\Controller;
 
 use App\Entity\CapturedPokemon;
+use App\Entity\Items;
 use App\Entity\Pokemon;
 use App\Entity\User;
+use App\Entity\UserItems;
 use App\Service\PokemonOdds;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+
 use function PHPUnit\Framework\isEmpty;
 
 class APIController extends AbstractController
 {
-    public function __construct(private readonly PokemonOdds $pokemonOdds)
-    {
+    public function __construct(
+        private readonly PokemonOdds $pokemonOdds,
+        private readonly EntityManagerInterface $entityManager,
+    ) {
     }
 
 
@@ -68,49 +74,66 @@ class APIController extends AbstractController
         ]);
     }
 
-//    #[Route('/capture-shop-api/', name: 'app_shop_api')]
-//    #[IsGranted('ROLE_USER')]
-//    public function shop(Request $request, ManagerRegistry $doctrine): Response
-//    {
-//        $itemRepo = $doctrine->getRepository(Items::class);
-//        /** @var User $user */
-//        $user = $this->getUser();
-//        $kartString = $request->get('quantityArray');
-//        $kart = explode(",", $kartString);
-//        $allItems = $itemRepo->findAll();
-//        $totalPrice = 0;
-//
-//        //Comptage du panier
-//
-//        foreach ($allItems as $item) {
-//            $unityPrice = $item->getPrice();
-//            $kartItemPrice = $unityPrice * (int)$kart[$item->getId() - 1];
-//            $totalPrice += $kartItemPrice;
-//        }
-//
-//        $userWallet = $this->getUser()->getMoney();
-//        if ($userWallet < $totalPrice) {
-//            return $this->json([
-//                'error' => 'Vous n\'avez pas assez d\'argent pour acheter ce lot.',
-//            ]);
-//        }
-//
-//        //On enlève l'argent de l'utilisateur
-//        $user->setMoney($user->getMoney() - $totalPrice);
-//
-//        //Si l'utilisateur à assez d'argent
-//        $user->setHyperBall($user->getHyperBall() + (int)$kart[0]);
-//        $user->setShinyBall($user->getShinyBall() + (int)$kart[1]);
-//        $user->setMasterBall($user->getMasterBall() + (int)$kart[2]);
-//        $em = $doctrine->getManager();
-//        $em->flush();
-//
-//        return $this->json([
-//            'success' => 'Votre achat a bien été effectué!',
-//            'kart' => $kart,
-//            'kartPrice' => $totalPrice,
-//        ]);
-//    }
+    #[Route('/capture-shop-api/', name: 'app_shop_api')]
+    #[IsGranted('ROLE_USER')]
+    public function shop(Request $request, ManagerRegistry $doctrine): Response
+    {
+
+        $itemRepo = $doctrine->getRepository(Items::class);
+        /** @var User $user */
+        $user = $this->getUser();
+        $content = $request->getContent();
+        $data = json_decode($content, true);
+        $totalPrice = 0;
+        $foundArray = [];
+        foreach ($data['globalArray'] as $cartItem) {
+            $foundItem = $itemRepo->find($cartItem['id']);
+            $quantity = $cartItem['quantity'];
+            $foundArray[] = ['item' => $foundItem, 'quantity' => $quantity];
+            if ($foundItem !== null && $foundItem->isActive() === true) {
+                $price = $foundItem->getPrice();
+                $totalPrice += $price * $quantity;
+            } else {
+                return $this->json([
+                    'error' => 'Une erreur s\'est produite, veuillez réessayer plus tard.'
+                ]);
+            }
+        }
+
+        $userWallet = $user->getMoney();
+        if ($userWallet < $totalPrice) {
+            return $this->json([
+                'error' => 'Vous n\'avez pas assez d\'argent pour acheter ces objets.',
+            ]);
+        }
+
+        foreach ($foundArray as $itemInfo) {
+            $userItemRepo = $doctrine->getRepository(UserItems::class);
+            $item = $itemInfo['item'];
+            $alreadyExist = $userItemRepo->findOneBy(['itemId' => $item->getId(), 'userId' => $user->getId()]);
+
+            if ($alreadyExist === null) {
+                $userItem = new UserItems();
+                $userItem->setItemId($item);
+                $userItem->setUserId($user);
+                $userItem->setQuantity($itemInfo['quantity']);
+                $user->addUserItem($userItem);
+                $this->entityManager->persist($userItem);
+            } else {
+                /* @var $alreadyExist UserItems */
+                $alreadyExist->setQuantity($alreadyExist->getQuantity() + $itemInfo['quantity']);
+                $this->entityManager->persist($alreadyExist);
+            }
+        }
+
+        $user->setMoney($user->getMoney() - $totalPrice);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        return $this->json([
+            'success' => 'Votre achat a bien été effectué!',
+        ]);
+    }
 
     #[Route('/mon-profil-api/', name: 'app_profil_api')]
     #[IsGranted('ROLE_USER')]

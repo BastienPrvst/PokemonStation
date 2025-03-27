@@ -414,44 +414,42 @@ pokeballButton.forEach(function (button) {
 
 //Fonctions
 
-// function add(number)
-// {
-//     document.querySelector(".plus-" + number).addEventListener("click", function () {
-//         let $i = document.querySelector(".quantity-" + number);
-//         $i.innerHTML = parseInt($i.innerHTML) + 1;
-//         let totalShop = document.querySelector(".total_shop");
-//         let price = document.querySelector(".price-" + number);
-//
-//         totalShop.innerHTML =
-//         parseInt(totalShop.innerHTML) + parseInt(price.innerHTML);
-//     });
-// }
-//
-// function unset(number)
-// {
-//     document
-//     .querySelector(".minus-" + number)
-//     .addEventListener("click", function () {
-//         let $i = document.querySelector(".quantity-" + number);
-//         $i.innerHTML = parseInt($i.innerHTML);
-//
-//         if ($i.innerHTML > 0) {
-//             $i.innerHTML = parseInt($i.innerHTML) - 1;
-//             let totalShop = document.querySelector(".total_shop");
-//             let price = document.querySelector(".price-" + number);
-//             totalShop.innerHTML =
-//             parseInt(totalShop.innerHTML) - parseInt(price.innerHTML);
-//         }
-//     });
-// }
+function add(number)
+{
+    document.querySelector(".plus-" + number).addEventListener("click", function () {
+        let i = document.querySelector(".quantity-" + number);
+        i.innerHTML = parseInt(i.innerHTML) + 1;
+        let totalShop = document.querySelector(".total_shop");
+        let price = document.querySelector(".price-" + number);
+        totalShop.innerHTML =
+        parseInt(totalShop.innerHTML) + parseInt(price.innerHTML);
+    });
+}
 
-// add(1);
-// add(2);
-// add(3);
-//
-// unset(1);
-// unset(2);
-// unset(3);
+function unset(number)
+{
+    document
+    .querySelector(".minus-" + number)
+    .addEventListener("click", function () {
+        let i = document.querySelector(".quantity-" + number);
+        i.innerHTML = parseInt(i.innerHTML);
+
+        if (i.innerHTML > 0) {
+            i.innerHTML = parseInt(i.innerHTML) - 1;
+            let totalShop = document.querySelector(".total_shop");
+            let price = document.querySelector(".price-" + number);
+            totalShop.innerHTML =
+            parseInt(totalShop.innerHTML) - parseInt(price.innerHTML);
+        }
+    });
+}
+
+let i = 1;
+document.querySelectorAll('.minus').forEach(function () {
+    add(i);
+    unset(i);
+    i++;
+})
 
 //Utilisation AJAX
 
@@ -467,19 +465,29 @@ buyButton.addEventListener("click", function () {
         if (shopToDelete) {
             shopToDelete.remove();
         }
-        let quantityNumbers = document.querySelectorAll(".quantity");
-        let quantityArray = [];
-        quantityNumbers.forEach(function (quantityNumber) {
-            quantityArray.push(parseInt(quantityNumber.innerHTML));
-        });
-        let shopInfo = document.createElement("p");
-        let postData = new FormData();
 
-        postData.append("quantityArray", quantityArray);
+        let globalArray = [];
+
+        let allItems = document.querySelectorAll(".shop-item");
+        allItems.forEach(function (item) {
+            let quantity = parseInt(item.querySelector(".quantity").innerHTML);
+            if (quantity > 0) {
+                let itemArray = {
+                    'id': parseInt(item.querySelector('.item-id').innerHTML),
+                    'quantity': quantity,
+                }
+                globalArray.push(itemArray);
+            }
+        })
+
+        let shopInfo = document.createElement("p");
 
         fetch(capturedShopApi, {
             method: "POST",
-            body: postData,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ globalArray }),
         })
         .then((response) => response.json())
 
@@ -493,30 +501,6 @@ buyButton.addEventListener("click", function () {
                 });
                 let totalPrice = document.querySelector(".total_shop");
                 totalPrice.textContent = "0";
-
-              //Ajout HyperBall
-
-                let hyperBall = document.querySelector(".launch-2").textContent;
-                hyperBall = parseInt(hyperBall);
-                let newHyperBall = parseInt(data.kart[0]);
-                document.querySelector(".launch-2").textContent =
-                hyperBall + newHyperBall;
-
-              //Ajout ShinyBall
-
-                let shinyBall = document.querySelector(".launch-3").textContent;
-                shinyBall = parseInt(shinyBall);
-                let newShinyBall = parseInt(data.kart[1]);
-                document.querySelector(".launch-3").textContent =
-                shinyBall + newShinyBall;
-
-              //Ajout MasterBall
-
-                let masterBall = document.querySelector(".launch-4").textContent;
-                masterBall = parseInt(masterBall);
-                let newMasterBall = parseInt(data.kart[2]);
-                document.querySelector(".launch-4").textContent =
-                masterBall + newMasterBall;
 
               //On enlève les sous du compteur de l'utilisateur
                 let userWallet = document.querySelector(".coin-count").textContent;
