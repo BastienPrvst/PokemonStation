@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class PokemonController extends AbstractController
@@ -81,11 +81,11 @@ class PokemonController extends AbstractController
         //Coté Shop
         //Envoi de la liste des articles
         $itemsRepo = $doctrine->getRepository(Items::class);
-        $items = $itemsRepo->findBy(["active" => true]);
+        $itemsToSell = $itemsRepo->findBy(["active" => true]);
 
         return $this->render('main/capture.html.twig', [
             'totalPokemon' => $totalPokemon,
-            'items' => $items,
+            'itemsToSell' => $itemsToSell,
             'fiveLast' => $fiveLast,
         ]);
     }

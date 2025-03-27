@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 // Importation de notre service de validation du captcha
 // Importation de la classe permettant de créer des erreurs dans les formulaires
@@ -73,11 +73,8 @@ class RegistrationController extends AbstractController
                 )   //Mise en place d'un nombre de lancers par défaut quand on crée un compte
                 ->setLaunchs(30)
                     ->setLastObtainedLaunch(new \DateTime())
-                    ->setAvatar('1')
-                    ->setHyperBall(0)
-                    ->setMoney(0)
-                    ->setMasterBall(0)
-                    ->setShinyBall(0);
+                    ->setAvatar('trainer1')
+                    ->setMoney(0);
 
                 //hydratation de la date d'inscription du nouvel utilisateur
                 $user->setCreationDate(new \DateTime());
