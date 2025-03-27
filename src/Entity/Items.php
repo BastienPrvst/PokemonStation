@@ -34,14 +34,14 @@ class Items
     private ?bool $active = false;
 
     /**
-     * @var Collection<int, User>
+     * @var Collection<int, UserItems>
      */
-    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'Items')]
-    private Collection $users;
+    #[ORM\OneToMany(mappedBy: 'itemId', targetEntity: UserItems::class, fetch: "EAGER", orphanRemoval: true)]
+    private Collection $userItems;
 
     public function __construct()
     {
-        $this->users = new ArrayCollection();
+        $this->userItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -121,27 +121,30 @@ class Items
     }
 
     /**
-     * @return Collection<int, User>
+     * @return Collection<int, UserItems>
      */
-    public function getUsers(): Collection
+    public function getUserItems(): Collection
     {
-        return $this->users;
+        return $this->userItems;
     }
 
-    public function addUser(User $user): static
+    public function addUserItem(UserItems $userItem): static
     {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->addItem($this);
+        if (!$this->userItems->contains($userItem)) {
+            $this->userItems->add($userItem);
+            $userItem->setItemId($this);
         }
 
         return $this;
     }
 
-    public function removeUser(User $user): static
+    public function removeUserItem(UserItems $userItem): static
     {
-        if ($this->users->removeElement($user)) {
-            $user->removeItem($this);
+        if ($this->userItems->removeElement($userItem)) {
+            // set the owning side to null (unless already changed)
+            if ($userItem->getItemId() === $this) {
+                $userItem->setItemId(null);
+            }
         }
 
         return $this;

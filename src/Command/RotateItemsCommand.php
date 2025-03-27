@@ -18,8 +18,7 @@ class RotateItemsCommand extends Command
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-    )
-    {
+    ) {
         parent::__construct();
     }
 
@@ -46,7 +45,7 @@ class RotateItemsCommand extends Command
 
             $itemIds = array_column($itemIds, 'id');
             $numberToChange = [];
-            for ($i = 0; $i < 5; $i++){
+            for ($i = 0; $i < 5; $i++) {
                 do {
                     $rand = $itemIds[array_rand($itemIds)];
                 } while (in_array($rand, $numberToChange, true));
@@ -64,7 +63,7 @@ class RotateItemsCommand extends Command
 
             $query->execute();
             $io->success('Commande effectuée avec succès');
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             $io->error($exception->getMessage());
             return Command::FAILURE;
         }

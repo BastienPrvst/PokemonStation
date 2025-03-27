@@ -69,22 +69,21 @@ class PokemonController extends AbstractController
     public function capture(ManagerRegistry $doctrine): Response
     {
         $userRepo = $doctrine->getRepository(User::class);
-        $allUser = $userRepo->findAll();
-        $totalPokemon = 0;
-        foreach ($allUser as $user) {
-            $userLaunch = $user->getLaunchCount();
-            $totalPokemon = $totalPokemon + $userLaunch;
-        }
+
+        /* @var $user User *-*/
+        $user = $this->getUser();
+        $allUserItems = $user->getUserItems();
+
 
         $fiveLast = $this->entityManager->getRepository(CapturedPokemon::class)->getLastRareCaptured();
 
         //Coté Shop
-        //Envoi de la liste des articles
         $itemsRepo = $doctrine->getRepository(Items::class);
         $itemsToSell = $itemsRepo->findBy(["active" => true]);
 
         return $this->render('main/capture.html.twig', [
-            'totalPokemon' => $totalPokemon,
+//            'totalPokemon' => $totalPokemon,
+            'allUserItems' => $allUserItems,
             'itemsToSell' => $itemsToSell,
             'fiveLast' => $fiveLast,
         ]);
