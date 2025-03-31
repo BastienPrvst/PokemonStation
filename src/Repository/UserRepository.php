@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -38,7 +40,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->setMaxResults(10)
             ->getQuery()
             ->getResult();
-
     }
 
     public function top10TotalPokemonFreed(): array
@@ -53,5 +54,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         ;
     }
 
-
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function totalPokemon(): int|null
+    {
+        return $this->createQueryBuilder('u')
+            ->select('SUM(u.launch_count) as total_pokemon_captured')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

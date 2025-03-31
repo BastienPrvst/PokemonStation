@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'Cette adresse email est déjà utilisée !')]
@@ -54,7 +55,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, UserItems>
      */
-    #[ORM\OneToMany(mappedBy: 'userId', targetEntity: UserItems::class, fetch: "EAGER", orphanRemoval: true)]
+    #[ORM\OneToMany(
+        mappedBy: 'user',
+        targetEntity: UserItems::class,
+        cascade: ['persist', 'remove'],
+        fetch: "EAGER",
+        orphanRemoval: true
+    )]
+    #[Ignore]
     private Collection $userItems;
 
     public function __construct()
@@ -277,7 +285,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->userItems->contains($userItem)) {
             $this->userItems->add($userItem);
-            $userItem->setUserId($this);
+            $userItem->setUser($this);
         }
 
         return $this;
@@ -287,8 +295,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->userItems->removeElement($userItem)) {
             // set the owning side to null (unless already changed)
-            if ($userItem->getUserId() === $this) {
-                $userItem->setUserId(null);
+            if ($userItem->getUser() === $this) {
+                $userItem->setUser(null);
             }
         }
 

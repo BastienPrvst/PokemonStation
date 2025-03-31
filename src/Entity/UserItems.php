@@ -15,11 +15,11 @@ class UserItems
 
     #[ORM\ManyToOne(fetch: "EAGER", inversedBy: 'userItems')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $userId = null;
+    private ?User $user = null;
 
     #[ORM\ManyToOne(fetch: "EAGER", inversedBy: 'userItems')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Items $itemId = null;
+    private ?Items $item = null;
 
     #[ORM\Column]
     private ?int $quantity = null;
@@ -29,26 +29,26 @@ class UserItems
         return $this->id;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
-        return $this->userId;
+        return $this->user;
     }
 
-    public function setUserId(?User $userId): static
+    public function setUser(?User $user): static
     {
-        $this->userId = $userId;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getItemId(): ?Items
+    public function getItem(): ?Items
     {
-        return $this->itemId;
+        return $this->item;
     }
 
-    public function setItemId(?Items $itemId): static
+    public function setItem(?Items $item): static
     {
-        $this->itemId = $itemId;
+        $this->item = $item;
 
         return $this;
     }

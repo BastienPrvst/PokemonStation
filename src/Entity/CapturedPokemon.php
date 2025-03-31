@@ -28,6 +28,9 @@ class CapturedPokemon
     #[ORM\Column]
     private ?bool $shiny = null;
 
+    #[ORM\Column]
+    private ?int $timesCaptured = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -77,6 +80,18 @@ class CapturedPokemon
     public function setShiny(bool $shiny): self
     {
         $this->shiny = $shiny;
+
+        return $this;
+    }
+
+    public function getTimesCaptured(): ?int
+    {
+        return $this->timesCaptured;
+    }
+
+    public function setTimesCaptured(int $timesCaptured): static
+    {
+        $this->timesCaptured = $timesCaptured;
 
         return $this;
     }

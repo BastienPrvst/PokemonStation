@@ -11,7 +11,7 @@
             <header class="row">
                 <div class="col-12 col-lg-10 mx-auto rarity-scale">
                     <p>
-{#                        À ce jour, <span>{{ totalPokemon }}</span> Pokémons ont été libérés dans le monde !<br>#}
+                        À ce jour, <span>{{ totalPokemon }}</span> Pokémons ont été libérés dans le monde !<br>
                     </p>
                 </div>
             </header>
@@ -45,8 +45,8 @@
 
                 <div class="carousel-inner carou-ball">
 
-                    <div class="carousel-item justify-content-center active">
-                        <button class="capture-poke-button" data-ball="1">
+                    <div class="carousel-item justify-content-center active" data-ball="default">
+                        <button class="capture-poke-button">
                             <img src="{{ asset('medias/images/balls/poke-ball.png') }}" id="pokeball-animate" class="pokeball-animate too-big" alt="..." >
                         </button>
                         <br>
@@ -59,13 +59,13 @@
 
                     {% for userItem in allUserItems %}
 
-                    <div class="carousel-item justify-content-center">
-                        <button class="capture-poke-button" data-ball="{{ userItem.itemId.id }}">
-                            <img src="{{ asset('medias/images/balls/' ~ userItem.itemId.image) }}" id="pokeball-animate" class="pokeball-animate too-big" alt="..." >
+                    <div class="carousel-item carou-not-base justify-content-center ball-{{ userItem.item.id }}" data-ball="{{ userItem.item.id }}">
+                        <button class="capture-poke-button">
+                            <img src="{{ asset('medias/images/balls/' ~ userItem.item.image) }}" id="pokeball-animate" class="pokeball-animate too-big" alt="..." >
                         </button>
                         <br>
                         <img class="multiple" src="{{ asset('medias/images/elements/multiple.png') }}" alt="nombre de lancer">
-                        <div class="launch-items launch-{{ userItem.itemId.id }}">
+                        <div class="launch-items launch-{{ userItem.item.id }}">
                             {{ userItem.quantity }}
                         </div>
 
@@ -243,6 +243,7 @@
         const coin = '{{ asset('medias/images/elements/real-coin.png') }}';
         window.pokemonBackground = 'forest2-background';
         const newRare = '{{ asset('medias/cries/sounds/06-caught-a-pokemon.mp3') }}'
+        const buyItemSound = '{{ asset('medias/cries/sounds/item-found.mp3') }}'
         const crySound = '{{ asset('medias/cries/') }}'
     </script>
     <script src="{{ asset('js/capture.js') }}"></script>

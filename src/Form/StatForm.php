@@ -13,6 +13,7 @@ class StatForm extends AbstractType
         $builder
             ->add('type', StatTypeForm::class)
             ->add('rarity', StatRarityForm::class)
+            ->add('shiny')
         ;
     }
 

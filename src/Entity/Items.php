@@ -6,6 +6,7 @@ use App\Repository\ItemsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: ItemsRepository::class)]
 class Items
@@ -36,7 +37,14 @@ class Items
     /**
      * @var Collection<int, UserItems>
      */
-    #[ORM\OneToMany(mappedBy: 'itemId', targetEntity: UserItems::class, fetch: "EAGER", orphanRemoval: true)]
+    #[ORM\OneToMany(
+        mappedBy: 'item',
+        targetEntity: UserItems::class,
+        cascade: ['persist', 'remove'],
+        fetch: "EAGER",
+        orphanRemoval: true
+    )]
+    #[Ignore]
     private Collection $userItems;
 
     public function __construct()
@@ -132,7 +140,7 @@ class Items
     {
         if (!$this->userItems->contains($userItem)) {
             $this->userItems->add($userItem);
-            $userItem->setItemId($this);
+            $userItem->setItem($this);
         }
 
         return $this;
@@ -142,8 +150,8 @@ class Items
     {
         if ($this->userItems->removeElement($userItem)) {
             // set the owning side to null (unless already changed)
-            if ($userItem->getItemId() === $this) {
-                $userItem->setItemId(null);
+            if ($userItem->getItem() === $this) {
+                $userItem->setItem(null);
             }
         }
 

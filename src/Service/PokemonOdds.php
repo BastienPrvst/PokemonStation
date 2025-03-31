@@ -3,8 +3,10 @@
 namespace App\Service;
 
 use App\Entity\CapturedPokemon;
+use App\Entity\Items;
 use App\Entity\Pokemon;
 use App\Entity\User;
+use App\Entity\UserItems;
 use App\Repository\CapturedPokemonRepository;
 use App\Repository\PokemonRepository;
 use DateTime;
@@ -25,50 +27,115 @@ class PokemonOdds extends AbstractController
     /**
      * @throws RandomException
      */
-    public function calculationOdds(User $user, int $pokeballId): Response
+    public function calculationOdds(User $user, string $pokeballId): Response
     {
-        $randomRarity = random_int(10, 1000) / 10;
+        /*Partie "défaut"*/
+        if ($pokeballId === 'default') {
+            if ($user->getLaunchs() < 1) {
+                return $this->json([
+                    'error' => 'Vous n\'avez plus de lancers disponibles, veuillez réessayer plus tard !'
+                ]);
+            }
+            $isShiny = $this->isItShiny();
+            $rarity = $this->getRarity();
+            $user->setLaunchs($user->getLaunchs() - 1);//On retire un lancer à l'utilisateur
 
-        if ($user->getLaunchs() < 1) {
-            return $this->json([
-                'error' => 'Vous n\'avez plus de lancers disponibles, veuillez réessayer plus tard !'
-            ]);
+            /* @var $pokemons Pokemon[] */
+            $pokemons = $this->pokemonRepository->findByRarity($rarity[0]);
+            if (empty($pokemons)) {
+                do {
+                    $rarity = $this->getRarity();
+                    $pokemons = $this->pokemonRepository->findByRarity($rarity[0]);
+                } while (empty($pokemons));
+            }
+            $randomPoke = random_int(0, count($pokemons) - 1);
+            $pokemonSpeciesCaptured = $pokemons[$randomPoke];
+            $pokemonCaptured = new CapturedPokemon();
+            $pokemonCaptured
+                ->setPokemon($pokemonSpeciesCaptured)
+                ->setOwner($user)
+                ->setCaptureDate(new DateTime())
+                ->setShiny($isShiny);
+
+            /* @var Pokemon $pokemon*/
+            $pokemon = $pokemonCaptured->getPokemon();
+        } else {
+            /*Code pour les balls alt*/
+            $itemsRepo = $this->entityManager->getRepository(Items::class);
+            $item = $itemsRepo->findOneBy(['id' => $pokeballId]);
+            if (empty($item)) {
+                return $this->json([
+                    'error' => 'Impossible de récuperer l\'item.'
+                ]);
+            }
+
+            $userItem = $this->entityManager->getRepository(UserItems::class)
+                ->findOneBy(['user' => $user, 'item' => $item]);
+
+            if (empty($userItem)) {
+                return $this->json([
+                    'error' => 'Vous ne possedez pas cet objet.'
+                ]);
+            }
+
+            $stats = $item->getStats();
+            random_int(1, 1000) / 10 <= $stats['shiny'] ? $isShiny = true : $isShiny = false;
+            $customRarity = $stats['rarity'];
+            $customType = $stats['type'];
+
+            $rarity = $this->getRarity($customRarity);
+            $type = $this->getCustomType($customType);
+
+            $pokemonsFound = $this->pokemonRepository->findByRarityAndType($rarity[0], $type);
+            $i = 0;
+
+            if (empty($pokemonsFound)) {
+                do {
+                    $rarity = $this->getRarity($customRarity);
+                    $type = $this->getCustomType($customType);
+                    $pokemonsFound = $this->pokemonRepository->findByRarityAndType($rarity[0], $type);
+                    $i++;
+                } while (empty($pokemonsFound) && $i < 5);
+
+            }
+
+            if (empty($pokemonsFound)) {
+                return $this->json([
+                    'error' => 'Aucun pokémon trouvé...'
+                ]);
+            }
+
+            $randomPoke = random_int(0, count($pokemonsFound) - 1);
+            $pokemonSpeciesCaptured = $pokemonsFound[$randomPoke];
+
+            /* @var $userItem UserItems */
+            $userItem->setQuantity($userItem->getQuantity() - 1);
+            if ($userItem->getQuantity() === 0) {
+                $this->entityManager->remove($userItem);
+            }
+
+
+            $pokemonCaptured = new CapturedPokemon();
+            $pokemonCaptured
+                ->setPokemon($pokemonSpeciesCaptured)
+                ->setOwner($user)
+                ->setCaptureDate(new DateTime())
+                ->setShiny($isShiny);
+            $pokemon = $pokemonCaptured->getPokemon();
         }
-
-        $rarity = $this->getCommonRarity($randomRarity);
-        $isShiny = $this->isItShiny();
-        $user->setLaunchs($user->getLaunchs() - 1);//On retire un lancer à l'utilisateur
-
-        /* @var $pokemons Pokemon[] */
-        $pokemons = $this->pokemonRepository->findByRarity($rarity);
-        if (empty($pokemons)) {
-            do {
-                $randomRarity = random_int(10, 1000) / 10;
-                $rarity = $this->getCommonRarity($randomRarity);
-                $pokemons = $this->pokemonRepository->findByRarity($rarity);
-            } while (empty($pokemons));
-        }
-        $randomPoke = random_int(0, count($pokemons) - 1);
-        $pokemonSpeciesCaptured = $pokemons[$randomPoke];
-        $pokemonCaptured = new CapturedPokemon();
-        $pokemonCaptured
-            ->setPokemon($pokemonSpeciesCaptured)
-            ->setOwner($user)
-            ->setCaptureDate(new DateTime())
-            ->setShiny($isShiny);
-
-        /* @var Pokemon $pokemon*/
-        $pokemon = $pokemonCaptured->getPokemon();
 
         //Voir si un dresseur a deja vu ce pokémon ou pas
+
         $alreadyCapturedPokemon = $this->capturedPokemonRepository->findSpeciesCaptured($user);
         $pokemonCapturedId = $pokemon->getPokeId();
         in_array($pokemonCapturedId, $alreadyCapturedPokemon, true) ? $isNew = false : $isNew = true;
 
         if ($isNew || $isShiny) {
+            $pokemonCaptured->setTimesCaptured(1);
             $this->entityManager->persist($pokemonCaptured);
         } else {
             $this->setCoinByRarity($user, $pokemonCaptured);
+            $pokemonCaptured->setTimesCaptured($pokemonCaptured->getTimesCaptured() + 1);
         }
 
         $user->setLaunchCount($user->getLaunchCount() + 1);
@@ -83,8 +150,8 @@ class PokemonOdds extends AbstractController
                 'description' => $pokemon->getDescription(),
                 'nameEN' => $pokemon->getNameEN(),
                 'shiny' => $pokemonCaptured->getShiny(),
-                'rarity' => $rarity,
-                'rarityRandom' => $randomRarity,
+                'rarity' => $rarity[0],
+                'rarityRandom' => ($rarity[1] * 100),
                 'new' => $isNew,
             ],
         ]);
@@ -93,24 +160,61 @@ class PokemonOdds extends AbstractController
     /**
      * @throws RandomException
      */
-    private function getCommonRarity(float|int $randomRarity): string
+    private function getRarity(?array $customRarity = null): array
     {
-        $rarities = [
-            40 => 'C',
-            70 => 'PC',
-            90 => 'R',
-            98 => 'TR',
-            99 => 'ME',
-            99.2 => 'GMAX',
-            99.7 => 'EX',
-            99.9 => 'SR',
-            100 => 'UR',
+        $randNumber = random_int(0, 10000) / 10000;
 
-        ];
+        if ($customRarity) {
+            $rarities = $customRarity;
+        } else {
+            $rarities = [
+                'C' => 40,
+                'PC' => 30,
+                'R' => 20,
+                'TR' => 8,
+                'ME' => 1,
+                'GMAX' => 0.4,
+                'EX' => 0.3,
+                'SR' => 0.2,
+                'UR' => 0.1,
 
-        foreach ($rarities as $threshold => $rarity) {
-            if ($randomRarity <= $threshold) {
-                return $rarity;
+            ];
+        }
+
+        $totalValue = 0;
+        foreach ($rarities as $value) {
+            $totalValue += $value;
+        }
+
+        $i = 0;
+        foreach ($rarities as $rarity => $threshold) {
+            $i += $threshold / $totalValue;
+            if ($randNumber <= $i) {
+                return [$rarity, $randNumber];
+            }
+        }
+
+
+        throw new RandomException();
+    }
+
+    /**
+     * @throws RandomException
+     */
+    private function getCustomType(array $customType): string
+    {
+        $totalValue = 0;
+        foreach ($customType as $value) {
+            $totalValue += $value;
+        }
+
+        $randNumber = random_int(0, 10000) / 10000;
+
+        $i = 0;
+        foreach ($customType as $type => $threshold) {
+            $i += $threshold / $totalValue;
+            if ($randNumber <= $i) {
+                return $type;
             }
         }
 
@@ -134,7 +238,7 @@ class PokemonOdds extends AbstractController
             'PC' => 3,
             'R' => 5,
             'TR' => 10,
-            'ME' => 25,
+            'ME' => 50,
             'GMAX' => 50,
             'SR' => 100,
             'EX' => 100,

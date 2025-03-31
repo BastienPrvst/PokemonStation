@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Entity\Category;
 use App\Entity\Items;
 use Doctrine\ORM\EntityManagerInterface;
 use Imagick;
@@ -17,7 +16,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 #[AsCommand(
-    name: 'app:add-items',
+    name: 'app:get-items',
     description: 'Ajoute toutes les images d\'objets d\'une catégorie de l\'API Pokemon ',
 )]
 class GetItemsCommand extends Command
@@ -78,10 +77,6 @@ class GetItemsCommand extends Command
             $categoryResponse = $curl->request('GET', $url);
             $category = json_decode($categoryResponse->getContent());
 
-            $categoryEntity = new Category();
-            $categoryEntity->setName($category->name);
-            $this->em->persist($categoryEntity);
-
             foreach ($category->items as $item) {
                 try {
                     $object = $curl->request('GET', $item->url);
@@ -98,7 +93,6 @@ class GetItemsCommand extends Command
 
                         $newItem =  new Items();
                         $newItem->setName($object->name);
-                        $newItem->setCategory($categoryEntity);
                         $newItem->setImage($object->name . '.png');
                         $newItem->setPrice(1000);
                         $newItem->setStats($this->createStats());
@@ -120,8 +114,8 @@ class GetItemsCommand extends Command
                     continue;
                 }
             }
-        } catch (\Exception) {
-            $io->error('Impossible de communiquer avec l\'API.');
+        } catch (\Exception $e) {
+            $io->error('Impossible de communiquer avec l\'API.' . $e->getMessage());
             return Command::FAILURE;
         }
 
@@ -140,8 +134,8 @@ class GetItemsCommand extends Command
     {
         $types = [
             'eau', 'feu', 'plante', 'insecte', 'roche', 'sol', 'glace', 'acier',
-            'dragon', 'combat', 'tenèbres', 'psy', 'vol', 'fée', 'poison',
-            'électrik', 'normal', 'spectre'
+            'dragon', 'combat', 'tenebres', 'psy', 'vol', 'fee', 'poison',
+            'electrik', 'normal', 'spectre'
         ];
 
         $typePercentage = 100 / count($types);
@@ -149,18 +143,23 @@ class GetItemsCommand extends Command
 
         $rarityStats = [
             'C' => 40,
-            'PC' => 70,
-            'R' => 85,
-            'TR' => 95,
-            'ME' => 97,
-            'GMAX' => 99,
-            'EX' => 99.9,
-            'UR' => 100
+            'PC' => 30,
+            'R' => 20,
+            'TR' => 8,
+            'ME' => 1,
+            'GMAX' => 0.4,
+            'EX' => 0.3,
+            'SR' => 0.2,
+            'UR' => 0.1,
+
         ];
+
+        $shiny = 0.5;
 
         return [
             'type' => $typeStats,
-            'rarity' => $rarityStats
+            'rarity' => $rarityStats,
+            'shiny' => $shiny,
         ];
     }
 }

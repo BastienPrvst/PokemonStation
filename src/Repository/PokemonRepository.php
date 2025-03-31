@@ -155,4 +155,15 @@ class PokemonRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    public function findByRarityAndType(string $rarity, string $type): array
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.rarity = :rarity')
+            ->andWhere('(p.type = :type OR p.type2 = :type)')
+            ->setParameter('rarity', $rarity)
+            ->setParameter('type', $type)
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -10,6 +10,8 @@ use App\Entity\User;
 use App\Repository\GenerationRepository;
 use App\Repository\PokemonRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -64,11 +66,16 @@ class PokemonController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
     #[Route('/capture/', name: 'app_capture')]
     #[IsGranted('ROLE_USER')]
     public function capture(ManagerRegistry $doctrine): Response
     {
         $userRepo = $doctrine->getRepository(User::class);
+        $totalPokemon = $userRepo->totalPokemon();
 
         /* @var $user User *-*/
         $user = $this->getUser();
@@ -82,7 +89,7 @@ class PokemonController extends AbstractController
         $itemsToSell = $itemsRepo->findBy(["active" => true]);
 
         return $this->render('main/capture.html.twig', [
-//            'totalPokemon' => $totalPokemon,
+            'totalPokemon' => $totalPokemon,
             'allUserItems' => $allUserItems,
             'itemsToSell' => $itemsToSell,
             'fiveLast' => $fiveLast,

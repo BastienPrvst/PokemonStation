@@ -6,6 +6,7 @@ use App\Controller\Admin\Field\ItemStatField;
 use App\Entity\Items;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
@@ -28,17 +29,18 @@ class ItemsCrudController extends AbstractCrudController
         $description = TextareaField::new('description');
         $price = NumberField::new('price');
         $stats = ItemStatField::new('stats');
+        $active = BooleanField::new('active');
         $image = ImageField::new('image')
             ->setBasePath('/medias/images/balls/')
             ->setUploadDir('public/medias/images/balls/')
             ->setRequired(false);
 
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $name, $description, $price, $image];
+            return [$id, $name, $description, $price, $image, $active];
         }
 
         if (Crud::PAGE_EDIT === $pageName) {
-            return [$name, $description, $price, $stats];
+            return [$name, $description, $price, $stats->setRequired(false), $active];
         }
 
         if (Crud::PAGE_NEW === $pageName) {

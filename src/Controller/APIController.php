@@ -10,6 +10,7 @@ use App\Entity\UserItems;
 use App\Service\PokemonOdds;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Random\RandomException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,11 +28,14 @@ class APIController extends AbstractController
     }
 
 
+    /**
+     * @throws RandomException
+     */
     #[Route('/capture-api/', name: 'app_capture_api')]
     #[IsGranted('ROLE_USER')]
     public function captureApi(Request $request): Response
     {
-        $pokeballId = (int)$request->get('pokeballData');
+        $pokeballId = $request->get('pokeballData');
         /** @var User $user * */
         $user = $this->getUser();
         return $this->pokemonOdds->calculationOdds($user, $pokeballId);
@@ -110,12 +114,12 @@ class APIController extends AbstractController
         foreach ($foundArray as $itemInfo) {
             $userItemRepo = $doctrine->getRepository(UserItems::class);
             $item = $itemInfo['item'];
-            $alreadyExist = $userItemRepo->findOneBy(['itemId' => $item->getId(), 'userId' => $user->getId()]);
+            $alreadyExist = $userItemRepo->findOneBy(['item' => $item->getId(), 'user' => $user->getId()]);
 
             if ($alreadyExist === null) {
                 $userItem = new UserItems();
-                $userItem->setItemId($item);
-                $userItem->setUserId($user);
+                $userItem->setItem($item);
+                $userItem->setUser($user);
                 $userItem->setQuantity($itemInfo['quantity']);
                 $user->addUserItem($userItem);
                 $this->entityManager->persist($userItem);
@@ -132,6 +136,8 @@ class APIController extends AbstractController
 
         return $this->json([
             'success' => 'Votre achat a bien été effectué!',
+            'kartPrice' => $totalPrice,
+            'array' => $foundArray
         ]);
     }
 
