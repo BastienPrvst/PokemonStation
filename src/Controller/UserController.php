@@ -64,8 +64,11 @@ class UserController extends AbstractController
             } else {
                 // Modification du profil
                 $newPassword = $form->get('plainPassword')->getData();
-                $hashNewPassword = $encoder->hashPassword($user, $newPassword);
-                $user->setPassword($hashNewPassword);
+                if ($newPassword !== null) {
+                    $hashNewPassword = $encoder->hashPassword($user, $newPassword);
+                    $user->setPassword($hashNewPassword);
+                }
+
                 $this->entityManager->flush();
 
                 // Message flash de succès
@@ -113,13 +116,29 @@ class UserController extends AbstractController
 
     private function getAllAvatars(): array
     {
+        /* @var $user User */
+        $user = $this->getUser();
         $dirPath = dirname(__DIR__, 2) . "/public/medias/images/trainers";
         $files = scandir($dirPath, SCANDIR_SORT_ASCENDING);
         $realFiles = [];
         foreach ($files as $file) {
-            if (is_file($dirPath . '/' . $file)) {
-                $realFiles[] = $file;
+            if (!is_file($dirPath . '/' . $file)) {
+                continue;
             }
+
+            if (
+                $file === 'Spirit.gif' &&
+                !($user->getPseudonym() === 'Spirit' &&
+                    in_array(
+                        'ROLE_ADMIN',
+                        $user->getRoles(),
+                        true
+                    ))
+            ) {
+                continue;
+            }
+
+            $realFiles[] = $file;
         }
         return $realFiles;
     }

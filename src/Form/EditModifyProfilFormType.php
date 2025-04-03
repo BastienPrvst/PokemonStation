@@ -46,21 +46,19 @@ class EditModifyProfilFormType extends AbstractType
                 ],
             ])
 
-            ->add('plainPassword', RepeatedType::class ,[
+            ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Le mot de passe ne correspond pas à sa confirmation',
                 'first_options' => [
-                    'label' => 'Nouveau mot de passe',
+                    'label' => 'Nouveau mot de passe (Laisser vide si pas de changements)',
                 ],
                 'second_options' => [
                     'label' => 'Confirmation du mot de passe',
                 ],
+                'required' => false,
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Merci de renseigner un mot de passe',
-                    ]),
                     new Length([
                         'min' => 8,
                         'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères',
