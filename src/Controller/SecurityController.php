@@ -12,7 +12,7 @@ class SecurityController extends AbstractController
     /**
      * fonction de la page de connexion.
      */
-    #[Route(path: '/connexion/', name: 'app_connexion')]
+    #[Route(path: '/connexion', name: 'app_connexion')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
@@ -29,7 +29,7 @@ class SecurityController extends AbstractController
         return $this->render('security/connexion.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
-    #[Route(path: '/deconnexion/', name: 'app_deconnexion')]
+    #[Route(path: '/deconnexion', name: 'app_deconnexion')]
     public function logout(): void
     {
         //le code ici ne sera jamais lu, car la page de déconnexion est deja géré en interne par le bundle security

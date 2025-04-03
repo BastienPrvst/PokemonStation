@@ -19,11 +19,11 @@
 			{% for generation, pokemons in generations %}
 				<div class="gen-content content-{{ generation }} {% if loop.first %} active {% else %} type-none {% endif %}">
 					<div>
-						<span id="activeCountG1">Pokédex :</span>  {{ pokemonsCaptured|filter(p => p.gen.id == generation)|length }} sur {{ pokemons|length }}
+						<span id="activeCountG1">Pokédex :</span>  {{ pokemonsCaptured|filter(p => p.gen.id == generation and p.relateTo is same as null)|length }} sur {{ pokemons|length }}
 					</div>
 					<div>
 						<span class="shinydex" id="shinyG{{ generation }}">ShinyDex :</span>
-						<span>{{ pokemonShiniesCaptured|filter(p => p.gen.id == generation)|length }} sur {{ pokemons|length }} <img class="gen-shiny" src="{{ asset('medias/images/sparkle/shinyOK.png') }}" alt=""></span>
+						<span>{{ pokemonShiniesCaptured|filter(p => p.gen.id == generation and p.relateTo is same as null)|length }} sur {{ pokemons|length }} <img class="gen-shiny" src="{{ asset('medias/images/sparkle/shinyOK.png') }}" alt=""></span>
 					</div>
 				</div>
 			{% endfor %}

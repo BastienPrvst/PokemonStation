@@ -81,4 +81,15 @@ class CapturedPokemonRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+//    public function getUserCapturedPokemon () : CapturedPokemon
+//    {
+//        return $this->createQueryBuilder('cp')
+//            ->innerJoin('cp.pokemon', 'p')
+//            ->where('cp.owner = :userId')
+//            ->andWhere('p.pokeId = :pokeId')
+//            ->setParameters([
+//                'userId' => $user->getId(),
+//                'pokeId' => $pokeId])
+//    }
 }

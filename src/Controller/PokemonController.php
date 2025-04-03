@@ -27,7 +27,7 @@ class PokemonController extends AbstractController
     ) {
     }
 
-    #[Route('/pokedex/', name: 'app_pokedex')]
+    #[Route('/pokedex', name: 'app_pokedex')]
     #[IsGranted('ROLE_USER')]
     public function pokedex(): Response
     {
@@ -58,6 +58,8 @@ class PokemonController extends AbstractController
             }
         }
 
+        dump($pokemonsCaptured);
+
         return $this->render('main/pokedex.html.twig', [
             'generations'             => $generations,
             'pokemonsCaptured'        => $pokemonsCaptured,
@@ -70,7 +72,7 @@ class PokemonController extends AbstractController
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
-    #[Route('/capture/', name: 'app_capture')]
+    #[Route('/capture', name: 'app_capture')]
     #[IsGranted('ROLE_USER')]
     public function capture(ManagerRegistry $doctrine): Response
     {

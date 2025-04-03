@@ -24,7 +24,7 @@ class UserController extends AbstractController
     ) {
     }
 
-    #[Route('/mon-profil/', name: 'app_profil')]
+    #[Route('/mon-profil', name: 'app_profil')]
     #[IsGranted('ROLE_USER')]
     public function profil(): Response
     {
@@ -44,7 +44,7 @@ class UserController extends AbstractController
         );
     }
 
-    #[Route('/modifier-mon-profil/', name: 'app_profil-modify')]
+    #[Route('/modifier-mon-profil', name: 'app_profil-modify')]
     #[IsGranted('ROLE_USER')]
     public function modifyProfil(
         UserPasswordHasherInterface $encoder,

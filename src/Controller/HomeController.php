@@ -21,28 +21,28 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/types/', name: 'app_types')]
+    #[Route('/types', name: 'app_types')]
     public function types(): Response
     {
         return $this->render('main/types.html.twig', [
         ]);
     }
 
-    #[Route('/about/', name: 'app_about')]
+    #[Route('/about', name: 'app_about')]
     public function about(): Response
     {
         return $this->render('main/about.html.twig', [
         ]);
     }
 
-    #[Route('/project/', name: 'app_project')]
+    #[Route('/project', name: 'app_project')]
     public function project(): Response
     {
         return $this->render('main/project.html.twig', [
         ]);
     }
 
-    #[Route('/mentions-legales/', name: 'app_legals')]
+    #[Route('/mentions-legales', name: 'app_legals')]
     public function legals(): Response
     {
         return $this->render('main/legals.html.twig', [

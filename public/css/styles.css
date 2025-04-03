@@ -1022,6 +1022,10 @@ i.fa-chevron-right {
   color: #d3ad42;
 }
 
+.shiny-slider .mini-infos span {
+  color: #3eb1f1;
+}
+
 .mini-images {
   display: flex;
 }
@@ -1408,19 +1412,44 @@ i.fa-chevron-right {
   border-radius: 10px;
 }
 
-.shop-table .shop-item:nth-child(even) {
+.shop-table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.shop-list tr {
+  background-color: transparent !important;
+}
+
+/* Premier tr */
+.shop-list tr:first-child td:first-child,
+.shop-list tr:first-child {
+  border-top-left-radius: 25px;
+}
+
+.shop-list tr:first-child td:nth-last-of-type(2) {
+  border-top-right-radius: 25px;
+}
+
+/* Dernier tr */
+.shop-list tr:last-child td:first-of-type {
+  border-bottom-left-radius: 25px;
+}
+
+.shop-list tr:last-child td:nth-last-of-type(2) {
+  border-bottom-right-radius: 25px;
+}
+
+.shop-table .shop-item:nth-child(even) td {
   background-color: #af374d;
 }
 
-.shop-table .shop-item:nth-child(odd) {
+.shop-table .shop-item:nth-child(odd) td {
   background-color: #de0c30;
 }
 
-.item-name {
+.quantity {
   color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .shopNotice {
@@ -1460,6 +1489,7 @@ tfoot tr td {
   width: 30px;
   height: 30px;
   border-radius: 50%;
+  box-shadow: 2px 2px 2px black;
 }
 
 .minus:active,
@@ -1477,11 +1507,15 @@ tfoot tr td {
 
 .item-des {
   color: white;
+  padding: 10px 0;
+  font-size: 0.6rem;
 }
 
 .item-name {
-  padding-left: 15px;
-  margin-top: 5px;
+  color: white;
+  align-items: center;
+  padding-top: 15px;
+  padding-left: 5px;
 }
 
 .plus-td {
@@ -1532,11 +1566,6 @@ tfoot tr td {
   .buy-it {
     padding: 10px;
     border-radius: 15px;
-  }
-
-  .minus,
-  .plus {
-    font-size: 2rem;
   }
 
   .shop-list tr td {

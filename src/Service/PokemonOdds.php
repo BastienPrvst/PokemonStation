@@ -113,8 +113,7 @@ class PokemonOdds extends AbstractController
             if ($userItem->getQuantity() === 0) {
                 $this->entityManager->remove($userItem);
             }
-
-
+            
             $pokemonCaptured = new CapturedPokemon();
             $pokemonCaptured
                 ->setPokemon($pokemonSpeciesCaptured)
@@ -135,8 +134,14 @@ class PokemonOdds extends AbstractController
             $this->entityManager->persist($pokemonCaptured);
         } else {
             $this->setCoinByRarity($user, $pokemonCaptured);
-            $pokemonCaptured->setTimesCaptured($pokemonCaptured->getTimesCaptured() + 1);
+            /* @var $pokemonToIncrement CapturedPokemon */
+            $pokemonToIncrement = $this->capturedPokemonRepository->findOneBy(['pokemon' => $pokemon, 'owner' => $user]);
+            $pokemonToIncrement->setTimesCaptured
+            ($pokemonToIncrement->getTimesCaptured() + 1);
+            $this->entityManager->persist($pokemonToIncrement);
+            $pokemonToIncrement->setCaptureDate(new DateTime());
         }
+
 
         $user->setLaunchCount($user->getLaunchCount() + 1);
         $this->entityManager->flush();

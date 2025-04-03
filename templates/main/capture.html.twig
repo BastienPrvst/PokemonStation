@@ -109,7 +109,7 @@
 
                     {% for pokemonCaptured in fiveLast%}
 
-                        <div class="pokemon-five">
+                        <div class="pokemon-five {% if pokemonCaptured.shiny is same as true %}shiny-slider{% endif %}">
                             <div class="mini-infos">
                                 <span>{{ pokemonCaptured.pokemon.name|capitalize }}</span> ~
                                 <a href="{{ path('app_user_showprofile', {pseudonym:pokemonCaptured.owner.pseudonym})}}">{{ pokemonCaptured.owner.pseudonym | capitalize }}</a>
@@ -138,8 +138,9 @@
 
                     {% for pokemonCaptured in fiveLast%}
 
-                        <div class="pokemon-five">
-                            <div class="mini-infos">
+                        <div class="pokemon-five {% if pokemonCaptured.shiny is same as true %}shiny-slider{% endif %}">
+
+                        <div class="mini-infos">
                                 <span>{{ pokemonCaptured.pokemon.name|capitalize }}</span> ~
                                 <a href="{{ path('app_user_showprofile', {pseudonym:pokemonCaptured.owner.pseudonym})}}">{{ pokemonCaptured.owner.pseudonym | capitalize }}</a>
                             </div>

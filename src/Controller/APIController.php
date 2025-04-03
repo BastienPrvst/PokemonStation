@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-
 use function PHPUnit\Framework\isEmpty;
 
 class APIController extends AbstractController
@@ -31,7 +30,7 @@ class APIController extends AbstractController
     /**
      * @throws RandomException
      */
-    #[Route('/capture-api/', name: 'app_capture_api')]
+    #[Route('/capture-api', name: 'app_capture_api')]
     #[IsGranted('ROLE_USER')]
     public function captureApi(Request $request): Response
     {
@@ -41,7 +40,7 @@ class APIController extends AbstractController
         return $this->pokemonOdds->calculationOdds($user, $pokeballId);
     }
 
-    #[Route('/pokedex-api/', name: 'app_pokedex_api')]
+    #[Route('/pokedex-api', name: 'app_pokedex_api')]
     #[IsGranted('ROLE_USER')]
     public function pokedexApi(Request $request, ManagerRegistry $doctrine): Response
     {
@@ -78,7 +77,7 @@ class APIController extends AbstractController
         ]);
     }
 
-    #[Route('/capture-shop-api/', name: 'app_shop_api')]
+    #[Route('/capture-shop-api', name: 'app_shop_api')]
     #[IsGranted('ROLE_USER')]
     public function shop(Request $request, ManagerRegistry $doctrine): Response
     {
@@ -141,7 +140,7 @@ class APIController extends AbstractController
         ]);
     }
 
-    #[Route('/mon-profil-api/', name: 'app_profil_api')]
+    #[Route('/mon-profil-api', name: 'app_profil_api')]
     #[IsGranted('ROLE_USER')]
     public function profilApi(Request $request, ManagerRegistry $doctrine): Response
     {
