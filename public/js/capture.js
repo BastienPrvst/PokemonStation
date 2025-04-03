@@ -182,7 +182,6 @@ document
                 document
                   .querySelector(".pokeball-animate")
                   .classList.remove("pokeball-animated");
-                console.log(data.captured_pokemon.rarityRandom);
                 if (data.captured_pokemon.new === true) {
                   pokemonIsNew = true;
                 } else {
@@ -253,7 +252,7 @@ document
             let finalPosition = {};
 
             tl.to(".pokeball-animate", {
-              duration: 0.5,
+              duration: 0.4,
               rotation: rotationDegree,
               motionPath: pathRandom,
               ease: "power1.in",
@@ -557,14 +556,12 @@ buyButton.addEventListener("click", function () {
           for (let entity of data.array) {
             let carouselItem = document.querySelectorAll(".carou-not-base");
             let alreadyExist = false;
-            console.log(entity);
             carouselItem.forEach(function (pokeItem) {
               if (
                 parseInt(pokeItem.dataset.ball) === parseInt(entity.item.id)
               ) {
                 alreadyExist = true;
               }
-              console.log(typeof pokeItem.dataset.ball, typeof entity.item.id);
             });
 
             if (alreadyExist === true) {
@@ -577,10 +574,13 @@ buyButton.addEventListener("click", function () {
                 base + parseInt(entity.quantity);
             } else {
               let newCarou = document
-                .querySelector(".carou-not-base")
+                .querySelector(".carousel-item")
                 .cloneNode(true);
 
               newCarou.dataset.ball = entity.item.id;
+              newCarou.classList.add("carou-not-base");
+              newCarou.classList.add(`ball-${entity.item.id}`);
+              newCarou.classList.remove(`active`);
               let button = newCarou.querySelector(".capture-poke-button img");
               button.src = "/medias/images/balls/" + entity.item.image;
               const launchDiv = newCarou.querySelector(".launch-items");

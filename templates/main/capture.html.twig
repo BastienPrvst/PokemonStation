@@ -57,6 +57,8 @@
 
                     </div>
 
+
+
                     {% for userItem in allUserItems %}
 
                     <div class="carousel-item carou-not-base justify-content-center ball-{{ userItem.item.id }}" data-ball="{{ userItem.item.id }}">
@@ -173,16 +175,16 @@
 
     <div class="shop">
 
-        <h2 class="text-center shop-title text-white">Boutique</h2>
-
-        <div class="coin-container text-end">
-            <img class="coin-width-2" src="{{ asset('medias/images/elements/real-coin.png') }}" alt="">
-
-            <p class="text-center coin-count"> {{ app.user.money }}</p>
-
-        </div>
-
         <div class="mini-shop">
+
+            <h2 class="text-center shop-title text-white">Boutique</h2>
+
+            <div class="coin-container text-end">
+                <img class="coin-width-2" src="{{ asset('medias/images/elements/real-coin.png') }}" alt="">
+
+                <p class="text-center coin-count"> {{ app.user.money }}</p>
+
+            </div>
 
             <table class="text-center shop-table">
                 <thead>
@@ -200,12 +202,12 @@
                 {% for item in itemsToSell %}
 
                     <tr class="shop-item">
-                        <td class="item-name">{{ item.name|trans|capitalize }} <img class="mini-ball" src="{{ asset('medias/images/balls/' ~ item.image) }}" alt=""></td>
+                        <td class="item-name">{{ item.name|trans|capitalize }}<img class="mini-ball" src="{{ asset('medias/images/balls/' ~ item.image) }}" alt=""></td>
                         <td class="price price-{{ loop.index }}">{{ item.price }}<img class="coin-width" src="{{ asset('medias/images/elements/real-coin.png') }}" alt=""></td>
-                        <td>{{ item.description }}</td>
-                        <td><button class="minus minus-{{ loop.index }}">-</button></td>
+                        <td class="item-des">{{ item.description }}</td>
+                        <td><button class="minus minus-{{ loop.index }}"><i class="fa-solid fa-minus"></i></button></td>
                         <td class="quantity quantity-{{ loop.index }}">0</td>
-                        <td><button class="plus plus-{{ loop.index }}">+</button></td>
+                        <td class="plus-td"><button class="plus plus-{{ loop.index }}"><i class="fa-solid fa-plus"></i></button></td>
                         <td class="item-id" hidden>{{ item.id }}</td>
                     </tr>
 

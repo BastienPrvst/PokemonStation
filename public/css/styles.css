@@ -307,36 +307,36 @@ footer {
   }
 
   .footer {
-      background-color: #0C3348;
-      color: #FFFFFF;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-evenly;
-      align-items: center;
-      padding: 70px;
-      margin: 0;
+    background-color: #0c3348;
+    color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 70px;
+    margin: 0;
   }
 
   .footer-logo {
-      display: flex;
-      flex-wrap: wrap;
-      margin-top: -50px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: -50px;
   }
 
   .footer-blocks {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-evenly;
-      align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: flex-start;
   }
 
   .footer-block ul h4 {
-      font-weight: bold;
-      font-size: 1.5rem;
+    font-weight: bold;
+    font-size: 1.5rem;
   }
 
   .footer-block ul {
-      padding: 0;
+    padding: 0;
   }
 
   .footer-logo {
@@ -503,8 +503,8 @@ footer {
 }
 
 .profile-title {
-    margin-bottom: .5rem;
-    color: white;
+  margin-bottom: 0.5rem;
+  color: white;
 }
 
 .profile-container {
@@ -512,8 +512,8 @@ footer {
   background-size: 50px;
   background-position: top right;
   background-repeat: no-repeat;
-  background-color: #E06666;
-  border: solid #A62840 5px;
+  background-color: #e06666;
+  border: solid #a62840 5px;
   border-radius: 30px;
   padding: 15px;
 }
@@ -613,32 +613,29 @@ footer {
     padding: 50px 0;
   }
 
-    .trainer-gif {
+  .trainer-gif {
+    transform: scale(1.2);
+    padding: 50px 0;
+  }
 
-        transform: scale(1.2);
-        padding: 50px 0;
+  .avatar img {
+    margin: 0 50px;
+  }
 
-    }
+  .carou-avatar {
+    margin: 0 auto;
+    max-width: 300px;
+    padding: 30px 0;
+  }
+  .avatar img {
+    margin: 0 50px;
+  }
 
-    .avatar img {
-        margin: 0 50px;
-
-    }
-
-    .carou-avatar {
-      margin: 0 auto;
-      max-width: 300px;
-      padding: 30px 0;
-    }
-    .avatar img {
-      margin: 0 50px;
-    }
-
-    .carou-avatar {
-      text-align: center;
-      max-width: 300px;
-      padding: 30px 0;
-    }
+  .carou-avatar {
+    text-align: center;
+    max-width: 300px;
+    padding: 30px 0;
+  }
 }
 
 .message-avatar p {
@@ -658,10 +655,10 @@ footer {
 /*Modif stats top 10 pokedex*/
 
 .table-pokedex {
-    border-collapse: collapse;
-    table-layout: fixed;
-    width: 100%;
-    margin: 10px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  margin: 10px;
 }
 
 .table-pokedex tr th {
@@ -744,8 +741,8 @@ footer {
   }
 
   .profile-title {
-      padding: 0;
-      margin-bottom: 1rem;
+    padding: 0;
+    margin-bottom: 1rem;
   }
 
   .background {
@@ -760,12 +757,12 @@ footer {
   }
 
   .list-group-item {
-      font-family: 'Press Start 2P', sans-serif;
-      font-size: 0.8rem;
-      background-color: white;
-      opacity: 0.8;
-      margin: 5px;
-      border-radius: 5px;
+    font-family: "Press Start 2P", sans-serif;
+    font-size: 0.8rem;
+    background-color: white;
+    opacity: 0.8;
+    margin: 5px;
+    border-radius: 5px;
   }
 
   .list-group-item {
@@ -801,15 +798,15 @@ footer {
   }
 
   .pokedex-top-10 td {
-      padding: 10px;
+    padding: 10px;
   }
 
   .table-pokedex tr th {
-      font-size: 0.6rem;
+    font-size: 0.6rem;
   }
 
   .table-pokedex tr td {
-      font-size: 0.8rem;
+    font-size: 0.8rem;
   }
 }
 
@@ -935,35 +932,35 @@ i.fa-chevron-right {
 /* Forms  */
 
 .search-input {
-    border-radius: 0;
-    border: none;
-    opacity: .8;
+  border-radius: 0;
+  border: none;
+  opacity: 0.8;
 }
 
 .search-input + .invalid-feedback {
-    color: white;
-    position: absolute;
-    bottom: -1.5rem;
+  color: white;
+  position: absolute;
+  bottom: -1.5rem;
 }
 
 .search-input:focus {
-    box-shadow: none;
-    border: none;
+  box-shadow: none;
+  border: none;
 }
 
 .search-button {
-    font-family: 'Press Start 2P', sans-serif;
-    color: white;
-    min-width: 10rem;
-    width: 20%;
-    border: none;
-    background-color: #A62840;
-    transition-property: opacity;
-    transition-duration: .5s;
+  font-family: "Press Start 2P", sans-serif;
+  color: white;
+  min-width: 10rem;
+  width: 20%;
+  border: none;
+  background-color: #a62840;
+  transition-property: opacity;
+  transition-duration: 0.5s;
 }
 
 .search-button:disabled {
-    opacity: .5;
+  opacity: 0.5;
 }
 
 /* ----------------------------------------------------------------------------------------------------------- */
@@ -978,18 +975,18 @@ i.fa-chevron-right {
   padding-top: 30px;
 }
 
-.lastpokemon{
-  overflow:hidden;
+.lastpokemon {
+  overflow: hidden;
   display: flex;
   white-space: nowrap;
 }
 
-.fivelast{
+.fivelast {
   display: flex;
   animation: 60s scrollText infinite linear;
 }
 
-.pokemon-five{
+.pokemon-five {
   margin: 15px 10px;
   height: 180px;
   width: 200px;
@@ -998,22 +995,21 @@ i.fa-chevron-right {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #8C051C;
+  background: #8c051c;
   border-radius: 20px;
 }
 
-.pokemon-five:nth-child(odd){
-  background: #8C051C;
+.pokemon-five:nth-child(odd) {
+  background: #8c051c;
 }
 
-.pokemon-five:nth-child(even){
-  background: #E04142;
+.pokemon-five:nth-child(even) {
+  background: #e04142;
 }
 
-.lastpokemon:hover .fivelast{
+.lastpokemon:hover .fivelast {
   animation-play-state: paused;
 }
-
 
 @keyframes scrollText {
   to {
@@ -1023,10 +1019,10 @@ i.fa-chevron-right {
 
 .mini-infos a {
   text-decoration: underline;
-  color: #D3AD42;
+  color: #d3ad42;
 }
 
-.mini-images{
+.mini-images {
   display: flex;
 }
 
@@ -1039,12 +1035,12 @@ i.fa-chevron-right {
   max-height: 100px;
 }
 
-.mini-trainer{
+.mini-trainer {
   width: 60px;
   height: 60px;
 }
 
-.mini-shiny{
+.mini-shiny {
   width: 30px;
   position: absolute;
   left: 90px;
@@ -1058,6 +1054,7 @@ i.fa-chevron-right {
   align-items: center;
   justify-content: center;
   border: 2mm ridge rgba(240 0 32/ 0.9);
+  overflow-y: hidden;
 }
 
 /* CSS POUR LES FONDS JS*/
@@ -1157,20 +1154,20 @@ i.fa-chevron-right {
   flex-wrap: wrap;
 }
 
-.info-margin{
+.info-margin {
   margin: 0 4px;
 }
 
-.visi-zero{
+.visi-zero {
   visibility: hidden;
 }
 
-.visi-one{
+.visi-one {
   visibility: visible;
 }
 
 .rarity-scale,
-.slider{
+.slider {
   color: #ffffff;
   text-align: center;
   background-color: #af374d;
@@ -1182,14 +1179,14 @@ i.fa-chevron-right {
 }
 
 .slider {
-  margin-top: 200px;
+  margin-top: 60px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   border-bottom-width: 2mm;
 }
 
 .slider span,
-.slider a{
+.slider a {
   font-family: "Jersey 10", serif;
   font-size: 1.2rem;
   font-weight: lighter;
@@ -1205,7 +1202,8 @@ i.fa-chevron-right {
   color: #d4af37;
 }
 
-.view-pokemon .poke-capture-div .displayed-pokemon {
+.displayed-pokemon {
+  max-height: 100%;
   max-width: 100%;
   transform: scale(2.5);
   position: relative;
@@ -1216,7 +1214,6 @@ i.fa-chevron-right {
 }
 
 .coin-count {
-  padding: 20px 0 0 0;
   margin-bottom: 0 !important;
   font-size: 1rem;
   color: #d4af37;
@@ -1226,6 +1223,7 @@ i.fa-chevron-right {
 .coin-container {
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 
 .coin-width-2 {
@@ -1237,25 +1235,25 @@ i.fa-chevron-right {
 }
 
 .logo-new {
-    width: 125px;
+  width: 125px;
 }
 
 .volume {
-    width: 50px;
-    height: 50px;
-    border-color: #DE0C30;
-    background-color: #AF374D;
-    border-bottom-right-radius: 25px;
-    position: absolute;
-    top : 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-color: #de0c30;
+  background-color: #af374d;
+  border-bottom-right-radius: 25px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .volume img {
-    width: 30px;
+  width: 30px;
 }
 
 .logo-new {
@@ -1306,7 +1304,6 @@ i.fa-chevron-right {
 
 .pokeball-animate {
   position: relative;
-
   padding-top: 5px;
   padding-bottom: 5px;
 }
@@ -1372,16 +1369,16 @@ i.fa-chevron-right {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 50px 20px;
-  background-color: #AF374D;
+  padding: 20px 20px;
+  background-color: #af374d;
   border-radius: 15px;
-  margin-top: 150px;
+  margin-top: 50px;
   position: static;
 }
 
 .shop-title {
-  padding-bottom: 20px;
-  font-family: "Press Start 2P", sans-serif;
+  font-family: "Jersey 10", sans-serif;
+  font-size: 5rem;
   text-decoration-line: underline;
   text-decoration-style: double;
 }
@@ -1389,15 +1386,19 @@ i.fa-chevron-right {
 .mini-shop {
   font-family: "Press Start 2P", sans-serif;
   font-size: 0.6rem;
-  background-color: #e06666;
-  padding: 5px;
+  background-color: #092a3b;
   border-radius: 25px;
   border: solid #000000 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .shop-table thead tr th {
   font-size: 0.7rem;
   padding: 10px;
+  color: white;
 }
 
 .total_shop {
@@ -1407,15 +1408,26 @@ i.fa-chevron-right {
   border-radius: 10px;
 }
 
+.shop-table .shop-item:nth-child(even) {
+  background-color: #af374d;
+}
+
+.shop-table .shop-item:nth-child(odd) {
+  background-color: #de0c30;
+}
+
+.item-name {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .shopNotice {
   font-size: 1.5rem;
   color: #ffffff;
   font-weight: bold;
   margin-top: 25px;
-}
-
-.shop-list tr td {
-  padding: 10px 0;
 }
 
 .shop-list tr {
@@ -1428,33 +1440,59 @@ tfoot tr td {
   padding: 20px 0;
 }
 
-.item-name {
-  color: #de0c30;
-}
-
 .mini-ball {
-  transform: scale(0.6);
+  transform: scale(0.4);
 }
 
 .price {
   color: #d4af37;
+  font-size: 0.8rem;
 }
 
 .minus,
 .plus {
-  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #de0c30;
   background-color: rgba(255, 255, 255);
+  border: solid 1px gray;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
 
-  border-radius: 18px;
+.minus:active,
+.plus:active {
+  background-color: gray;
 }
 
 .buy-it {
   border: #de0c30 solid 3px;
   border-radius: 10px;
+  padding: 10px 20px;
+  position: relative;
+  top: -30px;
 }
 
-@media screen and (min-width: 992px) {
+.item-des {
+  color: white;
+}
+
+.item-name {
+  padding-left: 15px;
+  margin-top: 5px;
+}
+
+.plus-td {
+  padding-right: 15px;
+}
+
+@media screen and (min-width: 1380px) {
+  .mini-ball {
+    transform: scale(0.7);
+  }
+
   .capture-ball {
     display: flex;
     justify-content: center;
@@ -1483,6 +1521,7 @@ tfoot tr td {
   .mini-shop {
     font-size: 1.2rem;
     padding: 30px;
+    max-width: 75%;
   }
 
   .shop-table thead tr th {
@@ -1502,6 +1541,11 @@ tfoot tr td {
 
   .shop-list tr td {
     padding: 20px;
+  }
+
+  .item-des {
+    font-weight: lighter;
+    font-size: 0.8rem;
   }
 }
 
