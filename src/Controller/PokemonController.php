@@ -38,15 +38,12 @@ class PokemonController extends AbstractController
         /** @var GenerationRepository $genRepo */
         $genRepo = $this->entityManager->getRepository(Generation::class);
 
-        $generations = [];
-        $generationEntities = $genRepo->findBy([], ['genNumber' => 'ASC']);
+        $generations = $genRepo->findBy([], ['genNumber' => 'ASC']);
+        $currentGeneration = $genRepo->findOneBy([], ['genNumber' => 'ASC']);
 
-        foreach ($generationEntities as $generationEntity) {
-            $poke = $generationEntity->getPokemon()->filter(
-                fn(Pokemon $p) => $p->getRelateTo() === null
-            );
-            $generations[$generationEntity->getGenNumber()] = $poke;
-        }
+        $pokemons = $currentGeneration?->getPokemon()->filter(
+            fn(Pokemon $p) => $p->getRelateTo() === null
+        );
 
         $pokemonsCaptured = $pokeRepo->getSpeciesEncounter($user);
         $pokemonShiniesCaptured = $pokeRepo->getShinySpeciesEncounter($user);
@@ -58,13 +55,13 @@ class PokemonController extends AbstractController
             }
         }
 
-        dump($pokemonsCaptured);
-
         return $this->render('main/pokedex.html.twig', [
-            'generations'             => $generations,
-            'pokemonsCaptured'        => $pokemonsCaptured,
+            'currentGeneration'      => $currentGeneration,
+            'generations'            => $generations,
+            'pokemons'               => $pokemons,
+            'pokemonsCaptured'       => $pokemonsCaptured,
             'pokemonShiniesCaptured' => $pokemonShiniesCaptured,
-            'formBase'                => $formBase,
+            'formBase'               => $formBase,
         ]);
     }
 

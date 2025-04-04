@@ -48,7 +48,7 @@ class Pokemon
     #[ORM\Column(length: 5000)]
     private ?string $description = null;
 
-    #[ORM\OneToMany(mappedBy: 'pokemon', targetEntity: CapturedPokemon::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'pokemon', targetEntity: CapturedPokemon::class, fetch: 'EAGER', orphanRemoval: true)]
     private Collection $capturedPokemon;
 
     #[ORM\Column(length: 50)]

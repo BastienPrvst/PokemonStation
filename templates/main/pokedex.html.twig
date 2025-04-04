@@ -7,241 +7,72 @@
 
 <div class="main-block">
 	<div class="poke-list container-fluid col-lg-4">
-		<div class="list row">
+		<div class="list row pokedex-block">
 
 			<label for="generations"></label>
 			<select class="select-gen" name="generations" id="generations">
-				{% for generation, pokemons in generations %}
-					<option class="genOption" value="{{ generation }}">{{ generation|trans }}
+				{% for generation in generations %}
+					<option class="genOption" value="{{ generation.genNumber }}">{{ generation.genNumber|trans }}
 				{% endfor %}
 			</select>
 
-			{% for generation, pokemons in generations %}
-				<div class="gen-content content-{{ generation }} {% if loop.first %} active {% else %} type-none {% endif %}">
-					<div>
-						<span id="activeCountG1">Pokédex :</span>  {{ pokemonsCaptured|filter(p => p.gen.id == generation and p.relateTo is same as null)|length }} sur {{ pokemons|length }}
-					</div>
-					<div>
-						<span class="shinydex" id="shinyG{{ generation }}">ShinyDex :</span>
-						<span>{{ pokemonShiniesCaptured|filter(p => p.gen.id == generation and p.relateTo is same as null)|length }} sur {{ pokemons|length }} <img class="gen-shiny" src="{{ asset('medias/images/sparkle/shinyOK.png') }}" alt=""></span>
-					</div>
+			<div class="gen-content content-{{ currentGeneration.genNumber }} active">
+				<div>
+					<span id="activeCountG1">Pokédex :</span>
+					{{- pokemonsCaptured|filter(p => p.gen.id == currentGeneration.id and p.relateTo is same as null)|length }}
+						sur
+						{{ currentGeneration.pokemon|filter(p => p.relateTo is same as null)|length -}}
 				</div>
-			{% endfor %}
+				<div>
+					<span class="shinydex" id="shinyG{{ currentGeneration.genNumber }}">ShinyDex :</span>
+					<span>
+						{{- pokemonShiniesCaptured|filter(p => p.gen.id == currentGeneration.id and p.relateTo is same as null)|length }}
+							sur
+						{{ currentGeneration.pokemon|filter(p => p.relateTo is same as null)|length -}}
+						<img class="gen-shiny" src="{{ asset('medias/images/sparkle/shinyOK.png') }}" alt="">
+					</span>
+				</div>
+			</div>
 
 			<label for="search"></label>
 			<input class="search" id="search" type="text" placeholder="Chercher un Pokémon">
-
-
 			<div class="ul-list pokedex-nav">
-					<ul class="col-12">
-
-						{% for generation, pokemons in generations %}
-						<li class="pokemons-gen {% if loop.first %} active {% else %} type-none {% endif %}">
-							{% for poke in pokemons %}
-
-								{% if poke in pokemonsCaptured or poke in pokemonShiniesCaptured or poke in formBase%}
-
-									<div class="poke-li captured col-12 pokemon-pokedex gen-{{ generation }}" data-pokemon="{{ poke.pokeId }}" >
-											{{ poke.name|capitalize }} #{{ poke.pokeId }}
-											{% if poke in pokemonShiniesCaptured %}
-												<img class="gen-{{ generation }}-shiny" src="{{ asset('medias/images/sparkle/shinyOK.png') }}" alt="">
-											{% endif %}
-										</div>
-								{% else %}
-									<div class="poke-li col-12 not-captured gen-{{ generation }}">???</div>
-								{% endif %}
-							{% endfor %}
-						</li>
+				<ul class="col-12">
+					<li class="pokemons-gen active">
+						{% for poke in pokemons %}
+							{% if poke in pokemonsCaptured or poke in pokemonShiniesCaptured or poke in formBase%}
+								<div class="poke-li captured col-12 pokemon-pokedex gen-{{ poke.gen.id }}" data-pokemon="{{ poke.pokeId }}" >
+										{{ poke.name|capitalize }} #{{ poke.pokeId }}
+										{% if poke in pokemonShiniesCaptured %}
+											<img class="gen-{{ poke.gen.id }}-shiny" src="{{ asset('medias/images/sparkle/shinyOK.png') }}" alt="">
+										{% endif %}
+									</div>
+							{% else %}
+								<div class="poke-li col-12 not-captured gen-{{ poke.gen.id }}">???</div>
+							{% endif %}
 						{% endfor %}
-					</ul>
-
-
+					</li>
+				</ul>
 			</div>
 		</div>
 	</div>
 
-	{# Div qui englobe toutes les infos du Pokédex (infos du pokémon, son image, son/ses type(s) et sa description)  #}
-	<div class="pokedex-background col-12 col-lg-7">
-
-		<div class="pokedex-style-buttons col-10">
-
-			<div class="blue-button-second-border">
-
-				<div class="blue-button">
-
-					<div class="blue-button-reflect"></div>
-
-				</div>
-
-			</div>	
-				<div class="mini-buttons">
-
-					<div class="mini-button-second-border">
-
-						<div class="mini-button-red">
-
-							<div class="mini-button-reflect"></div>
-
-						</div>
-
-					</div>	
-
-					<div class="mini-button-second-border">
-
-						<div class="mini-button-yellow">
-
-							<div class="mini-button-reflect"></div>
-
-						</div>
-
-					</div>
-
-					<div class="mini-button-second-border">
-
-						<div class="mini-button-green">
-
-							<div class="mini-button-reflect"></div>
-
-						</div>
-
-					</div>	
-				
-				</div>
-			
-			</div>
-
-		<div class="pokedex-pic-and-description col-lg-10">
-
-			<div class="pokedex col-lg-12">
-
-				{# Container des infos Pokémon (nom, nom-en et numéro Pokédex) ainsi que l'image GIF du pokémon  #}
-				<div class="poke-info-pic d-flex flex-column justify-content-center align-items-center col-lg-12">
-
-					<div
-						class="row col-12 poke-name">
-						{# Infos du nom, du nom-en et du numéro Pokémon  #}
-						<div class="poke-info d-flex flex-row justify-content-center align-items-center">
-
-							<div class="info col-12 col-lg-12 d-flex flex-row justify-content-center align-items-center">
-
-								<div class="info-tile-1 col-4">
-
-									<p class="firstName"></p>
-
-								</div>
-
-								<div class="info-tile-2 col-4">
-
-									<p class="secondName"></p>
-
-								</div>
-
-								<div class="info-tile-3 col-4">
-
-									<p class="thirdName"></p>
-
-								</div>
-
-							</div>
-
-						</div>
-
-					</div>
-					{# Image Pokémon  #}
-					<div class="pokemon col-12 col-lg-10">
-
-						
-
-						<div class="column pokepic col-12 ">
-
-								<div class="fond taille-fond"></div>
-								<img class="poke-gif" src="{{ asset('medias/images/sparkle/invisible-sparkle.gif') }}" alt="Pokémon">
-
-							<button class="shiny-button-mobile type-none">
-
-								<img src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt="shiny-logo">
-							
-							</button>
-
-							<div class="overlay">
-
-								<p>PAUSE</p>
-
-							</div>
-
-						</div>
-
-					</div>
-
-				</div>	
+	<section class="pokedex-view col-lg-8 type-none">
+		<div class="main-pokedex">
+			<div class="pokedex-pokemon">
 
 			</div>
-			
-		
-			{# Container du/des types, et de la description du Pokémon  #}
-			<div class="container-fluid digital col-12 col-lg-8">
-
-				{# h3 avec le titre "Type"  #}
-				<div class="row type-h3 col-12">
-
-					<h3>Type(s)</h3>
-
-				</div>
-
-				{# Div qui contient les logos avec les types des Pokémon  #}
-				<div class="row type col-12 d-flex flex-row justify-content-evenly">
-
-					<a href="{{ path('app_types') }}" class="type-img-a"><img class="type-img type1" src="{{ asset('medias/images/types/Normal.png') }}" alt="Type"></a>
-
-					<a href="{{ path('app_types') }}" class="type-img-a"><img class="type-img type2" src="{{ asset('medias/images/types/Normal.png') }}" alt="Type"></a>
-
-				</div>
-
-				{# Div qui contient le contenu de la description du Pokémon  #}
-				<div class="row description col-12">
-
-					<h3>Description</h3>
-
-					<p></p>
-
-				</div>
+			<div class="pokedex-name">
+			</div>
+			<div class="pokedex-types">
 
 			</div>
+			<div class="pokedex-descritpion">
 
+			</div>
 		</div>
 
-		{# Div qui contient toute l'interface "gameboy" avec la croix et les boutons  #}
-		<div class="col-lg-12 gameboy">
-
-			{# Image de la croix directionnelle  #}
-			<img class="col-lg-4" src="{{ asset('medias/images/elements/Cross.png') }}" alt="Croix de Gameboy">
-
-			{# Div qui contient les boutons start et select du milieu (affichés uniquement en écran large)  #}
-			<div class="start-select-buttons col-lg-4">
-
-				<button class="select"></button>
-
-				<button class="start"></button>
-
-			</div>
-
-			{# Div qui contient les boutons B et A comme sur gameboy  #}
-			<div class="gameboy-buttons col-lg-4">
-
-				<button class="gb-button-b">
-					<p class="a-b">B</p>
-				</button>
-
-				<button class="gb-button-a">
-					<p class="a-b">A</p>
-				</button>
-
-			</div>
-
-		</div>
-
-	</div>
-
+	</section>
 </div>
 
 {% endblock %}

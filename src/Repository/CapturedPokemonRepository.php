@@ -45,10 +45,11 @@ class CapturedPokemonRepository extends ServiceEntityRepository
             ->select('DISTINCT p.pokeId')
             ->innerJoin('cp.pokemon', 'p')
             ->where('cp.owner = :userId')
+            ->andWhere('cp.shiny = false')
             ->setParameter(':userId', $user->getId())
             ->orderBy('p.pokeId', 'ASC')
             ->getQuery()
-            ->getArrayResult();
+            ->getScalarResult();
 
         return array_column($result, 'pokeId');
     }
@@ -82,14 +83,4 @@ class CapturedPokemonRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-//    public function getUserCapturedPokemon () : CapturedPokemon
-//    {
-//        return $this->createQueryBuilder('cp')
-//            ->innerJoin('cp.pokemon', 'p')
-//            ->where('cp.owner = :userId')
-//            ->andWhere('p.pokeId = :pokeId')
-//            ->setParameters([
-//                'userId' => $user->getId(),
-//                'pokeId' => $pokeId])
-//    }
 }
