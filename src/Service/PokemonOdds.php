@@ -10,6 +10,7 @@ use App\Entity\UserItems;
 use App\Repository\CapturedPokemonRepository;
 use App\Repository\PokemonRepository;
 use DateTime;
+use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Random\RandomException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -58,7 +59,6 @@ class PokemonOdds extends AbstractController
                 ->setShiny($isShiny);
 
             /* @var Pokemon $pokemon*/
-            $pokemon = $pokemonCaptured->getPokemon();
         } else {
             /*Code pour les balls alt*/
             $itemsRepo = $this->entityManager->getRepository(Items::class);
@@ -96,7 +96,6 @@ class PokemonOdds extends AbstractController
                     $pokemonsFound = $this->pokemonRepository->findByRarityAndType($rarity[0], $type);
                     $i++;
                 } while (empty($pokemonsFound) && $i < 5);
-
             }
 
             if (empty($pokemonsFound)) {
@@ -113,33 +112,42 @@ class PokemonOdds extends AbstractController
             if ($userItem->getQuantity() === 0) {
                 $this->entityManager->remove($userItem);
             }
-            
+
             $pokemonCaptured = new CapturedPokemon();
             $pokemonCaptured
                 ->setPokemon($pokemonSpeciesCaptured)
                 ->setOwner($user)
-                ->setCaptureDate(new DateTime())
+                ->setCaptureDate(new \DateTime(null, new DateTimeZone('Europe/Paris')))
                 ->setShiny($isShiny);
-            $pokemon = $pokemonCaptured->getPokemon();
         }
 
-        //Voir si un dresseur a deja vu ce pokémon ou pas
+        $pokemonCapturedPokeId = $pokemonSpeciesCaptured->getPokeId();
 
-        $alreadyCapturedPokemon = $this->capturedPokemonRepository->findSpeciesCaptured($user);
-        $pokemonCapturedId = $pokemon->getPokeId();
-        in_array($pokemonCapturedId, $alreadyCapturedPokemon, true) ? $isNew = false : $isNew = true;
+        if ($isShiny) {
+            $capturedPokeIds = $this->capturedPokemonRepository->findShinyCaptured($user);
+            $firstTimeShiny = !in_array($pokemonCapturedPokeId, $capturedPokeIds, true);
+            $firstTimeNonShiny = false;
+        } else {
+            $capturedPokeIds = $this->capturedPokemonRepository->findSpeciesCaptured($user);
+            $firstTimeNonShiny = !in_array($pokemonCapturedPokeId, $capturedPokeIds, true);
+            $firstTimeShiny = false;
+        }
 
-        if ($isNew || $isShiny) {
+        if ($firstTimeNonShiny || $firstTimeShiny) {
             $pokemonCaptured->setTimesCaptured(1);
             $this->entityManager->persist($pokemonCaptured);
+            $isNew = true;
         } else {
-            $this->setCoinByRarity($user, $pokemonCaptured);
+            $this->setCoinByRarity($user, $pokemonCaptured, $isShiny);
             /* @var $pokemonToIncrement CapturedPokemon */
-            $pokemonToIncrement = $this->capturedPokemonRepository->findOneBy(['pokemon' => $pokemon, 'owner' => $user]);
-            $pokemonToIncrement->setTimesCaptured
-            ($pokemonToIncrement->getTimesCaptured() + 1);
-            $this->entityManager->persist($pokemonToIncrement);
+            $pokemonToIncrement = $this->capturedPokemonRepository->findOneBy([
+                'owner' => $user,
+                'shiny' => (bool)$isShiny,
+                'pokemon' => $pokemonSpeciesCaptured
+            ]);
+            $pokemonToIncrement->setTimesCaptured($pokemonToIncrement->getTimesCaptured() + 1);
             $pokemonToIncrement->setCaptureDate(new DateTime());
+            $isNew = false;
         }
 
 
@@ -148,12 +156,12 @@ class PokemonOdds extends AbstractController
 
         return $this->json([
             'captured_pokemon' => [
-                'id' => $pokemon->getId(),
-                'name' => $pokemon->getName(),
-                'type' => $pokemon->getType(),
-                'type2' => $pokemon->getType2(),
-                'description' => $pokemon->getDescription(),
-                'nameEN' => $pokemon->getNameEN(),
+                'id' => $pokemonSpeciesCaptured->getId(),
+                'name' => $pokemonSpeciesCaptured->getName(),
+                'type' => $pokemonSpeciesCaptured->getType(),
+                'type2' => $pokemonSpeciesCaptured->getType2(),
+                'description' => $pokemonSpeciesCaptured->getDescription(),
+                'nameEN' => $pokemonSpeciesCaptured->getNameEN(),
                 'shiny' => $pokemonCaptured->getShiny(),
                 'rarity' => $rarity[0],
                 'rarityRandom' => ($rarity[1] * 100),
@@ -235,7 +243,7 @@ class PokemonOdds extends AbstractController
         return $isShiny;
     }
 
-    private function setCoinByRarity(User $user, CapturedPokemon $pokemonCaptured): void
+    private function setCoinByRarity(User $user, CapturedPokemon $pokemonCaptured, bool $shiny): void
     {
         //Valeur en pièce si le Pokémon à déja été vu
         $rarityScale = [
@@ -251,6 +259,11 @@ class PokemonOdds extends AbstractController
         ];
 
         $capturedRarity = $pokemonCaptured->getPokemon()->getRarity();
-        $user->setMoney($user->getMoney() + $rarityScale[$capturedRarity]);
+        $numberToAdd = $rarityScale[$capturedRarity];
+        if ($shiny === true){
+            $numberToAdd *= 10;
+        }
+
+        $user->setMoney($user->getMoney() + $numberToAdd);
     }
 }

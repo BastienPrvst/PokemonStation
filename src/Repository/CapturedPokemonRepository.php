@@ -42,7 +42,7 @@ class CapturedPokemonRepository extends ServiceEntityRepository
     public function findSpeciesCaptured(User $user): array
     {
         $result = $this->createQueryBuilder('cp')
-            ->select('DISTINCT p.pokeId')
+            ->select('DISTINCT p.pokeId AS pokeId')
             ->innerJoin('cp.pokemon', 'p')
             ->where('cp.owner = :userId')
             ->andWhere('cp.shiny = false')
@@ -57,7 +57,7 @@ class CapturedPokemonRepository extends ServiceEntityRepository
     public function findShinyCaptured(User $user): array
     {
         $result = $this->createQueryBuilder('cp')
-            ->select('DISTINCT p.pokeId')
+            ->select('DISTINCT p.pokeId AS pokeId')
             ->innerJoin('cp.pokemon', 'p')
             ->where('cp.owner = :userId')
             ->andWhere('cp.shiny = true')

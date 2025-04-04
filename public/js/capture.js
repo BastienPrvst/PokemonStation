@@ -184,25 +184,6 @@ document
                   .classList.remove("pokeball-animated");
                 if (data.captured_pokemon.new === true) {
                   pokemonIsNew = true;
-                } else {
-                  //Comptage des pièces
-                  const rarityScale = {
-                    C: 1,
-                    PC: 3,
-                    R: 5,
-                    TR: 10,
-                    ME: 25,
-                    GMAX: 50,
-                    SR: 100,
-                    EX: 100,
-                    UR: 250,
-                  };
-
-                  let actualCoin =
-                    document.querySelector(".coin-count").textContent;
-                  actualCoin = parseInt(actualCoin);
-                  document.querySelector(".coin-count").textContent =
-                    actualCoin + rarityScale[data.captured_pokemon.rarity];
                 }
               }
 
@@ -402,6 +383,15 @@ document
           UR: 250,
         };
 
+        let money = rarityScale[pokemon.rarity];
+        if (pokemon.shiny) {
+          money *= 10;
+        }
+
+        let actualCoin = document.querySelector(".coin-count").textContent;
+        actualCoin = parseInt(actualCoin);
+        document.querySelector(".coin-count").textContent = actualCoin + money;
+
         currentInfo.classList.replace("visi-zero", "visi-one");
 
         currentInfo.innerHTML =
@@ -412,7 +402,7 @@ document
           " (" +
           pokemon.rarity +
           ") ! " +
-          (pokemon.new ? "" : "+" + rarityScale[pokemon.rarity]);
+          (pokemon.new ? "" : "+" + money);
 
         if (pokemonIsCaptured) {
           pokemonImage.src = pokemonGif;
