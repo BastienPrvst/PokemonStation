@@ -9,7 +9,6 @@ use App\Entity\User;
 use App\Entity\UserItems;
 use App\Repository\CapturedPokemonRepository;
 use App\Repository\PokemonRepository;
-use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Random\RandomException;
@@ -55,7 +54,7 @@ class PokemonOdds extends AbstractController
             $pokemonCaptured
                 ->setPokemon($pokemonSpeciesCaptured)
                 ->setOwner($user)
-                ->setCaptureDate(new DateTime())
+                ->setCaptureDate(new \DateTime(null, new DateTimeZone('Europe/Paris')))
                 ->setShiny($isShiny);
 
             /* @var Pokemon $pokemon*/
@@ -146,7 +145,7 @@ class PokemonOdds extends AbstractController
                 'pokemon' => $pokemonSpeciesCaptured
             ]);
             $pokemonToIncrement->setTimesCaptured($pokemonToIncrement->getTimesCaptured() + 1);
-            $pokemonToIncrement->setCaptureDate(new DateTime());
+            $pokemonToIncrement->setCaptureDate(new \DateTime(null, new DateTimeZone('Europe/Paris')));
             $isNew = false;
         }
 
