@@ -173,31 +173,76 @@ buttons.forEach(function (button) {
 //   }
 // });
 
-//Select des générations
-// mon ter ter touche pas Bastien !
-document.querySelector("#generations").addEventListener("change", function () {
-  //Il va bosser celui-ci ??????
-  //Pourquoi je lui ai parlé de CG moi
-  //En meme temps vu combien Albert le paie, bref
-  let genContainerTpl = document.querySelector("#generationContainer");
-  let pokemonsContainerTpl = document.querySelector(".pokedex-nav");
-  let pokemonContainerTpl = document.querySelector(".poke-li");
+// Select des générations
+document.querySelector("#generations").addEventListener("change", (event) => {
 
-  //Encadré
-  document.querySelectorAll(".gen-content").forEach((element) => {
-    element.classList.replace("active", "type-none");
-  });
+  const apiPath = baseUrl + 'generation-api/' + event.target.value;
 
-  document
-    .querySelector(".content-" + this.value)
-    .classList.replace("type-none", "active");
+  fetch(apiPath, {method: "GET"})
+    .then(response => response.json())
+    .then(pokemons => updatePokedexList(pokemons))
+    .catch(error => console.log(error));
 
-  //Boutons Poké
-  document.querySelectorAll(".poke-li").forEach((po) => {
-    po.parentElement.classList.replace("active", "type-none");
-  });
-
-  document.querySelectorAll(".gen-" + this.value).forEach((po) => {
-    po.parentElement.classList.replace("type-none", "active");
-  });
 });
+
+// Search on all pokemon
+let timeout = null;
+
+document.querySelector('#pokedexSearch').addEventListener('input', (event) => {
+
+  let apiPath = baseUrl + 'search-api?search=' + event.target.value;
+
+  clearTimeout(timeout);
+  timeout = setTimeout(() => {
+
+    if (event.target.value === '') {
+      apiPath = baseUrl + 'generation-api/' + document.querySelector("#generations").value;
+    }
+
+    fetch(apiPath, {method: "GET"})
+      .then(response => response.json())
+      .then(pokemons => updatePokedexList(pokemons))
+      .catch(error => console.log(error));
+
+  }, 500);
+})
+
+const updatePokedexList = (pokemons) => {
+  const pokemonsContainer = document.querySelector("#pokemonsContainer");
+  const pokemonCapturedContainerTpl = document.querySelector("#pokemonCapturedTpl");
+  const pokemonNotCapturedContainerTpl = document.querySelector("#pokemonNotCapturedTpl");
+  const shinyImgTpl = document.querySelector('#shinyImgTpl');
+
+  const pokedexCounter = document.querySelector('#pokedexCounter');
+  const shinydexCounter = document.querySelector('#shinydexCounter');
+
+  const pokedexCount = pokemons.filter((p) => p.captured).length;
+  const shinyCount = pokemons.filter((p) => p.shiny).length;
+  pokedexCounter.textContent = `${pokedexCount} sur ${pokemons.length}`;
+  shinydexCounter.textContent = `${shinyCount} sur ${pokemons.length}`;
+
+  pokemonsContainer.textContent = null
+
+  pokemons.forEach(pokemon => {
+
+    let pokemonContainer = null;
+    let pokemonName = null;
+    let pokemonFullName = '???';
+
+    if (pokemon.captured || pokemon.shiny) {
+      pokemonContainer = pokemonCapturedContainerTpl.content.cloneNode(true).firstElementChild;
+      pokemonName = pokemon.name?.charAt(0).toUpperCase() + pokemon.name?.slice(1);
+      pokemonFullName = `${pokemonName} #${pokemon.pokeId}`;
+    } else {
+      pokemonContainer = pokemonNotCapturedContainerTpl.content.cloneNode(true).firstElementChild;
+    }
+
+    pokemonContainer.textContent = pokemonFullName;
+    pokemonsContainer.appendChild(pokemonContainer);
+
+    if (pokemon.shiny) {
+      let shinyImg = shinyImgTpl.content.cloneNode(true).firstElementChild;
+      pokemonContainer.appendChild(shinyImg);
+    }
+  })
+}

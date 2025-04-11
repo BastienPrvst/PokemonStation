@@ -6,7 +6,7 @@
 {% block body %}
 
 <div class="main-block">
-	<div class="poke-list container-fluid col-lg-4">
+	<section class="poke-list container-fluid col-12 col-lg-4">
 		<div class="list row pokedex-block">
 
 			<label for="generations"></label>
@@ -17,47 +17,42 @@
 			</select>
 
 			<div class="gen-content content-{{ currentGeneration.genNumber }} active">
+				<div>Pokédex :<span id="pokedexCounter">{{ pokemons|filter(p => p.captured)|length }} sur {{ pokemons|length }}</span></div>
 				<div>
-					<span id="activeCountG1">Pokédex :</span>
-					{{- pokemonsCaptured|filter(p => p.gen.id == currentGeneration.id and p.relateTo is same as null)|length }}
-						sur
-						{{ currentGeneration.pokemon|filter(p => p.relateTo is same as null)|length -}}
-				</div>
-				<div>
-					<span class="shinydex" id="shinyG{{ currentGeneration.genNumber }}">ShinyDex :</span>
-					<span>
-						{{- pokemonShiniesCaptured|filter(p => p.gen.id == currentGeneration.id and p.relateTo is same as null)|length }}
-							sur
-						{{ currentGeneration.pokemon|filter(p => p.relateTo is same as null)|length -}}
-						<img class="gen-shiny" src="{{ asset('medias/images/sparkle/shinyOK.png') }}" alt="">
-					</span>
+					<span class="shinydex">ShinyDex :</span>
+					<span><span id="shinydexCounter">{{ pokemons|filter(p => p.shiny)|length }} sur {{ pokemons|length }}<img class="gen-shiny" src="{{ asset('medias/images/sparkle/shinyOK.png') }}" alt=""></span></span>
 				</div>
 			</div>
 
 			<label for="search"></label>
-			<input class="search" id="search" type="text" placeholder="Chercher un Pokémon">
-			<div class="ul-list pokedex-nav">
-				<ul class="col-12">
-					<li class="pokemons-gen active">
-						{% for poke in pokemons %}
-							{% if poke in pokemonsCaptured or poke in pokemonShiniesCaptured or poke in formBase%}
-								<div class="poke-li captured col-12 pokemon-pokedex gen-{{ poke.gen.id }}" data-pokemon="{{ poke.pokeId }}" >
-										{{ poke.name|capitalize }} #{{ poke.pokeId }}
-										{% if poke in pokemonShiniesCaptured %}
-											<img class="gen-{{ poke.gen.id }}-shiny" src="{{ asset('medias/images/sparkle/shinyOK.png') }}" alt="">
-										{% endif %}
-									</div>
-							{% else %}
-								<div class="poke-li col-12 not-captured gen-{{ poke.gen.id }}">???</div>
+			<input class="w-100" id="pokedexSearch" type="text" placeholder="Chercher un Pokémon" data-search="data-search">
+			<template id="pokemonCapturedTpl">
+				<div class="poke-li captured pokemon-pokedex"></div>
+			</template>
+			<template id="pokemonNotCapturedTpl">
+				<div class="poke-li not-captured">???</div>
+			</template>
+			<template id="shinyImgTpl">
+				<img src="{{ asset('medias/images/sparkle/shinyOK.png') }}" alt="étoile brillante de pokemon chromatique">
+			</template>
+			<div id="pokemonsContainer" class="pokedex-nav w-100">
+				{% for pokemon in pokemons %}
+					{% if pokemon.captured %}
+						<div class="poke-li captured pokemon-pokedex" data-pokemon="{{ pokemon.pokeId }}" >
+							{{- pokemon.name|capitalize }} #{{ pokemon.pokeId -}}
+							{% if pokemon.shiny %}
+								<img src="{{ asset('medias/images/sparkle/shinyOK.png') }}" alt="étoile brillante de pokemon chromatique">
 							{% endif %}
-						{% endfor %}
-					</li>
-				</ul>
+						</div>
+					{% else %}
+						<div class="poke-li not-captured">???</div>
+					{% endif %}
+				{% endfor %}
 			</div>
 		</div>
-	</div>
+	</section>
 
-	<section class="pokedex-view col-lg-8">
+	<section class="pokedex-view col-12 col-lg-8">
 		<div class="main-pokedex">
 			<div class="speaker speaker-1">
 				<!-- Les points -->
@@ -111,7 +106,6 @@
 				</button>
 			</div>
 		</div>
-
 	</section>
 </div>
 
@@ -119,6 +113,7 @@
 {% block js %}
 
 	<script>
+		const baseUrl = '{{ url('app_home') }}';
 		const pokedexPageApi = '{{ url('app_pokedex_api') }}';
 		const pokemonsGifDir = '{{ asset('medias/images/gifs') }}';
 		window.pokemonBackground = 'forest2-background';

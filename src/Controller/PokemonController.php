@@ -5,10 +5,10 @@ namespace App\Controller;
 use App\Entity\CapturedPokemon;
 use App\Entity\Generation;
 use App\Entity\Items;
-use App\Entity\Pokemon;
 use App\Entity\User;
 use App\Repository\GenerationRepository;
-use App\Repository\PokemonRepository;
+use App\Repository\UserRepository;
+use App\Service\CapturedPokemonService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -23,9 +23,9 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class PokemonController extends AbstractController
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager
-    ) {
-    }
+        private readonly EntityManagerInterface $entityManager,
+        private readonly CapturedPokemonService $capturedPokemonService,
+    ) {}
 
     #[Route('/pokedex', name: 'app_pokedex')]
     #[IsGranted('ROLE_USER')]
@@ -33,35 +33,19 @@ class PokemonController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        /** @var PokemonRepository $pokeRepo */
-        $pokeRepo = $this->entityManager->getRepository(Pokemon::class);
         /** @var GenerationRepository $genRepo */
         $genRepo = $this->entityManager->getRepository(Generation::class);
 
         $generations = $genRepo->findBy([], ['genNumber' => 'ASC']);
         $currentGeneration = $genRepo->findOneBy([], ['genNumber' => 'ASC']);
+        $pokemons = $currentGeneration->getPokemon()->getValues();
 
-        $pokemons = $currentGeneration?->getPokemon()->filter(
-            fn(Pokemon $p) => $p->getRelateTo() === null
-        );
-
-        $pokemonsCaptured = $pokeRepo->getSpeciesEncounter($user);
-        $pokemonShiniesCaptured = $pokeRepo->getShinySpeciesEncounter($user);
-
-        $formBase = [];
-        foreach ($pokemonsCaptured as $pokemon) {
-            if ($pokemon->getRelateTo() !== null) {
-                $formBase[] = $pokemon->getRelateTo();
-            }
-        }
+        $pokemonsDTO = $this->capturedPokemonService->userCapturedByGeneration($user, $pokemons);
 
         return $this->render('main/pokedex.html.twig', [
-            'currentGeneration'      => $currentGeneration,
-            'generations'            => $generations,
-            'pokemons'               => $pokemons,
-            'pokemonsCaptured'       => $pokemonsCaptured,
-            'pokemonShiniesCaptured' => $pokemonShiniesCaptured,
-            'formBase'               => $formBase,
+            'currentGeneration' => $currentGeneration,
+            'generations'       => $generations,
+            'pokemons'          => $pokemonsDTO,
         ]);
     }
 
@@ -73,13 +57,13 @@ class PokemonController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function capture(ManagerRegistry $doctrine): Response
     {
+        /** @var UserRepository $userRepo */
         $userRepo = $doctrine->getRepository(User::class);
         $totalPokemon = $userRepo->totalPokemon();
 
-        /* @var $user User *-*/
+        /** @var User $user */
         $user = $this->getUser();
         $allUserItems = $user->getUserItems();
-
 
         $fiveLast = $this->entityManager->getRepository(CapturedPokemon::class)->getLastRareCaptured();
 

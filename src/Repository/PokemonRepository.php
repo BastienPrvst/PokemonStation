@@ -74,29 +74,6 @@ class PokemonRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function getSpeciesEncounter(User $user): array
-    {
-        return $this->createQueryBuilder('p')
-            ->innerJoin('p.capturedPokemon', 'cp')
-            ->where('cp.owner = :userId')
-            ->setParameter('userId', $user->getId())
-            ->orderBy('p.pokeId', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function getShinySpeciesEncounter(User $user): array
-    {
-        return $this->createQueryBuilder('p')
-            ->innerJoin('p.capturedPokemon', 'cp')
-            ->where('cp.owner = :userId')
-            ->andWhere('cp.shiny = TRUE')
-            ->setParameter('userId', $user->getId())
-            ->orderBy('p.pokeId', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
     public function getFullPokedexSize(): int
     {
         return $this->createQueryBuilder('p')
@@ -163,6 +140,18 @@ class PokemonRepository extends ServiceEntityRepository
             ->andWhere('(p.type = :type OR p.type2 = :type)')
             ->setParameter('rarity', $rarity)
             ->setParameter('type', $type)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return Pokemon[]
+     */
+    public function searchByName(string $name): array
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.name LIKE :name')
+            ->setParameter('name', "%{$name}%")
             ->getQuery()
             ->getResult();
     }

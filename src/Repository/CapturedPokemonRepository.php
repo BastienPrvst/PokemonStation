@@ -39,6 +39,7 @@ class CapturedPokemonRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
     public function findSpeciesCaptured(User $user): array
     {
         $result = $this->createQueryBuilder('cp')
@@ -81,6 +82,54 @@ class CapturedPokemonRepository extends ServiceEntityRepository
             ->setMaxResults(10)
             ->getQuery()
             ->getResult();
+    }
+    
+    /**
+     * @param  User $user
+     * @param  Pokemon[] $pokemons
+     * @return CapturedPokemon[]
+     */
+    public function findSpeciesCapturedByPokemon(User $user, array $pokemons): array
+    {
+        $result = $this->createQueryBuilder('cp')
+            ->select('DISTINCT p.pokeId AS pokeId')
+            ->innerJoin('cp.pokemon', 'p')
+            ->where('cp.owner = :user')
+            ->andWhere('cp.shiny = false')
+            ->andWhere('p IN(:pokemons)')
+            ->setParameters([
+                'user' => $user,
+                'pokemons' => $pokemons,
+            ])
+            ->orderBy('p.pokeId', 'ASC')
+            ->getQuery()
+            ->getScalarResult();
+
+        return array_column($result, 'pokeId');
+    }
+    
+    /**
+     * @param  User $user
+     * @param  Pokemon[] $pokemons
+     * @return CapturedPokemon[]
+     */
+    public function findShinyCapturedByPokemon(User $user, array $pokemons): array
+    {
+        $result = $this->createQueryBuilder('cp')
+            ->select('DISTINCT p.pokeId AS pokeId')
+            ->innerJoin('cp.pokemon', 'p')
+            ->where('cp.owner = :user')
+            ->andWhere('cp.shiny = true')
+            ->andWhere('p IN(:pokemons)')
+            ->setParameters([
+                'user' => $user,
+                'pokemons' => $pokemons,
+            ])
+            ->orderBy('p.pokeId', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return array_column($result, 'pokeId');
     }
 
 }

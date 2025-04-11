@@ -4,18 +4,16 @@ namespace App\Service;
 
 use App\Entity\CapturedPokemon;
 use App\Entity\Items;
-use App\Entity\Pokemon;
 use App\Entity\User;
 use App\Entity\UserItems;
 use App\Repository\CapturedPokemonRepository;
 use App\Repository\PokemonRepository;
-use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Random\RandomException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-class PokemonOdds extends AbstractController
+class PokemonOddsService extends AbstractController
 {
     public function __construct(
         private readonly PokemonRepository $pokemonRepository,
@@ -54,7 +52,7 @@ class PokemonOdds extends AbstractController
             $pokemonCaptured
                 ->setPokemon($pokemonSpeciesCaptured)
                 ->setOwner($user)
-                ->setCaptureDate(new \DateTime(null, new DateTimeZone('Europe/Paris')))
+                ->setCaptureDate(new \DateTime('', new \DateTimeZone('Europe/Paris')))
                 ->setShiny($isShiny);
 
             /* @var Pokemon $pokemon*/
@@ -116,7 +114,7 @@ class PokemonOdds extends AbstractController
             $pokemonCaptured
                 ->setPokemon($pokemonSpeciesCaptured)
                 ->setOwner($user)
-                ->setCaptureDate(new \DateTime(null, new DateTimeZone('Europe/Paris')))
+                ->setCaptureDate(new \DateTime('', new \DateTimeZone('Europe/Paris')))
                 ->setShiny($isShiny);
         }
 
@@ -145,7 +143,7 @@ class PokemonOdds extends AbstractController
                 'pokemon' => $pokemonSpeciesCaptured
             ]);
             $pokemonToIncrement->setTimesCaptured($pokemonToIncrement->getTimesCaptured() + 1);
-            $pokemonToIncrement->setCaptureDate(new \DateTime(null, new DateTimeZone('Europe/Paris')));
+            $pokemonToIncrement->setCaptureDate(new \DateTime('', new \DateTimeZone('Europe/Paris')));
             $isNew = false;
         }
 
