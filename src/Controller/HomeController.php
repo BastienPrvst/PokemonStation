@@ -2,22 +2,30 @@
 
 namespace App\Controller;
 
+use App\Repository\NewsRepository;
+use App\Repository\PokemonRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class HomeController extends AbstractController
 {
-    // Annotation qui permet à Symfony de retrouver quelle route correspond à quelle fonction
+    public function __construct(
+        private readonly UserRepository $userRepository,
+        private readonly PokemonRepository $pokemonRepository
+    ) {
+    }
+
     #[Route('/', name: 'app_home')]
-    public function home(): Response
+    public function home(NewsRepository $newsRepository): Response
     {
-        $user = $this->getUser();
-        if ($user) {
-            $this->addFlash('success', sprintf('Bonjour %s', $user->getPseudonym()));
-        }
+        $allNews = $newsRepository->findRecent();
 
         return $this->render('main/home.html.twig', [
+            'topUserSpeciesSeen' => $this->userRepository->top10TotalSpeciesSeen(),
+            'pokedexSize'        => $this->pokemonRepository->getFullPokedexSize(),
+            'allNews' => $allNews,
         ]);
     }
 

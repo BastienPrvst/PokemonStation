@@ -9,82 +9,106 @@
 {#     Première partie de la page d'accueil, avec Sacha et Pikachu  #}
 <div class="container-fluid project-contain">
 
-	<div class="project-div row">
+	<h2 class="accueil">Bienvenue dresseur!</h2>
 
-		<img class="sacha fade-up col-12 col-lg-6" src="{{ asset('medias/images/elements/Sacha-Pikachu.jpg') }}" alt="Sacha and Pikachu">
+	<section class="concept d-flex flex-column flex-lg-row align-items-center">
+		<img class="poke-bg" src="{{ asset('medias/images/background/pokeball-bg.png') }}" alt="Fond pokeball">
+		<div class="home-image-div">
+			<img src="{{ asset('medias/images/poke-perso/025.gif') }}" alt="Gif de Pikachu" class="pika-home">
+			<img class="img-fluid chen" src="{{ asset('medias/images/elements/Professeur-Chen.png') }}" alt="Professeur Chen">
+			<img class="img-fluid chen-shadow" src="{{ asset('medias/images/background/Shadow.png') }}" alt="">
+			<img src="{{ asset('medias/images/poke-perso/017.gif') }}" alt="Gif de Roucoups" class="roucoups-home">
+		</div>
 
-		<div class="project fade-up col-12 col-lg-6">
-
-			<h2>Le Projet</h2>
-
-			<p>Dans un monde où tous les pokémons ont deja été capturés et laissés à l'abandon dans leurs pokéballs, vous, jeune dresseur, devez les aider à récupérer leur liberté ! Ouvrez ces pokéballs pour voir ce qu'elles contiennent, et pour peut-être apercevoir des pokémons d'une rareté sans pareil ! On espère que vous vous amuserez ! Libérez-les tous!
+		<div class="concept-div">
+			<p class="concept-text">PokemonStation est un projet personnel basé sur le "gacha" vous permettant de libérer des Pokémons de manière aléatoire. Le but étant de remplir son pokédex ! Vous obtenez deux lancers par heures, avec un maximum de 100 cumulables en même temps.
 				<br>
-			Vous serez récompensés toutes les heures de 2 pokéballs à ouvrir ! Et vous ne pourrez en porter que 100 en même temps, sans quoi vos poches déborderaient ! </p>
-		</div>
+				Si vous obtenez des doublons, pas d'inquiétudes, vous recevrez des pièces vous permettant d'acheter de nouveaux lancers spéciaux.
+				<br>
+				Amusez vous bien!
+			</p>
 
-	</div>
-
-
-</div>
-
-{#     Image de transition en background-fixed  #}
-<div class="container-fluid">
-
-	<div class="transition row">
-
-		<div class="col-12 cover-box">
-
-			<div
-				class="fixed-cover">{# La background en fixed #}
-
-			</div>
-
-		</div>
-
-	</div>
-
-	<div class="row">
-
-		<div class="col-12 second-part">
-
-			{# Deuxième partie de la page d'accueil avec Prof Chen et le bouton pour s'inscrire  #}
-			<div class="join-adventure text-center">
-
-				<div class="chen-border text-center row">
-
-					<div class="inactive1 col-0 col-lg-4"></div>
-
-					<div class="prof-chen text-center col-12 col-lg-4">
-
-						<img class="img-fluid" src="{{ asset('medias/images/elements/Professeur-Chen.png') }}" alt="Professeur Chen">
-
-					</div>
-
-					<div class="inactive2 col-0 col-lg-4"></div>
-
+			<div class="etapes d-flex justify-content-center align-items-center">
+				<div class="home-1">
+					<p>Libérez !</p>
+					<img src="{{ asset('medias/images/balls/poke-ball.png') }}" alt="">
 				</div>
 
-				<button class="start-adventure-button">
+				<img class="arrow-home" src="{{ asset('medias/images/elements/arrow.png') }}" alt="">
 
-					<div class="second-border">
+				<div class="home-2">
+					<p>Achetez !</p>
+					<img src="{{ asset('medias/images/elements/coin-resized.png') }}" alt="">
+				</div>
 
-						<a class="start-adventure" href="{{ path('app_register') }}"><img src="{{ asset('medias/images/elements/PokeBall.png') }}" alt="Poke Ball" width="50px">Commencez l'aventure
+				<img class="arrow-home" src="{{ asset('medias/images/elements/arrow.png') }}" alt="">
 
-							<i class="fa-solid fa-chevron-right"></i>
-						</a>
+				<div class="home-3">
+					<p>Completez !</p>
+					<img src="{{ asset('medias/images/items/poke-radar.png') }}" alt="">
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<div class="d-flex flex-column flex-lg-row second-part">
+		<section class="news-section col-12 col-lg-6">
+			<h3>Les news :</h3>
+			<div class="news-div">
+
+				{% for news in allNews %}
+					<div class="single-new">
+
+						<div class="news-date">Le {{ news.creationDate|date('Y/m/d') }} à {{ news.creationDate|date('H:m') }}</div>
+
+						<h4 class="news-title">{{ news.title }}</h4>
+						<br>
+						<div class="news-body">{{ news.body|raw }}</div>
+
+						<div class="author">{{ news.author|capitalize }}</div>
 
 					</div>
 
-				</button>
 
-				<p>"Rejoins l'aventure Pokémon, et deviens le meilleur dresseur en tentant de remplir ton Pokédex !"</p>
+				{% endfor %}
+
+
+
 
 			</div>
 
-		</div>
+		</section>
 
+		<section class="top-section col-12 col-lg-6">
+
+			<div class="top-div w-100">
+				<h3 class="profile-title">Top 10</h3>
+				<table class="table-pokedex">
+					<thead class="thead-top10">
+					<tr>
+						<th class="empty-th"></th>
+						<th class="text-center" scope="col">Pseudo</th>
+						<th class="text-center" scope="col">Pokédex</th>
+						<th class="text-center" scope="col">Lancers</th>
+					</tr>
+					</thead>
+					<tbody>
+					{% for userData in topUserSpeciesSeen %}
+						<tr class="pokedex-top-10">
+							<td class="empty-td text-center">{{ loop.index }}</td>
+							<td class="text-center"><a href="{{ path('app_user_showprofile', { pseudonym : userData.user.pseudonym })}}"> {{ userData.user.pseudonym }}</a> </td>
+							<td class="text-center">{{ userData.total_species_seen }}/{{ pokedexSize }}</td>
+							<td class="text-center">{{ userData.launch_count }} </td>
+						</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</section>
 	</div>
-	
+
+
 </div>
 
 

@@ -1,28 +1,44 @@
-window.addEventListener("load", function () {
-  let avatarId = avatar;
-
-  let carouselItems = document.querySelectorAll(".carousel-item");
-  for (let i = 0; i < carouselItems.length; i++) {
-    let image = carouselItems[i].querySelector("img");
-    if (image.getAttribute("data-avatar") === avatarId) {
-      carouselItems[i].classList.add("active");
-      break;
-    }
-  }
-});
-
 //Creation du système de changement d'avatar
-document
-  .querySelector(".select-character-button")
-  .addEventListener("click", function () {
+
+let modal = document.getElementById("myModal");
+
+let btn = document.getElementById("myBtn");
+
+let span = document.getElementsByClassName("close")[0];
+
+btn.onclick = function () {
+  modal.style.display = "block";
+};
+
+span.onclick = function () {
+  modal.style.display = "none";
+};
+
+window.onclick = function (event) {
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+};
+
+window.onkeydown = function (e) {
+  if (e.key === "Escape") {
+    modal.style.display = "none";
+  }
+};
+
+const ImageSelector = document.querySelectorAll(".modal-solo");
+
+ImageSelector.forEach((el) => {
+  el.addEventListener("click", function () {
     let divToDelete = document.querySelector(".message-avatar");
     if (divToDelete) {
       divToDelete.remove();
     }
-    let activeImage = document.querySelector(".carousel-item.active img");
+    let choosenImage = el.querySelector("img");
+    let activeImage = document.querySelector(".trainer-gif");
 
     // Récupère l'ID de l'avatar correspondant à l'image active
-    let avatarId = activeImage.getAttribute("data-avatar");
+    let avatarId = choosenImage.getAttribute("data-avatar");
     let postData = new FormData();
     postData.append("avatarId", avatarId);
 
@@ -40,8 +56,11 @@ document
 
       .then((data) => {
         messageDiv.innerHTML = "<p>" + data.success + "</p>";
+        activeImage.src = "../medias/images/trainers/" + avatarId + ".gif";
+        document.getElementById("myModal").style.display = "none";
       })
       .catch((error) => {
         messageDiv.innerHTML = "<p>" + data.error + "</p>";
       });
   });
+});

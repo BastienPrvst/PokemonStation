@@ -34,7 +34,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $pseudonym = null;
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $creationDate = null;
-    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: CapturedPokemon::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: CapturedPokemon::class, fetch: 'EAGER', orphanRemoval: true)]
     private Collection $capturedPokemon;
     #[ORM\Column]
     private ?int $launchs = null;

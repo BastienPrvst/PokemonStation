@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Items;
+use App\Entity\News;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -45,6 +46,10 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::subMenu('Utilisateurs', 'fas fa-bars')->setSubItems([
             MenuItem::linkToCrud('Ajouter un utilisateur', 'fas fa-plus', User::class)->setAction(Crud::PAGE_NEW),
             MenuItem::linkToCrud('Liste Utilisateurs', 'fas fa-list', User::class)->setAction(Crud::PAGE_INDEX),
+        ]);
+        yield MenuItem::subMenu('News', 'fas fa-bars')->setSubItems([
+            MenuItem::linkToCrud('Ajouter une news', 'fas fa-plus', News::class)->setAction(Crud::PAGE_NEW),
+            MenuItem::linkToCrud('Liste des news', 'fas fa-list', News::class)->setAction(Crud::PAGE_INDEX),
         ]);
     }
 }

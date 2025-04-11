@@ -9,7 +9,7 @@
 
             <!-- Informations sur la rareté -->
             <header class="row">
-                <div class="col-12 col-lg-10 mx-auto rarity-scale">
+                <div class="col-12 col-lg-10 mx-auto rarity-scale" id="scale-anchor">
                     <p>
                         À ce jour, <span>{{ totalPokemon }}</span> Pokémons ont été libérés dans le monde !<br>
                     </p>
@@ -100,18 +100,15 @@
 {#    Partie slider#}
 
     <div class="col-12 col-lg-10 mx-auto slider">
-
-
         {% if fiveLast is not empty %}
-
             <div class="lastpokemon">
                 <div class="fivelast">
 
                     {% for pokemonCaptured in fiveLast%}
 
-                        <div class="pokemon-five {% if pokemonCaptured.shiny is same as true %}shiny-slider{% endif %}">
+                        <div class="pokemon-five {% if pokemonCaptured.shiny is same as true %}shiny-slider{% endif %} slider-{{ pokemonCaptured.pokemon.rarity }}">
                             <div class="mini-infos">
-                                <span>{{ pokemonCaptured.pokemon.name|capitalize }}</span> ~
+                                <span class="poke-tronq">{{ pokemonCaptured.pokemon.name|capitalize }}</span> ~
                                 <a href="{{ path('app_user_showprofile', {pseudonym:pokemonCaptured.owner.pseudonym})}}">{{ pokemonCaptured.owner.pseudonym | capitalize }}</a>
                             </div>
 
@@ -138,10 +135,10 @@
 
                     {% for pokemonCaptured in fiveLast%}
 
-                        <div class="pokemon-five {% if pokemonCaptured.shiny is same as true %}shiny-slider{% endif %}">
+                        <div class="pokemon-five {% if pokemonCaptured.shiny is same as true %}shiny-slider{% endif %} slider-{{ pokemonCaptured.pokemon.rarity }}">
 
                         <div class="mini-infos">
-                                <span>{{ pokemonCaptured.pokemon.name|capitalize }}</span> ~
+                                <span class="poke-tronq">{{ pokemonCaptured.pokemon.name|capitalize }}</span> ~
                                 <a href="{{ path('app_user_showprofile', {pseudonym:pokemonCaptured.owner.pseudonym})}}">{{ pokemonCaptured.owner.pseudonym | capitalize }}</a>
                             </div>
 
@@ -156,16 +153,10 @@
                                 </div>
                                 <img class="mini-trainer" src="{{ asset('medias/images/trainers/') ~ pokemonCaptured.owner.avatar ~ ".gif" }}" alt="">
                             </div>
-
                             <span class="time-five">Le {{ pokemonCaptured.captureDate |date("d-m-Y H:i:s")  }}</span>
                         </div>
-
                     {% endfor %}
-
                 </div>
-
-
-
             </div>
         {% endif %}
 
@@ -175,11 +166,8 @@
 {#    Shop #}
 
     <div class="shop">
-
         <div class="mini-shop">
-
             <h2 class="text-center shop-title text-white">Boutique</h2>
-
             <div class="coin-container text-end">
                 <img class="coin-width-2" src="{{ asset('medias/images/elements/real-coin.png') }}" alt="">
 
@@ -226,8 +214,9 @@
             <div class="text-center">
                 <button class="text-center buy-it">Acheter</button>
             </div>
-        </div>
+            <a href="#scale-anchor"><img src="{{ asset('medias/images/elements/button-up.png') }}" alt="" class="button-up"></a>
 
+        </div>
     </div>
 
 {% endblock %}

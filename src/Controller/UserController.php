@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\EditModifyProfilFormType;
 use App\Repository\PokemonRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
@@ -19,7 +18,6 @@ class UserController extends AbstractController
 {
     public function __construct(
         private readonly PokemonRepository $pokemonRepository,
-        private readonly UserRepository $userRepository,
         private readonly EntityManagerInterface $entityManager,
     ) {
     }
@@ -108,8 +106,8 @@ class UserController extends AbstractController
             'nbTR'               => $this->pokemonRepository->getCountByRarityEncounteredBy($user, 'TR'),
             'nbEX'               => $this->pokemonRepository->getCountByRarityEncounteredBy($user, 'EX'),
             'nbSR'               => $this->pokemonRepository->getCountByRarityEncounteredBy($user, 'SR'),
+            'nbUR'               => $this->pokemonRepository->getCountByRarityEncounteredBy($user, 'UR'),
             'pokedexSize'        => $this->pokemonRepository->getFullPokedexSize(),
-            'topUserSpeciesSeen' => $this->userRepository->top10TotalSpeciesSeen(),
             'user'               => $user,
         ];
     }

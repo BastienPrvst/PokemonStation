@@ -57,18 +57,58 @@
 		</div>
 	</div>
 
-	<section class="pokedex-view col-lg-8 type-none">
+	<section class="pokedex-view col-lg-8">
 		<div class="main-pokedex">
+			<div class="speaker speaker-1">
+				<!-- Les points -->
+				<div></div><div></div><div></div><div></div>
+				<div></div><div></div><div></div><div></div>
+				<div></div><div></div><div></div><div></div>
+				<div></div><div></div><div></div><div></div>
+			</div>
 			<div class="pokedex-pokemon">
+				<div class="pokedex-shine"></div>
+				<div class="pokedex-name">
+					<p>Dracaufeu</p>
+				</div>
+				<button class="button-shiny"><img src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt=""></button>
+				<div class="pokedex-types">
+					<a href="{{ path('app_types') }}" class="type-img-a"><img class="type-img type1" src="{{ asset('medias/images/types/Fire.png') }}" alt="Type"></a>
 
+					<a href="{{ path('app_types') }}" class="type-img-a"><img class="type-img type2" src="{{ asset('medias/images/types/Flying.png') }}" alt="Type"></a>
+				</div>
+				<div class="pokedex-shine"></div>
+				<div class="pokedex-image"><img src="{{ asset('medias/images/gifs/charizard.gif') }}" alt=""></div>
+				<div class="pokedex-descritpion">
+					<p>Un Pokémon très loyal. Il restera immobile jusqu’à ce que son Dresseur lui donne un ordre.</p>
+				</div>
 			</div>
-			<div class="pokedex-name">
+			<div class="speaker speaker-2">
+				<!-- Les points -->
+				<div></div><div></div><div></div><div></div>
+				<div></div><div></div><div></div><div></div>
+				<div></div><div></div><div></div><div></div>
+				<div></div><div></div><div></div><div></div>
 			</div>
-			<div class="pokedex-types">
 
-			</div>
-			<div class="pokedex-descritpion">
 
+			<img class="cross" src="{{ asset('medias/images/elements/Cross.png') }}" alt="Croix directionnelle">
+			
+			<div class="alt-forms">
+				<div class="alt"><img src="{{ asset('medias/images/gifs/charizard-gmax.gif') }}" alt=""></div>
+				<div class="alt"><img src="{{ asset('medias/images/gifs/charizard-mega-x.gif') }}" alt=""></div>
+				<div class="alt"><span>?</span></div>
+			</div>
+
+			<div class="gameboy-buttons">
+
+				<button class="gb-button-b">
+					<p class="a-b">B</p>
+				</button>
+
+				<button class="gb-button-a">
+					<p class="a-b">A</p>
+				</button>
 			</div>
 		</div>
 

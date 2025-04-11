@@ -10,42 +10,35 @@
 
 <div class="container-fluid"></div>
 
-	<h1 class="mx-auto mt-5" style="color: white; font-size: 3rem;">À propos</h1>
+	<h1 class="about" style="color: white; font-size: 3rem;">À propos</h1>
 
     <div class="presentation">
 
-        <div class="yann fade-up col-12 col-lg-4">
-            <img class="perso-1" src="{{ asset('images/Yann.png') }}" alt="Yann">
-            <img class="poke-perso-1" src="{{ asset('images/poke-perso/386-attack.gif') }}" alt="Deoxys">
+        <div class="actual-team">
 
-
-            <h3>The Captchka Engineer</h3>
-
-            <p class="col-4">Salut moi c'est Yann ! Mon tempérament colérique me met souvent des bâtons dans les roues, mais j'ai toutes les qualités pour devenir un excellent dev !</p>
-
+            <div class="spirit-actual">
+                <h4 class="spirit-h4">Spirit</h4>
+                <img class="perso-spirit" src="{{ asset('/medias/images/elements/Bastien.png') }}" alt="Spirit">
+                <img class="poke-spirit" src="{{ asset('medias/images/poke-perso/garchomp.gif') }}" alt="Monke">
+            </div>
+            
+            <div class="alpif-actual">
+                <img src="{{ asset('medias/images/elements/203px-Pierre_Rochard-ROSA.png') }}" alt="" class="perso-alpif">
+                <img class="poke-alpif" src="{{ asset('medias/images/poke-perso/arcko.gif') }}" alt="">
+                <h4 class="alpifra-h4">Alpifra</h4>
+            </div>
+            
         </div>
 
-        <div class="louis fade-up col-12 col-lg-4">
-        
-            <img class="perso-2" src="{{ asset('images/Louis.png') }}" alt="Louis">
-            <img class="poke-perso-2" src="{{ asset('images/poke-perso/384.gif') }}" alt="Rayquaza">
-            <h3>Lead Project</h3>
-
-            <p class="col-4">Bonjour, moi c'est Louis, je ne suis pas le plus experiménté, mais j'applique ma détermination et mon leadership pour emmener mon groupe à la victoire ! </p>
-
-        </div>
-
-        <div class="bastien fade-up col-12 col-lg-4">
-            <img class="perso-3" src="{{ asset('images/Bastien.png') }}" alt="Bastien">
-            <img class="poke-perso-3" src="{{ asset('images/poke-perso/555.gif') }}" alt="Monke">
-
-            <h3>Pokemon Master</h3>
-
-            <p class="col-4">Moi c'est Bastien ! Râleur invétéré, je suis également le plus doué de l'équipe en terme de dev (ce qui me rend particulièrement arrogant, mais diablement efficace !)</p>
-
-        </div>
-
-        
+        <h2 class="actual-title">L'équipe actuelle !</h2>
 
     </div>
+
+    <h3 class="anciens-h3">Les fondateurs :</h3>
+    <div class="anciens">
+        <h4>Yann</h4>
+        <h4>Louis</h4>
+        <h4>Spirit</h4>
+    </div>
+
 {% endblock %}
