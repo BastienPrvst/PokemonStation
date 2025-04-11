@@ -79,7 +79,7 @@ class APIController extends AbstractController
         ]);
     }
 
-    #[Route('/generation-api/{id}', name: 'app_generation_api', methods: ['GET'])]
+    #[Route('/generation-api/{genNumber}', name: 'app_generation_api', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
     public function generationApi(Generation $generation): Response
     {
