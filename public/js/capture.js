@@ -28,28 +28,6 @@ soundButton.addEventListener("click", () => {
 });
 
 let captureInProcess = false;
-
-const typesBackgroundArray = {
-  eau: "sea-background",
-  feu: "fire-background",
-  plante: "forest2-background",
-  insecte: "cabane-background",
-  poison: "poison-background",
-  vol: "montagne-background",
-  sol: "desert-background",
-  roche: "cave-background",
-  ténèbres: "cimetière-background",
-  normal: "forest2-background",
-  combat: "pourpre-background",
-  psy: "montagne-background",
-  fée: "night-background",
-  spectre: "cimetière-background",
-  dragon: "dragon-background",
-  acier: "forest-background",
-  electrik: "pourpre-background",
-  glace: "neige-background",
-};
-
 const pokeballButton = document.querySelectorAll(".capture-poke-button");
 
 document
@@ -165,23 +143,14 @@ document
                 }
 
                 //Fonds en fonction des types
-
                 document
                   .querySelector(".view-pokemon")
-                  .classList.remove(window.pokemonBackground);
-
-                window.pokemonBackground =
-                  typesBackgroundArray[data.captured_pokemon.type];
-
-                document
-                  .querySelector(".view-pokemon")
-                  .classList.add(
-                    typesBackgroundArray[data.captured_pokemon.type],
-                  );
+                  .style.backgroundImage = `url(/medias/images/fonds/${data.captured_pokemon.type}.png)`;
 
                 document
                   .querySelector(".pokeball-animate")
                   .classList.remove("pokeball-animated");
+
                 if (data.captured_pokemon.new === true) {
                   pokemonIsNew = true;
                 }

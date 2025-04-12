@@ -18,7 +18,7 @@
 
             <!-- Affichage du Pokémon capturé -->
             <article class="row">
-                <div class="col-12 col-lg-10 mx-auto view-pokemon forest2-background">
+                <div class="col-12 col-lg-10 mx-auto view-pokemon" style="background-image: url({{ asset('medias/images/fonds/plante.png') }})">
 
 
                     <button class="volume">
@@ -233,7 +233,6 @@
         const launchCounter = '{{ app.user.launchs}}';
         const newLogo = '{{ asset('medias/images/sparkle/new3.png') }}';
         const coin = '{{ asset('medias/images/elements/real-coin.png') }}';
-        window.pokemonBackground = 'forest2-background';
         const newRare = '{{ asset('medias/cries/sounds/06-caught-a-pokemon.mp3') }}'
         const buyItemSound = '{{ asset('medias/cries/sounds/item-found.mp3') }}'
         const crySound = '{{ asset('medias/cries/') }}'
