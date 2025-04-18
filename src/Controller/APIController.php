@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\CapturedPokemon;
+use App\DTO\PokemonDTO;
 use App\Entity\Generation;
 use App\Entity\Items;
 use App\Entity\Pokemon;
@@ -14,7 +14,6 @@ use App\Service\PokemonOddsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Random\RandomException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -23,7 +22,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class APIController extends AbstractController
 {
     public function __construct(
-        private readonly Security $security,
         private readonly PokemonOddsService $pokemonOdds,
         private readonly CapturedPokemonService $capturedPokemonService,
         private readonly EntityManagerInterface $entityManager,
@@ -42,48 +40,47 @@ class APIController extends AbstractController
         return $this->pokemonOdds->calculationOdds($user, $pokeballId);
     }
 
-    #[Route('/pokedex-api', name: 'app_pokedex_api')]
+    #[Route('/pokedex-api/{pokeId}', name: 'app_pokedex_api')]
     #[IsGranted('ROLE_USER')]
-    public function pokedexApi(Request $request): Response
+    public function pokedexApi(Pokemon $pokemon): Response
     {
-        /* @var User $user */
+        /** @var User $user */
         $user = $this->getUser();
-        $pokeRepo = $this->entityManager->getRepository(Pokemon::class);
-        $cpRepo = $this->entityManager->getRepository(CapturedPokemon::class);
-        $pokemonPokeId = $request->get('pokemonId');
-        $pokemonToDisplay = $pokeRepo->findOneBy(['pokeId' => $pokemonPokeId]);
-        $shinyObtained = $cpRepo->findShinyCaptured($user);
-        $isShiny = false;
+        $baseForm = $pokemon->getRelateTo();
 
-        //Si l'utilisateur possède au moins un pokémon shiny, on compare les pokéID avec celui récupéré en requête
-        if (!empty($shinyObtained) && in_array($pokemonPokeId, $shinyObtained, true)) {
-            $isShiny = true;
+        if ($baseForm) {
+            $pokemons = [$baseForm, ...$baseForm->getRelatedPokemon()];
+        } else {
+            $pokemons = [$pokemon, ...$pokemon->getRelatedPokemon()];
         }
 
-        if ($pokemonToDisplay !== null) {
-            return $this->json([
-                'pokemonToDisplay' => [
-                    'pokeId' => $pokemonToDisplay->getPokeId(),
-                    'name' => $pokemonToDisplay->getName(),
-                    'nameEN' => $pokemonToDisplay->getNameEn(),
-                    'type1' => $pokemonToDisplay->getType(),
-                    'type2' => $pokemonToDisplay->getType2(),
-                    'description' => $pokemonToDisplay->getDescription(),
-                    'shiny' => $isShiny,
-                ]
-            ]);
+        $captured = $this->capturedPokemonService->userCapturedByGeneration($user, $pokemons);
+
+        if ($baseForm) {
+
+            $baseFormDTO = $captured[0];
+            $target = array_filter(
+                $baseFormDTO->relatedPokemon,
+                fn(PokemonDTO $p) => $p->id === $pokemon->getId()
+            );
+            $target = current($target);
+            $unTarget = array_filter(
+                $baseFormDTO->relatedPokemon,
+                fn(PokemonDTO $p) => $p->id !== $pokemon->getId()
+            );
+            $baseFormDTO->relatedPokemon = [];
+            $target->relatedPokemon = [$baseFormDTO, ...$unTarget];
+            $captured = [$target];
         }
 
-        return $this->json([
-            'error' => 'Impossible d\'accéder au pokémon séléctionné',
-        ]);
+        return $this->json($captured);
     }
 
     #[Route('/generation-api/{genNumber}', name: 'app_generation_api', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
     public function generationApi(Generation $generation): Response
     {
-        $user = $this->security->getUser();
+        $user = $this->getUser();
         $pokemons = $generation->getPokemon()->getValues();
         $captured = $this->capturedPokemonService->userCapturedByGeneration($user, $pokemons);
 
@@ -94,7 +91,7 @@ class APIController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function search(Request $request): Response
     {
-        $user = $this->security->getUser();
+        $user = $this->getUser();
         /** @var PokemonRepository $pokemonRepository */
         $pokemonRepository = $this->entityManager->getRepository(Pokemon::class);
         $pokemons = $pokemonRepository->searchByName($request->get('search'));

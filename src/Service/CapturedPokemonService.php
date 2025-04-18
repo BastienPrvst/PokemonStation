@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\DTO\CapturedPokemonDTO;
+use App\DTO\PokemonDTO;
 use App\Entity\Pokemon;
 use App\Entity\User;
 use App\Repository\CapturedPokemonRepository;
@@ -13,10 +14,8 @@ class CapturedPokemonService extends AbstractController
     public function __construct(
         private readonly CapturedPokemonRepository $capturedPokemonRepository,
     ) {}
-    
+
     /**
-     * userCapturedByGeneration
-     *
      * @param  User $user
      * @param  Pokemon[] $pokemons
      * @return CapturedPokemonDTO[]
@@ -39,7 +38,10 @@ class CapturedPokemonService extends AbstractController
             $pokemonId = $pokemon->getPokeId();
             $captured = in_array($pokemonId, $capturedPokemons);
             $shiny = in_array($pokemonId, $shinyCapturedPokemons);
-            $capturedPokemonsDTO[] = new CapturedPokemonDTO($pokemon, $captured || $shiny, $shiny);
+            $capturedPokemonDTO = new CapturedPokemonDTO($pokemon);
+            $capturedPokemonDTO->captured = $captured || $shiny;
+            $capturedPokemonDTO->shiny = $shiny;
+            $capturedPokemonsDTO[] = $capturedPokemonDTO;
         }
 
         foreach ($altForms as $altForm) {
@@ -47,22 +49,37 @@ class CapturedPokemonService extends AbstractController
             $pokemonRelateTo = $altForm->getRelateTo();
             $pokemonId = $altForm->getPokeId();
 
-            $relatedCapturedPokemonDTO = array_filter(
+            $basePokemonDTO = array_filter(
                 $capturedPokemonsDTO,
                 fn(CapturedPokemonDTO $p) => $p->pokeId === $pokemonRelateTo->getPokeId()
             );
 
-            $key = array_key_first($relatedCapturedPokemonDTO);
-            $relatedCapturedPokemonDTO = $capturedPokemonsDTO[$key] ?? null;
+            $key = array_key_first($basePokemonDTO);
+            $basePokemonDTO = $capturedPokemonsDTO[$key] ?? null;
 
-            if (!$relatedCapturedPokemonDTO) continue;
+            if (!$basePokemonDTO) continue;
 
             $captured = in_array($pokemonId, $capturedPokemons);
             $shiny = in_array($pokemonId, $shinyCapturedPokemons);
-            $addCapture = $captured || $relatedCapturedPokemonDTO->captured;
-            $addShiny = $shiny || $relatedCapturedPokemonDTO->shiny;
 
-            $capturedPokemonsDTO[$key] = new CapturedPokemonDTO($pokemonRelateTo, $addCapture || $addShiny, $addShiny);
+            $capturedPokemonDTO = $capturedPokemonsDTO[$key];
+            $capturedPokemonDTO->altCaptured = $capturedPokemonDTO->altCaptured ?: $captured || $shiny;
+            $capturedPokemonDTO->altShiny = $capturedPokemonDTO->altShiny ?: $shiny;
+
+            $capturedPokemonsDTO[$key] = $capturedPokemonDTO;
+
+            if ($captured || $shiny) {
+                $pokemonDTO = array_filter(
+                    $capturedPokemonsDTO[$key]->relatedPokemon,
+                    fn(PokemonDTO $p) => $p->pokeId === $pokemonId
+                );
+
+                $relatedKey = array_key_first($pokemonDTO);
+                $pokemonDTO = new CapturedPokemonDTO($altForm, $captured || $shiny, $shiny);
+                $pokemonDTO->captured = $captured || $shiny;
+                $pokemonDTO->shiny = $shiny;
+                $capturedPokemonsDTO[$key]->relatedPokemon[$relatedKey] = $pokemonDTO;
+            }
         }
 
         usort($capturedPokemonsDTO, fn(CapturedPokemonDTO $a, CapturedPokemonDTO $b) => $a->pokeId <=> $b->pokeId);

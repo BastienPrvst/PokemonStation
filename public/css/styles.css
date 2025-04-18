@@ -2194,6 +2194,7 @@ tfoot tr td {
   position: absolute;
   left: 25px;
   bottom: 30px;
+  z-index: 10;
 }
 
 .alt-forms {
@@ -2204,6 +2205,8 @@ tfoot tr td {
   bottom: 180px;
   left: 50%;
   transform: translateX(-50%);
+  max-width: 200px;
+  overflow-x: auto;
 }
 
 .alt {
@@ -2342,6 +2345,7 @@ tfoot tr td {
   }
 
   .alt-forms {
+    min-width: 500px;
     bottom: 50px;
   }
 
