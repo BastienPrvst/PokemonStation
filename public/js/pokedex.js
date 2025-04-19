@@ -3,7 +3,7 @@ let pokemonImage = document.querySelector(".poke-gif");
 let buttons = document.querySelectorAll(".pokemon-pokedex");
 let currentPokeId = null;
 
-// Attache l'événement 'click' à chaque élément de la liste
+// Select on click a pokemon to display on pokedex
 buttons.forEach(function (button) {
   button.addEventListener("click", function (event) {
 
@@ -23,7 +23,8 @@ buttons.forEach(function (button) {
 
 // Select des générations
 document.querySelector("#generations").addEventListener("change", (event) => {
-  const apiPath = baseUrl + "generation-api/" + event.target.value;
+
+  const apiPath = baseUrl + 'generation-api/' + event.target.value;
 
   fetch(apiPath, {method: "GET"})
     .then(response => response.json())
@@ -48,24 +49,24 @@ document.querySelectorAll(".alt-captured")?.forEach(el => {
 // Search on all pokemon
 let timeout = null;
 
-document.querySelector("#pokedexSearch").addEventListener("input", (event) => {
-  let apiPath = baseUrl + "search-api?search=" + event.target.value;
+document.querySelector('#pokedexSearch').addEventListener('input', (event) => {
+
+  let apiPath = baseUrl + 'search-api?search=' + event.target.value;
 
   clearTimeout(timeout);
   timeout = setTimeout(() => {
-    if (event.target.value === "") {
-      apiPath =
-        baseUrl +
-        "generation-api/" +
-        document.querySelector("#generations").value;
+
+    if (event.target.value === '') {
+      apiPath = baseUrl + 'generation-api/' + document.querySelector("#generations").value;
     }
 
-    fetch(apiPath, { method: "GET" })
-      .then((response) => response.json())
-      .then((pokemons) => updatePokedexList(pokemons))
-      .catch((error) => console.log(error));
+    fetch(apiPath, {method: "GET"})
+      .then(response => response.json())
+      .then(pokemons => updatePokedexList(pokemons))
+      .catch(error => console.log(error));
+
   }, 500);
-});
+})
 
 // LOCAL FUNCTIONS
 
@@ -149,16 +150,12 @@ const updatePokedex = pokemon => {
 
 const updatePokedexList = (pokemons) => {
   const pokemonsContainer = document.querySelector("#pokemonsContainer");
-  const pokemonCapturedContainerTpl = document.querySelector(
-    "#pokemonCapturedTpl",
-  );
-  const pokemonNotCapturedContainerTpl = document.querySelector(
-    "#pokemonNotCapturedTpl",
-  );
-  const shinyImgTpl = document.querySelector("#shinyImgTpl");
+  const pokemonCapturedContainerTpl = document.querySelector("#pokemonCapturedTpl");
+  const pokemonNotCapturedContainerTpl = document.querySelector("#pokemonNotCapturedTpl");
+  const shinyImgTpl = document.querySelector('#shinyImgTpl');
 
-  const pokedexCounter = document.querySelector("#pokedexCounter");
-  const shinydexCounter = document.querySelector("#shinydexCounter");
+  const pokedexCounter = document.querySelector('#pokedexCounter');
+  const shinydexCounter = document.querySelector('#shinydexCounter');
 
   let pokedexCount = 0;
   let shinyCount = 0;
@@ -171,18 +168,14 @@ const updatePokedexList = (pokemons) => {
   pokedexCounter.textContent = `${pokedexCount} sur ${pokemons.length}`;
   shinydexCounter.textContent = `${shinyCount} sur ${pokemons.length}`;
 
-  pokemonsContainer.textContent = null;
+  pokemonsContainer.textContent = null
 
-  pokemons.forEach((pokemon) => {
+  pokemons.forEach(pokemon => {
+
     let pokemonContainer = null;
     let pokemonName = null;
-    let pokemonFullName = "???";
+    let pokemonFullName = '???';
 
-    if (pokemon.captured || pokemon.shiny) {
-      pokemonContainer =
-        pokemonCapturedContainerTpl.content.cloneNode(true).firstElementChild;
-      pokemonName =
-        pokemon.name?.charAt(0).toUpperCase() + pokemon.name?.slice(1);
     if (pokemon.captured || pokemon.altCaptured) {
       pokemonContainer = pokemonCapturedContainerTpl.content.cloneNode(true).firstElementChild;
       pokemonName = formatName(pokemon.name);
@@ -202,10 +195,7 @@ const updatePokedexList = (pokemons) => {
 
       });
     } else {
-      pokemonContainer =
-        pokemonNotCapturedContainerTpl.content.cloneNode(
-          true,
-        ).firstElementChild;
+      pokemonContainer = pokemonNotCapturedContainerTpl.content.cloneNode(true).firstElementChild;
     }
 
     pokemonContainer.textContent = pokemonFullName;
@@ -215,5 +205,5 @@ const updatePokedexList = (pokemons) => {
       let shinyImg = shinyImgTpl.content.cloneNode(true).firstElementChild;
       pokemonContainer.appendChild(shinyImg);
     }
-  });
-};
+  })
+}
