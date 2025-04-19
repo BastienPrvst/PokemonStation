@@ -667,86 +667,421 @@ footer {
 
 /* Page de Profil */
 
-.dev-text {
-  padding: 10px 50px 10px 50px;
+/*Section avatar*/
+
+.avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.profile-title {
-  margin-bottom: 0.5rem;
-  color: white;
+.trainer-gif {
+  width: 300px;
+  height: auto;
 }
 
-.profile-container {
-  background-image: url(../medias/images/background/pokeball-bg.png);
-  background-size: 50px;
-  background-position: top right;
-  background-repeat: no-repeat;
-  background-color: #e06666;
-  border: solid #a62840 5px;
-  border-radius: 30px;
-  padding: 15px;
+.select-character {
+  z-index: 3;
+  padding-bottom: 50px;
 }
-.profil-title {
+
+/*Div card*/
+
+.flip-card {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  max-height: 520px;
+  max-width: 800px;
+  perspective: 2000px;
+  transform-style: preserve-3d;
+}
+
+.trainer-card,
+.back-card {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  border-radius: 32px;
+  padding: 10px 15px;
+  transition: 1s;
+  backface-visibility: hidden;
+  overflow: hidden;
+}
+
+.trainer-card {
+  background: #438dd9;
+  background-size: 300px, cover;
+  background-blend-mode: soft-light;
   color: white;
+  outline: 10px solid #d6af42;
+  border: 5px solid white;
+}
+
+.card-bg {
+  transform: rotate(45deg);
+  position: absolute;
+  z-index: -10 !important;
+  top: -100px;
+  left: -100px;
+  width: 800px;
+  filter: brightness(0) saturate(100%) invert(80%) sepia(12%) saturate(4991%)
+    hue-rotate(173deg) brightness(91%) contrast(95%);
+  opacity: 0.5;
+}
+
+.second-border-purée {
+  border: 10px solid #438dd9;
+  padding: 0.5rem;
+  margin: 0;
+  border-radius: 24px;
+}
+
+.trainer-card > * {
+  font-family: "Jersey 10", serif;
+}
+
+.light-blue {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  margin: 10px;
+  padding: 3px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.light-blue::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: white;
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.light-blue span {
+  position: relative;
+  z-index: 1;
+  color: black;
+  font-size: 1.5rem;
+  opacity: 1;
+  padding: 0 10px;
+}
+
+.main-card {
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+}
+
+.main-card h2 {
+  color: white;
+  font-family: "Jersey 10", serif;
   font-size: 3rem;
+  letter-spacing: -1px;
 }
 
-.stats-title {
+.card-ball-front {
+  filter: brightness(0) invert(1);
+  image-rendering: pixelated;
+  width: 25px;
+}
+
+.main-card-info {
+  width: 60%;
+}
+
+.card-id-name {
+  margin-bottom: 15px;
+}
+
+.card-id-name div {
+  margin: 5px;
+}
+
+.card-money,
+.card-dex,
+.card-certif {
+  margin-bottom: 15px;
+}
+
+.card-avatar {
+  width: 100%;
+  max-width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.card-image {
+  width: 100%;
+  height: auto;
+  position: relative;
+  box-shadow:
+    inset 3px 3px #2e4c6b,
+    inset 0 3px #2e4c6b,
+    inset -3px -3px #5cb2d6,
+    inset 3px 0 #5cb2d6;
+}
+
+.card-bottom div {
+  margin: 5px;
+}
+
+.skibibop {
+  width: 100%;
+  max-width: 250px;
+  z-index: 3;
+}
+
+.modify-avatar {
+  z-index: 10 !important;
+  display: flex;
+  align-items: center;
+  padding: 3px 6px;
+  cursor: pointer;
+  color: #d6af42;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.modify-avatar img {
+  width: 20px;
+}
+
+.click {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 45px;
+}
+
+/*Back de la card*/
+.back-card {
+  transform: rotateY(180deg);
+  background-color: #9f1239;
   color: white;
-  margin-bottom: 20px;
+  border: 5px solid white;
+  outline: 10px solid #d6af42;
+}
+
+.back-card * {
+  font-weight: 10;
+}
+
+.card-bg-2 {
+  transform: rotate(-45deg);
+  position: absolute;
+  z-index: -10 !important;
+  top: -100px;
+  left: 100px;
+  width: 800px;
+  filter: brightness(0) saturate(100%) invert(31%) sepia(85%) saturate(1175%)
+    hue-rotate(326deg) brightness(96%) contrast(94%);
+  opacity: 0.5;
+}
+
+.back-card-container {
+  font-family: "Jersey 10", serif;
+  font-size: 1.4rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  height: 100%;
+}
+
+.back-card-title {
+  text-align: center;
+  font-size: 2.5rem;
+  text-decoration: underline;
+  font-family: "Jersey 10", serif;
+  margin: 0 0 15px 0;
+}
+
+.light-red {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  margin: 10px 0;
+  padding: 0 10px;
+  opacity: 1;
+  border-radius: 15px;
+}
+
+.light-red::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: white;
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.light-red img {
+  opacity: 1;
+  position: relative;
+  width: 100%;
+}
+
+.stats-list {
+  width: 35%;
+  height: 100%;
+}
+
+.span-rarity {
+  font-size: xx-large;
+  font-weight: bold;
+}
+
+.div-TR span {
+  color: #f4ba28;
+}
+
+.div-EX span {
+  color: #cd00e2;
+}
+
+.div-SR span {
+  color: #f01923;
+}
+
+.div-UR span {
+  color: #4439cd;
 }
 
 .stats {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
-.stats-block {
+.stats div {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  padding: 2%;
+  width: calc(50% - 2%);
 }
 
-.left-block {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  background-image: url(../medias/images/background/pokeball-bg.png);
-  background-size: cover;
-  background-position: center;
+.stats div:first-child {
+  margin: 0 2% 2% 0;
+}
+
+.stats div:nth-child(2) {
+  margin: 0 0 2% 2%;
+}
+
+.stats div:nth-child(3) {
+  margin: 2% 2% 0 0;
+}
+
+.stats div:nth-child(4) {
+  margin: 2% 0 0 2%;
+}
+
+.stats-list-item img {
+  width: 70%;
+}
+
+.rotate-a {
+  transform: rotateY(0deg);
+}
+
+.rotate-b {
+  transform: rotateY(-180deg);
+}
+
+.gen-stats {
+  width: 65%;
+}
+
+.gen-stats * {
+  font-size: 1.15rem;
+}
+
+.gen-table {
+  width: 100%;
+  text-align: center;
+  margin: 0 8px;
+}
+
+.gen-table thead {
+  border: 2mm ridge rgba(240 0 32 / 0.9);
+}
+
+.gen-table th {
+  width: 38%;
+  background-color: #8c051c;
+  font-size: 1.3rem;
+}
+
+.gen-table th:first-child {
+  width: 24%;
+}
+
+.gen-image {
+  width: 15px;
+}
+
+.gen-table tr:nth-child(odd) {
   background-color: #dd4242;
-  border: solid #a62840 5px;
-  border-radius: 30px;
-  padding: 30px;
 }
 
-.informations-account-title {
+.gen-table tr:nth-child(even) {
+  background-color: #a62535;
+}
+
+.friends-title {
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: underline;
+  font-family: "Jersey 10", serif;
+  font-size: 2.5rem;
+}
+
+.info-account {
+  background-color: #9f1239;
   color: white;
+  padding: 5%;
+  font-family: "Jersey 10", serif;
+  font-size: 1.3rem;
 }
 
-.right-block {
+.info-div {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  background-image: url(../medias/images/background/pokeball-bg.png);
-  background-size: cover;
-  background-position: center;
+  justify-content: space-between;
   background-color: #dd4242;
-  border: solid #a62840 5px;
-  border-radius: 30px;
-  padding: 15px 20px 7px 20px;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 15px;
 }
 
-.list-group-item {
-  font-family: "Press Start 2P", sans-serif;
-  font-size: 0.8rem;
-  background-color: white;
-  margin: 5px;
-  border-radius: 5px;
+.friends-container {
+  padding: 5%;
 }
+
+. @media screen and (min-width: 992px) {
+  .gen-table th {
+    font-size: 1.5rem;
+  }
+
+  .gen-stats * {
+    font-size: 1.3rem;
+  }
+}
+
+/*Div amis*/
 
 /*Modifs modal*/
 .modal {
@@ -813,62 +1148,14 @@ footer {
   cursor: pointer;
 }
 
-/*Modifs Carousel Gif Avatar*/
-
-.carou-avatar {
-  margin: 0 auto;
-  max-width: 200px;
-  padding: 30px 0;
-}
-
-.carousel-avatar {
-  padding: 50px 0;
-  transform: scale(1.35);
-}
-
-.carou-avatar {
-  text-align: center;
-  max-width: 200px;
-  padding: 30px 0;
-}
-
-.trainer-gif {
-  width: 300px;
-  height: auto;
-}
-
-.select-character {
-  padding-bottom: 50px;
-}
-
 @media screen and (min-width: 992px) {
   .trainer-gif {
     transform: scale(1.2);
     padding: 50px 0;
   }
 
-  .trainer-gif {
-    transform: scale(1.2);
-    padding: 50px 0;
-  }
-
   .avatar img {
     margin: 0 50px;
-  }
-
-  .carou-avatar {
-    margin: 0 auto;
-    max-width: 300px;
-    padding: 30px 0;
-  }
-  .avatar img {
-    margin: 0 50px;
-  }
-
-  .carou-avatar {
-    text-align: center;
-    max-width: 300px;
-    padding: 30px 0;
   }
 }
 
@@ -1097,7 +1384,7 @@ i.fa-chevron-right {
 
 .fivelast {
   display: flex;
-  animation: 60s scrollText infinite linear;
+  animation: 75s scrollText infinite linear;
 }
 
 .pokemon-five {
@@ -1308,6 +1595,10 @@ i.fa-chevron-right {
 
 .coin-width {
   width: 30px;
+}
+
+.coin-width-3 {
+  width: 20px;
 }
 
 .coin-count {
@@ -1551,12 +1842,6 @@ i.fa-chevron-right {
   color: #ffffff;
   font-weight: bold;
   margin-top: 25px;
-}
-
-.shop-list tr {
-  border-bottom: #e06666 solid 5px;
-  background-color: white;
-  opacity: 0.8;
 }
 
 tfoot tr td {
@@ -2424,6 +2709,7 @@ tfoot tr td {
 
   .poke-list {
     height: 75vh;
+    max-height: 80vh;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -2472,7 +2758,8 @@ tfoot tr td {
   }
 
   .pokedex-nav {
-    height: 800px;
+    height: 60vh;
+    max-height: 600px;
     margin-top: 10px;
     margin-bottom: 50px;
   }
@@ -2647,7 +2934,7 @@ tfoot tr td {
 .h1-inscription {
   color: white;
   margin-bottom: 50px;
-  font-size: 3rem;
+  font-size: 2rem;
 }
 
 .register-form {

@@ -5,56 +5,133 @@
 {% endblock %}
 
 {% block body %}
+<main>
+    <h1 class="profile-title text-center my-5 text-white">Profil de {{ user.pseudonym }}</h1>
+    <section class="d-flex justify-content-center my-5">
+        <div class="flip-card">
+            <div class="trainer-card">
+                <img class="card-bg" src="{{ asset('medias/images/elements/ball-icon.png') }}" alt="">
+                <div class="main-card">
+                    <img class="click" src="{{ asset('medias/images/elements/click.png') }}" alt="">
+                    <div class="main-card-info">
+                        <h2><img class="card-ball-front" src="{{ asset('medias/images/elements/ball-icon.png') }}" alt=""> Carte de dresseur <img class="card-ball-front" src="{{ asset('medias/images/elements/ball-icon.png') }}" alt=""></h2>
+                        <div class="card-id-name">
+                            <div class="light-blue">
+                                <span>N° ID</span>
+                                <span>{{ user.id }}</span>
+                            </div>
+                            <div class="light-blue">
+                                <span>NOM</span>
+                                <span>{{ user.pseudonym }}</span>
+                            </div>
+                        </div>
 
-    <div class="background">
+                        <div class="card-money light-blue">
+                            <span>ARGENT</span>
+                            <span class="d-flex align-items-center">{{user.money }} <img class="coin-width-3" src="{{ asset('medias/images/elements/coin-resized.png') }}" alt=""></span>
+                        </div>
 
-        {# statistique #}
-        <div class="fade-up profil-public">
-            <h1 class="profile-title text-center my-5"> Profil de {{ user.pseudonym }}</h1>
-            <div class="container">
-                <div class="profile-container row col-12 col-lg-6 mx-auto">
-                    <h2 class="profile-title">Statistiques</h2>
+                        <div class="card-dex light-blue">
+                            <span>POKEDEX</span>
+                            <span>{{ nbPokemonUnique }}</span>
+                        </div>
 
-                    {# Block de gauche, Infos de l'utilisateur #}
-                    <ul class="list-group text-center" id="utilisateur">
-                        <li class="list-group-item">Pseudo
-                            <span class="text-info">{{ user.pseudonym }}</span>
-                        </li>
-                        <li class="list-group-item ">Pokémons libérés&nbsp;:
-                            <span class="text-info">{{ user.launchCount }}</span>
-                        </li>
-                        <li class="list-group-item ">Pokémons Très Rare(s) libéré(s)&nbsp;:
-                            <span class="text-info">{{ nbTR }}</span>
-                        </li>
-                        <li class="list-group-item ">Pokémons Extrêmement Rare(s) libéré(s)&nbsp;:
-                            <span class="text-info">{{ nbEX }}</span>
-                        </li>
-                        <li class="list-group-item ">Pokémons Secret Rare(s) libéré(s)&nbsp;:
-                            <span class="text-info">{{ nbSR }}</span>
-                        </li>
-                        <li class="list-group-item ">Shiny obtenus&nbsp;:
-                            <span class="text-info">{{ nbShiny }}</span>
-                        </li>
-                        <li class="list-group-item ">Pokédex rempli à  {{ nbPokemonUnique }}/{{ pokedexSize }}
-                            <span class="text-info"></span>
-                        </li>
-                    </ul>
-                </div>
-
-                <div id="carouselExample" class="carousel slide">
-                    <div class="avatar">
-                        <img src="{{ asset('medias/images/trainers/' ~ user.avatar ~'.gif') }}" class="d-block trainer-gif mx-auto mb-5" alt="..." data-avatar="{{ user.avatar }}">
+                        <div class="card-certif light-blue">
+                            <span>STATUT</span>
+                            <span>CERTIFIE</span>
+                        </div>
+                    </div>
+                    <div class="card-avatar">
+                        <div class="card-image light-blue">
+                            <img src="{{ asset('medias/images/trainers/' ~ user.avatar ~'.gif') }}" class="skibibop" alt="Avatar de profil de l'utilisateur">
+                        </div>
                     </div>
 
                 </div>
+
+                <div class="card-bottom">
+
+                    <div class="card-time-play light-blue">
+                        <span>DEBUT DE L'AVENTURE</span>
+                        <span>{{ user.creationDate|format_datetime(locale='fr', pattern="dd MMM YYYY") }}</span>
+                    </div>
+
+                    <div class="card-friends light-blue">
+                        <span>NOMBRE D'AMIS</span>
+                        <span>{{ user.friendships|length }}</span>
+                    </div>
+                </div>
             </div>
+
+            <div class="back-card">
+                <img class="card-bg-2" src="{{ asset('medias/images/elements/ball-icon.png') }}" alt="">
+
+                <h3 class="back-card-title">Statistiques</h3>
+                <div class="back-card-container">
+
+                    <div class="stats-list" id="utilisateur">
+
+                        <div class="stats-list-item freed-poke light-red mt-0">Pokémons libérés :
+                            <span>{{ user.launchCount }}</span>
+                        </div>
+
+                        <div class="stats">
+
+                            <div class="stats-list-item div-TR light-red"><img src="{{ asset('medias/images/elements/tr.png') }}" alt="">
+                                <span class="span-rarity">{{ nbTR }}</span>
+                            </div>
+                            <div class="stats-list-item div-EX light-red"><img src="{{ asset('medias/images/elements/EX.png') }}" alt="">
+                                <span class="span-rarity">{{ nbEX }}</span>
+                            </div>
+                            <div class="stats-list-item div-SR light-red"><img src="{{ asset('medias/images/elements/SR.png') }}" alt="">
+                                <span class="span-rarity">{{ nbSR }}</span>
+                            </div>
+                            <div class="stats-list-item div-UR light-red"><img src="{{ asset('medias/images/elements/UR.png') }}" alt="">
+                                <span class="span-rarity">{{ nbUR }}</span>
+                            </div>
+
+                        </div>
+                        <div class="stats-list-item shiny-obtained light-red">Shiny obtenus :
+                            <span>{{ nbShiny }}</span>
+                        </div>
+                        <div class="stats-list-item pokedex-accomplished light-red">Pokédex total {{ nbPokemonUnique }}/{{ pokedexSize }}</div>
+                    </div>
+
+                    <div class="gen-stats">
+
+                        <table class="gen-table">
+                            <thead>
+                            <tr>
+                                <th>Région:</th>
+                                <th>Pokedex: </th>
+                                <th>Complet:</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for gen in allGens %}
+                                <tr class="gen-tr">
+                                    <td>{{ gen.generation|capitalize }}</td>
+                                    <td>{{ gen.gen_captured }} / {{ gen.gen_total }} {% if gen.gen_captured == gen.gen_total %}<img class="gen-image" src="{{ asset('medias/images/elements/mini-star.png') }}" alt=""> {% endif %}</td>
+                                    <td>{{ gen.true_gen_captured }} / {{ gen.true_gen_total }} {% if gen.true_gen_captured == gen.true_gen_total %}<img class="gen-image" src="{{ asset('medias/images/elements/mini-star-orange.png') }}" alt=""> {% endif %}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </div>
-
-    {% endblock %}
-
+    </section>
+</main>
+{% endblock %}
 {% block js %}
-
+    <script>
+        const profilPageApi = '{{ url('app_profil_api') }}';
+        const avatar = '{{ user.avatar }}';
+    </script>
+    <script src="{{ asset('js/show-profil.js') }}"></script>
 {% endblock %}
 
 

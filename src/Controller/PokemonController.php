@@ -25,7 +25,8 @@ class PokemonController extends AbstractController
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly CapturedPokemonService $capturedPokemonService,
-    ) {}
+    ) {
+    }
 
     #[Route('/pokedex', name: 'app_pokedex')]
     #[IsGranted('ROLE_USER')]
@@ -39,7 +40,6 @@ class PokemonController extends AbstractController
         $generations = $genRepo->findBy([], ['genNumber' => 'ASC']);
         $currentGeneration = $genRepo->findOneBy([], ['genNumber' => 'ASC']);
         $pokemons = $currentGeneration->getPokemon()->getValues();
-
         $pokemonsDTO = $this->capturedPokemonService->userCapturedByGeneration($user, $pokemons);
 
         return $this->render('main/pokedex.html.twig', [
