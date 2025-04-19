@@ -15,16 +15,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install composer dependencies
-        uses: php-actions/composer@v6
-        with:
-          dev: yes
-          php_extensions: gd zip imagick sodium
-          php_version: "8.2"
-          progress: yes
-          quiet: no
-          memory_limit: '720M'
-
       - name: Deploy
         env:
           host: ${{ secrets.DEPLOY_HOST }}
@@ -52,6 +42,8 @@ jobs:
             --include "composer.lock" \
             --include "symfony.lock" \
             --exclude "*" \
+            --exclude ".env.local" \
+            --exclude "public/.htaccess" \
             ./ ${{ env.host }}:${{ env.path }}
 
       # Commands executed :
@@ -66,6 +58,7 @@ jobs:
         run: |
           echo "${{ secrets.DEPLOY_KEY }}" > deploy_key
           chmod 600 ./deploy_key
+          ssh -q -i ./deploy_key -p ${{ env.host_port }} ${{ env.host }} ${{ secrets.DEPLOY_COMPOSER }} update --working-dir ${{ env.path }} --no-interaction --quiet --no-dev
           ssh -q -i ./deploy_key -p ${{ env.host_port }} ${{ env.host }} ${{ secrets.DEPLOY_PHP }} ${{ env.path }}/bin/console doctrine:migrations:migrate --no-interaction
           ssh -q -i ./deploy_key -p ${{ env.host_port }} ${{ env.host }} ${{ secrets.DEPLOY_PHP }} ${{ env.path }}/bin/console cache:clear --no-warmup
           ssh -q -i ./deploy_key -p ${{ env.host_port }} ${{ env.host }} ${{ secrets.DEPLOY_PHP }} ${{ env.path }}/bin/console cache:warmup
