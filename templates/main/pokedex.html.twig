@@ -77,6 +77,64 @@
 
 	<section class="pokedex-view col-12 col-lg-8">
 		{% set currentPokemon = pokemons|find(p => p.captured or p.altCaptured) %}
+
+		{# Quick fix #}
+
+		{% if currentPokemon is null %}
+			<div class="main-pokedex">
+				<div class="speaker speaker-1">
+					<!-- Les points -->
+					<div></div><div></div><div></div><div></div>
+					<div></div><div></div><div></div><div></div>
+					<div></div><div></div><div></div><div></div>
+					<div></div><div></div><div></div><div></div>
+				</div>
+				<div id="pokedexMain" class="pokedex-pokemon" style="background-image: url({{ asset('medias/images/fonds/plante.png') }})">
+					<div class="pokedex-name">
+						<p id="pokemonName">???</p>
+					</div>
+					<div class="volume-dex-content">
+						<div class="d-none english-name">???</div>
+						<button class="volume volume-2">
+							<img class="active sound soundOn" src="{{ asset('medias/images/elements/volume.up.png') }}" alt="Activer le son">
+							<img class="type-none sound soundOff" src="{{ asset('medias/images/elements/volume.off.png') }}" alt="Désactiver le son">
+						</button>
+
+						<button class="volume-dex d-none">
+							<img src="{{ asset('medias/images/elements/play-arrow.png') }}" alt="">
+						</button>
+					</div>
+
+					<div class="pokedex-descritpion">
+						<p id="pokemonDescription"></p>
+					</div>
+				</div>
+				<div class="speaker speaker-2">
+					<!-- Les points -->
+					<div></div><div></div><div></div><div></div>
+					<div></div><div></div><div></div><div></div>
+					<div></div><div></div><div></div><div></div>
+					<div></div><div></div><div></div><div></div>
+				</div>
+
+				<img class="cross" src="{{ asset('medias/images/elements/Cross.png') }}" alt="Croix directionnelle">
+
+				<div class="gameboy-buttons">
+
+					<button class="gb-button-b a-b">
+						B
+					</button>
+
+					<button class="gb-button-a a-b">
+						A
+					</button>
+				</div>
+			</div>
+
+
+		{% else %}
+
+
 		{% if currentPokemon.captured == false and currentPokemon.altCaptured == true %}
 			{% set basePokemon = currentPokemon %}
 			{% set currentPokemon = currentPokemon.relatedPokemon|find(pr => pr.captured is defined and pr.captured) %}
@@ -112,7 +170,9 @@
 				{% endif %}
 				<div class="pokedex-types">
 					<a href="{{ path('app_types') }}" class="type-img-a"><img id="pokemonType" class="type-img type1" src="{{ asset('medias/images/types/' ~ currentPokemon.type) ~ '.png' }}" alt="Type"></a>
+					{% if currentPokemon.type2 is not null %}
 					<a href="{{ path('app_types') }}" class="type-img-a"><img id="pokemonType2" class="type-img type2 {{ currentPokemon.type2 ? null : 'd-none' }}" src="{{ asset('medias/images/types/' ~ currentPokemon.type2) ~ '.png' }}" alt="Type secondaire"></a>
+					{% endif %}
 				</div>
 				<div class="pokedex-image"><img id="pokemonGif" src="{{ asset('medias/images/gifs/' ~ currentPokemon.name_en ~ '.gif') }}" alt=""></div>
 				<div class="pokedex-descritpion">
@@ -175,6 +235,7 @@
 				</button>
 			</div>
 		</div>
+		{% endif %}
 	</section>
 </div>
 
