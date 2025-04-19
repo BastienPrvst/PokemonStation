@@ -33,7 +33,7 @@ jobs:
         run: |
           echo "${{ secrets.DEPLOY_KEY }}" > deploy_key
           chmod 600 ./deploy_key
-          rsync -chaqz --delete \
+          rsync -chaqz \
             -e 'ssh -p ${{ env.host_port }} -i ./deploy_key -o StrictHostKeyChecking=no' \
             --include "assets/***" \
             --exclude "bin/phpunit" \
