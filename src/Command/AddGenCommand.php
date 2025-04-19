@@ -172,8 +172,11 @@ class AddGenCommand extends Command
         if ($this->generateGifs($pokemonJson)) {
             $type1_en = isset($pokemonJson->types[0]) ? $pokemonJson->types[0]->type->name : null;
             $type2_en = isset($pokemonJson->types[1]) ? $pokemonJson->types[1]->type->name : null;
-            $type1 = $this->translator->trans($type1_en, domain: 'types') ?: null;
-            $type2 = $this->translator->trans($type2_en, domain: 'types') ?: null;
+            $type1_translated = $this->translator->trans($type1_en, domain: 'types');
+            $type2_translated = $this->translator->trans($type2_en, domain: 'types');
+
+            $type1 = $type1_translated ? $this->removeAccents($type1_translated) : null;
+            $type2 = $type2_translated ? $this->removeAccents($type2_translated) : null;
             $this->generateCry($pokemonJson);
 
             $pokemon = (new Pokemon())
@@ -302,5 +305,10 @@ class AddGenCommand extends Command
             $filePath = $this->kernel->getProjectDir() . "/public/medias/cries/{$pokemonJson->name}-cry.mp3";
             file_put_contents($filePath, $cryResponse->getContent());
         }
+    }
+
+    private function removeAccents(string $str): string
+    {
+        return iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $str);
     }
 }

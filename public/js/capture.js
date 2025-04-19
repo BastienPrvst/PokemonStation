@@ -1,31 +1,7 @@
-document.addEventListener("DOMContentLoaded", function () {
-  if (localStorage.getItem("soundOn") === "false") {
-    const soundOff = document.querySelector(".soundOff");
-    const soundOn = document.querySelector(".soundOn");
-    soundOff.classList.replace("type-none", "active");
-    soundOn.classList.replace("active", "type-none");
-  }
-  if (localStorage.getItem("soundOff") === "") {
-    localStorage.setItem("soundOff", "true");
-  }
-});
+import { clickSound, manageSound } from "./Sound.js";
 
-const soundButton = document.querySelector(".volume");
-soundButton.addEventListener("click", () => {
-  if (
-    localStorage.getItem("soundOn") === "true" ||
-    localStorage.getItem("soundOn") === ""
-  ) {
-    localStorage.setItem("soundOn", "false");
-  } else {
-    localStorage.setItem("soundOn", "true");
-  }
-  let childs = soundButton.children;
-  for (const child of childs) {
-    child.classList.toggle("active");
-    child.classList.toggle("type-none");
-  }
-});
+manageSound();
+clickSound();
 
 let captureInProcess = false;
 const pokeballButton = document.querySelectorAll(".capture-poke-button");
@@ -143,9 +119,8 @@ document
                 }
 
                 //Fonds en fonction des types
-                document
-                  .querySelector(".view-pokemon")
-                  .style.backgroundImage = `url(/medias/images/fonds/${data.captured_pokemon.type}.png)`;
+                document.querySelector(".view-pokemon").style.backgroundImage =
+                  `url(/medias/images/fonds/${data.captured_pokemon.type}.png)`;
 
                 document
                   .querySelector(".pokeball-animate")

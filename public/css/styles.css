@@ -366,7 +366,6 @@ footer {
   font-size: 1.3rem;
   display: flex;
   justify-content: center;
-  margin: 5%;
   border-radius: 30px;
   border: solid #d6af42 10px;
   position: relative;
@@ -379,22 +378,22 @@ footer {
 
 .chen {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .pika-home {
   position: absolute;
   bottom: 82px;
-  transform: scale(2.3);
-  z-index: 2;
+  transform: scale(2);
+  z-index: 3;
 }
 
 .roucoups-home {
   position: absolute;
-  transform: scaleX(-1) scale(2.3);
+  transform: scaleX(-1) scale(1.8);
   top: 0;
-  right: 0;
-  z-index: 2;
+  right: 15px;
+  z-index: 1;
 }
 
 .poke-bg {
@@ -634,6 +633,18 @@ footer {
 @media screen and (min-width: 992px) {
   .home-image-div {
     margin-right: 125px;
+  }
+
+  .pika-home {
+    transform: scale(2.3);
+  }
+
+  .roucoups-home {
+    transform: scaleX(-1) scale(2.3);
+  }
+
+  .concept{
+    margin: 5%;
   }
 
   .concept-div {
@@ -2042,10 +2053,6 @@ tfoot tr td {
   display: none;
 }
 
-.arrows {
-  display: none;
-}
-
 .select-gen {
   margin-top: 10px;
   height: 50px;
@@ -2470,10 +2477,34 @@ tfoot tr td {
   border-radius: 50%;
   background-color: orange;
 }
+
 .button-shiny img {
   width: 40px;
   height: 40px;
 }
+
+.volume-dex-content{
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.volume-2{
+  position: relative;
+  border-bottom-right-radius: 0;
+}
+
+.volume-dex {
+  width: 50px;
+  height: 50px;
+  border-color: #de0c30;
+  background-color: #af374d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom-right-radius: 25px;
+}
+
 .cross {
   width: 150px;
   position: absolute;

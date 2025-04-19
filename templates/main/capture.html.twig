@@ -77,9 +77,6 @@
 
                 </div>
 
-
-
-
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
@@ -237,6 +234,6 @@
         const buyItemSound = '{{ asset('medias/cries/sounds/item-found.mp3') }}'
         const crySound = '{{ asset('medias/cries/') }}'
     </script>
-    <script src="{{ asset('js/capture.js') }}"></script>
+    <script type="module" src="{{ asset('js/capture.js') }}"></script>
 
 {% endblock %}

@@ -77,6 +77,8 @@
 
 	<section class="pokedex-view col-12 col-lg-8">
 		{% set currentPokemon = pokemons|find(p => p.captured or p.altCaptured) %}
+
+		{# Quick fix #}
 		{% if currentPokemon is null %}
 			<div class="main-pokedex">
 				<div class="speaker speaker-1">
@@ -85,18 +87,24 @@
 					<div></div><div></div><div></div><div></div>
 					<div></div><div></div><div></div><div></div>
 					<div></div><div></div><div></div><div></div>
+
 				</div>
 				<div id="pokedexMain" class="pokedex-pokemon" style="background-image: url({{ asset('medias/images/fonds/plante.png') }})">
-					<div class="pokedex-shine"></div>
 					<div class="pokedex-name">
-						<p id="pokemonName"></p>
+						<p id="pokemonName">???</p>
 					</div>
-					<div class="pokedex-types">
-						<a href="{{ path('app_types') }}" class="type-img-a"><img id="pokemonType" class="type-img type1 d-none" src="" alt="Type"></a>
-						<a href="{{ path('app_types') }}" class="type-img-a"><img id="pokemonType2" class="type-img type2 d-none" src="" alt="Type secondaire"></a>
+					<div class="volume-dex-content">
+						<div class="d-none english-name">???</div>
+						<button class="volume volume-2">
+							<img class="active sound soundOn" src="{{ asset('medias/images/elements/volume.up.png') }}" alt="Activer le son">
+							<img class="type-none sound soundOff" src="{{ asset('medias/images/elements/volume.off.png') }}" alt="Désactiver le son">
+						</button>
+
+						<button class="volume-dex d-none">
+							<img src="{{ asset('medias/images/elements/play-arrow.png') }}" alt="">
+						</button>
 					</div>
-					<div class="pokedex-shine"></div>
-					<div class="pokedex-image"><img id="pokemonGif" alt=""></div>
+
 					<div class="pokedex-descritpion">
 						<p id="pokemonDescription"></p>
 					</div>
@@ -111,38 +119,66 @@
 
 				<img class="cross" src="{{ asset('medias/images/elements/Cross.png') }}" alt="Croix directionnelle">
 
-				<div id="pokedexAltContainer" class="alt-forms"></div>
+				<div class="gameboy-buttons">
+
+					<button class="gb-button-b a-b">
+						B
+					</button>
+
+					<button class="gb-button-a a-b">
+						A
+					</button>
+				</div>
+			</div>
+
+
 		{% else %}
-			{% if currentPokemon.captured == false and currentPokemon.altCaptured == true %}
-				{% set basePokemon = currentPokemon %}
-				{% set currentPokemon = currentPokemon.relatedPokemon|find(pr => pr.captured is defined and pr.captured) %}
-			{% endif %}
-			<div class="main-pokedex">
-				<div class="speaker speaker-1">
-					<!-- Les points -->
-					<div></div><div></div><div></div><div></div>
-					<div></div><div></div><div></div><div></div>
-					<div></div><div></div><div></div><div></div>
-					<div></div><div></div><div></div><div></div>
+
+
+		{% if currentPokemon.captured == false and currentPokemon.altCaptured == true %}
+			{% set basePokemon = currentPokemon %}
+			{% set currentPokemon = currentPokemon.relatedPokemon|find(pr => pr.captured is defined and pr.captured) %}
+		{% endif %}
+		<div class="main-pokedex">
+			<div class="speaker speaker-1">
+				<!-- Les points -->
+				<div></div><div></div><div></div><div></div>
+				<div></div><div></div><div></div><div></div>
+				<div></div><div></div><div></div><div></div>
+				<div></div><div></div><div></div><div></div>
+			</div>
+			<div id="pokedexMain" class="pokedex-pokemon" style="background-image: url({{ asset('medias/images/fonds/' ~ currentPokemon.type  ~ '.png') }})">
+				<div class="pokedex-name">
+					<p id="pokemonName">{{ currentPokemon.name|capitalize }}</p>
 				</div>
-				<div id="pokedexMain" class="pokedex-pokemon" style="background-image: url({{ asset('medias/images/fonds/' ~ currentPokemon.type  ~ '.png') }})">
-					<div class="pokedex-shine"></div>
-					<div class="pokedex-name">
-						<p id="pokemonName">{{ currentPokemon.name|capitalize }}</p>
-					</div>
-					{% if currentPokemon.shiny %}
-						<button class="button-shiny"><img src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt="étoile brillante de pokemon chromatique"></button>
+				<div class="volume-dex-content">
+					<div class="d-none english-name">{{ currentPokemon.name_en }}</div>
+					<button class="volume volume-2">
+						<img class="active sound soundOn" src="{{ asset('medias/images/elements/volume.up.png') }}" alt="Activer le son">
+						<img class="type-none sound soundOff" src="{{ asset('medias/images/elements/volume.off.png') }}" alt="Désactiver le son">
+					</button>
+
+					<button class="volume-dex">
+						<img src="{{ asset('medias/images/elements/play-arrow.png') }}" alt="">
+					</button>
+				</div>
+
+
+
+				{% if currentPokemon.shiny %}
+					<button class="button-shiny"><img src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt="étoile brillante de pokemon chromatique"></button>
+				{% endif %}
+				<div class="pokedex-types">
+					<a href="{{ path('app_types') }}" class="type-img-a"><img id="pokemonType" class="type-img type1" src="{{ asset('medias/images/types/' ~ currentPokemon.type) ~ '.png' }}" alt="Type"></a>
+					{% if currentPokemon.type2 is not null %}
+					<a href="{{ path('app_types') }}" class="type-img-a"><img id="pokemonType2" class="type-img type2 {{ currentPokemon.type2 ? null : 'd-none' }}" src="{{ asset('medias/images/types/' ~ currentPokemon.type2) ~ '.png' }}" alt="Type secondaire"></a>
 					{% endif %}
-					<div class="pokedex-types">
-						<a href="{{ path('app_types') }}" class="type-img-a"><img id="pokemonType" class="type-img type1" src="{{ asset('medias/images/types/' ~ currentPokemon.type) ~ '.png' }}" alt="Type"></a>
-						<a href="{{ path('app_types') }}" class="type-img-a"><img id="pokemonType2" class="type-img type2 {{ currentPokemon.type2 ? null : 'd-none' }}" src="{{ asset('medias/images/types/' ~ currentPokemon.type2) ~ '.png' }}" alt="Type secondaire"></a>
-					</div>
-					<div class="pokedex-shine"></div>
-					<div class="pokedex-image"><img id="pokemonGif" src="{{ asset('medias/images/gifs/' ~ currentPokemon.name_en ~ '.gif') }}" alt=""></div>
-					<div class="pokedex-descritpion">
-						<p id="pokemonDescription">{{ currentPokemon.description }}</p>
-					</div>
 				</div>
+				<div class="pokedex-image"><img id="pokemonGif" src="{{ asset('medias/images/gifs/' ~ currentPokemon.name_en ~ '.gif') }}" alt=""></div>
+				<div class="pokedex-descritpion">
+					<p id="pokemonDescription">{{ currentPokemon.description }}</p>
+				</div>
+				
 				<div class="speaker speaker-2">
 					<!-- Les points -->
 					<div></div><div></div><div></div><div></div>
@@ -192,15 +228,16 @@
 
 			<div class="gameboy-buttons">
 
-				<button class="gb-button-b">
-					<p class="a-b">B</p>
+				<button class="gb-button-b a-b">
+					B
 				</button>
 
-				<button class="gb-button-a">
-					<p class="a-b">A</p>
+				<button class="gb-button-a a-b">
+					A
 				</button>
 			</div>
 		</div>
+		{% endif %}
 	</section>
 </div>
 
@@ -211,10 +248,10 @@
 		const baseUrl = '{{ url('app_home') }}';
 		const pokemonsGifDir = '{{ asset('medias/images/gifs') }}';
 		const pokemonsTypeDir = '{{ asset('medias/images/types/') }}';
-
+		const crySound = '{{ asset('medias/cries/') }}'
 	</script>
 
-	<script src="{{ asset('js/pokedex.js') }}"></script>
+	<script type="module" src="{{ asset('js/pokedex.js') }}"></script>
 	
 {% endblock %}
 
