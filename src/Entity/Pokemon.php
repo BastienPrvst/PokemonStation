@@ -12,24 +12,24 @@ class Pokemon
 {
     /** @var array<array-key, string> */
     public const TYPES = [
+        'acier',
+        'combat',
+        'dragon',
         'eau',
+        'electrik',
+        'fee',
         'feu',
-        'plante',
+        'glace',
         'insecte',
+        'normal',
+        'plante',
+        'poison',
+        'psy',
         'roche',
         'sol',
-        'glace',
-        'acier',
-        'dragon',
-        'combat',
-        'tenebres',
-        'psy',
-        'vol',
-        'fee',
-        'poison',
-        'electrik',
-        'normal',
         'spectre',
+        'tenebres',
+        'vol',
     ];
 
     #[ORM\Id]

@@ -1222,6 +1222,8 @@ i.fa-chevron-right {
   height: 400px;
   position: relative;
   background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1266,86 +1268,8 @@ i.fa-chevron-right {
   color: #d4af37;
 }
 
-/* CSS POUR LES FONDS JS*/
-
 .no-background {
   background: none;
-}
-
-.pourpre-background {
-  background: url(../medias/images/fonds/pourpre.jpg) center;
-  background-size: cover;
-}
-
-.montagne-background {
-  background: url(../medias/images/fonds/montagne.jpg) center;
-  background-size: cover;
-}
-
-.cabane-background {
-  background: url(../medias/images/fonds/cabane.jpg) center;
-  background-size: cover;
-}
-
-.cimetière-background {
-  background: url(../medias/images/fonds/cimetière.png) center;
-  background-size: cover;
-}
-
-.desert-background {
-  background: url(../medias/images/fonds/desert.jpg) center;
-  background-size: cover;
-}
-
-.fire-background {
-  background: url(../medias/images/fonds/feu.jpg) center;
-  background-size: cover;
-}
-
-.dragon-background {
-  background: url(../medias/images/fonds/dragon.jpg) center;
-  background-size: cover;
-}
-
-.neige-background {
-  background: url(../medias/images/fonds/neige.jpg) center;
-  background-size: cover;
-}
-
-.cave-background {
-  background: url(../medias/images/fonds/fond-grottejpg.jpg) center;
-  background-size: cover;
-}
-
-.forest-background {
-  background: url(../medias/images/fonds/fond-foret.png) no-repeat center;
-  background-size: cover;
-}
-
-.sea-background {
-  background: url(../medias/images/fonds/fond-mer.png) no-repeat center;
-  background-size: cover;
-}
-
-.night-background {
-  background: url(../medias/images/fonds/fond-nuit.jpg) no-repeat center;
-  background-size: cover;
-}
-
-.cave2-background {
-  background: url(../medias/images/fonds/fond-grotte2-transformed.jpeg)
-    no-repeat center;
-  background-size: cover;
-}
-
-.poison-background {
-  background: url(../medias/images/fonds/fond-foret-nuit.jpg) no-repeat center;
-  background-size: cover;
-}
-
-.forest2-background {
-  background: url(../medias/images/fonds/fond-foret2.png) no-repeat center;
-  background-size: cover;
 }
 
 .pokemon-captured-infos {
@@ -2178,7 +2102,6 @@ tfoot tr td {
 }
 
 .pokedex-pokemon {
-  background-image: url(../medias/images/fonds/fond-foret.png);
   background-size: cover;
   background-position: center;
   width: 95%;
@@ -2271,6 +2194,7 @@ tfoot tr td {
   position: absolute;
   left: 25px;
   bottom: 30px;
+  z-index: 10;
 }
 
 .alt-forms {
@@ -2281,6 +2205,8 @@ tfoot tr td {
   bottom: 180px;
   left: 50%;
   transform: translateX(-50%);
+  max-width: 200px;
+  overflow-x: auto;
 }
 
 .alt {
@@ -2419,6 +2345,7 @@ tfoot tr td {
   }
 
   .alt-forms {
+    min-width: 500px;
     bottom: 50px;
   }
 

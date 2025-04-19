@@ -1,405 +1,216 @@
 {# Utilisation du squelette de page base.html.twig #}
 {% extends "base.html.twig" %}
-
 {# Titre de la page #}
 {% block title %}Types
 {% endblock %}
-
 {# Contenu de la page #}
 {% block body %}
 
 <div class="d-flex flex-column justify-content-center align-items-center type-main-contain">
-
-	<h1 class="mx-auto mt-5 mb-5" style="color: white; font-size: 3rem;">Types</h1>
-
+    <h1 class="mx-auto mt-5 mb-5" style="color: white; font-size: 3rem;">Types</h1>
     <div class="fade-up col-12 col-lg-9 type-contain">
-   
         <div class="image-type col-12 col-lg-4">
-
             <div class="div-type">
-                <img src="{{ asset('images/types/Steel.png') }}" alt="type-acier">
+                <img src="{{ asset('images/types/acier.png') }}" alt="type-acier">
             </div>
-            
-
             <div class="type-button-description">
-            
                 <button class="type-title">Acier<i class="fa-solid fa-caret-right right-caret"></i></button>
-
                 <div class="type-description col-12">
-
                     <p>Les Pokémon de type Acier sont recouverts de métal et se servent de celui-ci pour écraser ou taillader.</p>
-
                 </div>
-            
             </div>
-            
         </div>
-
         <div class="image-type col-12 col-lg-4">
-
             <div class="div-type">
-                <img src="{{ asset('images/types/Fighting.png') }}" alt="type-combat">
+                <img src="{{ asset('images/types/combat.png') }}" alt="type-combat">
             </div>
-            
-
             <div class="type-button-description">
-            
                 <button class="type-title">Combat<i class="fa-solid fa-caret-right right-caret"></i></button>
-
                 <div class="type-description col-12">
-
                     <p>Les Pokémon de type Combat se battent avec leur corps et la puissance de leurs muscles surdéveloppés.</p>
-
                 </div>
-            
             </div>
-            
         </div>
-
         <div class="image-type col-12 col-lg-4">
-
             <div class="div-type">
-                <img src="{{ asset('images/types/Dragon.png') }}" alt="type-dragon">
+                <img src="{{ asset('images/types/dragon.png') }}" alt="type-dragon">
             </div>
-            
-
             <div class="type-button-description">
-            
                 <button class="type-title">Dragon<i class="fa-solid fa-caret-right right-caret"></i></button>
-
                 <div class="type-description col-12">
-
                     <p>Les Pokémon de type Dragon possèdent des pouvoirs mystiques et sacrés, déchaînant des forces destructrices en tous genres.</p>
-
                 </div>
-            
             </div>
-            
         </div>
-
         <div class="image-type col-12 col-lg-4">
-
             <div class="div-type">
-                <img src="{{ asset('images/types/Water.png') }}" alt="type-eau">
+                <img src="{{ asset('images/types/eau.png') }}" alt="type-eau">
             </div>
-            
-
             <div class="type-button-description">
-            
                 <button class="type-title">Eau<i class="fa-solid fa-caret-right right-caret"></i></button>
-
                 <div class="type-description col-12">
-
                     <p>Les Pokémon de type Eau sont d'excellents nageurs qui attaquent en manipulant l'eau.</p>
-
                 </div>
-            
             </div>
-            
         </div>
-
         <div class="image-type col-12 col-lg-4">
-
             <div class="div-type">
-                <img src="{{ asset('images/types/Electric.png') }}" alt="type-electrik">
+                <img src="{{ asset('images/types/electrik.png') }}" alt="type-electrik">
             </div>
-            
-
             <div class="type-button-description">
-            
                 <button class="type-title">Électrik<i class="fa-solid fa-caret-right right-caret"></i></button>
-
                 <div class="type-description col-12">
-
                     <p>Les Pokémon de type Électrik sont de véritables centrales électriques qui attaquent en déversant des milliers de volts sur leur adversaire.</p>
-
                 </div>
-            
             </div>
-            
         </div>
-
         <div class="image-type col-12 col-lg-4">
-
             <div class="div-type">
-                <img src="{{ asset('images/types/Fairy.png') }}" alt="type-fée">
+                <img src="{{ asset('images/types/fee.png') }}" alt="type-fée">
             </div>
-            
-
             <div class="type-button-description">
-            
                 <button class="type-title">Fée<i class="fa-solid fa-caret-right right-caret"></i></button>
-
                 <div class="type-description col-12">
-
                     <p>Les Pokémon de type Fée utilisent des pouvoirs magiques en lien étroit avec la nature.</p>
-
                 </div>
-            
             </div>
-            
         </div>
-
         <div class="image-type col-12 col-lg-4">
-
             <div class="div-type">
-                <img src="{{ asset('images/types/Fire.png') }}" alt="type-feu">
+                <img src="{{ asset('images/types/feu.png') }}" alt="type-feu">
             </div>
-            
-
             <div class="type-button-description">
-            
                 <button class="type-title">Feu<i class="fa-solid fa-caret-right right-caret"></i></button>
-
                 <div class="type-description col-12">
-
                     <p>Les Pokémon de type Feu attaquent avec les flammes ! Ils ont souvent une température interne élevée, et des flammes ou motif de flammes sur le corps.</p>
-
                 </div>
-            
             </div>
-            
         </div>
-
         <div class="image-type col-12 col-lg-4">
-
             <div class="div-type">
-                <img src="{{ asset('images/types/Ice.png') }}" alt="type-glace">
+                <img src="{{ asset('images/types/glace.png') }}" alt="type-glace">
             </div>
-            
-
             <div class="type-button-description">
-            
                 <button class="type-title">Glace<i class="fa-solid fa-caret-right right-caret"></i></button>
-
                 <div class="type-description col-12">
-
                     <p>Les Pokémon de type Glace refroidissent leur environnement pour frapper avec des cristaux de glace ou geler leurs ennemis.</p>
-
                 </div>
-            
             </div>
-            
         </div>
-
         <div class="image-type col-12 col-lg-4">
-
             <div class="div-type">
-                <img src="{{ asset('images/types/Normal.png') }}" alt="type-normal">
+                <img src="{{ asset('images/types/insecte.png') }}" alt="type-insecte">
             </div>
-            
-
             <div class="type-button-description">
-            
-                <button class="type-title">Normal<i class="fa-solid fa-caret-right right-caret"></i></button>
-
-                <div class="type-description col-12">
-
-                    <p>Le type Normal est le type "standard" : ce sont les Pokémon qui n'ont pas vraiment de pouvoir spécial et ne sont associés à aucun élément en particulier. Ils sont néanmoins capables de maîtriser des capacités de types variés.</p>
-
-                </div>
-            
-            </div>
-            
-        </div>
-
-        <div class="image-type col-12 col-lg-4">
-
-            <div class="div-type">
-                <img src="{{ asset('images/types/Grass.png') }}" alt="type-plante">
-            </div>
-            
-
-            <div class="type-button-description">
-            
-                <button class="type-title">Plante<i class="fa-solid fa-caret-right right-caret"></i></button>
-
-                <div class="type-description col-12">
-
-                    <p>Les Pokémon de type Plante maîtrisent les pouvoirs des végétaux, et sont souvent eux même composés de végétaux.</p>
-
-                </div>
-            
-            </div>
-            
-        </div>
-
-        <div class="image-type col-12 col-lg-4">
-
-            <div class="div-type">
-                <img src="{{ asset('images/types/Bug.png') }}" alt="type-insecte">
-            </div>
-            
-
-            <div class="type-button-description">
-            
                 <button class="type-title">Insecte<i class="fa-solid fa-caret-right right-caret"></i></button>
-
                 <div class="type-description col-12">
-
                     <p>Les Pokémon de type Insecte ont la forme d'un insecte et attaquent à l'aide de dards, de pinces, de mandibules ou de sécrétions.</p>
-
                 </div>
-            
             </div>
-            
         </div>
-
         <div class="image-type col-12 col-lg-4">
-
             <div class="div-type">
-                <img src="{{ asset('images/types/Poison.png') }}" alt="type-poison">
+                <img src="{{ asset('images/types/normal.png') }}" alt="type-normal">
             </div>
-            
-
             <div class="type-button-description">
-            
+                <button class="type-title">Normal<i class="fa-solid fa-caret-right right-caret"></i></button>
+                <div class="type-description col-12">
+                    <p>Le type Normal est le type "standard" : ce sont les Pokémon qui n'ont pas vraiment de pouvoir spécial et ne sont associés à aucun élément en particulier. Ils sont néanmoins capables de maîtriser des capacités de types variés.</p>
+                </div>
+            </div>
+        </div>
+        <div class="image-type col-12 col-lg-4">
+            <div class="div-type">
+                <img src="{{ asset('images/types/plante.png') }}" alt="type-plante">
+            </div>
+            <div class="type-button-description">
+                <button class="type-title">Plante<i class="fa-solid fa-caret-right right-caret"></i></button>
+                <div class="type-description col-12">
+                    <p>Les Pokémon de type Plante maîtrisent les pouvoirs des végétaux, et sont souvent eux même composés de végétaux.</p>
+                </div>
+            </div>
+        </div>
+        <div class="image-type col-12 col-lg-4">
+            <div class="div-type">
+                <img src="{{ asset('images/types/poison.png') }}" alt="type-poison">
+            </div>
+            <div class="type-button-description">
                 <button class="type-title">Poison<i class="fa-solid fa-caret-right right-caret"></i></button>
-
                 <div class="type-description col-12">
-
                     <p>Les Pokémon de type Poison intoxiquent leur adversaire ; ils produisent de nombreuses toxines.</p>
-
                 </div>
-            
             </div>
-            
         </div>
-
         <div class="image-type col-12 col-lg-4">
-
             <div class="div-type">
-                <img src="{{ asset('images/types/Psychic.png') }}" alt="type-psy">
+                <img src="{{ asset('images/types/psy.png') }}" alt="type-psy">
             </div>
-            
-
             <div class="type-button-description">
-            
                 <button class="type-title">Psy<i class="fa-solid fa-caret-right right-caret"></i></button>
-
                 <div class="type-description col-12">
-
                     <p>Les Pokémon de type Psy se battent avec des techniques psychiques ; ils soulèvent des objets par la force de la pensée par exemple.</p>
-
                 </div>
-            
             </div>
-            
         </div>
-
         <div class="image-type col-12 col-lg-4">
-
             <div class="div-type">
-                <img src="{{ asset('images/types/Rock.png') }}" alt="type-roche">
+                <img src="{{ asset('images/types/roche.png') }}" alt="type-roche">
             </div>
-            
-
             <div class="type-button-description">
-            
                 <button class="type-title">Roche<i class="fa-solid fa-caret-right right-caret"></i></button>
-
                 <div class="type-description col-12">
-
                     <p>Les Pokémon de type Roche sont souvent composés de pierres et se défendent en projetant celles-ci.</p>
-
                 </div>
-            
             </div>
-            
         </div>
-
         <div class="image-type col-12 col-lg-4">
-
             <div class="div-type">
-                <img src="{{ asset('images/types/Ground.png') }}" alt="type-sol">
+                <img src="{{ asset('images/types/sol.png') }}" alt="type-sol">
             </div>
-            
-
             <div class="type-button-description">
-            
                 <button class="type-title">Sol<i class="fa-solid fa-caret-right right-caret"></i></button>
-
                 <div class="type-description col-12">
-
                     <p>Les Pokémon de type Sol sont assignés à la terre ou au sable ; ils creusent, modèlent le sol, etc.</p>
-
                 </div>
-            
             </div>
-            
         </div>
-
         <div class="image-type col-12 col-lg-4">
-
             <div class="div-type">
-                <img src="{{ asset('/images/types/Ghost.png')}}" alt="type-spectre">
+                <img src="{{ asset('/images/types/spectre.png')}}" alt="type-spectre">
             </div>
-            
-
             <div class="type-button-description">
-            
                 <button class="type-title">Spectre<i class="fa-solid fa-caret-right right-caret"></i></button>
-
                 <div class="type-description col-12">
-
                     <p>Les Pokémon de type Spectre sont des esprits maîtrisant des pouvoirs occultes et se nourrissant de force vitale.</p>
-
                 </div>
-            
             </div>
-            
         </div>
-
         <div class="image-type col-12 col-lg-4">
-
             <div class="div-type">
-                <img src="{{ asset('images/types/Dark.png') }}" alt="type-tenebres">
+                <img src="{{ asset('images/types/tenebres.png') }}" alt="type-tenebres">
             </div>
-            
-
             <div class="type-button-description">
-            
                 <button class="type-title">Ténèbres<i class="fa-solid fa-caret-right right-caret"></i></button>
-
                 <div class="type-description col-12">
-
                     <p>Les Pokémon de type Ténèbres emploient des stratégies vicieuses ou maîtrisent des forces obscures.</p>
-
                 </div>
-            
             </div>
-            
         </div>
-
         <div class="image-type col-12 col-lg-4">
-
             <div class="div-type">
-                <img src="{{ asset('images/types/Flying.png') }}" alt="type-vol">
+                <img src="{{ asset('images/types/vol.png') }}" alt="type-vol">
             </div>
-            
-
             <div class="type-button-description">
-            
                 <button class="type-title">Vol<i class="fa-solid fa-caret-right right-caret"></i></button>
-
                 <div class="type-description col-12">
-
                     <p>Les Pokémon de type Vol peuvent fendre les airs, et créer de violentes bourrasques, avec ou sans ailes.</p>
-
                 </div>
-            
             </div>
-            
         </div>
-
     </div>
-
 </div>
 {% endblock %}
 
-
 {% block js %}
-
-	<script src="{{ asset('js/types.js') }}"></script>
-	
+    <script src="{{ asset('js/types.js') }}"></script>
 {% endblock %}

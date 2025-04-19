@@ -4,38 +4,47 @@ namespace App\DTO;
 
 use App\Entity\Pokemon;
 
-readonly class PokemonDTO
+class PokemonDTO
 {
 
-    public ?int $id;
+    public readonly ?int $id;
 
-    public ?string $name;
+    public readonly ?string $name;
 
-    public ?string $type;
+    public readonly ?string $type;
 
-    public ?string $description;
+    public readonly ?string $type2;
 
-    public ?string $name_en;
+    public readonly ?string $description;
 
-    public ?string $rarity;
+    public readonly ?string $name_en;
 
-    public ?int $pokeId;
+    public readonly ?string $rarity;
 
-    public ?self $relateTo;
+    public readonly ?int $pokeId;
 
-    /** @var self[] $relatedPokemon */
-    public array $relatedPokemon;
+    public readonly bool $altForm;
+
+    /** @var static[] $relatedPokemon */
+    public array $relatedPokemon = [];
 
     public function __construct(Pokemon $pokemon)
     {
         $this->id = $pokemon->getId();
         $this->name = $pokemon->getName();
         $this->type = $pokemon->getType();
+        $this->type2 = $pokemon->getType2();
         $this->description = $pokemon->getDescription();
         $this->name_en = $pokemon->getNameEn();
         $this->rarity = $pokemon->getRarity();
         $this->pokeId = $pokemon->getPokeId();
-        $this->relateTo = $pokemon->getRelateTo() ? new self($pokemon->getRelateTo()) : null;
+        $this->altForm = !!$pokemon->getRelateTo();
+
+        if ($pokemon->getRelatedPokemon()?->count()) {
+            $this->relatedPokemon = $pokemon->getRelatedPokemon()?->map(
+                fn(Pokemon $p) => new self($p)
+            )->getValues();
+        }
     }
 
 }

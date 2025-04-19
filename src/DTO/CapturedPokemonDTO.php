@@ -4,19 +4,20 @@ namespace App\DTO;
 
 use App\Entity\Pokemon;
 
-final readonly class CapturedPokemonDTO extends PokemonDTO
+final class CapturedPokemonDTO extends PokemonDTO
 {
 
-    public ?bool $captured;
+    public bool $captured = false;
 
-    public ?bool $shiny;
+    public bool $altCaptured = false;
 
-    public function __construct(Pokemon $pokemon, bool $captured, bool $shiny)
+    public bool $shiny = false;
+
+    public bool $altShiny = false;
+
+    public function __construct(Pokemon $pokemon)
     {
         parent::__construct($pokemon);
-
-        $this->captured = $captured;
-        $this->shiny = $shiny;
     }
 
 }
