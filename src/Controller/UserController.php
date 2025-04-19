@@ -36,9 +36,18 @@ class UserController extends AbstractController
             $this->entityManager->flush();
         }
 
+        $allGens = $this->pokemonRepository->pokemonSeenByGen($user);
+        $allTrueGens = $this->pokemonRepository->pokemonSeenByGenTrue($user);
+
+        for ($i = 0, $iMax = count($allGens); $i < $iMax; $i++) {
+            $allGens[$i]['true_gen_captured'] = $allTrueGens[$i]['true_gen_captured'];
+        }
+
         return $this->render(
             'main/profile.html.twig',
-            [...$this->prepareUserInfo($user), ...['avatars' => $allAvatars,]],
+            [...$this->prepareUserInfo($user),
+                ...['avatars' => $allAvatars,
+                'allGens' => $allGens]],
         );
     }
 
@@ -91,9 +100,17 @@ class UserController extends AbstractController
             $this->entityManager->flush();
         }
 
+        $allGens = $this->pokemonRepository->pokemonSeenByGen($user);
+        $allTrueGens = $this->pokemonRepository->pokemonSeenByGenTrue($user);
+
+        for ($i = 0, $iMax = count($allGens); $i < $iMax; $i++) {
+            $allGens[$i]['true_gen_captured'] = $allTrueGens[$i]['true_gen_captured'];
+        }
+
         return $this->render(
             'main/show_profile.html.twig',
-            $this->prepareUserInfo($user)
+            [...$this->prepareUserInfo($user),
+                    'allGens' => $allGens],
         );
     }
 

@@ -216,7 +216,7 @@ const updatePokedexList = (pokemons) => {
       let shinyImg = shinyImgTpl.content.cloneNode(true).firstElementChild;
       pokemonContainer.appendChild(shinyImg);
     }
-  });
+  })
 };
 
 let volumeButton = document.querySelector(".volume-dex");

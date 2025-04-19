@@ -3,78 +3,160 @@
 {% block title %}Gestion du profil{% endblock %}
 
 {% block body %}
-	<div class="background">
-		<h1 class="profile-title text-center my-5">Mon profil</h1>
-			<!-- Statistiques -->
-			<section class="justify-content-between align-items-stretch mb-5">
-				<div class="profile-container">
-					<h2 class="profile-title">Statistiques</h2>
-					<ul class="list-group col-12 col-lg-12 text-center" id="utilisateur">
-						<li class="list-group-item">Pokémons libérés :
-							<span class="text-info">{{ app.user.launchCount }}</span>
-						</li>
-						<li class="list-group-item"><img src="{{ asset('medias/images/elements/tr.png') }}" alt="">
-							<span class="text-info">{{ nbTR }}</span>
-						</li>
-						<li class="list-group-item"><img src="{{ asset('medias/images/elements/EX.png') }}" alt="">
-							<span class="text-info">{{ nbEX }}</span>
-						</li>
-						<li class="list-group-item"><img src="{{ asset('medias/images/elements/SR.png') }}" alt="">
-							<span class="text-info">{{ nbSR }}</span>
-						</li>
-						<li class="list-group-item"><img src="{{ asset('medias/images/elements/UR.png') }}" alt="">
-							<span class="text-info">{{ nbUR }}</span>
-						</li>
-						<li class="list-group-item">Shiny obtenus :
-							<span class="text-info">{{ nbShiny }}</span>
-						</li>
-						<li class="list-group-item">Pokédex rempli à {{ nbPokemonUnique }}/{{ pokedexSize }}</li>
-					</ul>
-				</div>
-			</section>
-
-		<section class="avatar-section d-flex justify-content-center align-items-center flex-column">
-			<div class="justify-content-center avatar">
-				<img src="{{ asset('medias/images/trainers/' ~ app.user.avatar ~'.gif') }}" class="d-block trainer-gif" alt="Photo de profil de l'utilisateur">
-			</div>
-
-			<div class="select-character text-center text-white">
-				<button id="myBtn" class="select-character-button">Modifier mon avatar</button>
-			</div>
-		</section>
-
-
-		<div id="myModal" class="modal">
-			<span class="close">&times;</span>
-			<div class="modal-content">
-				<h3 class="text-center text-white mt-4">Selectionnez un avatar</h3>
-				<div class="modal-avatar">
-					{% for avatar in avatars %}
-						<div class="modal-solo">
-							<img src="{{ asset('medias/images/trainers/' ~ avatar ~'.gif') }}" class="d-block" alt="..." data-avatar="{{ avatar }}">
+<main>
+	<h1 class="profile-title text-center my-5 text-white">Mon profil</h1>
+	<section class="d-flex justify-content-center my-5">
+		<div class="flip-card">
+			<div class="trainer-card">
+				<img class="card-bg" src="{{ asset('medias/images/elements/ball-icon.png') }}" alt="">
+				<div class="main-card">
+					<img class="click" src="{{ asset('medias/images/elements/click.png') }}" alt="">
+					<div class="main-card-info">
+						<h2><img class="card-ball-front" src="{{ asset('medias/images/elements/ball-icon.png') }}" alt=""> Carte de dresseur <img class="card-ball-front" src="{{ asset('medias/images/elements/ball-icon.png') }}" alt=""></h2>
+						<div class="card-id-name">
+							<div class="light-blue">
+								<span>N° ID</span>
+								<span>{{ app.user.id }}</span>
+							</div>
+							<div class="light-blue">
+								<span>NOM</span>
+								<span>{{ app.user.pseudonym }}</span>
+							</div>
 						</div>
-					{% endfor %}
+
+						<div class="card-money light-blue">
+							<span>ARGENT</span>
+							<span class="d-flex align-items-center">{{ app.user.money }} <img class="coin-width-3" src="{{ asset('medias/images/elements/coin-resized.png') }}" alt=""></span>
+						</div>
+
+						<div class="card-dex light-blue">
+							<span>POKEDEX</span>
+							<span>{{ nbPokemonUnique }}</span>
+						</div>
+
+						<div class="card-certif light-blue">
+							<span>STATUT</span>
+							<span>CERTIFIE</span>
+						</div>
+					</div>
+				<div class="card-avatar">
+					<div class="card-image light-blue">
+						<img src="{{ asset('medias/images/trainers/' ~ app.user.avatar ~'.gif') }}" class="skibibop" alt="Avatar de profil de l'utilisateur">
+					</div>
+					<p id="myBtn" class="modify-avatar">Modifier <img  src="{{ asset('medias/images/elements/edit.png') }}" alt="Modifier mon avatar"></p>
+
 				</div>
+
+				</div>
+
+				<div class="card-bottom">
+
+					<div class="card-time-play light-blue">
+						<span>DEBUT DE L'AVENTURE</span>
+						<span>{{ app.user.creationDate|date('d M. Y', 'Europe/Paris') }}</span>
+					</div>
+
+					<div class="card-friends light-blue">
+						<span>NOMBRE D'AMIS</span>
+						<span>{{ app.user.friendships|length }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="back-card">
+				<img class="card-bg-2" src="{{ asset('medias/images/elements/ball-icon.png') }}" alt="">
+
+				<h3 class="back-card-title">Statistiques</h3>
+				<div class="back-card-container">
+
+					<div class="stats-list" id="utilisateur">
+
+						<div class="stats-list-item freed-poke light-red mt-0">Pokémons libérés :
+							<span>{{ app.user.launchCount }}</span>
+						</div>
+
+						<div class="stats">
+
+							<div class="stats-list-item div-TR light-red"><img src="{{ asset('medias/images/elements/tr.png') }}" alt="">
+								<span class="span-rarity">{{ nbTR }}</span>
+							</div>
+							<div class="stats-list-item div-EX light-red"><img src="{{ asset('medias/images/elements/EX.png') }}" alt="">
+								<span class="span-rarity">{{ nbEX }}</span>
+							</div>
+							<div class="stats-list-item div-SR light-red"><img src="{{ asset('medias/images/elements/SR.png') }}" alt="">
+								<span class="span-rarity">{{ nbSR }}</span>
+							</div>
+							<div class="stats-list-item div-UR light-red"><img src="{{ asset('medias/images/elements/UR.png') }}" alt="">
+								<span class="span-rarity">{{ nbUR }}</span>
+							</div>
+
+						</div>
+						<div class="stats-list-item shiny-obtained light-red">Shiny obtenus :
+							<span>{{ nbShiny }}</span>
+						</div>
+						<div class="stats-list-item pokedex-accomplished light-red">Pokédex total {{ nbPokemonUnique }}/{{ pokedexSize }}</div>
+					</div>
+
+					<div class="gen-stats">
+
+						<table class="gen-table">
+							<thead>
+								<tr>
+									<th>Région:</th>
+									<th>Pokedex: </th>
+									<th>Complet:</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for gen in allGens %}
+									<tr class="gen-tr">
+										<td>{{ gen.generation|capitalize }}</td>
+										<td>{{ gen.gen_captured }} / {{ gen.gen_total }} {% if gen.gen_captured == gen.gen_total %}<img class="gen-image" src="{{ asset('medias/images/elements/mini-star.png') }}" alt=""> {% endif %}</td>
+										<td>{{ gen.true_gen_captured }} / {{ gen.true_gen_total }} {% if gen.true_gen_captured == gen.true_gen_total %}<img class="gen-image" src="{{ asset('medias/images/elements/mini-star-orange.png') }}" alt=""> {% endif %}</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+
+					</div>
+				</div>
+			</div>
+
+
+
+
+		</div>
+	</section>
+
+	<div id="myModal" class="modal">
+		<span class="close">&times;</span>
+		<div class="modal-content">
+			<h3 class="text-center text-white mt-4">Selectionnez un avatar</h3>
+			<div class="modal-avatar">
+				{% for avatar in avatars %}
+					<div class="modal-solo">
+						<img src="{{ asset('medias/images/trainers/' ~ avatar ~'.gif') }}" class="d-block" alt="..." data-avatar="{{ avatar }}">
+					</div>
+				{% endfor %}
 			</div>
 		</div>
+	</div>
 
-		<div class="profile-container d-flex flex-column justify-content-between a mx-2 col-12 col-lg-4">
+	<div class="profile-container d-flex flex-column flex-lg-row align-items-start">
+		<div class="info-account col-12 col-lg-5">
 			<div>
-				<h2 class="profile-title">Informations du compte</h2>
-				<ul class="list-group col-12 col-lg-12" id="compte">
-					<li class="list-group-item">Pseudo :
+				<h2 class="friends-title">Informations du compte</h2>
+				<div class="info-account" id="compte">
+					<div class="info-div">Pseudo :
 						<span class="text-info">{{ app.user.pseudonym }}</span>
-					</li>
-					<li class="list-group-item">Adresse E-mail :
+					</div>
+					<div class="info-div">Adresse E-mail :
 						<span class="text-info">{{ app.user.email }}</span>
-					</li>
-					<li class="list-group-item">Début de l'aventure :
-						<span class="text-info">{{ app.user.creationDate|date('d/m/Y')}}</span>
-					</li>
-					<li class="list-group-item">Compte :
+					</div>
+					<div class="info-div">Compte :
 						<span class="text-info">{{ is_granted('ROLE_ADMIN') ? 'Administrateur' : 'Utilisateur' }}</span>
-					</li>
-				</ul>
+					</div>
+				</div>
 			</div>
 
 			<div class="modify-info">
@@ -85,48 +167,49 @@
 					</a>
 				</button>
 			</div>
+		</div>
 
-
-
-			<!-- Colonne Amis -->
-			<div class="profile-container d-flex flex-column justify-content-between mx-2 col-12 col-lg-4">
-				<div>
-					<h2 class="profile-title">Liste d'ami(es)</h2>
-					<table class="table-pokedex">
-						<thead class="thead-top10">
-						<tr>
-							<th class="text-center">Pseudo</th>
-							<th class="text-center">Statut</th>
-							<th class="text-center">Date de l'ajout</th>
+		<!-- Colonne Amis -->
+		<div class="friends-container col-12 col-lg-7 my-5 my-lg-0">
+			<div>
+				<h4 class="friends-title text-white">Liste d'ami(es)</h4>
+				<table class="table-pokedex">
+					<thead class="thead-top10">
+					<tr>
+						<th class="text-center">Pseudo</th>
+						<th class="text-center">Statut</th>
+						<th class="text-center">Date de l'ajout</th>
+					</tr>
+					</thead>
+					<tbody>
+					{% for friend in user.friendships %}
+						<tr class="pokedex-top-10">
+							<td class="text-center">
+								<a href="{{ path('app_user_showprofile', { pseudonym : friend.friendB.pseudonym }) }}">
+									{{ friend.friendB.pseudonym }}
+								</a>
+							</td>
+							<td class="text-center">{{ friend.isAccepted }}</td>
+							<td class="text-center">{{ friend.createdAt|date('d/m/y') }}</td>
 						</tr>
-						</thead>
-						<tbody>
-						{% for friend in user.friendships %}
-							<tr class="pokedex-top-10">
-								<td class="text-center">
-									<a href="{{ path('app_user_showprofile', { pseudonym : friend.friendB.pseudonym }) }}">
-										{{ friend.friendB.pseudonym }}
-									</a>
-								</td>
-								<td class="text-center">{{ friend.isAccepted }}</td>
-								<td class="text-center">{{ friend.createdAt|date('d/m/y') }}</td>
-							</tr>
-						{% endfor %}
-						</tbody>
-					</table>
-				</div>
-				<div class="modify-info">
-					<button class="modify-button">
-						<a href="{{ path('app_friendship') }}" class="modify-button-link">
-							<img src="{{ asset('medias/images/elements/PokeBall.png') }}" alt="Poke Ball" width="50px">
-							Ajouter
-							<i class="fa-solid fa-chevron-right"></i>
-						</a>
-					</button>
-				</div>
+					{% endfor %}
+					</tbody>
+				</table>
+			</div>
+			<div class="modify-info">
+				<button class="modify-button">
+					<a href="{{ path('app_friendship') }}" class="modify-button-link">
+						<img src="{{ asset('medias/images/elements/PokeBall.png') }}" alt="Poke Ball" width="50px">
+						Ajouter
+						<i class="fa-solid fa-chevron-right"></i>
+					</a>
+				</button>
 			</div>
 		</div>
 	</div>
+</main>
+
+
 {% endblock %}
 
 {% block js %}
