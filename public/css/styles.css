@@ -1757,10 +1757,6 @@ tfoot tr td {
   display: none;
 }
 
-.arrows {
-  display: none;
-}
-
 .select-gen {
   margin-top: 10px;
   height: 50px;
@@ -2185,10 +2181,34 @@ tfoot tr td {
   border-radius: 50%;
   background-color: orange;
 }
+
 .button-shiny img {
   width: 40px;
   height: 40px;
 }
+
+.volume-dex-content{
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.volume-2{
+  position: relative;
+  border-bottom-right-radius: 0;
+}
+
+.volume-dex {
+  width: 50px;
+  height: 50px;
+  border-color: #de0c30;
+  background-color: #af374d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom-right-radius: 25px;
+}
+
 .cross {
   width: 150px;
   position: absolute;
