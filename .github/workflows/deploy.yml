@@ -1,0 +1,71 @@
+name: Deployement
+
+on:
+  push:
+    branches: 
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install composer dependencies
+        uses: php-actions/composer@v6
+        with:
+          dev: yes
+          php_extensions: gd zip imagick sodium
+          php_version: "8.2"
+          progress: yes
+          quiet: no
+          memory_limit: '720M'
+
+      - name: Deploy
+        env:
+          host: ${{ secrets.DEPLOY_HOST }}
+          host_port: ${{ secrets.DEPLOY_HOST_PORT || 22 }}
+          path: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          echo "${{ secrets.DEPLOY_KEY }}" > deploy_key
+          chmod 600 ./deploy_key
+          rsync -chaqz \
+            -e 'ssh -p ${{ env.host_port }} -i ./deploy_key -o StrictHostKeyChecking=no' \
+            --include "assets/***" \
+            --exclude "bin/phpunit" \
+            --include "bin/***" \
+            --include "config/***" \
+            --include "files/***" \
+            --include "migrations/***" \
+            --exclude "public/uploads/" \
+            --include "public/***" \
+            --include "src/***" \
+            --include "templates/***" \
+            --include "translations/***" \
+            --include "vendor/***" \
+            --include ".env" \
+            --include "composer.json" \
+            --include "composer.lock" \
+            --include "symfony.lock" \
+            --exclude "*" \
+            ./ ${{ env.host }}:${{ env.path }}
+
+      # Commands executed :
+      # 1. Install migrations
+      # 2. Clear cache
+      # 3. Warmup cache
+      - name: Install
+        env:
+          host: ${{ secrets.DEPLOY_HOST }}
+          host_port: ${{ secrets.DEPLOY_HOST_PORT || 22 }}
+          path: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          echo "${{ secrets.DEPLOY_KEY }}" > deploy_key
+          chmod 600 ./deploy_key
+          ssh -q -i ./deploy_key -p ${{ env.host_port }} ${{ env.host }} ${{ secrets.DEPLOY_PHP }} ${{ env.path }}/bin/console doctrine:migrations:migrate --no-interaction
+          ssh -q -i ./deploy_key -p ${{ env.host_port }} ${{ env.host }} ${{ secrets.DEPLOY_PHP }} ${{ env.path }}/bin/console cache:clear --no-warmup
+          ssh -q -i ./deploy_key -p ${{ env.host_port }} ${{ env.host }} ${{ secrets.DEPLOY_PHP }} ${{ env.path }}/bin/console cache:warmup
