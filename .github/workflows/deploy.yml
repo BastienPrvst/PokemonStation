@@ -42,7 +42,7 @@ jobs:
             --include "composer.lock" \
             --include "symfony.lock" \
             --exclude "*" \
-            --exclude ".env" \
+            --exclude ".env.local" \
             --exclude "public/.htaccess" \
             ./ ${{ env.host }}:${{ env.path }}
 
