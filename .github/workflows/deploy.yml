@@ -42,6 +42,8 @@ jobs:
             --include "composer.lock" \
             --include "symfony.lock" \
             --exclude "*" \
+            --exclude ".env" \
+            --exclude "public/.htaccess" \
             ./ ${{ env.host }}:${{ env.path }}
 
       # Commands executed :
