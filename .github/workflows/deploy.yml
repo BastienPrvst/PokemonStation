@@ -31,19 +31,20 @@ jobs:
             --include "config/***" \
             --include "files/***" \
             --include "migrations/***" \
-            --exclude "public/uploads/" \
+            --exclude "public/medias/images/balls/***" \
+            --exclude "public/medias/images/items/***" \
+            --exclude "public/medias/images/gifs/***" \
+            --exclude "public/bundles" \
             --include "public/***" \
             --include "src/***" \
             --include "templates/***" \
             --include "translations/***" \
             --include "vendor/***" \
-            --include ".env" \
+            --exclude ".env" \
             --include "composer.json" \
             --include "composer.lock" \
             --include "symfony.lock" \
             --exclude "*" \
-            --exclude ".env.local" \
-            --exclude "public/.htaccess" \
             ./ ${{ env.host }}:${{ env.path }}
 
       # Commands executed :
