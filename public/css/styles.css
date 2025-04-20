@@ -1518,6 +1518,7 @@ i.fa-chevron-right {
 
 .view-pokemon {
   height: 400px;
+  max-width: 1000px;
   position: relative;
   background-size: cover;
   background-position: center;
@@ -1527,6 +1528,10 @@ i.fa-chevron-right {
   justify-content: center;
   border: 2mm ridge rgba(240 0 32/ 0.9);
   overflow-y: hidden;
+}
+
+.rarity-scale{
+  max-width: 1000px;
 }
 
 .rarity-scale,
@@ -2505,24 +2510,102 @@ tfoot tr td {
   border-bottom-right-radius: 25px;
 }
 
-.cross {
-  width: 150px;
+/*Partie basse du pokedex*/
+
+.pokedex-bottom{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dpad {
+  --btn-size: 35%;
+  margin-left: 3%;
+  position: relative;
+  width: 25%;
+  aspect-ratio: 1 / 1;
+  max-width: 150px;
+}
+
+.dpad-button {
   position: absolute;
-  left: 25px;
-  bottom: 30px;
-  z-index: 10;
+  width: var(--btn-size);
+  height: var(--btn-size);
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 15%;
+  font-size: 100%;
+  cursor: pointer;
+  box-shadow: inset 0 0 5px #000, 0 2px 5px rgba(0, 0, 0, 0.5);
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dpad-button:active {
+  background-color: #555;
+}
+
+.dpad-button.up {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.dpad-button.down {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.dpad-button.left {
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.dpad-button.right {
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.middle {
+  position: absolute;
+  width: var(--btn-size);
+  height: var(--btn-size);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #333;
+  box-shadow: inset 0 0 5px #000, 0 2px 5px rgba(0, 0, 0, 0.5);
+  border-radius: 15%;
+}
+
+.alt-div{
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  width: 40%;
+  margin: 15px 6%;
+  background-color: #4EAF64;
+  position: relative;
+  border-radius: 10px;
+  border: 4px solid #ffcd00;
+  box-sizing: border-box;
 }
 
 .alt-forms {
+  margin: auto;
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  position: absolute;
-  bottom: 180px;
-  left: 50%;
-  transform: translateX(-50%);
-  max-width: 200px;
+  gap: 10px; /* ou selon votre espacement désiré */
   overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .alt {
@@ -2539,6 +2622,7 @@ tfoot tr td {
   transition:
     width 0.3s ease,
     height 0.3s ease;
+  flex: 0 0 auto;
 }
 
 .alt img {
@@ -2558,58 +2642,69 @@ tfoot tr td {
   width: 50px;
 }
 
+.arrow-left-dex,
+.arrow-right-dex {
+  position: absolute;
+  width: 50px;
+}
+
+.arrow-left-dex{
+  top: 0;
+  left: 10px;
+  transform: scaleX(-1);
+}
+
+.arrow-right-dex{
+  top: 0;
+  right: 10px;
+}
+
 .speaker div {
   display: none;
 }
 
 .gameboy-buttons {
+  position: relative;
+  width: 20%;
+  max-width: 150px;
+  aspect-ratio: 1 / 1;
   display: flex;
-  position: absolute;
-  bottom: 30px;
-  right: 25px;
+  justify-content: center;
+  align-items: center;
 }
 
 .gb-button-a,
 .gb-button-b {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  height: 60px;
-  width: 60px;
-  background-color: rgb(100, 100, 100);
-  border: solid black 1px;
-  border-radius: 100px;
-  color: grey;
-  font-size: 2rem;
+  position: absolute;
+  width: 45%;
+  max-width: 70px;
+  max-height: 70px;
+  aspect-ratio: 1 / 1;
+  background-color: #333;
+  box-shadow: inset 0 0 5px #000, 0 2px 5px rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
   font-family: "Press Start 2P", serif;
-}
-
-.gb-button-b {
-  margin-top: 70px;
-  box-shadow: 4px 4px 0 #333;
-  cursor: pointer;
-}
-
-.gb-button-b:active {
-  box-shadow: inset -5px 5px 0 #333;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.2s;
+  font-size: 100%;
 }
 
 .gb-button-a {
-  margin-bottom: 70px;
-  box-shadow: 4px 4px 0 #333;
-  cursor: pointer;
+  top: 5%;
+  right: 5%;
 }
 
-.gb-button-a:active {
+.gb-button-b {
+  bottom: 5%;
+  left: 5%;
+}
+
+.gb-button-a:active,
+.gb-button-b:active {
   box-shadow: inset -5px 5px 0 #333;
-}
-
-.a-b {
-  margin-bottom: 0;
-  color: black;
-  position: relative;
-  left: 2px;
 }
 
 /* Premier media querry qui démarre à 992px, car problèmes d'affichage en responsive (div trop petites, manque de cohérence dans l'affichage)  */
@@ -2656,13 +2751,9 @@ tfoot tr td {
     height: 60px;
   }
 
-  .cross {
-    width: 200px;
-  }
-
-  .alt-forms {
-    min-width: 500px;
-    bottom: 50px;
+  .dpad {
+    --btn-size: 35%;
+    width: 15%;
   }
 
   .alt {
@@ -2673,11 +2764,6 @@ tfoot tr td {
   .alt img {
     width: 100px;
     transition: width 0.3s ease;
-  }
-
-  .alt:hover {
-    width: 150px;
-    height: 150px;
   }
 
   .alt:hover img {
@@ -2720,11 +2806,21 @@ tfoot tr td {
     transform: translateY(-50%);
   }
 
+  .gb-button-a{
+    top: calc(0% + 0.5vw);
+    right: calc(0% + 0.5vw);
+  }
+
+  .gb-button-b{
+    bottom: calc(0% + 0.5vw);
+    left: calc(0% + 0.5vw);
+  }
+
   .gb-button-a,
   .gb-button-b {
     height: 90px;
     width: 90px;
-    font-size: 3rem;
+    font-size: 2rem;
   }
 
   .main-block {
