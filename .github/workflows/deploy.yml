@@ -37,13 +37,11 @@ jobs:
             --include "templates/***" \
             --include "translations/***" \
             --include "vendor/***" \
-            --include ".env" \
+            --exclude ".env" \
             --include "composer.json" \
             --include "composer.lock" \
             --include "symfony.lock" \
             --exclude "*" \
-            --exclude ".env.local" \
-            --exclude "public/.htaccess" \
             ./ ${{ env.host }}:${{ env.path }}
 
       # Commands executed :
