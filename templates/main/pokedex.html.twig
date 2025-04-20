@@ -39,7 +39,7 @@
 				{% endfor %}
 			{% endfor %}
 
-			<div class="gen-content content-{{ currentGeneration.genNumber }} active">
+			<div class="gen-content content-{{ currentGeneration.genNumber ?? 0 }} active">
 				<div>Pokédex :<span id="pokedexCounter">{{ captureCount }} sur {{ pokemons|length }}</span></div>
 				<div>
 					<span class="shinydex">ShinyDex :</span>
@@ -237,7 +237,6 @@
 				</button>
 			</div>
 		</div>
-		{% endif %}
 	</section>
 </div>
 

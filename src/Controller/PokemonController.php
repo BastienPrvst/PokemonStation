@@ -39,8 +39,8 @@ class PokemonController extends AbstractController
 
         $generations = $genRepo->findBy([], ['genNumber' => 'ASC']);
         $currentGeneration = $genRepo->findOneBy([], ['genNumber' => 'ASC']);
-        $pokemons = $currentGeneration->getPokemon()->getValues();
-        $pokemonsDTO = $this->capturedPokemonService->userCapturedByGeneration($user, $pokemons);
+        $pokemons = $currentGeneration?->getPokemon()->getValues();
+        $pokemonsDTO = $this->capturedPokemonService->userCapturedByGeneration($user, $pokemons ?? []);
 
         return $this->render('main/pokedex.html.twig', [
             'currentGeneration' => $currentGeneration,

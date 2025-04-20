@@ -33,6 +33,7 @@ jobs:
             --include "migrations/***" \
             --exclude "public/medias/images/balls/***" \
             --exclude "public/medias/images/items/***" \
+            --exclude "public/medias/images/gifs/***" \
             --exclude "public/bundles" \
             --include "public/***" \
             --include "src/***" \
