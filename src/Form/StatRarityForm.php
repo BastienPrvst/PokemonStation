@@ -19,6 +19,7 @@ class StatRarityForm extends AbstractType
             ->add('ME', TextType::class)
             ->add('GMAX', TextType::class)
             ->add('EX', TextType::class)
+            ->add('SR', TextType::class)
             ->add('UR', TextType::class)
         ;
     }
