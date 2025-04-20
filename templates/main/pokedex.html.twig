@@ -131,9 +131,7 @@
 				</div>
 			</div>
 
-
 		{% else %}
-
 
 		{% if currentPokemon.captured == false and currentPokemon.altCaptured == true %}
 			{% set basePokemon = currentPokemon %}
@@ -189,6 +187,17 @@
 
 				<img class="cross" src="{{ asset('medias/images/elements/Cross.png') }}" alt="Croix directionnelle">
 
+				<div class="gameboy-buttons">
+
+					<button class="gb-button-b a-b">
+						B
+					</button>
+
+					<button class="gb-button-a a-b">
+						A
+					</button>
+				</div>
+
 				<div id="pokedexAltContainer" class="alt-forms">
 					{% if currentPokemon.altForm %}
 						{% if baseForm.captured is defined and baseForm.captured %}
@@ -226,16 +235,6 @@
 				<div class="alt"><span>?</span></div>
 			</template>
 
-			<div class="gameboy-buttons">
-
-				<button class="gb-button-b a-b">
-					B
-				</button>
-
-				<button class="gb-button-a a-b">
-					A
-				</button>
-			</div>
 		</div>
 	</section>
 </div>
