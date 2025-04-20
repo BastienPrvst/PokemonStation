@@ -31,8 +31,8 @@ jobs:
             --include "config/***" \
             --include "files/***" \
             --include "migrations/***" \
-            --exclude "public/medias/balls" \
-            --exclude "public/medias/items" \
+            --exclude "public/medias/images/balls/***" \
+            --exclude "public/medias/images/items/***" \
             --exclude "public/bundles" \
             --include "public/***" \
             --include "src/***" \
