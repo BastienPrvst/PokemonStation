@@ -332,9 +332,12 @@ document
           money *= 10;
         }
 
-        let actualCoin = document.querySelector(".coin-count").textContent;
-        actualCoin = parseInt(actualCoin);
-        document.querySelector(".coin-count").textContent = actualCoin + money;
+        if (pokemon.new === true) {
+          let actualCoin = document.querySelector(".coin-count").textContent;
+          actualCoin = parseInt(actualCoin);
+          document.querySelector(".coin-count").textContent =
+            actualCoin + money;
+        }
 
         currentInfo.classList.replace("visi-zero", "visi-one");
 
