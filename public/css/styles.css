@@ -1918,7 +1918,7 @@ tfoot tr td {
 }
 
 .button-up {
-  width: 100px;
+  width: 80px;
   bottom: 0;
   left: 0;
   position: absolute;
@@ -1982,8 +1982,6 @@ tfoot tr td {
 
   .button-up {
     width: 150px;
-    bottom: 20px;
-    left: 20px;
     position: absolute;
   }
 }

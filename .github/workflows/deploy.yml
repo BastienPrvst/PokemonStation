@@ -34,6 +34,7 @@ jobs:
             --exclude "public/medias/images/balls/***" \
             --exclude "public/medias/images/items/***" \
             --exclude "public/medias/images/gifs/***" \
+            --exclude "public/medias/cries/***" \
             --exclude "public/bundles" \
             --include "public/***" \
             --include "src/***" \
