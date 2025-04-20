@@ -2762,7 +2762,7 @@ tfoot tr td {
   }
 
   .alt img {
-    width: 100px;
+    width: 80px;
     transition: width 0.3s ease;
   }
 

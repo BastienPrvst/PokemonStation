@@ -13,7 +13,6 @@
 		</div>
 
 		<div class="profile-container mb-5">
-			<h2 class="profile-title">Liste d'ami(es)</h2>
 			<table class="table-pokedex">
 				<thead class="thead-top10">
 					<tr>
@@ -32,7 +31,7 @@
 						<td class="text-center">{{ friend.isAccepted ? 'Confirmé' : 'En attente' }}</td>
 						<td class="text-center">{{ friend.createdAt|date('d/m/Y') }}</td>
 						<td class="text-center">
-							<a onClick="confirm('Êtes vous sûr de vouloir supprimer cet ami ?')" href="{{ path('app_friendship_remove', {friendship: friend.id}) }}" class="text-danger">Supprimer</a>
+							<a onClick="confirm('Êtes vous sûr de vouloir supprimer cet ami ?')" href="{{ path('app_friendship_remove', {friendship: friend.id}) }}" class="text-danger bg-white">Supprimer</a>
 							{% if not friend.isAccepted and not sender %}
 								<a href="{{ path('app_friendship_accept', {friendship: friend.id}) }}">Accepter</a>
 							{% endif %}
