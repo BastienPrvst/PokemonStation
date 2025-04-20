@@ -124,7 +124,7 @@ const updatePokedex = (pokemon) => {
     "#pokedexAltNotCaptured",
   );
 
-  pokedexAltContainer.textContent = null;
+  pokedexAltContainer.querySelectorAll(".alt").forEach((node) => node.remove());
 
   pokemon.relatedPokemon.map((p) => {
     let pokedexAlt = null;
@@ -216,7 +216,7 @@ const updatePokedexList = (pokemons) => {
       let shinyImg = shinyImgTpl.content.cloneNode(true).firstElementChild;
       pokemonContainer.appendChild(shinyImg);
     }
-  })
+  });
 };
 
 let volumeButton = document.querySelector(".volume-dex");
@@ -228,3 +228,132 @@ volumeButton.onclick = function (e) {
     audio.muted = true;
   }
 };
+
+class PokedexAutoScroller {
+  /**
+   * @param {string} containerSelector  Sélecteur du conteneur à défiler
+   * @param {string} leftBtnSelector    Sélecteur du bouton gauche
+   * @param {string} rightBtnSelector   Sélecteur du bouton droit
+   * @param {object} options
+   *   - speed (number): vitesse initiale en px/s (défaut: 100)
+   */
+  constructor(
+    containerSelector,
+    leftBtnSelector,
+    rightBtnSelector,
+    options = {},
+  ) {
+    this.container = document.querySelector(containerSelector);
+    this.leftBtn = document.querySelector(leftBtnSelector);
+    this.rightBtn = document.querySelector(rightBtnSelector);
+    this.speed = options.speed || 100; // px/s
+    this.direction = 0; // -1 = gauche, +1 = droite
+    this.isScrolling = false;
+    this.lastTime = null;
+    this.keyDown = false;
+
+    this.leftArrow = this.container.querySelector(".arrow-left-dex");
+    this.rightArrow = this.container.querySelector(".arrow-right-dex");
+
+    this._bindEvents();
+    // Mise à jour initiale de la visibilité des flèches
+    setTimeout(() => this._updateArrows(), 50);
+  }
+
+  /** Démarre le défilement dans la direction donnée (-1 ou +1) */
+  start(dir) {
+    if (!this._hasOverflow()) return;
+    this.direction = dir;
+    this.isScrolling = true;
+    requestAnimationFrame(this._loop.bind(this));
+  }
+
+  /** Arrête le défilement */
+  stop() {
+    this.isScrolling = false;
+    this.lastTime = null;
+  }
+
+  /** Change la vitesse (en px/s) à la volée */
+  setSpeed(newSpeed) {
+    this.speed = newSpeed;
+  }
+
+  /** Boucle animée, indépendante du framerate */
+  _loop(timestamp) {
+    if (!this.isScrolling) return;
+    if (this.lastTime !== null) {
+      const deltaSec = (timestamp - this.lastTime) / 1000;
+      this.container.scrollLeft += this.direction * this.speed * deltaSec;
+      this._updateArrows();
+    }
+    this.lastTime = timestamp;
+    requestAnimationFrame(this._loop.bind(this));
+  }
+
+  /** Affiche ou masque les flèches selon la position de scroll */
+  _updateArrows() {
+    const { scrollLeft, scrollWidth, clientWidth } = this.container;
+    this.leftArrow.classList.toggle("d-none", scrollLeft <= 5);
+    this.rightArrow.classList.toggle(
+      "d-none",
+      scrollLeft >= scrollWidth - clientWidth - 5,
+    );
+  }
+
+  /** Vérifie si le conteneur déborde horizontalement */
+  _hasOverflow() {
+    return this.container.scrollWidth > this.container.clientWidth;
+  }
+
+  /** Attach des gestionnaires unifiés pointer + clavier */
+  _bindEvents() {
+    // Pointer (souris, tactile, stylet…)
+    [
+      { btn: this.leftBtn, dir: -1 },
+      { btn: this.rightBtn, dir: +1 },
+    ].forEach(({ btn, dir }) => {
+      btn.addEventListener("pointerdown", (e) => {
+        e.preventDefault();
+        this.start(dir);
+      });
+    });
+    window.addEventListener("pointerup", () => this.stop());
+    window.addEventListener("pointercancel", () => this.stop());
+    window.addEventListener("pointerleave", () => this.stop());
+
+    // Clavier
+    document.addEventListener("keydown", (e) => {
+      if (this.keyDown) return;
+      if (e.key === "ArrowLeft") {
+        this.keyDown = true;
+        this.start(-1);
+      }
+      if (e.key === "ArrowRight") {
+        this.keyDown = true;
+        this.start(+1);
+      }
+    });
+    document.addEventListener("keyup", (e) => {
+      if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+        this.keyDown = false;
+        this.stop();
+      }
+    });
+
+    // Mise à jour des flèches si défilement manuel ou redimensionnement
+    this.container.addEventListener("scroll", () => this._updateArrows());
+    window.addEventListener("resize", () => this._updateArrows());
+  }
+}
+
+// --- Initialisation au chargement de la page ---
+document.addEventListener("DOMContentLoaded", () => {
+  // Instanciez avec la vitesse souhaitée (px/s) :
+  window.pokedexScroller = new PokedexAutoScroller(
+    "#pokedexAltContainer",
+    ".dpad-button.left",
+    ".dpad-button.right",
+    { speed: 400 },
+  );
+});

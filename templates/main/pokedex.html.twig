@@ -39,7 +39,7 @@
 				{% endfor %}
 			{% endfor %}
 
-			<div class="gen-content content-{{ currentGeneration.genNumber ?? 0 }} active">
+			<div class="gen-content content-{{ currentGeneration.genNumber }} active">
 				<div>Pokédex :<span id="pokedexCounter">{{ captureCount }} sur {{ pokemons|length }}</span></div>
 				<div>
 					<span class="shinydex">ShinyDex :</span>
@@ -79,6 +79,7 @@
 		{% set currentPokemon = pokemons|find(p => p.captured or p.altCaptured) %}
 
 		{# Quick fix #}
+
 		{% if currentPokemon is null %}
 			<div class="main-pokedex">
 				<div class="speaker speaker-1">
@@ -87,7 +88,6 @@
 					<div></div><div></div><div></div><div></div>
 					<div></div><div></div><div></div><div></div>
 					<div></div><div></div><div></div><div></div>
-
 				</div>
 				<div id="pokedexMain" class="pokedex-pokemon" style="background-image: url({{ asset('medias/images/fonds/plante.png') }})">
 					<div class="pokedex-name">
@@ -131,7 +131,9 @@
 				</div>
 			</div>
 
+
 		{% else %}
+
 
 		{% if currentPokemon.captured == false and currentPokemon.altCaptured == true %}
 			{% set basePokemon = currentPokemon %}
@@ -168,24 +170,68 @@
 				{% endif %}
 				<div class="pokedex-types">
 					<a href="{{ path('app_types') }}" class="type-img-a"><img id="pokemonType" class="type-img type1" src="{{ asset('medias/images/types/' ~ currentPokemon.type) ~ '.png' }}" alt="Type"></a>
-					{% if currentPokemon.type2 is not null %}
 					<a href="{{ path('app_types') }}" class="type-img-a"><img id="pokemonType2" class="type-img type2 {{ currentPokemon.type2 ? null : 'd-none' }}" src="{{ asset('medias/images/types/' ~ currentPokemon.type2) ~ '.png' }}" alt="Type secondaire"></a>
-					{% endif %}
 				</div>
 				<div class="pokedex-image"><img id="pokemonGif" src="{{ asset('medias/images/gifs/' ~ currentPokemon.name_en ~ '.gif') }}" alt=""></div>
 				<div class="pokedex-descritpion">
 					<p id="pokemonDescription">{{ currentPokemon.description }}</p>
 				</div>
-				
-				<div class="speaker speaker-2">
-					<!-- Les points -->
-					<div></div><div></div><div></div><div></div>
-					<div></div><div></div><div></div><div></div>
-					<div></div><div></div><div></div><div></div>
-					<div></div><div></div><div></div><div></div>
+			</div>
+			<div class="speaker speaker-2">
+				<!-- Les points -->
+				<div></div><div></div><div></div><div></div>
+				<div></div><div></div><div></div><div></div>
+				<div></div><div></div><div></div><div></div>
+				<div></div><div></div><div></div><div></div>
+			</div>
+
+			<div class="pokedex-bottom">
+				<div class="dpad">
+					<button class="dpad-button up">▲</button>
+					<button class="dpad-button left">◀</button>
+					<button class="dpad-button right">▶</button>
+					<button class="dpad-button down">▼</button>
+					<div class="middle"></div>
 				</div>
 
-				<img class="cross" src="{{ asset('medias/images/elements/Cross.png') }}" alt="Croix directionnelle">
+				<div class="alt-div">
+
+					<div id="pokedexAltContainer" class="alt-forms">
+						<img src="{{ asset('medias/images/elements/arrow.png') }}" alt="" class="arrow-left-dex d-none">
+						<img src="{{ asset('medias/images/elements/arrow.png') }}" alt="" class="arrow-right-dex d-none">
+						{% if currentPokemon.altForm %}
+							{% if baseForm.captured is defined and baseForm.captured %}
+								<div class="alt alt-captured" data-pokemon-alt-captured="{{ baseForm.pokeId }}"><img src="{{ asset('medias/images/gifs/' ~ baseForm.name_en ~ '.gif') }}" alt=""></div>
+							{% else %}
+								<div class="alt"><span>?</span></div>
+							{% endif %}
+							{% for altForm in basePokemon.relatedPokemon %}
+								{% if altForm.id != currentPokemon.id %}
+									{% if altForm.captured is defined and altForm.captured %}
+										<div class="alt alt-captured" data-pokemon-alt-captured="{{ altForm.pokeId }}"><img src="{{ asset('medias/images/gifs/' ~ altForm.name_en ~ '.gif') }}" alt=""></div>
+									{% else %}
+										<div class="alt"><span>?</span></div>
+									{% endif %}
+								{% endif %}
+							{% endfor %}
+						{% else %}
+							{% for altForm in currentPokemon.relatedPokemon %}
+								{% if altForm.captured is defined and altForm.captured %}
+									<div class="alt alt-captured" data-pokemon-alt-captured="{{ altForm.pokeId }}"><img src="{{ asset('medias/images/gifs/' ~ altForm.name_en ~ '.gif') }}" alt=""></div>
+								{% else %}
+									<div class="alt"><span>?</span></div>
+								{% endif %}
+							{% endfor %}
+						{% endif %}
+
+					</div>
+				</div>
+				<template id="pokedexAltCaptured">
+					<div class="alt"><img src="{{ asset('medias/images/gifs/pokemon.gif') }}" alt=""></div>
+				</template>
+				<template id="pokedexAltNotCaptured">
+					<div class="alt"><span>?</span></div>
+				</template>
 
 				<div class="gameboy-buttons">
 
@@ -197,45 +243,9 @@
 						A
 					</button>
 				</div>
-
-				<div id="pokedexAltContainer" class="alt-forms">
-					{% if currentPokemon.altForm %}
-						{% if baseForm.captured is defined and baseForm.captured %}
-							<div class="alt alt-captured" data-pokemon-alt-captured="{{ baseForm.pokeId }}"><img src="{{ asset('medias/images/gifs/' ~ baseForm.name_en ~ '.gif') }}" alt=""></div>
-						{% else %}
-							<div class="alt"><span>?</span></div>
-						{% endif %}
-						{% for altForm in basePokemon.relatedPokemon %}
-							{% if altForm.id != currentPokemon.id %}
-								{% if altForm.captured is defined and altForm.captured %}
-									<div class="alt alt-captured" data-pokemon-alt-captured="{{ altForm.pokeId }}"><img src="{{ asset('medias/images/gifs/' ~ altForm.name_en ~ '.gif') }}" alt=""></div>
-								{% else %}
-									<div class="alt"><span>?</span></div>
-								{% endif %}
-							{% endif %}
-						{% endfor %}
-					{% else %}
-						{% for altForm in currentPokemon.relatedPokemon %}
-							{% if altForm.captured is defined and altForm.captured %}
-								<div class="alt alt-captured" data-pokemon-alt-captured="{{ altForm.pokeId }}"><img src="{{ asset('medias/images/gifs/' ~ altForm.name_en ~ '.gif') }}" alt=""></div>
-							{% else %}
-								<div class="alt"><span>?</span></div>
-							{% endif %}
-						{% endfor %}
-					{% endif %}
-
-				</div>
-		{% endif %}
-		
-
-			<template id="pokedexAltCaptured">
-				<div class="alt"><img src="{{ asset('medias/images/gifs/pokemon.gif') }}" alt=""></div>
-			</template>
-			<template id="pokedexAltNotCaptured">
-				<div class="alt"><span>?</span></div>
-			</template>
-
+			</div>
 		</div>
+		{% endif %}
 	</section>
 </div>
 
