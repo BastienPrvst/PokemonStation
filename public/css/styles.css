@@ -1583,7 +1583,6 @@ i.fa-chevron-right {
   text-align: center;
   border-radius: 7px;
   border: solid #de0c30;
-  height: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1773,7 +1772,7 @@ i.fa-chevron-right {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px 20px;
+  padding: 20px 0;
   background-color: #af374d;
   border-radius: 15px;
   margin-top: 50px;
@@ -1802,7 +1801,6 @@ i.fa-chevron-right {
 
 .shop-table thead tr th {
   font-size: 0.7rem;
-  padding: 10px;
   color: white;
 }
 
@@ -1881,8 +1879,9 @@ tfoot tr td {
   color: #de0c30;
   background-color: rgba(255, 255, 255);
   border: solid 1px gray;
-  width: 30px;
-  height: 30px;
+  aspect-ratio: 1 / 1;
+  width: 20px;
+  height: auto;
   border-radius: 50%;
   box-shadow: 2px 2px 2px black;
 }
@@ -1903,7 +1902,7 @@ tfoot tr td {
 .item-des {
   color: white;
   padding: 10px 0;
-  font-size: 0.6rem;
+  font-size: 0.5rem;
 }
 
 .item-name {
@@ -1978,6 +1977,7 @@ tfoot tr td {
   .item-des {
     font-weight: lighter;
     font-size: 0.8rem;
+    padding: 15px;
   }
 
   .button-up {

@@ -1,4 +1,4 @@
-import { clickSound, manageSound } from "./Sound.js";
+import {clickSound, manageSound} from "./Sound.js";
 
 manageSound();
 clickSound();
@@ -332,7 +332,7 @@ document
           money *= 10;
         }
 
-        if (pokemon.new === true) {
+        if (pokemon.new === false) {
           let actualCoin = document.querySelector(".coin-count").textContent;
           actualCoin = parseInt(actualCoin);
           document.querySelector(".coin-count").textContent =

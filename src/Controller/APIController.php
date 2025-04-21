@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class APIController extends AbstractController
 {
@@ -25,7 +26,9 @@ class APIController extends AbstractController
         private readonly PokemonOddsService $pokemonOdds,
         private readonly CapturedPokemonService $capturedPokemonService,
         private readonly EntityManagerInterface $entityManager,
-    ) {}
+        private readonly HttpClientInterface $httpClient,
+    ) {
+    }
 
     /**
      * @throws RandomException
@@ -57,7 +60,6 @@ class APIController extends AbstractController
         $captured = $this->capturedPokemonService->userCapturedByGeneration($user, $pokemons);
 
         if ($baseForm) {
-
             $baseFormDTO = $captured[0];
             $target = array_filter(
                 $baseFormDTO->relatedPokemon,
@@ -182,4 +184,5 @@ class APIController extends AbstractController
             'success' => 'Votre avatar a bien été changé !',
         ]);
     }
+
 }
