@@ -12,6 +12,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Random\RandomException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class PokemonOddsService extends AbstractController
 {
@@ -19,11 +21,13 @@ class PokemonOddsService extends AbstractController
         private readonly PokemonRepository $pokemonRepository,
         private readonly CapturedPokemonRepository $capturedPokemonRepository,
         private readonly EntityManagerInterface $entityManager,
+        private readonly HttpClientInterface $httpClient
     ) {
     }
 
     /**
      * @throws RandomException
+     * @throws TransportExceptionInterface
      */
     public function calculationOdds(User $user, string $pokeballId): Response
     {
@@ -151,6 +155,74 @@ class PokemonOddsService extends AbstractController
         $user->setLaunchCount($user->getLaunchCount() + 1);
         $this->entityManager->flush();
 
+
+
+        //Partie discord
+        $acceptedRarities = [
+            "GMAX", "ME", "EX", "UR",
+        ];
+
+        $randomPhrase = [
+            'Toujours les mêmes on en peut plus !',
+            'La dingz !',
+            'Bref...',
+            'Ciao les loosers hehe',
+            '#hacker',
+            'Suffit d\'avoir du talent',
+            'Son énorme crâne la.',
+            'Cette personne possède un énorme talent.',
+            'Cela semble si simple apprends nous !',
+            'Je refuse d\' croire, tout simplement.',
+            'Très salé ce Pokémon Johan :/',
+        ];
+
+        $randKey = array_rand($randomPhrase);
+
+        if ($firstTimeNonShiny || $firstTimeShiny) {
+            $timeSentence = '1ʳᵉ';
+        } else {
+            $timeSentence = $pokemonToIncrement->getTimesCaptured() . 'ᵉᵐᵉ';
+        }
+
+        if (
+            in_array($rarity[0], $acceptedRarities, true) ||
+            $pokemonCaptured->getShiny() === true
+        ) {
+            $url =
+                'https://pokemon-station.fr/medias/images/gifs/' .
+                ($pokemonCaptured->getShiny() ? 'shiny-' : '') .
+                $pokemonSpeciesCaptured->getNameEn() . '.gif';
+
+            try {
+                $response = $this->httpClient->request('POST', $_ENV['DISCORD_WEBHOOK_URL'], [
+                    'json' => [
+                        'content' => null,
+                        'embeds' => [
+                            [
+                                'title' => sprintf(
+                                    "**%s**%s a été libéré par %s !",
+                                    ucfirst($pokemonSpeciesCaptured->getName()),
+                                    $pokemonCaptured->getShiny() ? ' Shiny' : '',
+                                    $user->getPseudonym()
+                                ),
+                                'color' => 9502720,
+                                'description' =>
+                                    "Libéré pour la $timeSentence fois !
+                                    $randomPhrase[$randKey]
+                                    " . ($pokemonCaptured->getShiny() ? ' (Attends, il est shiny ????)' : ''),
+
+                                'image' => [
+                                    'url' => $url,
+                                ],
+                            ],
+                        ],
+                    ],
+                ]);
+            } catch (\Exception $e) {
+                $discordError = $e->getMessage();
+            }
+        }
+
         return $this->json([
             'captured_pokemon' => [
                 'id' => $pokemonSpeciesCaptured->getId(),
@@ -163,6 +235,7 @@ class PokemonOddsService extends AbstractController
                 'rarity' => $rarity[0],
                 'rarityRandom' => ($rarity[1] * 100),
                 'new' => $isNew,
+                'discordError' => $discordError ?? null,
             ],
         ]);
     }
@@ -257,7 +330,7 @@ class PokemonOddsService extends AbstractController
 
         $capturedRarity = $pokemonCaptured->getPokemon()->getRarity();
         $numberToAdd = $rarityScale[$capturedRarity];
-        if ($shiny === true){
+        if ($shiny === true) {
             $numberToAdd *= 10;
         }
 
