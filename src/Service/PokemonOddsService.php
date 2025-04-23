@@ -194,7 +194,7 @@ class PokemonOddsService extends AbstractController
                 $pokemonSpeciesCaptured->getNameEn() . '.gif';
 
             try {
-                $response = $this->httpClient->request('POST', $_ENV['DISCORD_WEBHOOK_URL'], [
+                 $this->httpClient->request('POST', $_ENV['DISCORD_WEBHOOK_URL'], [
                     'json' => [
                         'content' => null,
                         'embeds' => [
@@ -207,9 +207,9 @@ class PokemonOddsService extends AbstractController
                                 ),
                                 'color' => 9502720,
                                 'description' =>
-                                    "Libéré pour la $timeSentence fois !
-                                    $randomPhrase[$randKey]
-                                    " . ($pokemonCaptured->getShiny() ? ' (Attends, il est shiny ????)' : ''),
+                                    "Libéré pour la $timeSentence fois !\n $randomPhrase[$randKey] \n   \n
+                                    " . ($pokemonCaptured->getShiny()
+                                        ? ' (Attends, il est shiny ????)' : ''),
 
                                 'image' => [
                                     'url' => $url,

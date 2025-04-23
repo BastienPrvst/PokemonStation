@@ -6,9 +6,10 @@ export function manageSound() {
       soundOff.classList.replace("type-none", "active");
       soundOn.classList.replace("active", "type-none");
     }
-    if (localStorage.getItem("soundOff") === "") {
-      localStorage.setItem("soundOff", "true");
+    if (localStorage.getItem("soundOn") === "" || !localStorage.getItem('soundOn')) {
+      localStorage.setItem("soundOn", "true");
     }
+
   });
 }
 

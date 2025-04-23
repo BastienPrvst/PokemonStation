@@ -1984,6 +1984,11 @@ tfoot tr td {
     width: 150px;
     position: absolute;
   }
+
+  .minus,
+  .plus {
+    width: auto;
+  }
 }
 
 /*Animation de la pokeball qui se shake*/
