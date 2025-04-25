@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\CapturedPokemon;
 use App\Entity\Items;
+use App\Entity\Pokemon;
 use App\Entity\User;
 use App\Entity\UserItems;
 use App\Repository\CapturedPokemonRepository;
@@ -13,7 +14,6 @@ use Random\RandomException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class PokemonOddsService extends AbstractController
 {
@@ -21,7 +21,7 @@ class PokemonOddsService extends AbstractController
         private readonly PokemonRepository $pokemonRepository,
         private readonly CapturedPokemonRepository $capturedPokemonRepository,
         private readonly EntityManagerInterface $entityManager,
-        private readonly HttpClientInterface $httpClient
+        private readonly DiscordWebHookService $discordWebHookService
     ) {
     }
 
@@ -42,9 +42,9 @@ class PokemonOddsService extends AbstractController
             $rarity = $this->getRarity();
             $user->setLaunchs($user->getLaunchs() - 1);//On retire un lancer à l'utilisateur
 
-            /* @var $pokemons Pokemon[] */
+            /* @var $pokemons Pokemon */
             $pokemons = $this->pokemonRepository->findByRarity($rarity[0]);
-            if (empty($pokemons)) {
+            if ($pokemons === null) {
                 do {
                     $rarity = $this->getRarity();
                     $pokemons = $this->pokemonRepository->findByRarity($rarity[0]);
@@ -52,8 +52,8 @@ class PokemonOddsService extends AbstractController
             }
             $randomPoke = random_int(0, count($pokemons) - 1);
             $pokemonSpeciesCaptured = $pokemons[$randomPoke];
-            $pokemonCaptured = new CapturedPokemon();
-            $pokemonCaptured
+            $capturedPokemon = new CapturedPokemon();
+            $capturedPokemon
                 ->setPokemon($pokemonSpeciesCaptured)
                 ->setOwner($user)
                 ->setCaptureDate(new \DateTime('', new \DateTimeZone('Europe/Paris')))
@@ -101,7 +101,7 @@ class PokemonOddsService extends AbstractController
 
             if (empty($pokemonsFound)) {
                 return $this->json([
-                    'error' => 'Aucun pokémon trouvé...'
+                    'error' => 'Aucun pokémon trouvé..., votre n\'a pas été décompté.'
                 ]);
             }
 
@@ -114,8 +114,8 @@ class PokemonOddsService extends AbstractController
                 $this->entityManager->remove($userItem);
             }
 
-            $pokemonCaptured = new CapturedPokemon();
-            $pokemonCaptured
+            $capturedPokemon = new CapturedPokemon();
+            $capturedPokemon
                 ->setPokemon($pokemonSpeciesCaptured)
                 ->setOwner($user)
                 ->setCaptureDate(new \DateTime('', new \DateTimeZone('Europe/Paris')))
@@ -135,11 +135,11 @@ class PokemonOddsService extends AbstractController
         }
 
         if ($firstTimeNonShiny || $firstTimeShiny) {
-            $pokemonCaptured->setTimesCaptured(1);
-            $this->entityManager->persist($pokemonCaptured);
+            $capturedPokemon->setTimesCaptured(1);
+            $this->entityManager->persist($capturedPokemon);
             $isNew = true;
         } else {
-            $this->setCoinByRarity($user, $pokemonCaptured, $isShiny);
+            $this->setCoinByRarity($user, $capturedPokemon, $isShiny);
             /* @var $pokemonToIncrement CapturedPokemon */
             $pokemonToIncrement = $this->capturedPokemonRepository->findOneBy([
                 'owner' => $user,
@@ -155,73 +155,13 @@ class PokemonOddsService extends AbstractController
         $user->setLaunchCount($user->getLaunchCount() + 1);
         $this->entityManager->flush();
 
-
-
         //Partie discord
-        $acceptedRarities = [
-            "GMAX", "ME", "EX", "UR",
-        ];
-
-        $randomPhrase = [
-            'Toujours les mêmes on en peut plus !',
-            'La dingz !',
-            'Bref...',
-            'Ciao les loosers hehe',
-            '#hacker',
-            'Suffit d\'avoir du talent',
-            'Son énorme crâne la.',
-            'Cette personne possède un énorme talent.',
-            'Cela semble si simple apprends nous !',
-            'Je refuse d\' croire, tout simplement.',
-            'Très salé ce Pokémon Johan :/',
-        ];
-
-        $randKey = array_rand($randomPhrase);
-
-        if ($firstTimeNonShiny || $firstTimeShiny) {
-            $timeSentence = '1ʳᵉ';
-        } else {
-            $timeSentence = $pokemonToIncrement->getTimesCaptured() . 'ᵉᵐᵉ';
-        }
-
-        if (
-            in_array($rarity[0], $acceptedRarities, true) ||
-            $pokemonCaptured->getShiny() === true
-        ) {
-            $url =
-                'https://pokemon-station.fr/medias/images/gifs/' .
-                ($pokemonCaptured->getShiny() ? 'shiny-' : '') .
-                $pokemonSpeciesCaptured->getNameEn() . '.gif';
-
-            try {
-                 $this->httpClient->request('POST', $_ENV['DISCORD_WEBHOOK_URL'], [
-                    'json' => [
-                        'content' => null,
-                        'embeds' => [
-                            [
-                                'title' => sprintf(
-                                    "**%s**%s a été libéré par %s !",
-                                    ucfirst($pokemonSpeciesCaptured->getName()),
-                                    $pokemonCaptured->getShiny() ? ' Shiny' : '',
-                                    $user->getPseudonym()
-                                ),
-                                'color' => 9502720,
-                                'description' =>
-                                    "Libéré pour la $timeSentence fois !\n $randomPhrase[$randKey] \n   \n
-                                    " . ($pokemonCaptured->getShiny()
-                                        ? ' (Attends, il est shiny ????)' : ''),
-
-                                'image' => [
-                                    'url' => $url,
-                                ],
-                            ],
-                        ],
-                    ],
-                ]);
-            } catch (\Exception $e) {
-                $discordError = $e->getMessage();
-            }
-        }
+        $discordError = $this->discordWebHookService->sendToDiscordWebHook(
+            $user,
+            $capturedPokemon,
+            $firstTimeShiny,
+            $firstTimeNonShiny
+        );
 
         return $this->json([
             'captured_pokemon' => [
@@ -231,7 +171,7 @@ class PokemonOddsService extends AbstractController
                 'type2' => $pokemonSpeciesCaptured->getType2(),
                 'description' => $pokemonSpeciesCaptured->getDescription(),
                 'nameEN' => $pokemonSpeciesCaptured->getNameEN(),
-                'shiny' => $pokemonCaptured->getShiny(),
+                'shiny' => $capturedPokemon->getShiny(),
                 'rarity' => $rarity[0],
                 'rarityRandom' => ($rarity[1] * 100),
                 'new' => $isNew,
