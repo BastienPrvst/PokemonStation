@@ -60,6 +60,10 @@
 				{% for news in allNews %}
 					<div class="single-new">
 
+						<button class="read-button" data-read="{{ news.id }}">
+							<img src="{{ asset('medias/images/elements/unread.png') }}" alt="">
+						</button>
+
 						<div class="news-date">Le {{ news.creationDate|date('Y/m/d') }} à {{ news.creationDate|date('H:m') }}</div>
 
 						<h4 class="news-title">{{ news.title }}</h4>
@@ -81,31 +85,113 @@
 		</section>
 
 		<section class="top-section col-12 col-lg-6">
+			<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="10000">
 
-			<div class="top-div w-100">
-				<h3 class="profile-title text-white">Top 10</h3>
-				<table class="table-pokedex">
-					<thead class="thead-top10">
-					<tr>
-						<th class="empty-th"></th>
-						<th class="text-center" scope="col">Pseudo</th>
-						<th class="text-center" scope="col">Pokédex</th>
-						<th class="text-center" scope="col">Lancers</th>
-					</tr>
-					</thead>
-					<tbody>
-					{% for userData in topUserSpeciesSeen %}
-						<tr class="pokedex-top-10">
-							<td class="empty-td text-center">{{ loop.index }}</td>
-							<td class="text-center"><a href="{{ path('app_user_showprofile', { pseudonym : userData.user.pseudonym })}}"> {{ userData.user.pseudonym }}</a> </td>
-							<td class="text-center">{{ userData.total_species_seen }}/{{ pokedexSize }}</td>
-							<td class="text-center">{{ userData.launch_count }} </td>
-						</tr>
-					{% endfor %}
-					</tbody>
-				</table>
+				<!-- Indicateurs du carrousel -->
+				<div class="carousel-indicators">
+					<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+					<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+					<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+
+				</div>
+
+				<!-- Contenu du carrousel -->
+				<div class="carousel-inner">
+					<div class="carousel-item active">
+						<div class="top-div w-100">
+							<h3 class="profile-title text-white">Top 10 Général</h3>
+							<p class="top-info top-info-bis">Le Top 10 de tous les temps !</p>
+							<table class="table-pokedex">
+								<thead class="thead-top10">
+								<tr>
+									<th class="empty-th"></th>
+									<th class="text-center" scope="col">Pseudo</th>
+									<th class="text-center" scope="col">Pokédex</th>
+									<th class="text-center" scope="col">Lancers</th>
+								</tr>
+								</thead>
+								<tbody>
+								{% for userData in topUserSpeciesSeen %}
+									<tr class="pokedex-top-10">
+										<td class="empty-td text-center">{{ loop.index }}</td>
+										<td class="text-center">
+											<a href="{{ path('app_user_showprofile', { pseudonym : userData.user.pseudonym }) }}">{{ userData.user.pseudonym }}</a>
+										</td>
+										<td class="text-center">{{ userData.total_species_seen }}/{{ pokedexSize }}</td>
+										<td class="text-center">{{ userData.launch_count }}</td>
+									</tr>
+								{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div class="carousel-item">
+						<div class="top-div w-100">
+							<h3 class="profile-title text-white">Top Points du Mois</h3>
+							<div class="top-info-div">
+								<div class="countdown"></div>
+								<p class="top-info">Points en fonction de la rareté</p>
+							</div>
+
+							<table class="table-pokedex">
+								<thead class="thead-top10">
+								<tr>
+									<th class="empty-th"></th>
+									<th class="text-center" scope="col">Pseudo</th>
+									<th class="text-center" scope="col">Points</th>
+								</tr>
+								</thead>
+								<tbody>
+								{% for top in topMonthlyPoints %}
+									<tr class="pokedex-top-10">
+										<td class="empty-td text-center">{{ loop.index }}</td>
+										<td class="text-center">
+											<a href="{{ path('app_user_showprofile', { pseudonym : top.user.pseudonym }) }}">{{ top.user.pseudonym }}</a>
+										</td>
+										<td class="text-center">{{ top.total_points }}</td>
+									</tr>
+								{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div class="carousel-item">
+						<div class="top-div w-100">
+							<h3 class="profile-title text-white">Top Shiny du Mois</h3>
+							<div class="top-info-div">
+								<div class="countdown"></div>
+								<p class="top-info">Ceux ayant libérés le plus de shiny</p>
+							</div>
+							<table class="table-pokedex">
+								<thead class="thead-top10">
+								<tr>
+									<th class="empty-th"></th>
+									<th class="text-center" scope="col">Pseudo</th>
+									<th class="text-center" scope="col">Shinies</th>
+								</tr>
+								</thead>
+								<tbody>
+								{% for top in topMonthlyShinies %}
+									<tr class="pokedex-top-10">
+										<td class="empty-td text-center">{{ loop.index }}</td>
+										<td class="text-center">
+											<a href="{{ path('app_user_showprofile', { pseudonym : top.user.pseudonym }) }}">{{ top.user.pseudonym }}</a>
+										</td>
+										<td class="text-center">{{ top.monthly_shinies }}</td>
+									</tr>
+								{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+				</div>
 			</div>
 		</section>
+
+
 	</div>
 
 
@@ -116,8 +202,10 @@
 
 
 {% block js %}
-
-	<script src="{{ asset('js/home.js') }}"></script>
+	<script>
+		const readUrl = '{{ asset('medias/images/elements/read.png') }}'
+	</script>
+	<script type="module" src="{{ asset('js/home.js') }}"></script>
 	
 {% endblock %}
 

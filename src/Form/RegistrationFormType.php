@@ -7,7 +7,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -36,7 +35,7 @@ class RegistrationFormType extends AbstractType
                         'message' => 'Merci de renseigner une adresse email',
                     ]),
                     new Email([
-                        'message' => 'L\'adresse email {{value}} n\'est pas valide',
+                        'message' => 'L\'adresse email {{ value }} n\'est pas valide',
                     ]),
                 ],
             ])
@@ -70,8 +69,6 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
 
-
-
             // Champ pseudonym
             ->add('pseudonym', TextType::class, [
                 'label' => 'Pseudonyme :',
@@ -84,9 +81,9 @@ class RegistrationFormType extends AbstractType
                     ]),
                     new Length([
                         'min' => 2,
-                        'max' => 40,
-                        'minMessage' => 'Votre pseudonyme doit contenir au moins {{limit}} caractères',
-                        'maxMessage' => 'Votre pseudonyme doit contenir au maximum {{limit}} caractères',
+                        'max' => 20,
+                        'minMessage' => 'Votre pseudonyme doit contenir au moins {{ limit }} caractères',
+                        'maxMessage' => 'Votre pseudonyme doit contenir au maximum {{ limit }} caractères',
                     ]),
                 ],
             ])

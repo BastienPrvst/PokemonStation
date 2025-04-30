@@ -36,12 +36,7 @@ class UserController extends AbstractController
             $this->entityManager->flush();
         }
 
-        $allGens = $this->pokemonRepository->pokemonSeenByGen($user);
-        $allTrueGens = $this->pokemonRepository->pokemonSeenByGenTrue($user);
-
-        for ($i = 0, $iMax = count($allGens); $i < $iMax; $i++) {
-            $allGens[$i]['true_gen_captured'] = $allTrueGens[$i]['true_gen_captured'];
-        }
+        $allGens = $this->pokemonRepository->getAllGenDex($user);
 
         return $this->render(
             'main/profile.html.twig',

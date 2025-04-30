@@ -106,7 +106,7 @@
                         <div class="pokemon-five {% if pokemonCaptured.shiny is same as true %}shiny-slider{% endif %} slider-{{ pokemonCaptured.pokemon.rarity }}">
                             <div class="mini-infos">
                                 <span class="poke-tronq">{{ pokemonCaptured.pokemon.name|capitalize }}</span> ~
-                                <a href="{{ path('app_user_showprofile', {pseudonym:pokemonCaptured.owner.pseudonym})}}">{{ pokemonCaptured.owner.pseudonym | capitalize }}</a>
+                                <a class="poke-tronq-2" href="{{ path('app_user_showprofile', {pseudonym:pokemonCaptured.owner.pseudonym})}}">{{ pokemonCaptured.owner.pseudonym | capitalize }}</a>
                             </div>
 
                             <div class="mini-images">
@@ -136,8 +136,8 @@
 
                         <div class="mini-infos">
                                 <span class="poke-tronq">{{ pokemonCaptured.pokemon.name|capitalize }}</span> ~
-                                <a href="{{ path('app_user_showprofile', {pseudonym:pokemonCaptured.owner.pseudonym})}}">{{ pokemonCaptured.owner.pseudonym | capitalize }}</a>
-                            </div>
+                                <a class="poke-tronq-2" href="{{ path('app_user_showprofile', {pseudonym:pokemonCaptured.owner.pseudonym})}}">{{ pokemonCaptured.owner.pseudonym | capitalize }}</a>
+                        </div>
 
                             <div class="mini-images">
                                 <div class="d-flex align-items-center justify-content-center">

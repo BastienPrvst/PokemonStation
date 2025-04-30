@@ -42,16 +42,57 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getResult();
     }
 
-    public function top10TotalPokemonFreed(): array
+    public function topMonthlyShinies(): array
     {
+        $firstDay = new \DateTime('first day of this month');
+        $lastDay = (clone $firstDay)->modify('+1 month');
+
         return $this->createQueryBuilder('u')
-            ->select('u, COUNT(cp.pokemon) total_pokemon_captured')
+            ->select('u as user, COUNT(DISTINCT cp) AS monthly_shinies')
             ->innerJoin('u.capturedPokemon', 'cp')
-            ->groupBy('u.id')
-            ->orderBy('total_pokemon_captured', 'DESC')
+            ->innerJoin('cp.pokemon', 'p')
+            ->where('cp.shiny = 1')
+            ->andWhere('cp.captureDate BETWEEN :firstDay AND :lastDay')
+            ->setParameters([
+                'firstDay' => $firstDay,
+                'lastDay' => $lastDay,
+            ])
+            ->groupBy('u')
+            ->orderBy('monthly_shinies', 'DESC')
+            ->setMaxResults(10)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
+    }
+
+    public function topMonthlyRarity(): array
+    {
+        $firstDay = new \DateTime('first day of this month');
+        $lastDay = (clone $firstDay)->modify('+1 month');
+
+        return $this->createQueryBuilder('u')
+            ->select('SUM(
+                CASE p.rarity 
+                    WHEN \'TR\' THEN 10
+                    WHEN \'GMAX\' THEN 50
+                    WHEN \'ME\' THEN 50
+                    WHEN \'SR\' THEN 100
+                    WHEN \'EX\' THEN 100
+                    WHEN \'UR\' THEN 250
+                    ELSE 0 
+                END
+            ) as total_points, u as user')
+            ->innerJoin('u.capturedPokemon', 'cp')
+            ->innerJoin('cp.pokemon', 'p')
+            ->where('cp.captureDate BETWEEN :firstDay AND :lastDay')
+            ->setParameters([
+                'firstDay' => $firstDay,
+                'lastDay' => $lastDay,
+            ])
+            ->groupBy('u')
+            ->orderBy('total_points', 'DESC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
     }
 
     /**

@@ -161,24 +161,25 @@ class PokemonRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
             ->select(
                 'g.genRegion AS generation',
-                'COUNT(DISTINCT p.id) AS gen_captured',
+                'COUNT(DISTINCT p.pokeId) AS gen_captured',
                 '(SELECT COUNT(pBase.id) FROM App\Entity\Pokemon pBase WHERE pBase.gen = g AND pBase.relateTo IS NULL) AS gen_total',
                 '(SELECT COUNT(pAll.id) FROM App\Entity\Pokemon pAll WHERE pAll.gen = g) AS true_gen_total'
             )
             ->innerJoin('p.gen', 'g')
-            ->where('
-        p.relateTo IS NULL AND (
-            EXISTS (
-                SELECT 1 FROM App\Entity\CapturedPokemon cp1
-                WHERE cp1.pokemon = p AND cp1.owner = :user
+            ->where(
+                'p.relateTo IS NULL AND (
+                    EXISTS (
+                        SELECT 1 FROM App\Entity\CapturedPokemon cp1
+                        WHERE cp1.pokemon = p AND cp1.owner = :user
+                    )
+                    OR EXISTS (
+                        SELECT 1 FROM App\Entity\CapturedPokemon cp2
+                        JOIN cp2.pokemon pAlt2
+                        WHERE pAlt2.relateTo = p AND cp2.owner = :user
+                    )
+                )
+            '
             )
-            OR EXISTS (
-                SELECT 1 FROM App\Entity\CapturedPokemon cp2
-                JOIN cp2.pokemon pAlt2
-                WHERE pAlt2.relateTo = p AND cp2.owner = :user
-            )
-        )
-    ')
             ->groupBy('g.genRegion, g.genNumber, g.id')
             ->orderBy('g.genNumber')
             ->setParameter('user', $user)
@@ -198,5 +199,17 @@ class PokemonRepository extends ServiceEntityRepository
             ->setParameter('userId', $user)
             ->getQuery()
             ->getScalarResult();
+    }
+
+    public function getAllGenDex(User $user): array
+    {
+        $allGens = $this->pokemonSeenByGen($user);
+        $allTrueGens = $this->pokemonSeenByGenTrue($user);
+
+        for ($i = 0, $iMax = count($allGens); $i < $iMax; $i++) {
+            $allGens[$i]['true_gen_captured'] = $allTrueGens[$i]['true_gen_captured'];
+        }
+
+        return $allGens;
     }
 }

@@ -94,7 +94,8 @@
 						<div class="stats-list-item shiny-obtained light-red">Shiny obtenus :
 							<span>{{ nbShiny }}</span>
 						</div>
-						<div class="stats-list-item pokedex-accomplished light-red">Pokédex total {{ nbPokemonUnique }}/{{ pokedexSize }}</div>
+						<div class="stats-list-item pokedex-accomplished light-red">Pokédex total
+							<span>{{ nbPokemonUnique }}/{{ pokedexSize }}</span></div>
 					</div>
 
 					<div class="gen-stats">
@@ -185,11 +186,16 @@
 					{% for friend in user.friendships %}
 						<tr class="pokedex-top-10">
 							<td class="text-center">
-								<a href="{{ path('app_user_showprofile', { pseudonym : friend.friendB.pseudonym }) }}">
-									{{ friend.friendB.pseudonym }}
+
+								{% set nameToDisplay = friend.friendA.pseudonym == app.user.pseudonym ? friend.friendB.pseudonym : friend.friendA.pseudonym %}
+
+								<a href="{{ path('app_user_showprofile', { pseudonym : nameToDisplay }) }}">
+									{{ nameToDisplay }}
 								</a>
 							</td>
-							<td class="text-center">{{ friend.isAccepted }}</td>
+
+							{% set friendShipStatut = friend.isAccepted ? 'Amis' : 'En attente' %}
+							<td class="text-center">{{ friendShipStatut }}</td>
 							<td class="text-center">{{ friend.createdAt|date('d/m/y') }}</td>
 						</tr>
 					{% endfor %}

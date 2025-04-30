@@ -25,6 +25,8 @@ class HomeController extends AbstractController
         return $this->render('main/home.html.twig', [
             'topUserSpeciesSeen' => $this->userRepository->top10TotalSpeciesSeen(),
             'pokedexSize'        => $this->pokemonRepository->getFullPokedexSize(),
+            'topMonthlyShinies'  => $this->userRepository->topMonthlyShinies(),
+            'topMonthlyPoints' => $this->userRepository->topMonthlyRarity(),
             'allNews' => $allNews,
         ]);
     }

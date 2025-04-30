@@ -210,8 +210,6 @@
 					</button>
 				</div>
 
-
-
 				{% if currentPokemon.shiny %}
 					<button class="button-shiny"><img src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt="étoile brillante de pokemon chromatique"></button>
 				{% endif %}
@@ -242,11 +240,11 @@
 				</div>
 
 				<div class="alt-div">
-
 					<div id="pokedexAltContainer" class="alt-forms">
 						<img src="{{ asset('medias/images/elements/arrow.png') }}" alt="" class="arrow-left-dex d-none">
 						<img src="{{ asset('medias/images/elements/arrow.png') }}" alt="" class="arrow-right-dex d-none">
 						{% if currentPokemon.altForm %}
+
 							{% if baseForm.captured is defined and baseForm.captured %}
 								<div class="alt alt-captured" data-pokemon-alt-captured="{{ baseForm.pokeId }}"><img src="{{ asset('medias/images/gifs/' ~ baseForm.name_en ~ '.gif') }}" alt=""></div>
 							{% else %}
