@@ -51,10 +51,11 @@ h1 {
   border: solid 2px #ffffff;
   background-color: #0c3348;
   padding: 10px;
-  margin: 8px;
   font-size: large;
-  width: 200px;
+  width: 100%;
+  max-width: 200px;
   border-radius: 25px;
+
 }
 
 .connexion-deconnexion a:hover {
@@ -83,6 +84,10 @@ h1 {
     justify-content: center;
     align-items: center;
     margin-top: 50px;
+  }
+
+  .connexion-deconnexion a {
+    margin: 10px 6% 0 0;
   }
 }
 
@@ -175,6 +180,21 @@ h1 {
   color: #0c3348 !important;
   background-color: #ffffff;
   transition: 0.5s;
+}
+
+.notification{
+  color: #fff8e1;
+  background-color: #9f1239;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 1rem;
+  float: right;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 15px;
 }
 
 /* MQ NAVBAR */
@@ -472,7 +492,7 @@ footer {
 
 .news-section {
   background: transparent;
-  padding: 30px 6%;
+  padding: 30px 3%;
 }
 
 .news-div {
@@ -496,8 +516,8 @@ footer {
 }
 
 .single-new {
-  background-color: #a62430;
-  color: white;
+  background-color: #fff8e1;
+  color: #333333;
   font-family: "Jersey 10", sans-serif;
   padding: 5%;
   margin: 20px 0;
@@ -509,7 +529,7 @@ footer {
 }
 
 .news-date {
-  font-size: 1rem;
+  font-size: 1.3rem;
   margin-bottom: 15px;
   text-align: end;
 }
@@ -517,6 +537,8 @@ footer {
 .news-title {
   font-family: "Press Start 2P", sans-serif;
   text-align: center;
+  text-decoration: underline;
+  color: #333333;
 }
 
 .news-body {
@@ -544,11 +566,52 @@ footer {
   text-decoration: underline #ffd83e 3px;
 }
 
+.top-info-div{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: end;
+  position: relative;
+}
+
+.countdown,
+.top-info {
+  width: auto;
+  height: auto;
+  font-family: "Jersey 10", serif;
+  font-size: 1.2rem;
+  text-align: center;
+  border-radius: 10px 10px 0 0;
+  display: flex;
+  align-items: center;
+  padding: 7px 20px 0;
+}
+
+.top-info{
+  background-color: #fff8e1;
+  margin: 20px 0 0 -10px;
+  z-index: 1;
+}
+
+.countdown{
+  width: auto;
+  margin-top: 20px;
+  background-color: rgba(240 0 32);
+  color: white;
+  z-index: 2;
+}
+
+.top-info-bis{
+  margin-left: 0;
+  align-self: start;
+}
+
+
 .table-pokedex {
   border-collapse: collapse;
   table-layout: fixed;
   width: 100%;
-  margin: 20px 10px;
+  margin: 0 10px 20px;
   border: 2mm ridge rgba(240 0 32 / 0.9);
 }
 
@@ -947,8 +1010,11 @@ footer {
 }
 
 .span-rarity {
-  font-size: xx-large;
   font-weight: bold;
+  z-index: 1;
+  font-size: 2.5rem;
+  -webkit-text-stroke: 0.1px black;
+  margin-top: -25px;
 }
 
 .div-TR span {
@@ -999,6 +1065,12 @@ footer {
 
 .stats div:nth-child(4) {
   margin: 2% 0 0 2%;
+}
+
+.stats-list-item{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .stats-list-item img {
@@ -1429,11 +1501,6 @@ i.fa-chevron-right {
   }
 }
 
-.mini-infos a {
-  text-decoration: underline;
-  color: #d3ad42;
-}
-
 .shiny-slider .mini-infos span {
   color: white;
 }
@@ -1483,12 +1550,23 @@ i.fa-chevron-right {
   }
 }
 
-.poke-tronq {
+.mini-infos{
+  width: 90%;
+}
+
+.mini-infos a {
+  text-decoration: underline;
+  color: #d3ad42;
+}
+
+.poke-tronq,
+.poke-tronq-2
+{
   display: inline-block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 120px;
+  max-width: calc(50% - 12px);
   vertical-align: top;
 }
 
@@ -2062,7 +2140,6 @@ tfoot tr td {
 }
 
 .select-gen {
-  margin-top: 10px;
   height: 50px;
   background-color: #dd4242;
   border-radius: 10px 10px 0 0;
@@ -2071,7 +2148,6 @@ tfoot tr td {
   font-family: "Press Start 2P", sans-serif;
   font-size: 0.8rem;
   text-align: center;
-  margin-right: 10px;
 }
 
 .gen-content {
@@ -2084,7 +2160,6 @@ tfoot tr td {
   color: white;
   font-family: "Jersey 10", sans-serif;
   font-size: 1.4rem;
-  margin-right: 10px;
 }
 
 .search {
@@ -2595,10 +2670,10 @@ tfoot tr td {
   justify-content: start;
   width: 40%;
   margin: 15px 6%;
-  background-color: #4EAF64;
+  background-color: #6AA671;
   position: relative;
   border-radius: 10px;
-  border: 4px solid #ffcd00;
+  /*border: 4px solid #ffcd00;*/
   box-sizing: border-box;
 }
 
@@ -2606,9 +2681,19 @@ tfoot tr td {
   margin: auto;
   display: flex;
   flex-direction: row;
-  gap: 10px; /* ou selon votre espacement désiré */
+  gap: 10px;
   overflow-x: auto;
   overflow-y: hidden;
+}
+
+.alt-forms::-webkit-scrollbar {
+  width: 10px;
+  background-color: gray;
+  display: none;
+}
+
+.alt-forms{
+  scrollbar-width: none
 }
 
 .alt {
@@ -2769,10 +2854,6 @@ tfoot tr td {
     transition: width 0.3s ease;
   }
 
-  .alt:hover img {
-    width: 150px;
-  }
-
   .pokedex-types a img {
     height: 70px;
     width: 70px;
@@ -2879,12 +2960,11 @@ tfoot tr td {
 
   .list {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     max-width: 500px;
-    width: -webkit-fill-available;
     margin-top: -300px;
+    margin-left: 3%;
   }
 
   .pokedex-nav {
@@ -3484,14 +3564,11 @@ tfoot tr td {
   border: 1px solid #092a3b;
   background-color: #092a3b;
   overflow: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
 }
 
 ::-webkit-scrollbar {
   width: 10px;
   background-color: gray;
-  display: none;
 }
 
 ::-webkit-scrollbar-thumb {

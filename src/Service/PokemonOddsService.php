@@ -140,14 +140,21 @@ class PokemonOddsService extends AbstractController
             $isNew = true;
         } else {
             $this->setCoinByRarity($user, $capturedPokemon, $isShiny);
-            /* @var $pokemonToIncrement CapturedPokemon */
-            $pokemonToIncrement = $this->capturedPokemonRepository->findOneBy([
-                'owner' => $user,
-                'shiny' => (bool)$isShiny,
-                'pokemon' => $pokemonSpeciesCaptured
-            ]);
-            $pokemonToIncrement->setTimesCaptured($pokemonToIncrement->getTimesCaptured() + 1);
-            $pokemonToIncrement->setCaptureDate(new \DateTime('', new \DateTimeZone('Europe/Paris')));
+
+            if ($isShiny) {
+                $this->entityManager->persist($capturedPokemon);
+                $capturedPokemon->setTimesCaptured(1);
+            } else {
+                /* @var $capturedPokemon CapturedPokemon */
+                $capturedPokemon = $this->capturedPokemonRepository->findOneBy([
+                    'owner' => $user,
+                    'shiny' => (bool)$isShiny,
+                    'pokemon' => $pokemonSpeciesCaptured
+                ]);
+                $capturedPokemon->setTimesCaptured($capturedPokemon->getTimesCaptured() + 1);
+                $capturedPokemon->setCaptureDate(new \DateTime('', new \DateTimeZone('Europe/Paris')));
+            }
+
             $isNew = false;
         }
 
@@ -155,13 +162,17 @@ class PokemonOddsService extends AbstractController
         $user->setLaunchCount($user->getLaunchCount() + 1);
         $this->entityManager->flush();
 
+
         //Partie discord
-        $discordError = $this->discordWebHookService->sendToDiscordWebHook(
-            $user,
-            $capturedPokemon,
-            $firstTimeShiny,
-            $firstTimeNonShiny
-        );
+        if ($_ENV['APP_ENV'] === 'prod') {
+            $discordError = $this->discordWebHookService->sendToDiscordWebHook(
+                $user,
+                $capturedPokemon,
+                $firstTimeShiny,
+                $firstTimeNonShiny
+            );
+        }
+
 
         return $this->json([
             'captured_pokemon' => [

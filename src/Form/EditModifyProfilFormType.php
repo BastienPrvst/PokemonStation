@@ -39,9 +39,9 @@ class EditModifyProfilFormType extends AbstractType
                     ]),
                     new Length([
                         'min' => 2,
-                        'max' => 40,
-                        'minMessage' => 'Votre pseudonyme doit contenir au moins {{limit}} caractères',
-                        'maxMessage' => 'Votre pseudonyme doit contenir au maximum {{limit}} caractères',
+                        'max' => 20,
+                        'minMessage' => 'Votre pseudonyme doit contenir au moins {{ limit }} caractères',
+                        'maxMessage' => 'Votre pseudonyme doit contenir au maximum {{ limit }} caractères',
                     ]),
                 ],
             ])
