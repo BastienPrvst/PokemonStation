@@ -29,6 +29,7 @@ services:
     App\Event\Listener\MaintenanceListener:
         arguments:
             - '%maintenanceFilePath%'
+            - '@twig'
 
         tags:
             - name: 'kernel.event_listener'
