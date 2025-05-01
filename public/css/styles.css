@@ -3574,3 +3574,9 @@ tfoot tr td {
 ::-webkit-scrollbar-thumb {
   background-color: gray;
 }
+
+/* Maintenance */
+
+.maintenance {
+  margin: 200px 0;
+}
