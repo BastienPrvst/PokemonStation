@@ -101,7 +101,7 @@ class PokemonOddsService extends AbstractController
 
             if (empty($pokemonsFound)) {
                 return $this->json([
-                    'error' => 'Aucun pokémon trouvé..., votre n\'a pas été décompté.'
+                    'error' => 'Aucun pokémon trouvé..., votre lancer n\'a pas été décompté.'
                 ]);
             }
 

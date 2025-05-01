@@ -67,6 +67,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function topMonthlyRarity(): array
     {
         $firstDay = new \DateTime('first day of this month');
+        $firstDay->setTime(0, 0, 0);
         $lastDay = (clone $firstDay)->modify('+1 month');
 
         return $this->createQueryBuilder('u')
