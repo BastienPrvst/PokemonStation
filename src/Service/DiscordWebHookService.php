@@ -24,8 +24,8 @@ class DiscordWebHookService
         'Son énorme crâne la.',
         'Cette personne possède un énorme talent.',
         'Cela semble si simple apprends nous !',
-        'Je refuse d\' croire, tout simplement.',
-        'Très salé ce Pokémon Johan',
+        'Je refuse d\'y croire, tout simplement.',
+        'Très salé ce Pokémon Johan'
     ];
 
     private array $colorPerRarities = [

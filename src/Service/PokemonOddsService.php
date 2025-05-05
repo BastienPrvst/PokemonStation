@@ -96,7 +96,7 @@ class PokemonOddsService extends AbstractController
                     $type = $this->getCustomType($customType);
                     $pokemonsFound = $this->pokemonRepository->findByRarityAndType($rarity[0], $type);
                     $i++;
-                } while (empty($pokemonsFound) && $i < 5);
+                } while (empty($pokemonsFound) && $i < 10);
             }
 
             if (empty($pokemonsFound)) {
@@ -143,17 +143,18 @@ class PokemonOddsService extends AbstractController
 
             if ($isShiny) {
                 $this->entityManager->persist($capturedPokemon);
-                $capturedPokemon->setTimesCaptured(1);
-            } else {
-                /* @var $capturedPokemon CapturedPokemon */
-                $capturedPokemon = $this->capturedPokemonRepository->findOneBy([
-                    'owner' => $user,
-                    'shiny' => (bool)$isShiny,
-                    'pokemon' => $pokemonSpeciesCaptured
-                ]);
-                $capturedPokemon->setTimesCaptured($capturedPokemon->getTimesCaptured() + 1);
-                $capturedPokemon->setCaptureDate(new \DateTime('', new \DateTimeZone('Europe/Paris')));
+                $capturedPokemon->setTimesCaptured(-1);
+                //Permet un comptage par mois du top shiny mais ne trouble pas le nombre de fois qu'il est capturé
             }
+
+            /* @var $capturedPokemon CapturedPokemon */
+            $capturedPokemon = $this->capturedPokemonRepository->findOnePokemon(
+                $user,
+                (bool)$isShiny,
+                $pokemonSpeciesCaptured
+            );
+            $capturedPokemon->setTimesCaptured($capturedPokemon->getTimesCaptured() + 1);
+            $capturedPokemon->setCaptureDate(new \DateTime('', new \DateTimeZone('Europe/Paris')));
 
             $isNew = false;
         }

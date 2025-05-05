@@ -1,28 +1,30 @@
 # Pokedex
 
-Il s'agit d'un projet groupé réalisé dans le cadre de notre formation.
+Pokemon-Station est tout d'abord un projet d'études, fait par trois personnes : Yann, Louis et Bastien.
 
-Nous sommes trois : Louis, Yann et Bastien.
+Le projet a été mis en ligne 1 an en 2023, permettant un retour d'utilisateurs quotidien qualitatif.
+Suite à une expérience professionnelle, j'ai (Bastien) souhaité effectuer une refonte globale du site, en améliorant la qualité du code et en y implémentant des fonctionnalités imaginées avec mes nouvelles connaissances.
+J'ai aussi été rejoins par un développeur plus experimenté qui voulais prendre part au projet.
+Grâce à nos efforts, nous avons pu finaliser une nouvelle version qui nous convient et continuons de la mettre à jour régulièrement.
+Cette version est sortie mi-avril 2025.
 
-Ce site a pour objectif d'être un terrain de jeu pour nous, afin que nous puissions
-explorer des possibilités, améliorer ce que nous avions fait auparavant et surtout
-prendre du plaisir à coder tous ensemble.
+Le concept est simple, il s'agit d'un site de gacha ou la chance est mise en avant, avec des principes de collection etc.
 
-Il s'agit d'un site de type "Gatcha" sur le thème de Pokémon, ou l'utilisateur gagne
-des lancers passivement avec le temps. Il peut ensuite les ouvrir sur la
-page "Libération" afin d'y découvrir des Pokémons plus ou moins rares! 
+Le projet est assez complet, nous l'avons réalisé du front au back.
+Il contient :
 
-La page "Pokédex" permet à l'utilisateur de contempler sa collection et la 
-page de "Profil" affiche les stats de l'utilisateur, son avatar qu'il peut changer
-et un tableau regroupant celles et ceux qui ont atteints les sommets. 
+- Du POO, bien évidemment, sous Symfony 7.2 en MVC.
+- Du CSS et du GSAP (librairie front) pour des animations et du visuel, même si ce n'est pas notre point fort.
+- Des commandes Symfony permettant des echanges avec l'api https://pokeapi.co/, pour la récupération de données.
+- Des APIs internes, pour échanger entre notre front et notre back.
+- Une logique de définition de rareté, de distribution d'essais, d'une boutique (sans argent reel) etc.
+- Un création de compte, avec la possibilité pour les utilisateurs d'interagir entre eux.
+- Une Ci/Cd permettant un deploiement facile en prod.
 
-Il s'agit de notre premier projet et nous espérons qu'il vous plaira autant que nous
-avons aimé le développer!
-
+Ce site représente un terrain de jeu en matière de développement et j'espère qu'il continuera longtemps à l'être.
 
 Le lien du site en ligne : 
 
 https://pokemon-station.fr/
 
-*EDIT le site n'est plus en ligne*
 

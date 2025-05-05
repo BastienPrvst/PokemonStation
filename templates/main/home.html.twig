@@ -113,7 +113,7 @@
 								<tbody>
 								{% for userData in topUserSpeciesSeen %}
 									<tr class="pokedex-top-10">
-										<td class="empty-td text-center">{{ loop.index }}</td>
+										<td class="empty-td text-center">{{ userData.rank }}</td>
 										<td class="text-center">
 											<a href="{{ path('app_user_showprofile', { pseudonym : userData.user.pseudonym }) }}">{{ userData.user.pseudonym }}</a>
 										</td>
@@ -145,7 +145,7 @@
 								<tbody>
 								{% for top in topMonthlyPoints %}
 									<tr class="pokedex-top-10">
-										<td class="empty-td text-center">{{ loop.index }}</td>
+										<td class="empty-td text-center">{{ top.rank }}</td>
 										<td class="text-center">
 											<a href="{{ path('app_user_showprofile', { pseudonym : top.user.pseudonym }) }}">{{ top.user.pseudonym }}</a>
 										</td>
@@ -175,7 +175,7 @@
 								<tbody>
 								{% for top in topMonthlyShinies %}
 									<tr class="pokedex-top-10">
-										<td class="empty-td text-center">{{ loop.index }}</td>
+										<td class="empty-td text-center">{{ top.rank }}</td>
 										<td class="text-center">
 											<a href="{{ path('app_user_showprofile', { pseudonym : top.user.pseudonym }) }}">{{ top.user.pseudonym }}</a>
 										</td>
