@@ -8,13 +8,10 @@ use Twig\Environment;
 
 class MaintenanceListener
 {
-
     public function __construct(
         private $maintenance,
-        private Environment $twig
-    )
-    {
-
+        private readonly Environment $twig
+    ) {
     }
 
 

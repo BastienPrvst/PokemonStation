@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\CapturedPokemon;
+use App\Entity\Pokemon;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -132,4 +133,19 @@ class CapturedPokemonRepository extends ServiceEntityRepository
         return array_column($result, 'pokeId');
     }
 
+    public function findOnePokemon(User $user, bool $shiny, Pokemon $pokemon)
+    {
+        return $this->createQueryBuilder('cp')
+            ->where('cp.owner = :user')
+            ->andWhere('cp.shiny = :shiny')
+            ->andWhere('cp.pokemon = :pokemon')
+            ->andWhere('cp.timesCaptured >= 1')
+            ->setParameters([
+                'user' => $user,
+                'shiny' => $shiny,
+                'pokemon' => $pokemon,
+            ])
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

@@ -31,7 +31,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     public function top10TotalSpeciesSeen(): array
     {
-        return $this->createQueryBuilder('u')
+        $query = $this->createQueryBuilder('u')
             ->select('u AS user, COUNT(DISTINCT cp.pokemon) AS total_species_seen, u.launch_count AS launch_count')
             ->innerJoin('u.capturedPokemon', 'cp')
             ->innerJoin('cp.pokemon', 'p')
@@ -40,6 +40,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->setMaxResults(10)
             ->getQuery()
             ->getResult();
+
+        return $this->rankTop($query, 'total_species_seen');
     }
 
     public function topMonthlyShinies(): array
@@ -48,7 +50,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $firstDay->setTime(0, 0, 0);
         $lastDay = (clone $firstDay)->modify('+1 month');
 
-        return $this->createQueryBuilder('u')
+        $query = $this->createQueryBuilder('u')
             ->select('u as user, COUNT(DISTINCT cp) AS monthly_shinies')
             ->innerJoin('u.capturedPokemon', 'cp')
             ->innerJoin('cp.pokemon', 'p')
@@ -63,6 +65,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->setMaxResults(10)
             ->getQuery()
             ->getResult();
+
+        return $this->rankTop($query, 'monthly_shinies');
     }
 
     public function topMonthlyRarity(): array
@@ -71,8 +75,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $firstDay->setTime(0, 0, 0);
         $lastDay = (clone $firstDay)->modify('+1 month');
 
-        return $this->createQueryBuilder('u')
-            ->select('SUM(
+        $query = $this->createQueryBuilder('u')
+            ->select('u as user, SUM(
                 CASE p.rarity 
                     WHEN \'TR\' THEN 10
                     WHEN \'GMAX\' THEN 50
@@ -82,7 +86,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                     WHEN \'UR\' THEN 250
                     ELSE 0 
                 END
-            ) as total_points, u as user')
+            ) as total_points')
             ->innerJoin('u.capturedPokemon', 'cp')
             ->innerJoin('cp.pokemon', 'p')
             ->where('cp.captureDate BETWEEN :firstDay AND :lastDay')
@@ -95,6 +99,28 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->setMaxResults(10)
             ->getQuery()
             ->getResult();
+
+        return $this->rankTop($query, 'total_points');
+    }
+
+    /**
+     * @param array $top
+     * @param string $field
+     * @return array
+     */
+    private function rankTop(array $top, string $field): array
+    {
+        $i = 0;
+        $space = 1;
+        $lastValue = 0;
+        foreach ($top as &$user) {
+            $user[$field] === $lastValue ? $space++ : $i += $space;
+            $user['rank'] = $i;
+            $lastValue = $user[$field];
+        }
+        unset($user);
+
+        return $top;
     }
 
     /**
