@@ -110,13 +110,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      */
     private function rankTop(array $top, string $field): array
     {
-        $i = 0;
-        $space = 1;
-        $lastValue = 0;
+        $rank = 1;
+        $i = 1;
+        $lastValue = null;
+
         foreach ($top as &$user) {
-            $user[$field] === $lastValue ? $space++ : $i += $space;
-            $user['rank'] = $i;
+            if ($user[$field] !== $lastValue) {
+                $rank = $i;
+            }
+            $user['rank'] = $rank;
             $lastValue = $user[$field];
+            $i++;
         }
         unset($user);
 
