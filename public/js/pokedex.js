@@ -1,4 +1,4 @@
-import { clickSound, manageSound } from "./Sound.js";
+import {clickSound, manageSound} from "./Sound.js";
 
 manageSound();
 clickSound();
@@ -224,8 +224,6 @@ volumeButton.onclick = function (e) {
   if (localStorage.getItem("soundOn") === "true") {
     audio.volume = 0.025;
     audio.play();
-  } else {
-    audio.muted = true;
   }
 };
 
