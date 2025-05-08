@@ -172,13 +172,14 @@ class PokemonOddsService extends AbstractController
         }
 
         $user->setLaunchCount($user->getLaunchCount() + 1);
-        $this->entityManager->flush();
 
         //Gestion du score
 
         $multiplier = $isShiny ? 10 : 1;
         $scoreToAdd = $this->rarityScale[$rarity[0]] * $multiplier;
         $user->setScore($user->getScore() + $scoreToAdd);
+
+        $this->entityManager->flush();
 
         //Partie discord
         if ($_ENV['APP_ENV'] === 'prod') {
