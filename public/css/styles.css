@@ -589,16 +589,16 @@ footer {
 
 .top-info{
   background-color: #fff8e1;
-  margin: 20px 0 0 -10px;
-  z-index: 1;
+  margin: 20px 0 0 0;
+  z-index: 2;
 }
 
 .countdown{
   width: auto;
-  margin-top: 20px;
-  background-color: rgba(240 0 32);
+  margin: 20px 0 0 -10px;
+  background-color: #E34042;
   color: white;
-  z-index: 2;
+  z-index: 1;
 }
 
 .top-info-bis{
