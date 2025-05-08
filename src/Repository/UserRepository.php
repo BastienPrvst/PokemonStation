@@ -96,7 +96,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ])
             ->groupBy('u')
             ->orderBy('total_points', 'DESC')
-            ->setMaxResults(10)
+            ->setMaxResults(50)
             ->getQuery()
             ->getResult();
 

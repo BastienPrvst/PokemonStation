@@ -17,6 +17,18 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class PokemonOddsService extends AbstractController
 {
+    private array $rarityScale = [
+        'C' => 1,
+        'PC' => 3,
+        'R' => 5,
+        'TR' => 10,
+        'ME' => 50,
+        'GMAX' => 50,
+        'SR' => 100,
+        'EX' => 100,
+        'UR' => 250
+    ];
+
     public function __construct(
         private readonly PokemonRepository $pokemonRepository,
         private readonly CapturedPokemonRepository $capturedPokemonRepository,
@@ -147,22 +159,26 @@ class PokemonOddsService extends AbstractController
                 //Permet un comptage par mois du top shiny mais ne trouble pas le nombre de fois qu'il est capturé
             }
 
-            /* @var $capturedPokemon CapturedPokemon */
-            $capturedPokemon = $this->capturedPokemonRepository->findOnePokemon(
+            /* @var $alreadyCapturedPokemon CapturedPokemon */
+            $alreadyCapturedPokemon = $this->capturedPokemonRepository->findOnePokemon(
                 $user,
                 (bool)$isShiny,
                 $pokemonSpeciesCaptured
             );
-            $capturedPokemon->setTimesCaptured($capturedPokemon->getTimesCaptured() + 1);
-            $capturedPokemon->setCaptureDate(new \DateTime('', new \DateTimeZone('Europe/Paris')));
+            $alreadyCapturedPokemon->setTimesCaptured($alreadyCapturedPokemon->getTimesCaptured() + 1);
+            $alreadyCapturedPokemon->setCaptureDate(new \DateTime('', new \DateTimeZone('Europe/Paris')));
 
             $isNew = false;
         }
 
-
         $user->setLaunchCount($user->getLaunchCount() + 1);
         $this->entityManager->flush();
 
+        //Gestion du score
+
+        $multiplier = $isShiny ? 10 : 1;
+        $scoreToAdd = $this->rarityScale[$rarity[0]] * $multiplier;
+        $user->setScore($user->getScore() + $scoreToAdd);
 
         //Partie discord
         if ($_ENV['APP_ENV'] === 'prod') {
@@ -173,7 +189,6 @@ class PokemonOddsService extends AbstractController
                 $firstTimeNonShiny
             );
         }
-
 
         return $this->json([
             'captured_pokemon' => [
@@ -268,20 +283,10 @@ class PokemonOddsService extends AbstractController
     private function setCoinByRarity(User $user, CapturedPokemon $pokemonCaptured, bool $shiny): void
     {
         //Valeur en pièce si le Pokémon à déja été vu
-        $rarityScale = [
-            'C' => 1,
-            'PC' => 3,
-            'R' => 5,
-            'TR' => 10,
-            'ME' => 50,
-            'GMAX' => 50,
-            'SR' => 100,
-            'EX' => 100,
-            'UR' => 250
-        ];
+
 
         $capturedRarity = $pokemonCaptured->getPokemon()->getRarity();
-        $numberToAdd = $rarityScale[$capturedRarity];
+        $numberToAdd = $this->rarityScale[$capturedRarity];
         if ($shiny === true) {
             $numberToAdd *= 10;
         }

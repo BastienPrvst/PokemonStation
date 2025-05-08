@@ -65,6 +65,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Ignore]
     private Collection $userItems;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $score = null;
+
     public function __construct()
     {
         $this->capturedPokemon = new ArrayCollection();
@@ -299,6 +302,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $userItem->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getScore(): ?int
+    {
+        return $this->score;
+    }
+
+    public function setScore(?int $score): static
+    {
+        $this->score = $score;
 
         return $this;
     }
