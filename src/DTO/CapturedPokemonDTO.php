@@ -13,6 +13,8 @@ final class CapturedPokemonDTO extends PokemonDTO
 
     public bool $shiny = false;
 
+    public bool $onlyShiny = false;
+
     public bool $altShiny = false;
 
     public function __construct(Pokemon $pokemon)

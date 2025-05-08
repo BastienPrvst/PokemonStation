@@ -53,22 +53,25 @@
 				<div class="pokedex-name">
 					<p id="pokemonName"></p>
 				</div>
-				<div class="volume-dex-content">
+				<div class="btn-dex-container volume-dex-container">
 					<div class="d-none english-name"></div>
-					<button class="volume volume-2">
+					<button class="btn-dex btn-volume volume">
 						<img class="active sound soundOn" src="{{ asset('medias/images/elements/volume.up.png') }}" alt="Activer le son">
 						<img class="type-none sound soundOff" src="{{ asset('medias/images/elements/volume.off.png') }}" alt="Désactiver le son">
 					</button>
-
-					<button class="volume-dex">
+					<button id="btnCry" class="btn-dex btn-volume volume">
 						<img src="{{ asset('medias/images/elements/play-arrow.png') }}" alt="">
 					</button>
 				</div>
+				<div class="btn-dex-container shiny-dex-container">
+					<button class="btn-dex btn-shiny" id="shinyBtn">
+						<img src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt="">
+					</button>
+				</div>
 
-				{# <button class="button-shiny"><img src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt="étoile brillante de pokemon chromatique"></button> #}
 				<div class="pokedex-types">
-					<a href="{{ path('app_types') }}" class="type-img-a"><img id="pokemonType" class="type-img type1" src="" data-src="{{ asset('medias/images/types/') }}" alt="Type" onerror="this.style.display='none'"></a>
-					<a href="{{ path('app_types') }}" class="type-img-a"><img id="pokemonType2" class="type-img type2" src="" data-src="{{ asset('medias/images/types/') }}" alt="Type secondaire" onerror="this.style.display='none'"></a>
+					<a href="{{ path('app_types') }}" class="type-img-a"><img id="pokemonType" class="type-img type1 d-none" src="" data-src="{{ asset('medias/images/types/') }}" alt="Type"></a>
+					<a href="{{ path('app_types') }}" class="type-img-a"><img id="pokemonType2" class="type-img type2 d-none" src="" data-src="{{ asset('medias/images/types/') }}" alt="Type secondaire"></a>
 				</div>
 				<div class="pokedex-image"><img id="pokemonGif" src="" data-src="{{ asset('medias/images/gifs/') }}" alt=""></div>
 				<div class="pokedex-descritpion">
