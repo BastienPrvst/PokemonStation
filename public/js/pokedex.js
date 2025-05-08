@@ -3,13 +3,9 @@ import { clickSound, manageSound } from "./Sound.js";
 manageSound();
 clickSound();
 
-let pokemonGif;
-let pokemonImage = document.querySelector(".poke-gif");
 let buttons = document.querySelectorAll(".pokemon-pokedex");
 let currentPokeId = null;
-
-let name = document.querySelector(".english-name").innerHTML;
-const audio = new Audio(crySound + name + "-cry.mp3");
+const audio = new Audio();
 
 // Select on click a pokemon to display on pokedex
 buttons.forEach(function (button) {
@@ -25,6 +21,24 @@ buttons.forEach(function (button) {
       .then((data) => updatePokedex(data[0]))
       .catch((error) => console.log(error));
   });
+});
+
+// Onload des générations and select a pokemon to display on pokedex
+document.addEventListener("DOMContentLoaded", () => {
+  const targetGeneration = document.querySelector('#generations').selectedOptions[0]?.value;
+
+  if (!targetGeneration) return;
+
+  const apiPath = baseUrl + "generation-api/" + targetGeneration;
+
+  fetch(apiPath, { method: "GET" })
+    .then((response) => response.json())
+    .then((pokemons) => {
+      updatePokedexList(pokemons);
+      const pokemon = pokemons.find(p => p.captured || p.altCaptured);
+      updatePokedex(pokemon);
+    })
+    .catch((error) => console.log(error));
 });
 
 // Select des générations
@@ -91,9 +105,10 @@ const updatePokedex = (pokemon) => {
   let imgType = document.querySelector("#pokemonType");
   let imgType2 = document.querySelector("#pokemonType2");
   let imgGif = document.querySelector("#pokemonGif");
-  let pathGif = imgGif?.src?.split("/") ?? undefined;
-  let pathImgType = imgType?.src?.split("/") ?? undefined;
-  let pathImgType2 = imgType2?.src?.split("/") ?? undefined;
+  let pathGif = imgGif?.dataset.src?.split("/") ?? undefined;
+  let pathImgType = imgType?.dataset.src?.split("/") ?? undefined;
+
+  let pathImgType2 = imgType2?.dataset.src?.split("/") ?? undefined;
   audio.src = crySound + pokemon.name_en + "-cry.mp3";
   pathGif.pop();
   pathImgType.pop();
@@ -171,8 +186,10 @@ const updatePokedexList = (pokemons) => {
   pokemons.map((p) => {
     if (p.captured) pokedexCount++;
     if (p.shiny) shinyCount++;
-    pokedexCount =
-      pokedexCount + p.relatedPokemon.filter((pr) => pr.captured).length;
+    if (!p.captured && p.relatedPokemon) {
+      const altCaptured = p.relatedPokemon.filter((pr) => pr.captured);
+      pokedexCount = altCaptured?.length ? pokedexCount + 1 : pokedexCount;
+    }
     shinyCount = shinyCount + p.relatedPokemon.filter((pr) => pr.shiny).length;
   });
   pokedexCounter.textContent = `${pokedexCount} sur ${pokemons.length}`;
