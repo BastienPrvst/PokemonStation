@@ -3,13 +3,9 @@ import {clickSound, manageSound} from "./Sound.js";
 manageSound();
 clickSound();
 
-let pokemonGif;
-let pokemonImage = document.querySelector(".poke-gif");
 let buttons = document.querySelectorAll(".pokemon-pokedex");
 let currentPokeId = null;
-
-let name = document.querySelector(".english-name").innerHTML;
-const audio = new Audio(crySound + name + "-cry.mp3");
+const audio = new Audio();
 
 // Select on click a pokemon to display on pokedex
 buttons.forEach(function (button) {
@@ -25,6 +21,24 @@ buttons.forEach(function (button) {
       .then((data) => updatePokedex(data[0]))
       .catch((error) => console.log(error));
   });
+});
+
+// Onload des générations and select a pokemon to display on pokedex
+document.addEventListener("DOMContentLoaded", () => {
+  const targetGeneration = document.querySelector('#generations').selectedOptions[0]?.value;
+
+  if (!targetGeneration) return;
+
+  const apiPath = baseUrl + "generation-api/" + targetGeneration;
+
+  fetch(apiPath, { method: "GET" })
+    .then((response) => response.json())
+    .then((pokemons) => {
+      updatePokedexList(pokemons);
+      const pokemon = pokemons.find(p => p.captured || p.altCaptured);
+      updatePokedex(pokemon);
+    })
+    .catch((error) => console.log(error));
 });
 
 // Select des générations
@@ -91,9 +105,13 @@ const updatePokedex = (pokemon) => {
   let imgType = document.querySelector("#pokemonType");
   let imgType2 = document.querySelector("#pokemonType2");
   let imgGif = document.querySelector("#pokemonGif");
-  let pathGif = imgGif?.src?.split("/") ?? undefined;
-  let pathImgType = imgType?.src?.split("/") ?? undefined;
-  let pathImgType2 = imgType2?.src?.split("/") ?? undefined;
+  let shinyBtn = document.querySelector("#shinyBtn");
+  let pathGif = imgGif?.dataset.src?.split("/") ?? undefined;
+  let pathImgType = imgType?.dataset.src?.split("/") ?? undefined;
+
+  shinyBtn.removeEventListener("click", toggleShiny);
+
+  let pathImgType2 = imgType2?.dataset.src?.split("/") ?? undefined;
   audio.src = crySound + pokemon.name_en + "-cry.mp3";
   pathGif.pop();
   pathImgType.pop();
@@ -103,8 +121,20 @@ const updatePokedex = (pokemon) => {
   let newImgType = pathImgType.join("/") + `/${pokemon.type}.png`;
   let newImgType2 = pathImgType2.join("/") + `/${pokemon.type2}.png`;
 
+  if (pokemon.onlyShiny) {
+    newPathGif = pathGif.join("/") + `/shiny-${pokemon.name_en}.gif`;
+  }
+
   imgGif.src = newPathGif;
   imgType.src = newImgType;
+  imgType.classList.remove("d-none");
+
+  if (pokemon.shiny && !pokemon.onlyShiny) {
+    shinyBtn.classList.remove("d-none");
+    shinyBtn.addEventListener("click", toggleShiny);
+  } else {
+    shinyBtn.classList.add("d-none");
+  }
 
   if (pokemon.type2) {
     imgType2.classList.remove("d-none");
@@ -120,9 +150,7 @@ const updatePokedex = (pokemon) => {
 
   let pokedexAltContainer = document.querySelector("#pokedexAltContainer");
   let pokedexAltCapturedTpl = document.querySelector("#pokedexAltCaptured");
-  let pokedexAltNotCapturedTpl = document.querySelector(
-    "#pokedexAltNotCaptured",
-  );
+  let pokedexAltNotCapturedTpl = document.querySelector("#pokedexAltNotCaptured");
 
   pokedexAltContainer.querySelectorAll(".alt").forEach((node) => node.remove());
 
@@ -171,8 +199,10 @@ const updatePokedexList = (pokemons) => {
   pokemons.map((p) => {
     if (p.captured) pokedexCount++;
     if (p.shiny) shinyCount++;
-    pokedexCount =
-      pokedexCount + p.relatedPokemon.filter((pr) => pr.captured).length;
+    if (!p.captured && p.relatedPokemon) {
+      const altCaptured = p.relatedPokemon.filter((pr) => pr.captured);
+      pokedexCount = altCaptured?.length ? pokedexCount + 1 : pokedexCount;
+    }
     shinyCount = shinyCount + p.relatedPokemon.filter((pr) => pr.shiny).length;
   });
   pokedexCounter.textContent = `${pokedexCount} sur ${pokemons.length}`;
@@ -219,13 +249,29 @@ const updatePokedexList = (pokemons) => {
   });
 };
 
-let volumeButton = document.querySelector(".volume-dex");
+let volumeButton = document.querySelector("#btnCry");
 volumeButton.onclick = function (e) {
   if (localStorage.getItem("soundOn") === "true") {
     audio.volume = 0.025;
     audio.play();
   }
 };
+
+const toggleShiny = () => {
+  let imgGif = document.querySelector("#pokemonGif");
+  let pathGif = imgGif.src.split("/");
+  let endPath = pathGif.pop();
+
+  if (imgGif.src.includes('shiny')) {
+    imgGif.src = imgGif.src.replace('shiny-', '');
+  } else {
+    const imgGif = document.querySelector("#pokemonGif");
+    const pathGif = imgGif.src.split("/");
+    const endPath = pathGif.pop();
+
+    imgGif.src = pathGif.join("/") + `/shiny-${endPath}`;
+  }
+}
 
 class PokedexAutoScroller {
   /**

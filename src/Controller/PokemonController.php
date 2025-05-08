@@ -32,20 +32,12 @@ class PokemonController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function pokedex(): Response
     {
-        /** @var User $user */
-        $user = $this->getUser();
         /** @var GenerationRepository $genRepo */
         $genRepo = $this->entityManager->getRepository(Generation::class);
-
         $generations = $genRepo->findBy([], ['genNumber' => 'ASC']);
-        $currentGeneration = $genRepo->findOneBy([], ['genNumber' => 'ASC']);
-        $pokemons = $currentGeneration?->getPokemon()->getValues();
-        $pokemonsDTO = $this->capturedPokemonService->userCapturedByGeneration($user, $pokemons ?? []);
 
         return $this->render('main/pokedex.html.twig', [
-            'currentGeneration' => $currentGeneration,
             'generations'       => $generations,
-            'pokemons'          => $pokemonsDTO,
         ]);
     }
 
