@@ -2516,9 +2516,6 @@ tfoot tr td {
   transform: translate(-45%, -50%) scale(1.8);
 }
 
-.pokedex-image img {
-}
-
 .pokedex-descritpion {
   background-color: orange;
   padding: 10px;
@@ -2542,8 +2539,9 @@ tfoot tr td {
   height: 50px;
   width: 50px;
   position: absolute;
-  right: 8px;
-  top: 15px;
+  bottom: 100px;
+  right: 5px;
+  transform: translateY(-100%);
 }
 
 .pokedex-types a img {
@@ -2566,26 +2564,44 @@ tfoot tr td {
   height: 40px;
 }
 
-.volume-dex-content{
+.btn-dex-container{
   position: absolute;
+}
+
+.volume-dex-container{
   top: 0;
   left: 0;
 }
 
-.volume-2{
-  position: relative;
-  border-bottom-right-radius: 0;
+.shiny-dex-container{
+  top: 0;
+  right: 0;
 }
 
-.volume-dex {
+.btn-volume:last-child{
+  border-bottom-right-radius: 25px;
+}
+
+.btn-shiny:last-child{
+  border-bottom-left-radius: 25px;
+}
+
+.btn-dex {
   width: 50px;
   height: 50px;
   border-color: #de0c30;
   background-color: #af374d;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom-right-radius: 25px;
+  border-radius: 0;
+}
+
+.btn-dex img {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
 }
 
 /*Partie basse du pokedex*/
@@ -2811,9 +2827,6 @@ tfoot tr td {
     padding-top: 30px;
   }
 
-  .pokedex-name {
-  }
-
   .pokedex-name p {
     font-size: 1rem;
   }
@@ -2826,12 +2839,6 @@ tfoot tr td {
   .pokedex-descritpion {
     width: 80%;
     margin: auto;
-  }
-
-  .pokedex-types {
-    height: 75px;
-    width: 75px;
-    right: 15px;
   }
 
   .button-shiny {
@@ -2854,9 +2861,14 @@ tfoot tr td {
     transition: width 0.3s ease;
   }
 
+  .pokedex-types {
+    bottom: -15px;
+    right: -5px;
+  }
+
   .pokedex-types a img {
-    height: 70px;
-    width: 70px;
+    height: 40px;
+    width: 40px;
   }
 
   .speaker {
@@ -3437,9 +3449,6 @@ tfoot tr td {
 .anciens h4 {
   color: white;
   font-family: "Press Start 2P", sans-serif;
-}
-
-.anciens h4 {
 }
 
 @media screen and (min-width: 992px) {

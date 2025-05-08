@@ -41,6 +41,7 @@ class CapturedPokemonService extends AbstractController
             $capturedPokemonDTO = new CapturedPokemonDTO($pokemon);
             $capturedPokemonDTO->captured = $captured || $shiny;
             $capturedPokemonDTO->shiny = $shiny;
+            $capturedPokemonDTO->onlyShiny = !$captured && $shiny;
             $capturedPokemonsDTO[] = $capturedPokemonDTO;
         }
 
