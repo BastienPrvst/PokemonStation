@@ -76,27 +76,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $lastDay = (clone $firstDay)->modify('+1 month');
 
         $query = $this->createQueryBuilder('u')
-            ->select('u as user, SUM(
-                CASE p.rarity 
-                    WHEN \'TR\' THEN 10
-                    WHEN \'GMAX\' THEN 50
-                    WHEN \'ME\' THEN 50
-                    WHEN \'SR\' THEN 100
-                    WHEN \'EX\' THEN 100
-                    WHEN \'UR\' THEN 250
-                    ELSE 0 
-                END
-            ) as total_points')
-            ->innerJoin('u.capturedPokemon', 'cp')
-            ->innerJoin('cp.pokemon', 'p')
-            ->where('cp.captureDate BETWEEN :firstDay AND :lastDay')
-            ->setParameters([
-                'firstDay' => $firstDay,
-                'lastDay' => $lastDay,
-            ])
+            ->select('u as user, u.score as total_points')
             ->groupBy('u')
             ->orderBy('total_points', 'DESC')
-            ->setMaxResults(50)
+            ->setMaxResults(10)
             ->getQuery()
             ->getResult();
 
