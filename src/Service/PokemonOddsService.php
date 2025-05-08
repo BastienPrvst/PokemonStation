@@ -150,6 +150,7 @@ class PokemonOddsService extends AbstractController
             $capturedPokemon->setTimesCaptured(1);
             $this->entityManager->persist($capturedPokemon);
             $isNew = true;
+            $cpDiscord = $capturedPokemon;
         } else {
             $this->setCoinByRarity($user, $capturedPokemon, $isShiny);
 
@@ -167,7 +168,7 @@ class PokemonOddsService extends AbstractController
             );
             $alreadyCapturedPokemon->setTimesCaptured($alreadyCapturedPokemon->getTimesCaptured() + 1);
             $alreadyCapturedPokemon->setCaptureDate(new \DateTime('', new \DateTimeZone('Europe/Paris')));
-
+            $cpDiscord = $alreadyCapturedPokemon;
             $isNew = false;
         }
 
@@ -185,7 +186,7 @@ class PokemonOddsService extends AbstractController
         if ($_ENV['APP_ENV'] === 'prod') {
             $discordError = $this->discordWebHookService->sendToDiscordWebHook(
                 $user,
-                $capturedPokemon,
+                $cpDiscord,
                 $firstTimeShiny,
                 $firstTimeNonShiny
             );
