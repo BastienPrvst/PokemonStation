@@ -170,6 +170,8 @@ class PokemonOddsService extends AbstractController
             $alreadyCapturedPokemon->setCaptureDate(new \DateTime('', new \DateTimeZone('Europe/Paris')));
             $cpDiscord = $alreadyCapturedPokemon;
             $isNew = false;
+            //Multiplication des pièces par nombre de fois capturés.
+            $multiply = $this->multiplyCoins($alreadyCapturedPokemon, $isShiny, $user);
         }
 
         $user->setLaunchCount($user->getLaunchCount() + 1);
@@ -205,6 +207,8 @@ class PokemonOddsService extends AbstractController
                 'rarityRandom' => ($rarity[1] * 100),
                 'new' => $isNew,
                 'discordError' => $discordError ?? null,
+                'multiplyMoney' => $multiply ?? 0,
+                'times_captured' => $cpDiscord->getTimesCaptured(),
             ],
         ]);
     }
@@ -294,5 +298,40 @@ class PokemonOddsService extends AbstractController
         }
 
         $user->setMoney($user->getMoney() + $numberToAdd);
+    }
+
+    /**
+     * @param CapturedPokemon $pokemonCaptured
+     * @param bool $shiny
+     * @param User $user
+     * @return false|string
+     */
+    private function multiplyCoins(CapturedPokemon $pokemonCaptured, bool $shiny, User $user): int
+    {
+        $multipliers = [
+            5 => 5,
+            10 => 10,
+            20 => 20,
+            50 => 50,
+            100 => 100,
+            1000 => 1000
+        ];
+
+        $capturedRarity = $pokemonCaptured->getPokemon()->getRarity();
+
+        $timeCaptured = $pokemonCaptured->getTimesCaptured();
+        in_array($timeCaptured, $multipliers, true) ?
+            $moneyToAdd = ($this->rarityScale[$capturedRarity] * $multipliers[$timeCaptured]) :
+            $moneyToAdd = 0;
+
+        if ($shiny === true) {
+            $moneyToAdd *= 10;
+        }
+
+        if ($moneyToAdd > 0) {
+            $user->setMoney($user->getMoney() + $moneyToAdd);
+            return $moneyToAdd;
+        }
+        return 0;
     }
 }

@@ -332,24 +332,24 @@ document
           money *= 10;
         }
 
+        let totalCoins = money + pokemon.multiplyMoney;
+
         if (pokemon.new === false) {
           let actualCoin = document.querySelector(".coin-count").textContent;
           actualCoin = parseInt(actualCoin);
           document.querySelector(".coin-count").textContent =
-            actualCoin + money;
+            actualCoin + totalCoins;
         }
 
         currentInfo.classList.replace("visi-zero", "visi-one");
 
-        currentInfo.innerHTML =
-          'Vous avez libéré  <span class="text-capitalize info-margin">' +
-          pokemon.name +
-          "</span>" +
-          (pokemon.shiny ? " Shiny" : "") +
-          " (" +
-          pokemon.rarity +
-          ") ! " +
-          (pokemon.new ? "" : "+" + money);
+        currentInfo.innerHTML = `
+        Vous avez libéré <span class="text-capitalize info-margin">${pokemon.name}</span>
+        ${pokemon.shiny ? " Shiny" : ""}
+        ${pokemon.new ? "" : ` ${pokemon.times_captured} fois !`}
+        (${pokemon.rarity}) !
+        ${!pokemon.new ? `<br>+${money}${pokemon.multiplyMoney > 0 ? ` (+ ${pokemon.multiplyMoney} bonus)` : ""}` : ""}
+      `;
 
         if (pokemonIsCaptured) {
           pokemonImage.src = pokemonGif;

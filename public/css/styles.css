@@ -1004,33 +1004,24 @@ footer {
   width: 100%;
 }
 
-.stats-list {
-  width: 35%;
-  height: 100%;
-}
-
-.span-rarity {
-  font-weight: bold;
-  z-index: 1;
-  font-size: 2.5rem;
-  -webkit-text-stroke: 0.1px black;
-  margin-top: -25px;
-}
-
-.div-TR span {
+.tr-TR {
   color: #f4ba28;
 }
 
-.div-EX span {
+.tr-EX {
   color: #cd00e2;
 }
 
-.div-SR span {
+.tr-SR {
   color: #f01923;
 }
 
-.div-UR span {
+.tr-UR {
   color: #4439cd;
+}
+
+.tr-shiny{
+  color: #41BAFD;
 }
 
 .stats {
@@ -2516,7 +2507,7 @@ tfoot tr td {
   transform: translate(-45%, -50%) scale(1.8);
 }
 
-.pokedex-descritpion {
+.pokedex-description {
   background-color: orange;
   padding: 10px;
   position: absolute;
