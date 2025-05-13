@@ -84,7 +84,7 @@ class CapturedPokemonRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-    
+
     /**
      * @param  User $user
      * @param  Pokemon[] $pokemons
@@ -108,7 +108,7 @@ class CapturedPokemonRepository extends ServiceEntityRepository
 
         return array_column($result, 'pokeId');
     }
-    
+
     /**
      * @param  User $user
      * @param  Pokemon[] $pokemons
@@ -147,5 +147,41 @@ class CapturedPokemonRepository extends ServiceEntityRepository
             ])
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function countUserCapturedPokemon(User $user): array
+    {
+        return $this->createQueryBuilder('cp')
+            ->select('p.rarity AS rarity,
+             COUNT(DISTINCT cp.id) AS total_unique,
+              SUM(cp.timesCaptured) AS total_captured')
+            ->innerJoin('cp.pokemon', 'p')
+            ->where('cp.owner = :user')
+            ->groupBy('p.rarity')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function countUserShinies(User $user): array
+    {
+        return $this->createQueryBuilder('cp')
+            ->select('COUNT(DISTINCT cp.id) AS total_unique, SUM(cp.timesCaptured) AS total_captured')
+            ->where('cp.owner = :user')
+            ->andWhere('cp.shiny = true')
+            ->setParameter(':user', $user)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function countDistinctUserCapturedPokemon(User $user): int
+    {
+        return $this->createQueryBuilder('cp')
+            ->select('COUNT(DISTINCT p.pokeId)')
+            ->innerJoin('cp.pokemon', 'p')
+            ->where('cp.owner = :user')
+            ->setParameter(':user', $user)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 }

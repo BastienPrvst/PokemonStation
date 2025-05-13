@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\CapturedPokemon;
 use App\Entity\User;
 use App\Form\EditModifyProfilFormType;
 use App\Repository\PokemonRepository;
@@ -36,13 +37,12 @@ class UserController extends AbstractController
             $this->entityManager->flush();
         }
 
-        $allGens = $this->pokemonRepository->getAllGenDex($user);
-
         return $this->render(
             'main/profile.html.twig',
-            [...$this->prepareUserInfo($user),
-                ...['avatars' => $allAvatars,
-                'allGens' => $allGens]],
+            array_merge(
+                $this->prepareUserInfo($user),
+                ['avatars' => $allAvatars]
+            )
         );
     }
 
@@ -104,23 +104,41 @@ class UserController extends AbstractController
 
         return $this->render(
             'main/show_profile.html.twig',
-            [...$this->prepareUserInfo($user),
-                    'allGens' => $allGens],
+            [...$this->prepareUserInfo($user)]
         );
     }
 
     private function prepareUserInfo(User $user): array
     {
+
+        $rarityScale = [
+            'C' => 1,
+            'PC' => 2,
+            'R' => 3,
+            'TR' => 4,
+            'ME' => 5,
+            'GMAX' => 6,
+            'EX' => 7,
+            'UR' => 8
+        ];
+
+        $captureRepo = $this->entityManager->getRepository(CapturedPokemon::class);
+        $rarityArray = $captureRepo->countUserCapturedPokemon($user);
+        $shinyStats = $captureRepo->countUserShinies($user);
+        $allGens = $this->pokemonRepository->getAllGenDex($user);
+        $pokedexUser = $captureRepo->countDistinctUserCapturedPokemon($user);
+
+        usort($rarityArray, static function ($a, $b) use ($rarityScale) {
+            return $rarityScale[$a['rarity']] <=> $rarityScale[$b['rarity']];
+        });
+
         return [
-            'nbPokemon'          => $this->pokemonRepository->getCountEncounteredBy($user),
-            'nbPokemonUnique'    => $this->pokemonRepository->getCountUniqueEncounteredBy($user),
-            'nbShiny'            => $this->pokemonRepository->getCountShiniesEncounteredBy($user),
-            'nbTR'               => $this->pokemonRepository->getCountByRarityEncounteredBy($user, 'TR'),
-            'nbEX'               => $this->pokemonRepository->getCountByRarityEncounteredBy($user, 'EX'),
-            'nbSR'               => $this->pokemonRepository->getCountByRarityEncounteredBy($user, 'SR'),
-            'nbUR'               => $this->pokemonRepository->getCountByRarityEncounteredBy($user, 'UR'),
-            'pokedexSize'        => $this->pokemonRepository->getFullPokedexSize(),
-            'user'               => $user,
+            'pokedexSize' => $this->pokemonRepository->getFullPokedexSize(),
+            'pokedexUser' => $pokedexUser,
+            'user' => $user,
+            'rarityStats' => $rarityArray,
+            'shinyStats' => $shinyStats,
+            'allGens' => $allGens,
         ];
     }
 
