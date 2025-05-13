@@ -1652,10 +1652,6 @@ i.fa-chevron-right {
   text-align: center;
   border-radius: 7px;
   border: solid #de0c30;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
 }
 
 .info-margin {
