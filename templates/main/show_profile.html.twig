@@ -18,22 +18,22 @@
                         <div class="card-id-name">
                             <div class="light-blue">
                                 <span>N° ID</span>
-                                <span>{{ user.id }}</span>
+                                <span>{{ app.user.id }}</span>
                             </div>
                             <div class="light-blue">
                                 <span>NOM</span>
-                                <span>{{ user.pseudonym }}</span>
+                                <span>{{ app.user.pseudonym }}</span>
                             </div>
                         </div>
 
                         <div class="card-money light-blue">
                             <span>ARGENT</span>
-                            <span class="d-flex align-items-center">{{user.money }} <img class="coin-width-3" src="{{ asset('medias/images/elements/coin-resized.png') }}" alt=""></span>
+                            <span class="d-flex align-items-center">{{ app.user.money }} <img class="coin-width-3" src="{{ asset('medias/images/elements/coin-resized.png') }}" alt=""></span>
                         </div>
 
                         <div class="card-dex light-blue">
                             <span>POKEDEX</span>
-                            <span>{{ nbPokemonUnique }}</span>
+                            <span>{{ pokedexUser }}</span>
                         </div>
 
                         <div class="card-certif light-blue">
@@ -43,8 +43,10 @@
                     </div>
                     <div class="card-avatar">
                         <div class="card-image light-blue">
-                            <img src="{{ asset('medias/images/trainers/' ~ user.avatar ~'.gif') }}" class="skibibop" alt="Avatar de profil de l'utilisateur">
+                            <img src="{{ asset('medias/images/trainers/' ~ app.user.avatar ~'.gif') }}" class="skibibop" alt="Avatar de profil de l'utilisateur">
                         </div>
+                        <p id="myBtn" class="modify-avatar">Modifier <img  src="{{ asset('medias/images/elements/edit.png') }}" alt="Modifier mon avatar"></p>
+
                     </div>
 
                 </div>
@@ -53,12 +55,12 @@
 
                     <div class="card-time-play light-blue">
                         <span>DEBUT DE L'AVENTURE</span>
-                        <span>{{ user.creationDate|format_datetime(locale='fr', pattern="dd MMM YYYY") }}</span>
+                        <span>{{ app.user.creationDate|date('d M. Y', 'Europe/Paris') }}</span>
                     </div>
 
                     <div class="card-friends light-blue">
                         <span>NOMBRE D'AMIS</span>
-                        <span>{{ user.friendships|length }}</span>
+                        <span>{{ app.user.friendships|length }}</span>
                     </div>
                 </div>
             </div>
@@ -69,32 +71,43 @@
                 <h3 class="back-card-title">Statistiques</h3>
                 <div class="back-card-container">
 
-                    <div class="stats-list" id="utilisateur">
+                    <div class="back-card-1">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Uniq</th>
+                                <th scope="col">Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
 
-                        <div class="stats-list-item freed-poke light-red mt-0">Pokémons libérés :
-                            <span>{{ user.launchCount }}</span>
+                            {% for stat in rarityStats %}
+
+                                <tr class="tr-{{ stat.rarity }}">
+                                    <td>{{ stat.rarity }}</td>
+                                    <td>{{ stat.total_unique }}</td>
+                                    <td>{{ stat.total_captured }}</td>
+                                </tr>
+
+                            {% endfor %}
+
+
+                            <tr class="tr-shiny">
+                                <td>Shiny</td>
+                                <td>{{ shinyStats[0].total_unique }}</td>
+                                <td>{{ shinyStats[0].total_captured }}</td>
+                            </tr>
+
+
+                            </tbody>
+
+                        </table>
+
+
+                        <div class="total-stats">
+                            Pokédex Total : {{ pokedexUser }} / {{ pokedexSize }}
                         </div>
-
-                        <div class="stats">
-
-                            <div class="stats-list-item div-TR light-red"><img src="{{ asset('medias/images/elements/tr.png') }}" alt="">
-                                <span class="span-rarity">{{ nbTR }}</span>
-                            </div>
-                            <div class="stats-list-item div-EX light-red"><img src="{{ asset('medias/images/elements/EX.png') }}" alt="">
-                                <span class="span-rarity">{{ nbEX }}</span>
-                            </div>
-                            <div class="stats-list-item div-SR light-red"><img src="{{ asset('medias/images/elements/SR.png') }}" alt="">
-                                <span class="span-rarity">{{ nbSR }}</span>
-                            </div>
-                            <div class="stats-list-item div-UR light-red"><img src="{{ asset('medias/images/elements/UR.png') }}" alt="">
-                                <span class="span-rarity">{{ nbUR }}</span>
-                            </div>
-
-                        </div>
-                        <div class="stats-list-item shiny-obtained light-red">Shiny obtenus :
-                            <span>{{ nbShiny }}</span>
-                        </div>
-                        <div class="stats-list-item pokedex-accomplished light-red">Pokédex total {{ nbPokemonUnique }}/{{ pokedexSize }}</div>
                     </div>
 
                     <div class="gen-stats">
@@ -121,6 +134,9 @@
                     </div>
                 </div>
             </div>
+
+
+
 
         </div>
     </section>

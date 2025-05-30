@@ -119,7 +119,8 @@ class UserController extends AbstractController
             'ME' => 5,
             'GMAX' => 6,
             'EX' => 7,
-            'UR' => 8
+            'SR' => 8,
+            'UR' => 9
         ];
 
         $captureRepo = $this->entityManager->getRepository(CapturedPokemon::class);
