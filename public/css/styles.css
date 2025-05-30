@@ -968,7 +968,6 @@ footer {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  height: 100%;
 }
 
 .back-card-title {
@@ -998,10 +997,35 @@ footer {
   z-index: 0;
 }
 
-.light-red img {
-  opacity: 1;
-  position: relative;
+.stats-table{
   width: 100%;
+  text-align: center;
+}
+
+/* Images dans la première colonne */
+.stats-img {
+  max-width: 32px;
+  vertical-align: middle;
+}
+
+.tr-stats,
+.tr-shiny{
+  line-height: 90%;
+}
+
+.back-card-1{
+  background-color: rgba(224, 65, 66, 0.7);
+  padding: 10px;
+  height: auto;
+  border-radius: 15px;
+}
+
+table:has(.tr-stats){
+  text-align: center;
+}
+
+.stats-table thead tr th {
+  margin-right: 20px;
 }
 
 .tr-TR {
