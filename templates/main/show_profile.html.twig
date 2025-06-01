@@ -72,7 +72,7 @@
                 <div class="back-card-container">
 
                     <div class="back-card-1">
-                        <table>
+                        <table class="stats-table">
                             <thead>
                             <tr>
                                 <th scope="col"></th>
@@ -82,10 +82,18 @@
                             </thead>
                             <tbody>
 
+                            {% set rs = ['TR', 'EX', 'UR', 'SR'] %}
+
                             {% for stat in rarityStats %}
 
-                                <tr class="tr-{{ stat.rarity }}">
-                                    <td>{{ stat.rarity }}</td>
+                                <tr class="tr-{{ stat.rarity }} tr-stats">
+
+                                    {% if stat.rarity in rs %}
+                                        <td><img class="stats-img" src="{{ asset('medias/images/elements/' ~ stat.rarity ~ '.png') }}" alt="{{ stat.rarity }}">
+                                        </td>
+                                    {% else %}
+                                        <td>{{ stat.rarity }}</td>
+                                    {% endif %}
                                     <td>{{ stat.total_unique }}</td>
                                     <td>{{ stat.total_captured }}</td>
                                 </tr>
@@ -134,8 +142,6 @@
                     </div>
                 </div>
             </div>
-
-
 
 
         </div>

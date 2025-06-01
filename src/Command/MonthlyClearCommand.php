@@ -31,19 +31,19 @@ class MonthlyClearCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $date = new \DateTime('', new \DateTimeZone('Europe/Paris'));
-        $year = (int)$date->format('Y');
-        $month = (int)$date->format('m');
+        $startOfMonth = (clone $date)->modify('first day of this month')->setTime(0, 0, 0);
+        $endOfMonth = (clone $date)->modify('last day of this month')->setTime(23, 59, 59);
 
         try {
             //Partie CP
 
             $query = $this->capturedPokemonRepository->createQueryBuilder('cp')
                 ->delete()
-                ->where('NOT (MONTH(cp.capture_date) = :month AND YEAR(cp.capture_date) = :year)')
-                ->andWhere('cp.times_captured < 0')
+                ->where('cp.captureDate NOT BETWEEN :start AND :end')
+                ->andWhere('cp.timesCaptured < 0')
                 ->setParameters([
-                    'month' => $month,
-                    'year' => $year,
+                    'start' => $startOfMonth,
+                    'end' => $endOfMonth,
                 ])
                 ->getQuery();
 

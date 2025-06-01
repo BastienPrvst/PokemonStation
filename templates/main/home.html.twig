@@ -116,6 +116,12 @@
 										<td class="empty-td text-center">{{ userData.rank }}</td>
 										<td class="text-center">
 											<a href="{{ path('app_user_showprofile', { pseudonym : userData.user.pseudonym }) }}">{{ userData.user.pseudonym }}</a>
+												{% if "SHINY_WINNER" in userData.user.roles %}
+													<img class="top-badge" src="{{ asset('medias/images/items/key-stone.png') }}" alt="Vainqueur du mois pour les Shinys" title="Vainqueur du mois pour les Shinys">
+												{% endif %}
+												{% if "POINT_WINNER" in userData.user.roles %}
+													<img class="top-badge" src="{{ asset('medias/images/items/dragon-gem.png') }}" alt="Vainqueur du mois pour les points" title="Vainqueur du mois pour les points">
+												{% endif %}
 										</td>
 										<td class="text-center">{{ userData.total_species_seen }}/{{ pokedexSize }}</td>
 										<td class="text-center">{{ userData.launch_count }}</td>
@@ -148,6 +154,12 @@
 										<td class="empty-td text-center">{{ top.rank }}</td>
 										<td class="text-center">
 											<a href="{{ path('app_user_showprofile', { pseudonym : top.user.pseudonym }) }}">{{ top.user.pseudonym }}</a>
+												{% if "SHINY_WINNER" in top.user.roles %}
+													<img class="top-badge" src="{{ asset('medias/images/items/key-stone.png') }}" alt="Vainqueur du mois pour les Shinys" title="Vainqueur du mois pour les Shinys">
+												{% endif %}
+												{% if "POINT_WINNER" in top.user.roles %}
+													<img class="top-badge" src="{{ asset('medias/images/items/dragon-gem.png') }}" alt="Vainqueur du mois pour les points" title="Vainqueur du mois pour les points">
+												{% endif %}
 										</td>
 										<td class="text-center">{{ top.total_points }}</td>
 									</tr>
@@ -178,6 +190,12 @@
 										<td class="empty-td text-center">{{ top.rank }}</td>
 										<td class="text-center">
 											<a href="{{ path('app_user_showprofile', { pseudonym : top.user.pseudonym }) }}">{{ top.user.pseudonym }}</a>
+											{% if "SHINY_WINNER" in top.user.roles %}
+												<img class="top-badge" src="{{ asset('medias/images/items/key-stone.png') }}" alt="Vainqueur du mois pour les Shinys" title="Vainqueur du mois pour les Shinys">
+											{% endif %}
+											{% if "POINT_WINNER" in top.user.roles %}
+												<img class="top-badge" src="{{ asset('medias/images/items/dragon-gem.png') }}" alt="Vainqueur du mois pour les points" title="Vainqueur du mois pour les points">
+											{% endif %}
 										</td>
 										<td class="text-center">{{ top.monthly_shinies }}</td>
 									</tr>
