@@ -8,7 +8,6 @@ use App\Entity\Items;
 use App\Entity\User;
 use App\Repository\GenerationRepository;
 use App\Repository\UserRepository;
-use App\Service\CapturedPokemonService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -24,7 +23,6 @@ class PokemonController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly CapturedPokemonService $capturedPokemonService,
     ) {
     }
 

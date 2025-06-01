@@ -3601,3 +3601,7 @@ tfoot tr td {
 .maintenance {
   margin: 200px 0;
 }
+
+.top-badge{
+  width: 20px;
+}

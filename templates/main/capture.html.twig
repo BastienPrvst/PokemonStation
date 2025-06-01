@@ -108,6 +108,12 @@
                             <div class="mini-infos">
                                 <span class="poke-tronq">{{ pokemonCaptured.pokemon.name|capitalize }}</span> ~
                                 <a class="poke-tronq-2" href="{{ path('app_user_showprofile', {pseudonym:pokemonCaptured.owner.pseudonym})}}">{{ pokemonCaptured.owner.pseudonym | capitalize }}</a>
+                                {% if "SHINY_WINNER" in pokemonCaptured.owner.roles %}
+                                    <img class="top-badge" src="{{ asset('medias/images/items/key-stone.png') }}" alt="Vainqueur du mois pour les Shinys" title="Vainqueur du mois pour les Shinys">
+                                {% endif %}
+                                {% if "POINT_WINNER" in pokemonCaptured.owner.roles %}
+                                    <img class="top-badge" src="{{ asset('medias/images/items/dragon-gem.png') }}" alt="Vainqueur du mois pour les points" title="Vainqueur du mois pour les points">
+                                {% endif %}
                             </div>
 
                             <div class="mini-images">
@@ -138,6 +144,12 @@
                         <div class="mini-infos">
                                 <span class="poke-tronq">{{ pokemonCaptured.pokemon.name|capitalize }}</span> ~
                                 <a class="poke-tronq-2" href="{{ path('app_user_showprofile', {pseudonym:pokemonCaptured.owner.pseudonym})}}">{{ pokemonCaptured.owner.pseudonym | capitalize }}</a>
+                            {% if "SHINY_WINNER" in pokemonCaptured.owner.roles %}
+                                <img class="top-badge" src="{{ asset('medias/images/items/key-stone.png') }}" alt="Vainqueur du mois pour les Shinys" title="Vainqueur du mois pour les Shinys">
+                            {% endif %}
+                            {% if "POINT_WINNER" in pokemonCaptured.owner.roles %}
+                                <img class="top-badge" src="{{ asset('medias/images/items/dragon-gem.png') }}" alt="Vainqueur du mois pour les points" title="Vainqueur du mois pour les points">
+                            {% endif %}
                         </div>
 
                             <div class="mini-images">
