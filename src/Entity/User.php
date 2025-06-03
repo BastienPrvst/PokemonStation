@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'Cette adresse email est déjà utilisée !')]
@@ -30,7 +31,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
     #[ORM\Column(length: 20, unique: true)]
+    #[Assert\Regex(
+        pattern: '/[\x{1F1E6}-\x{1F1FF}|\x{1F300}-\x{1F5FF}|\x{1F600}-\x{1F64F}|\x{1F680}-\x{1F6FF}|\x{2600}-\x{26FF}|\x{2700}-\x{27BF}]/u',
+        message: "Les emojis ne sont pas autorisés, dommage :)",
+        match: false
+    )]
     private ?string $pseudonym = null;
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $creationDate = null;
