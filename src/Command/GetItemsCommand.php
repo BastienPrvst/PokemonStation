@@ -145,11 +145,11 @@ class GetItemsCommand extends Command
             'C' => 40,
             'PC' => 30,
             'R' => 20,
-            'TR' => 8,
+            'TR' => 7,
             'ME' => 1,
-            'GMAX' => 0.4,
+            'GMAX' => 1,
+            'SR' => 0.7,
             'EX' => 0.3,
-            'SR' => 0.2,
             'UR' => 0.1,
 
         ];
