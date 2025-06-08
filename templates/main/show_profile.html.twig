@@ -18,17 +18,17 @@
                         <div class="card-id-name">
                             <div class="light-blue">
                                 <span>N° ID</span>
-                                <span>{{ app.user.id }}</span>
+                                <span>{{ user.id }}</span>
                             </div>
                             <div class="light-blue">
                                 <span>NOM</span>
-                                <span>{{ app.user.pseudonym }}</span>
+                                <span>{{ user.pseudonym }}</span>
                             </div>
                         </div>
 
                         <div class="card-money light-blue">
                             <span>ARGENT</span>
-                            <span class="d-flex align-items-center">{{ app.user.money }} <img class="coin-width-3" src="{{ asset('medias/images/elements/coin-resized.png') }}" alt=""></span>
+                            <span class="d-flex align-items-center">{{ user.money }} <img class="coin-width-3" src="{{ asset('medias/images/elements/coin-resized.png') }}" alt=""></span>
                         </div>
 
                         <div class="card-dex light-blue">
@@ -43,7 +43,7 @@
                     </div>
                     <div class="card-avatar">
                         <div class="card-image light-blue">
-                            <img src="{{ asset('medias/images/trainers/' ~ app.user.avatar ~'.gif') }}" class="skibibop" alt="Avatar de profil de l'utilisateur">
+                            <img src="{{ asset('medias/images/trainers/' ~ user.avatar ~'.gif') }}" class="skibibop" alt="Avatar de profil de l'utilisateur">
                         </div>
                         <p id="myBtn" class="modify-avatar">Modifier <img  src="{{ asset('medias/images/elements/edit.png') }}" alt="Modifier mon avatar"></p>
 
@@ -55,12 +55,12 @@
 
                     <div class="card-time-play light-blue">
                         <span>DEBUT DE L'AVENTURE</span>
-                        <span>{{ app.user.creationDate|date('d M. Y', 'Europe/Paris') }}</span>
+                        <span>{{ user.creationDate|date('d M. Y', 'Europe/Paris') }}</span>
                     </div>
 
                     <div class="card-friends light-blue">
                         <span>NOMBRE D'AMIS</span>
-                        <span>{{ app.user.friendships|length }}</span>
+                        <span>{{ user.friendships|length }}</span>
                     </div>
                 </div>
             </div>
