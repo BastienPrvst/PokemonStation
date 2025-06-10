@@ -26,6 +26,7 @@
         "symfony/framework-bundle": "^7.2",
         "symfony/http-client": "^7.2",
         "symfony/intl": "^7.2",
+        "symfony/lock": "^7.3",
         "symfony/mailer": "^7.2",
         "symfony/mime": "^7.2",
         "symfony/monolog-bundle": "*",
@@ -90,13 +91,16 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^4.1",
+        "fakerphp/faker": "^1.24",
         "phpunit/phpunit": "^9.5",
+        "roave/security-advisories": "dev-latest",
         "symfony/browser-kit": "^7.2",
         "symfony/css-selector": "^7.2",
         "symfony/debug-bundle": "^7.2",
-        "symfony/maker-bundle": "^1.0",
+        "symfony/maker-bundle": "^1.63",
         "symfony/phpunit-bridge": "^7.2",
         "symfony/stopwatch": "^7.2",
-        "symfony/web-profiler-bundle": "^7.2"
+        "symfony/web-profiler-bundle": "^7.2",
+        "zenstruck/foundry": "^2.4"
     }
 }

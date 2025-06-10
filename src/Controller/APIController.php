@@ -14,8 +14,10 @@ use App\Service\PokemonOddsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Random\RandomException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -33,12 +35,30 @@ class APIController extends AbstractController
      */
     #[Route('/capture-api', name: 'app_capture_api')]
     #[IsGranted('ROLE_USER')]
-    public function captureApi(Request $request): Response
+    public function captureApi(Request $request, LockFactory $lockFactory): Response
     {
-        $pokeballId = $request->get('pokeballData');
         /** @var User $user * */
         $user = $this->getUser();
-        return $this->pokemonOdds->calculationOdds($user, $pokeballId);
+        $userId = $user->getId();
+        $lock = $lockFactory->createLock('user_liberation_' . $userId, 3);
+
+        if (!$lock->acquire()) {
+            return new JsonResponse([
+                'error' => 'Action déjà en cours sur un autre appareil',
+            ], Response::HTTP_FORBIDDEN, [], false);
+        }
+
+        try {
+            $pokeballId = $request->get('pokeballData');
+            if (empty($pokeballId)) {
+                return new JsonResponse([
+                    'error' => 'Identifiant de Pokéball manquant.',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+            return $this->pokemonOdds->calculationOdds($user, $pokeballId);
+        } finally {
+            $lock->release();
+        }
     }
 
     #[Route('/pokedex-api/{pokeId}', name: 'app_pokedex_api')]
@@ -102,65 +122,76 @@ class APIController extends AbstractController
 
     #[Route('/capture-shop-api/', name: 'app_shop_api')]
     #[IsGranted('ROLE_USER')]
-    public function shop(Request $request): Response
+    public function shop(Request $request, LockFactory $lockFactory): Response
     {
-
-        $itemRepo = $this->entityManager->getRepository(Items::class);
         /** @var User $user */
         $user = $this->getUser();
-        $content = $request->getContent();
-        $data = json_decode($content, true);
-        $totalPrice = 0;
-        $foundArray = [];
-        foreach ($data['globalArray'] as $cartItem) {
-            $foundItem = $itemRepo->find($cartItem['id']);
-            $quantity = $cartItem['quantity'];
-            $foundArray[] = ['item' => $foundItem, 'quantity' => $quantity];
-            if ($foundItem !== null && $foundItem->isActive() === true) {
-                $price = $foundItem->getPrice();
-                $totalPrice += $price * $quantity;
-            } else {
+        $lock = $lockFactory->createLock('user_buy_' . $user->getId());
+
+        if (!$lock->acquire()) {
+            return new JsonResponse([
+                'error' => 'Action déjà en cours sur un autre appareil',
+            ], Response::HTTP_FORBIDDEN, [], false);
+        }
+
+        try {
+            $itemRepo = $this->entityManager->getRepository(Items::class);
+            $content = $request->getContent();
+            $data = json_decode($content, true);
+            $totalPrice = 0;
+            $foundArray = [];
+            foreach ($data['globalArray'] as $cartItem) {
+                $foundItem = $itemRepo->find($cartItem['id']);
+                $quantity = $cartItem['quantity'];
+                $foundArray[] = ['item' => $foundItem, 'quantity' => $quantity];
+                if ($foundItem !== null && $foundItem->isActive() === true) {
+                    $price = $foundItem->getPrice();
+                    $totalPrice += $price * $quantity;
+                } else {
+                    return $this->json([
+                        'error' => 'Une erreur s\'est produite, veuillez réessayer plus tard.'
+                    ]);
+                }
+            }
+
+            $userWallet = $user->getMoney();
+            if ($userWallet < $totalPrice) {
                 return $this->json([
-                    'error' => 'Une erreur s\'est produite, veuillez réessayer plus tard.'
+                    'error' => 'Vous n\'avez pas assez d\'argent pour acheter ces objets.',
                 ]);
             }
-        }
 
-        $userWallet = $user->getMoney();
-        if ($userWallet < $totalPrice) {
-            return $this->json([
-                'error' => 'Vous n\'avez pas assez d\'argent pour acheter ces objets.',
-            ]);
-        }
+            foreach ($foundArray as $itemInfo) {
+                $userItemRepo = $this->entityManager->getRepository(UserItems::class);
+                $item = $itemInfo['item'];
+                $alreadyExist = $userItemRepo->findOneBy(['item' => $item->getId(), 'user' => $user->getId()]);
 
-        foreach ($foundArray as $itemInfo) {
-            $userItemRepo = $this->entityManager->getRepository(UserItems::class);
-            $item = $itemInfo['item'];
-            $alreadyExist = $userItemRepo->findOneBy(['item' => $item->getId(), 'user' => $user->getId()]);
-
-            if ($alreadyExist === null) {
-                $userItem = new UserItems();
-                $userItem->setItem($item);
-                $userItem->setUser($user);
-                $userItem->setQuantity($itemInfo['quantity']);
-                $user->addUserItem($userItem);
-                $this->entityManager->persist($userItem);
-            } else {
-                /* @var $alreadyExist UserItems */
-                $alreadyExist->setQuantity($alreadyExist->getQuantity() + $itemInfo['quantity']);
-                $this->entityManager->persist($alreadyExist);
+                if ($alreadyExist === null) {
+                    $userItem = new UserItems();
+                    $userItem->setItem($item);
+                    $userItem->setUser($user);
+                    $userItem->setQuantity($itemInfo['quantity']);
+                    $user->addUserItem($userItem);
+                    $this->entityManager->persist($userItem);
+                } else {
+                    /* @var $alreadyExist UserItems */
+                    $alreadyExist->setQuantity($alreadyExist->getQuantity() + $itemInfo['quantity']);
+                    $this->entityManager->persist($alreadyExist);
+                }
             }
+
+            $user->setMoney($user->getMoney() - $totalPrice);
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+
+            return $this->json([
+                'success' => 'Votre achat a bien été effectué!',
+                'kartPrice' => $totalPrice,
+                'array' => $foundArray
+            ]);
+        } finally {
+            $lock->release();
         }
-
-        $user->setMoney($user->getMoney() - $totalPrice);
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
-
-        return $this->json([
-            'success' => 'Votre achat a bien été effectué!',
-            'kartPrice' => $totalPrice,
-            'array' => $foundArray
-        ]);
     }
 
     #[Route('/mon-profil-api', name: 'app_profil_api')]
@@ -182,5 +213,4 @@ class APIController extends AbstractController
             'success' => 'Votre avatar a bien été changé !',
         ]);
     }
-
 }
