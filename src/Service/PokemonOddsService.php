@@ -50,19 +50,16 @@ class PokemonOddsService extends AbstractController
                     'error' => 'Vous n\'avez plus de lancers disponibles, veuillez réessayer plus tard !'
                 ]);
             }
-            $isShiny = $this->isItShiny();
-            $rarity = $this->getRarity();
             $user->setLaunchs($user->getLaunchs() - 1);//On retire un lancer à l'utilisateur
+            $this->entityManager->flush();
+            $isShiny = $this->isItShiny();
 
-            /* @var $pokemons Pokemon */
-            $pokemons = $this->pokemonRepository->findByRarity($rarity[0]);
-            if ($pokemons === null) {
-                do {
-                    $rarity = $this->getRarity();
-                    $pokemons = $this->pokemonRepository->findByRarity($rarity[0]);
-                } while (empty($pokemons));
-            }
-            $randomPoke = random_int(0, count($pokemons) - 1);
+            do {
+                $rarity = $this->getRarity();
+                $pokemons = $this->pokemonRepository->findByRarity($rarity[0]);
+            } while (empty($pokemons));
+
+            $randomPoke = array_rand($pokemons);
             $pokemonSpeciesCaptured = $pokemons[$randomPoke];
             $capturedPokemon = new CapturedPokemon();
             $capturedPokemon
@@ -96,28 +93,13 @@ class PokemonOddsService extends AbstractController
             $customRarity = $stats['rarity'];
             $customType = $stats['type'];
 
-            $rarity = $this->getRarity($customRarity);
-            $type = $this->getCustomType($customType);
+            do {
+                $rarity = $this->getRarity($customRarity);
+                $type = $this->getCustomType($customType);
+                $pokemonsFound = $this->pokemonRepository->findByRarityAndType($rarity[0], $type);
+            } while (empty($pokemonsFound));
 
-            $pokemonsFound = $this->pokemonRepository->findByRarityAndType($rarity[0], $type);
-            $i = 0;
-
-            if (empty($pokemonsFound)) {
-                do {
-                    $rarity = $this->getRarity($customRarity);
-                    $type = $this->getCustomType($customType);
-                    $pokemonsFound = $this->pokemonRepository->findByRarityAndType($rarity[0], $type);
-                    $i++;
-                } while (empty($pokemonsFound) && $i < 10);
-            }
-
-            if (empty($pokemonsFound)) {
-                return $this->json([
-                    'error' => 'Aucun pokémon trouvé..., votre lancer n\'a pas été décompté.'
-                ]);
-            }
-
-            $randomPoke = random_int(0, count($pokemonsFound) - 1);
+            $randomPoke = array_rand($pokemonsFound);
             $pokemonSpeciesCaptured = $pokemonsFound[$randomPoke];
 
             /* @var $userItem UserItems */

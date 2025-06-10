@@ -37,7 +37,7 @@ document
         let currentInfo = document.querySelector(".pokemon-captured-infos");
         if (currentInfo.classList.contains(".visi-one")) {
           currentInfo.innerHTML = "";
-          currentInfo.classList.add(".visi-zeri");
+          currentInfo.classList.add(".visi-zero");
         }
 
         let currentNew = document.querySelector(".logo-new");

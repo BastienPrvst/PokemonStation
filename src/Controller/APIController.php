@@ -14,8 +14,10 @@ use App\Service\PokemonOddsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Random\RandomException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -33,12 +35,28 @@ class APIController extends AbstractController
      */
     #[Route('/capture-api', name: 'app_capture_api')]
     #[IsGranted('ROLE_USER')]
-    public function captureApi(Request $request): Response
+    public function captureApi(Request $request, LockFactory $lockFactory): Response
     {
-        $pokeballId = $request->get('pokeballData');
         /** @var User $user * */
         $user = $this->getUser();
-        return $this->pokemonOdds->calculationOdds($user, $pokeballId);
+        $userId = $user->getId();
+        $lock = $lockFactory->createLock('user_liberation_' . $userId, 3);
+
+        if (!$lock->acquire()) {
+            return new JsonResponse([
+                'error' => 'Action déjà en cours sur un autre appareil',
+            ], Response::HTTP_FORBIDDEN, [], false);
+        }
+
+        $pokeballId = $request->get('pokeballData');
+        if (empty($pokeballId)) {
+            return new JsonResponse([
+                'error' => 'Identifiant de Pokéball manquant.',
+            ], Response::HTTP_BAD_REQUEST);
+        }
+        $pokemon = $this->pokemonOdds->calculationOdds($user, $pokeballId);
+        $lock->release();
+        return $pokemon;
     }
 
     #[Route('/pokedex-api/{pokeId}', name: 'app_pokedex_api')]
@@ -102,12 +120,20 @@ class APIController extends AbstractController
 
     #[Route('/capture-shop-api/', name: 'app_shop_api')]
     #[IsGranted('ROLE_USER')]
-    public function shop(Request $request): Response
+    public function shop(Request $request, LockFactory $lockFactory): Response
     {
-
-        $itemRepo = $this->entityManager->getRepository(Items::class);
         /** @var User $user */
         $user = $this->getUser();
+        $lock = $lockFactory->createLock('user_buy_' . $user->getId());
+
+        if (!$lock->acquire()) {
+            return new JsonResponse([
+                'error' => 'Action déjà en cours sur un autre appareil',
+            ], Response::HTTP_FORBIDDEN, [], false);
+        }
+
+
+        $itemRepo = $this->entityManager->getRepository(Items::class);
         $content = $request->getContent();
         $data = json_decode($content, true);
         $totalPrice = 0;
@@ -156,6 +182,8 @@ class APIController extends AbstractController
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
+        $lock->release();
+
         return $this->json([
             'success' => 'Votre achat a bien été effectué!',
             'kartPrice' => $totalPrice,
@@ -182,5 +210,4 @@ class APIController extends AbstractController
             'success' => 'Votre avatar a bien été changé !',
         ]);
     }
-
 }
