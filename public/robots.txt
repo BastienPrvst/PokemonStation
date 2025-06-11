@@ -1,0 +1,18 @@
+User-agent: *
+
+# Zones d'administration et personnelles
+Disallow: /admin/
+Disallow: /mon-profil*
+Disallow: /mon-profil-api
+Disallow: /capture
+Disallow: /pokedex
+
+# Endpoints API techniques
+Disallow: /capture-api/
+Disallow: /pokedex-api/
+Disallow: /generation-api/
+Disallow: /search-api
+Disallow: /capture-shop-api
+
+# Sitemap
+Sitemap: https://pokemon-station.fr/sitemap.xml
