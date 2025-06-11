@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil
+{% block title %}Pokemon-Station Accueil
 {% endblock %}
 
 {% block body %}
@@ -12,16 +12,16 @@
 	<h2 class="accueil">Bienvenue dresseur!</h2>
 
 	<section class="concept d-flex flex-column flex-lg-row align-items-center">
-		<img class="poke-bg" src="{{ asset('medias/images/background/pokeball-bg.png') }}" alt="Fond pokeball">
+		<img class="poke-bg" src="{{ asset('medias/images/background/pokeball-bg.png') }}" alt="Fond pokeball Pokemon-Station">
 		<div class="home-image-div">
-			<img src="{{ asset('medias/images/poke-perso/025.gif') }}" alt="Gif de Pikachu" class="pika-home">
-			<img class="img-fluid chen" src="{{ asset('medias/images/elements/Professeur-Chen.png') }}" alt="Professeur Chen">
-			<img class="img-fluid chen-shadow" src="{{ asset('medias/images/background/Shadow.png') }}" alt="">
-			<img src="{{ asset('medias/images/poke-perso/017.gif') }}" alt="Gif de Roucoups" class="roucoups-home">
+			<img src="{{ asset('medias/images/poke-perso/025.gif') }}" alt="Gif de Pikachu Pokemon-Station" class="pika-home">
+			<img class="img-fluid chen" src="{{ asset('medias/images/elements/Professeur-Chen.png') }}" alt="Professeur Chen Pokemon-Station">
+			<img class="img-fluid chen-shadow" src="{{ asset('medias/images/background/Shadow.png') }}" alt="Ombre Pokemon-Station">
+			<img src="{{ asset('medias/images/poke-perso/017.gif') }}" alt="Gif de Roucoups Pokemon-Station" class="roucoups-home">
 		</div>
 
 		<div class="concept-div">
-			<p class="concept-text">PokemonStation est un projet personnel basé sur le "gacha" vous permettant de libérer des Pokémons de manière aléatoire. Le but étant de remplir son pokédex ! Vous obtenez deux lancers par heures, avec un maximum de 100 cumulables en même temps.
+			<p class="concept-text">Pokemon-Station est un projet personnel basé sur le "gacha" vous permettant de libérer des Pokémons de manière aléatoire. Le but étant de remplir son pokédex ! Vous obtenez deux lancers par heures, avec un maximum de 100 cumulables en même temps.
 				<br>
 				Si vous obtenez des doublons, pas d'inquiétudes, vous recevrez des pièces vous permettant d'acheter de nouveaux lancers spéciaux.
 				<br>
@@ -31,21 +31,21 @@
 			<div class="etapes d-flex justify-content-center align-items-center">
 				<div class="home-1">
 					<p>Libérez !</p>
-					<img src="{{ asset('medias/images/balls/poke-ball.png') }}" alt="">
+					<img src="{{ asset('medias/images/balls/poke-ball.png') }}" alt="Libérez Pokemon-Station">
 				</div>
 
-				<img class="arrow-home" src="{{ asset('medias/images/elements/arrow.png') }}" alt="">
+				<img class="arrow-home" src="{{ asset('medias/images/elements/arrow.png') }}" alt="Flèche Pokemon-Station">
 
 				<div class="home-2">
 					<p>Achetez !</p>
-					<img src="{{ asset('medias/images/elements/coin-resized.png') }}" alt="">
+					<img src="{{ asset('medias/images/elements/coin-resized.png') }}" alt="Achetez Pokemon-Station">
 				</div>
 
-				<img class="arrow-home" src="{{ asset('medias/images/elements/arrow.png') }}" alt="">
+				<img class="arrow-home" src="{{ asset('medias/images/elements/arrow.png') }}" alt="Flèche Pokemon-Station">
 
 				<div class="home-3">
 					<p>Completez !</p>
-					<img src="{{ asset('medias/images/items/poke-radar.png') }}" alt="">
+					<img src="{{ asset('medias/images/items/poke-radar.png') }}" alt="Completez Pokemon-Station">
 				</div>
 			</div>
 		</div>
@@ -61,7 +61,7 @@
 					<div class="single-new">
 
 						<button class="read-button" data-read="{{ news.id }}">
-							<img src="{{ asset('medias/images/elements/unread.png') }}" alt="">
+							<img src="{{ asset('medias/images/elements/unread.png') }}" alt="Pokenews pas encore lue">
 						</button>
 
 						<div class="news-date">Le {{ news.creationDate|date('Y/m/d') }} à {{ news.creationDate|date('H:m') }}</div>
@@ -117,10 +117,10 @@
 										<td class="text-center">
 											<a href="{{ path('app_user_showprofile', { pseudonym : userData.user.pseudonym }) }}">{{ userData.user.pseudonym }}</a>
 												{% if "SHINY_WINNER" in userData.user.roles %}
-													<img class="top-badge" src="{{ asset('medias/images/items/key-stone.png') }}" alt="Vainqueur du mois pour les Shinys" title="Vainqueur du mois pour les Shinys">
+													<img class="top-badge" src="{{ asset('medias/images/items/key-stone.png') }}" alt="Vainqueur du mois pour les Shinys" title="Vainqueur du mois pour les Shinys Pokemon-Station">
 												{% endif %}
 												{% if "POINT_WINNER" in userData.user.roles %}
-													<img class="top-badge" src="{{ asset('medias/images/items/dragon-gem.png') }}" alt="Vainqueur du mois pour les points" title="Vainqueur du mois pour les points">
+													<img class="top-badge" src="{{ asset('medias/images/items/dragon-gem.png') }}" alt="Vainqueur du mois pour les points" title="Vainqueur du mois pour les points Pokemon-Station">
 												{% endif %}
 										</td>
 										<td class="text-center">{{ userData.total_species_seen }}/{{ pokedexSize }}</td>
@@ -155,10 +155,10 @@
 										<td class="text-center">
 											<a href="{{ path('app_user_showprofile', { pseudonym : top.user.pseudonym }) }}">{{ top.user.pseudonym }}</a>
 												{% if "SHINY_WINNER" in top.user.roles %}
-													<img class="top-badge" src="{{ asset('medias/images/items/key-stone.png') }}" alt="Vainqueur du mois pour les Shinys" title="Vainqueur du mois pour les Shinys">
+													<img class="top-badge" src="{{ asset('medias/images/items/key-stone.png') }}" alt="Vainqueur du mois pour les Shinys" title="Vainqueur du mois pour les Shinys Pokemon-Station">
 												{% endif %}
 												{% if "POINT_WINNER" in top.user.roles %}
-													<img class="top-badge" src="{{ asset('medias/images/items/dragon-gem.png') }}" alt="Vainqueur du mois pour les points" title="Vainqueur du mois pour les points">
+													<img class="top-badge" src="{{ asset('medias/images/items/dragon-gem.png') }}" alt="Vainqueur du mois pour les points" title="Vainqueur du mois pour les points Pokemon-Station">
 												{% endif %}
 										</td>
 										<td class="text-center">{{ top.total_points }}</td>
@@ -191,10 +191,10 @@
 										<td class="text-center">
 											<a href="{{ path('app_user_showprofile', { pseudonym : top.user.pseudonym }) }}">{{ top.user.pseudonym }}</a>
 											{% if "SHINY_WINNER" in top.user.roles %}
-												<img class="top-badge" src="{{ asset('medias/images/items/key-stone.png') }}" alt="Vainqueur du mois pour les Shinys" title="Vainqueur du mois pour les Shinys">
+												<img class="top-badge" src="{{ asset('medias/images/items/key-stone.png') }}" alt="Vainqueur du mois pour les Shinys" title="Vainqueur du mois pour les Shinys Pokemon-Station">
 											{% endif %}
 											{% if "POINT_WINNER" in top.user.roles %}
-												<img class="top-badge" src="{{ asset('medias/images/items/dragon-gem.png') }}" alt="Vainqueur du mois pour les points" title="Vainqueur du mois pour les points">
+												<img class="top-badge" src="{{ asset('medias/images/items/dragon-gem.png') }}" alt="Vainqueur du mois pour les points" title="Vainqueur du mois pour les points Pokemon-Station">
 											{% endif %}
 										</td>
 										<td class="text-center">{{ top.monthly_shinies }}</td>
