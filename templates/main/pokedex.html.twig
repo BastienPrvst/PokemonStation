@@ -20,7 +20,7 @@
 				<div>Pokédex :<span id="pokedexCounter"></span></div>
 				<div>
 					<span class="shinydex">ShinyDex :</span>
-					<span><span id="shinydexCounter"><img class="gen-shiny" src="{{ asset('medias/images/sparkle/shinyOK.png') }}" alt=""></span></span>
+					<span><span id="shinydexCounter"><img class="gen-shiny" src="{{ asset('medias/images/sparkle/shinyOK.png') }}" alt="Nombre de shiny Pokemon-Station"></span></span>
 				</div>
 			</div>
 
@@ -33,7 +33,7 @@
 				<div class="poke-li not-captured">???</div>
 			</template>
 			<template id="shinyImgTpl">
-				<img src="{{ asset('medias/images/sparkle/shinyOK.png') }}" alt="étoile brillante de pokemon chromatique">
+				<img src="{{ asset('medias/images/sparkle/shinyOK.png') }}" alt="Etoile brillante de pokemon shiny Pokemon-Station">
 			</template>
 			<div id="pokemonsContainer" class="pokedex-nav w-100"></div>
 		</div>
@@ -56,24 +56,24 @@
 				<div class="btn-dex-container volume-dex-container">
 					<div class="d-none english-name"></div>
 					<button class="btn-dex btn-volume volume">
-						<img class="active sound soundOn" src="{{ asset('medias/images/elements/volume.up.png') }}" alt="Activer le son">
-						<img class="type-none sound soundOff" src="{{ asset('medias/images/elements/volume.off.png') }}" alt="Désactiver le son">
+						<img class="active sound soundOn" src="{{ asset('medias/images/elements/volume.up.png') }}" alt="Activer le son Pokemon-Station">
+						<img class="type-none sound soundOff" src="{{ asset('medias/images/elements/volume.off.png') }}" alt="Désactiver le son Pokemon-Station">
 					</button>
 					<button id="btnCry" class="btn-dex btn-volume volume">
-						<img src="{{ asset('medias/images/elements/play-arrow.png') }}" alt="">
+						<img src="{{ asset('medias/images/elements/play-arrow.png') }}" alt="Jouer le son du Pokemon">
 					</button>
 				</div>
 				<div class="btn-dex-container shiny-dex-container">
 					<button class="btn-dex btn-shiny" id="shinyBtn">
-						<img src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt="">
+						<img src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt="Afficher le Pokemon shiny">
 					</button>
 				</div>
 
 				<div class="pokedex-types">
-					<a href="{{ path('app_types') }}" class="type-img-a"><img id="pokemonType" class="type-img type1 d-none" src="" data-src="{{ asset('medias/images/types/') }}" alt="Type"></a>
-					<a href="{{ path('app_types') }}" class="type-img-a"><img id="pokemonType2" class="type-img type2 d-none" src="" data-src="{{ asset('medias/images/types/') }}" alt="Type secondaire"></a>
+					<a href="{{ path('app_types') }}" class="type-img-a"><img id="pokemonType" class="type-img type1 d-none" src="" data-src="{{ asset('medias/images/types/') }}" alt="Type Pokemon-Station"></a>
+					<a href="{{ path('app_types') }}" class="type-img-a"><img id="pokemonType2" class="type-img type2 d-none" src="" data-src="{{ asset('medias/images/types/') }}" alt="Type secondaire Pokemon-Station"></a>
 				</div>
-				<div class="pokedex-image"><img id="pokemonGif" src="" data-src="{{ asset('medias/images/gifs/') }}" alt=""></div>
+				<div class="pokedex-image"><img id="pokemonGif" src="" data-src="{{ asset('medias/images/gifs/') }}" alt="Gif du Pokemon"></div>
 				<div class="pokedex-description">
 					<p id="pokemonDescription"></p>
 				</div>
@@ -102,7 +102,7 @@
 				</div>
 
 				<template id="pokedexAltCaptured">
-					<div class="alt"><img src="{{ asset('medias/images/gifs/pokemon.gif') }}" alt=""></div>
+					<div class="alt"><img src="{{ asset('medias/images/gifs/pokemon.gif') }}" alt="Autres formes du Pokemon"></div>
 				</template>
 				<template id="pokedexAltNotCaptured">
 					<div class="alt"><span>?</span></div>

@@ -41,9 +41,9 @@
 					</div>
 				<div class="card-avatar">
 					<div class="card-image light-blue">
-						<img src="{{ asset('medias/images/trainers/' ~ app.user.avatar ~'.gif') }}" class="skibibop" alt="Avatar de profil de l'utilisateur">
+						<img src="{{ asset('medias/images/trainers/' ~ app.user.avatar ~'.gif') }}" class="skibibop" alt="Avatar de profil de {{ app.user.pseudonym }}">
 					</div>
-					<p id="myBtn" class="modify-avatar">Modifier <img  src="{{ asset('medias/images/elements/edit.png') }}" alt="Modifier mon avatar"></p>
+					<p id="myBtn" class="modify-avatar">Modifier <img  src="{{ asset('medias/images/elements/edit.png') }}" alt="Modifier mon avatar Pokemon-Station"></p>
 
 				</div>
 
@@ -64,7 +64,7 @@
 			</div>
 
 			<div class="back-card">
-				<img class="card-bg-2" src="{{ asset('medias/images/elements/ball-icon.png') }}" alt="">
+				<img class="card-bg-2" src="{{ asset('medias/images/elements/ball-icon.png') }}" alt="Icone de ball Pokemon-Station">
 
 				<h3 class="back-card-title">Statistiques</h3>
 				<div class="back-card-container">
@@ -87,7 +87,7 @@
 								<tr class="tr-{{ stat.rarity }} tr-stats">
 
 									{% if stat.rarity in rs %}
-										<td><img class="stats-img" src="{{ asset('medias/images/elements/' ~ stat.rarity ~ '.png') }}" alt="{{ stat.rarity }}">
+										<td><img class="stats-img" src="{{ asset('medias/images/elements/' ~ stat.rarity ~ '.png') }}" alt="{{ stat.rarity }} Pokemon-Station">
 										</td>
 									{% else %}
 										<td>{{ stat.rarity }}</td>
@@ -130,8 +130,8 @@
 								{% for gen in allGens %}
 									<tr class="gen-tr">
 										<td>{{ gen.generation|capitalize }}</td>
-										<td>{{ gen.gen_captured }} / {{ gen.gen_total }} {% if gen.gen_captured == gen.gen_total %}<img class="gen-image" src="{{ asset('medias/images/elements/mini-star.png') }}" alt=""> {% endif %}</td>
-										<td>{{ gen.true_gen_captured }} / {{ gen.true_gen_total }} {% if gen.true_gen_captured == gen.true_gen_total %}<img class="gen-image" src="{{ asset('medias/images/elements/mini-star-orange.png') }}" alt=""> {% endif %}</td>
+										<td>{{ gen.gen_captured }} / {{ gen.gen_total }} {% if gen.gen_captured == gen.gen_total %}<img class="gen-image" src="{{ asset('medias/images/elements/mini-star.png') }}" alt="Image de génération Pokemon-Station"> {% endif %}</td>
+										<td>{{ gen.true_gen_captured }} / {{ gen.true_gen_total }} {% if gen.true_gen_captured == gen.true_gen_total %}<img class="gen-image" src="{{ asset('medias/images/elements/mini-star-orange.png') }}" alt="Image de génération Pokemon-Station"> {% endif %}</td>
 									</tr>
 								{% endfor %}
 							</tbody>
@@ -152,7 +152,7 @@
 			<div class="modal-avatar">
 				{% for avatar in avatars %}
 					<div class="modal-solo">
-						<img src="{{ asset('medias/images/trainers/' ~ avatar ~'.gif') }}" class="d-block" alt="..." data-avatar="{{ avatar }}">
+						<img src="{{ asset('medias/images/trainers/' ~ avatar ~'.gif') }}" class="d-block" alt="Avatar disponible sur Pokemon-Station" data-avatar="{{ avatar }}">
 					</div>
 				{% endfor %}
 			</div>
@@ -179,7 +179,7 @@
 			<div class="modify-info">
 				<button class="modify-button">
 					<a href="{{ path('app_profil-modify') }}" class="modify-button-link">
-						<img src="{{ asset('medias/images/elements/PokeBall.png') }}" alt="Poke Ball" width="50px"> Modifier
+						<img src="{{ asset('medias/images/elements/PokeBall.png') }}" alt="Poke Ball Pokemon-Station" width="50px"> Modifier
 						<i class="fa-solid fa-chevron-right"></i>
 					</a>
 				</button>
@@ -221,7 +221,7 @@
 			<div class="modify-info">
 				<button class="modify-button">
 					<a href="{{ path('app_friendship') }}" class="modify-button-link">
-						<img src="{{ asset('medias/images/elements/PokeBall.png') }}" alt="Poke Ball" width="50px">
+						<img src="{{ asset('medias/images/elements/PokeBall.png') }}" alt="Poke Ball Pokemon-Station" width="50px">
 						Ajouter
 						<i class="fa-solid fa-chevron-right"></i>
 					</a>

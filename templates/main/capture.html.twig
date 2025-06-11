@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Libération{% endblock %}
+{% block title %}Pokemon-Station Libération{% endblock %}
 
 {% block body %}
 
@@ -23,8 +23,8 @@
 
 
                     <button class="volume">
-                        <img class="active sound soundOn" src="{{ asset('medias/images/elements/volume.up.png') }}" alt="Activer le son">
-                        <img class="type-none sound soundOff" src="{{ asset('medias/images/elements/volume.off.png') }}" alt="Désactiver le son">
+                        <img class="active sound soundOn" src="{{ asset('medias/images/elements/volume.up.png') }}" alt="Activer le son Pokemon-Station">
+                        <img class="type-none sound soundOff" src="{{ asset('medias/images/elements/volume.off.png') }}" alt="Désactiver le son Pokemon-Station">
                     </button>
 
                     <img class="logo-oh" src="{{ asset('medias/images/elements/oh.png') }}" alt="Oh!">
@@ -48,10 +48,10 @@
 
                     <div class="carousel-item justify-content-center active" data-ball="default">
                         <button class="capture-poke-button">
-                            <img src="{{ asset('medias/images/balls/poke-ball.png') }}" id="pokeball-animate" class="pokeball-animate too-big" alt="..." >
+                            <img src="{{ asset('medias/images/balls/poke-ball.png') }}" id="pokeball-animate" class="pokeball-animate too-big" alt="Lancers de base de Pokemon-Station" >
                         </button>
                         <br>
-                        <img class="multiple" src="{{ asset('medias/images/elements/multiple.png') }}" alt="nombre de lancer">
+                        <img class="multiple" src="{{ asset('medias/images/elements/multiple.png') }}" alt="Nombre de lancers disponibles Pokemon-Station">
                         <div class="launch-items launch-1">
                             {{ app.user.launchs}}
                         </div>
@@ -64,10 +64,10 @@
 
                     <div class="carousel-item carou-not-base justify-content-center ball-{{ userItem.item.id }}" data-ball="{{ userItem.item.id }}">
                         <button class="capture-poke-button">
-                            <img src="{{ asset('medias/images/balls/' ~ userItem.item.image) }}" id="pokeball-animate" class="pokeball-animate too-big" alt="..." >
+                            <img src="{{ asset('medias/images/balls/' ~ userItem.item.image) }}" id="pokeball-animate" class="pokeball-animate too-big" alt="{{ userItem.item.name }} Pokemon-Station" >
                         </button>
                         <br>
-                        <img class="multiple" src="{{ asset('medias/images/elements/multiple.png') }}" alt="nombre de lancer">
+                        <img class="multiple" src="{{ asset('medias/images/elements/multiple.png') }}" alt="Nombre de lancers disponibles Pokemon-Station">
                         <div class="launch-items launch-{{ userItem.item.id }}">
                             {{ userItem.quantity }}
                         </div>
@@ -92,7 +92,6 @@
 
     <div class="description-poke-capture my-auto mx-auto col-12 col-lg-4">
         <p class="pokemon-captured-infos visi-zero"></p>
-
     </div>
 
 {#    Partie slider#}
@@ -109,10 +108,10 @@
                                 <span class="poke-tronq">{{ pokemonCaptured.pokemon.name|capitalize }}</span> ~
                                 <a class="poke-tronq-2" href="{{ path('app_user_showprofile', {pseudonym:pokemonCaptured.owner.pseudonym})}}">{{ pokemonCaptured.owner.pseudonym | capitalize }}</a>
                                 {% if "SHINY_WINNER" in pokemonCaptured.owner.roles %}
-                                    <img class="top-badge" src="{{ asset('medias/images/items/key-stone.png') }}" alt="Vainqueur du mois pour les Shinys" title="Vainqueur du mois pour les Shinys">
+                                    <img class="top-badge" src="{{ asset('medias/images/items/key-stone.png') }}" alt="Vainqueur du mois pour les Shinys Pokemon-Station" title="Vainqueur du mois pour les Shinys">
                                 {% endif %}
                                 {% if "POINT_WINNER" in pokemonCaptured.owner.roles %}
-                                    <img class="top-badge" src="{{ asset('medias/images/items/dragon-gem.png') }}" alt="Vainqueur du mois pour les points" title="Vainqueur du mois pour les points">
+                                    <img class="top-badge" src="{{ asset('medias/images/items/dragon-gem.png') }}" alt="Vainqueur du mois pour les points Pokemon-Station" title="Vainqueur du mois pour les points">
                                 {% endif %}
                             </div>
 
@@ -120,12 +119,12 @@
                                 <div class="d-flex align-items-center justify-content-center">
                                     <img class="mini-gif"
                                          src="{{ asset('medias/images/gifs/' ~ (pokemonCaptured.shiny is same as true ? 'shiny-' : '') ~ pokemonCaptured.pokemon.nameEN ~ '.gif') }}"
-                                         alt="">
+                                         alt="Pokemon non-shiny">
                                     {% if pokemonCaptured.shiny is same as true %}
-                                        <img class="mini-shiny" src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt="">
+                                        <img class="mini-shiny" src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt="Pokemon shiny">
                                     {% endif %}
                                 </div>
-                                <img class="mini-trainer" src="{{ asset('medias/images/trainers/') ~ pokemonCaptured.owner.avatar ~ ".gif" }}" alt="">
+                                <img class="mini-trainer" src="{{ asset('medias/images/trainers/') ~ pokemonCaptured.owner.avatar ~ ".gif" }}" alt="Avatar de dresseur Pokemon de {{ pokemonCaptured.owner.pseudonym }}">
                             </div>
 
                             <span class="time-five">Le {{ pokemonCaptured.captureDate |date("d-m-Y H:i:s")  }}</span>
@@ -145,10 +144,10 @@
                                 <span class="poke-tronq">{{ pokemonCaptured.pokemon.name|capitalize }}</span> ~
                                 <a class="poke-tronq-2" href="{{ path('app_user_showprofile', {pseudonym:pokemonCaptured.owner.pseudonym})}}">{{ pokemonCaptured.owner.pseudonym | capitalize }}</a>
                             {% if "SHINY_WINNER" in pokemonCaptured.owner.roles %}
-                                <img class="top-badge" src="{{ asset('medias/images/items/key-stone.png') }}" alt="Vainqueur du mois pour les Shinys" title="Vainqueur du mois pour les Shinys">
+                                <img class="top-badge" src="{{ asset('medias/images/items/key-stone.png') }}" alt="Vainqueur du mois pour les Shinys" title="Vainqueur du mois pour les Shinys Pokemon-Station">
                             {% endif %}
                             {% if "POINT_WINNER" in pokemonCaptured.owner.roles %}
-                                <img class="top-badge" src="{{ asset('medias/images/items/dragon-gem.png') }}" alt="Vainqueur du mois pour les points" title="Vainqueur du mois pour les points">
+                                <img class="top-badge" src="{{ asset('medias/images/items/dragon-gem.png') }}" alt="Vainqueur du mois pour les points" title="Vainqueur du mois pour les points Pokemon-Station">
                             {% endif %}
                         </div>
 
@@ -156,12 +155,12 @@
                                 <div class="d-flex align-items-center justify-content-center">
                                     <img class="mini-gif"
                                          src="{{ asset('medias/images/gifs/' ~ (pokemonCaptured.shiny is same as true ? 'shiny-' : '') ~ pokemonCaptured.pokemon.nameEN ~ '.gif') }}"
-                                         alt="">
+                                         alt="Pokemon non shiny">
                                     {% if pokemonCaptured.shiny is same as true %}
-                                        <img class="mini-shiny" src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt="">
+                                        <img class="mini-shiny" src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt="Pokemon shiny">
                                     {% endif %}
                                 </div>
-                                <img class="mini-trainer" src="{{ asset('medias/images/trainers/') ~ pokemonCaptured.owner.avatar ~ ".gif" }}" alt="">
+                                <img class="mini-trainer" src="{{ asset('medias/images/trainers/') ~ pokemonCaptured.owner.avatar ~ ".gif" }}" alt="Avatar de dresseur Pokemon de {{ pokemonCaptured.owner.pseudonym }}">
                             </div>
                             <span class="time-five">Le {{ pokemonCaptured.captureDate |date("d-m-Y H:i:s")  }}</span>
                         </div>
@@ -201,8 +200,8 @@
                 {% for item in itemsToSell %}
 
                     <tr class="shop-item">
-                        <td class="item-name">{{ item.name|trans|capitalize }}<img class="mini-ball" src="{{ asset('medias/images/balls/' ~ item.image) }}" alt=""></td>
-                        <td class="price price-{{ loop.index }}">{{ item.price }}<img class="coin-width" src="{{ asset('medias/images/elements/real-coin.png') }}" alt=""></td>
+                        <td class="item-name">{{ item.name|trans|capitalize }}<img class="mini-ball" src="{{ asset('medias/images/balls/' ~ item.image) }}" alt="Objet Pokemon-Station"></td>
+                        <td class="price price-{{ loop.index }}">{{ item.price }}<img class="coin-width" src="{{ asset('medias/images/elements/real-coin.png') }}" alt="Monnaie Pokemon-Station"></td>
                         <td class="item-des">{{ item.description }}</td>
                         <td><button class="minus minus-{{ loop.index }}"><i class="fa-solid fa-minus"></i></button></td>
                         <td class="quantity quantity-{{ loop.index }}">0</td>
@@ -224,7 +223,7 @@
             <div class="text-center">
                 <button class="text-center buy-it">Acheter</button>
             </div>
-            <a href="#scale-anchor"><img src="{{ asset('medias/images/elements/button-up.png') }}" alt="" class="button-up"></a>
+            <a href="#scale-anchor"><img src="{{ asset('medias/images/elements/button-up.png') }}" alt="Remonter en haut de la page de libération Pokemon-Station" class="button-up"></a>
 
         </div>
     </div>
