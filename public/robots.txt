@@ -14,5 +14,7 @@ Disallow: /generation-api/
 Disallow: /search-api
 Disallow: /capture-shop-api
 
+Allow: /
+
 # Sitemap
 Sitemap: https://pokemon-station.fr/sitemap.xml
