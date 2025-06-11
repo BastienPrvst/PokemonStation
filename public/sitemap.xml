@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    <url>
+        <loc>https://pokemon-station.fr/</loc>
+        <lastmod>2025-06-11T13:42:03+00:00</lastmod>
+        <priority>1.00</priority>
+    </url>
+    <url>
+        <loc>https://pokemon-station.fr/register/</loc>
+        <lastmod>2025-06-11T13:42:03+00:00</lastmod>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://pokemon-station.fr/connexion</loc>
+        <lastmod>2025-06-11T13:42:03+00:00</lastmod>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://pokemon-station.fr/types</loc>
+        <lastmod>2025-06-11T13:42:03+00:00</lastmod>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://pokemon-station.fr/mentions-legales</loc>
+        <lastmod>2025-06-11T13:42:03+00:00</lastmod>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://pokemon-station.fr/about</loc>
+        <lastmod>2025-06-11T13:42:03+00:00</lastmod>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://pokemon-station.fr/project</loc>
+        <lastmod>2025-06-11T13:42:03+00:00</lastmod>
+        <priority>0.80</priority>
+    </url>
+
+
+</urlset>
