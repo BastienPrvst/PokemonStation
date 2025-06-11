@@ -118,7 +118,7 @@ class APIController extends AbstractController
         return $this->json($captured);
     }
 
-    #[Route('/capture-shop-api/', name: 'app_shop_api')]
+    #[Route('/capture-shop-api', name: 'app_shop_api')]
     #[IsGranted('ROLE_USER')]
     public function shop(Request $request, LockFactory $lockFactory): Response
     {
