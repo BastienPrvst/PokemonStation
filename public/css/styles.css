@@ -2551,7 +2551,7 @@ tfoot tr td {
   height: 50px;
   width: 50px;
   position: absolute;
-  bottom: 100px;
+  top: 125px;
   right: 5px;
   transform: translateY(-100%);
 }
@@ -2874,13 +2874,12 @@ tfoot tr td {
   }
 
   .pokedex-types {
-    bottom: -15px;
-    right: -5px;
+    right: 10px;
   }
 
   .pokedex-types a img {
-    height: 40px;
-    width: 40px;
+    height: 60px;
+    width: 60px;
   }
 
   .speaker {

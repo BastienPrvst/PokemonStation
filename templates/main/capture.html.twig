@@ -105,7 +105,7 @@
 
                         <div class="pokemon-five {% if pokemonCaptured.shiny is same as true %}shiny-slider{% endif %} slider-{{ pokemonCaptured.pokemon.rarity }}">
                             <div class="mini-infos">
-                                <span class="poke-tronq">{{ pokemonCaptured.pokemon.name|capitalize }}</span> ~
+                                <span class="poke-tronq">{{ pokemonCaptured.pokemon.name|title }}</span> ~
                                 <a class="poke-tronq-2" href="{{ path('app_user_showprofile', {pseudonym:pokemonCaptured.owner.pseudonym})}}">{{ pokemonCaptured.owner.pseudonym | capitalize }}</a>
                                 {% if "SHINY_WINNER" in pokemonCaptured.owner.roles %}
                                     <img class="top-badge" src="{{ asset('medias/images/items/key-stone.png') }}" alt="Vainqueur du mois pour les Shinys Pokemon-Station" title="Vainqueur du mois pour les Shinys">
@@ -141,7 +141,7 @@
                         <div class="pokemon-five {% if pokemonCaptured.shiny is same as true %}shiny-slider{% endif %} slider-{{ pokemonCaptured.pokemon.rarity }}">
 
                         <div class="mini-infos">
-                                <span class="poke-tronq">{{ pokemonCaptured.pokemon.name|capitalize }}</span> ~
+                                <span class="poke-tronq">{{ pokemonCaptured.pokemon.name|title }}</span> ~
                                 <a class="poke-tronq-2" href="{{ path('app_user_showprofile', {pseudonym:pokemonCaptured.owner.pseudonym})}}">{{ pokemonCaptured.owner.pseudonym | capitalize }}</a>
                             {% if "SHINY_WINNER" in pokemonCaptured.owner.roles %}
                                 <img class="top-badge" src="{{ asset('medias/images/items/key-stone.png') }}" alt="Vainqueur du mois pour les Shinys" title="Vainqueur du mois pour les Shinys Pokemon-Station">
@@ -200,7 +200,7 @@
                 {% for item in itemsToSell %}
 
                     <tr class="shop-item">
-                        <td class="item-name">{{ item.name|trans|capitalize }}<img class="mini-ball" src="{{ asset('medias/images/balls/' ~ item.image) }}" alt="Objet Pokemon-Station"></td>
+                        <td class="item-name">{{ item.name|trans|title }}<img class="mini-ball" src="{{ asset('medias/images/balls/' ~ item.image) }}" alt="Objet Pokemon-Station"></td>
                         <td class="price price-{{ loop.index }}">{{ item.price }}<img class="coin-width" src="{{ asset('medias/images/elements/real-coin.png') }}" alt="Monnaie Pokemon-Station"></td>
                         <td class="item-des">{{ item.description }}</td>
                         <td><button class="minus minus-{{ loop.index }}"><i class="fa-solid fa-minus"></i></button></td>
