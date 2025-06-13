@@ -112,7 +112,19 @@ class APIController extends AbstractController
         $user = $this->getUser();
         /** @var PokemonRepository $pokemonRepository */
         $pokemonRepository = $this->entityManager->getRepository(Pokemon::class);
-        $pokemons = $pokemonRepository->searchByName($request->get('search'));
+        $query = $pokemonRepository->createQueryBuilder('p');
+
+        if ($request->get('search')) {
+            $pokemonRepository->searchByName($query, $request->get('search'));
+        }
+        if ($request->get('rarity')) {
+            $pokemonRepository->searchByRarity($query, $request->get('rarity'));
+        }
+        if ($request->get('type')) {
+            $pokemonRepository->searchByType($query, $request->get('type'));
+        }
+
+        $pokemons = $query->getQuery()->getResult();
         $captured = $this->capturedPokemonService->userCapturedByGeneration($user, $pokemons);
 
         return $this->json($captured);
