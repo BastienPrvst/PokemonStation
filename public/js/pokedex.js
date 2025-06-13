@@ -5,6 +5,7 @@ clickSound();
 
 let buttons = document.querySelectorAll(".pokemon-pokedex");
 let currentPokeId = null;
+let filters = {};
 const audio = new Audio();
 
 // Select on click a pokemon to display on pokedex
@@ -67,27 +68,54 @@ document.querySelectorAll(".alt-captured")?.forEach((el) => {
 let timeout = null;
 
 document.querySelector("#pokedexSearch").addEventListener("input", (event) => {
-  let apiPath = baseUrl + "search-api?search=" + event.target.value;
+  if (event.target.value === "") {
+    delete filters.search
+  } else {
+    filters.search = event.target.value
+  }
 
   clearTimeout(timeout);
-  timeout = setTimeout(() => {
-    if (event.target.value === "") {
-      apiPath =
-        baseUrl +
-        "generation-api/" +
-        document.querySelector("#generations").value;
-    }
+  timeout = setTimeout(() => fetchWithFilters(filters), 500);
+});
 
-    fetch(apiPath, { method: "GET" })
-      .then((response) => response.json())
-      .then((pokemons) => updatePokedexList(pokemons))
-      .catch((error) => console.log(error));
-  }, 500);
+document.querySelector("#pokedexRaritySearch").addEventListener("input", (event) => {
+  if (event.target.value === "") {
+    delete filters.rarity
+  } else {
+    filters.rarity = event.target.value
+  }
+
+  fetchWithFilters(filters)
+});
+
+document.querySelector("#pokedexTypeSearch").addEventListener("input", (event) => {
+  if (event.target.value === "") {
+    delete filters.type
+  } else {
+    filters.type = event.target.value
+  }
+
+  fetchWithFilters(filters)
 });
 
 // LOCAL FUNCTIONS
 
 const formatName = (name) => name.charAt(0).toUpperCase() + name.slice(1);
+
+const fetchWithFilters = (filters) => {
+
+  let apiPath = baseUrl + "generation-api/" + document.querySelector("#generations").value;
+
+  if (Object.keys(filters).length > 0) {
+    let params = new URLSearchParams(filters).toString();
+    apiPath = baseUrl + "search-api?" + params
+  }
+
+  fetch(apiPath, { method: "GET" })
+    .then((response) => response.json())
+    .then((pokemons) => updatePokedexList(pokemons))
+    .catch((error) => console.log(error));
+}
 
 const updatePokedex = (pokemon) => {
   if (!pokemon.captured && !pokemon.shiny) {

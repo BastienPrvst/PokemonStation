@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Pokemon;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -94,16 +95,30 @@ class PokemonRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    /**
-     * @return Pokemon[]
-     */
-    public function searchByName(string $name): array
+    public function searchByName(QueryBuilder $query, string $name): QueryBuilder
     {
-        return $this->createQueryBuilder('p')
-            ->where('p.name LIKE :name')
-            ->setParameter('name', "%{$name}%")
-            ->getQuery()
-            ->getResult();
+        return $query
+            ->andWhere('p.name LIKE :name')
+            ->setParameter('name', "%{$name}%");
+    }
+
+    public function searchByRarity(QueryBuilder $query, string $rarity): QueryBuilder
+    {
+        return $query
+            ->andWhere('p.rarity = :rarity')
+            ->setParameter('rarity', $rarity);
+    }
+
+    public function searchByType(QueryBuilder $query, string $type): QueryBuilder
+    {
+        return $query
+            ->andWhere(
+                $query->expr()->orX(
+                    $query->expr()->eq('p.type', ':type'),
+                    $query->expr()->eq('p.type2', ':type'),
+                )
+            )
+            ->setParameter('type', $type);
     }
 
     public function pokemonSeenByGen(User $user): array
