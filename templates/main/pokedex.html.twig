@@ -26,14 +26,12 @@
 
 			<label for="search"></label>
 
-			{% set rarities = ['C', 'PC', 'R', 'TR', 'ME', 'GMAX', 'SR', 'EX', 'UR'] %}
-
 			<div class="d-flex px-0 pokedex-filters">
 				<input class="w-100 search-input form-control" id="pokedexSearch" type="text" placeholder="Chercher un Pokémon" data-search="data-search">
 				<select id="pokedexRaritySearch" class="pokedex-filter-rarity form-control select-input">
 					<option disabled selected value>Rareté</option>
 					<option value>Tous</option>
-					{% for rarity in rarities %}
+					{% for rarity in constant('App\\Entity\\Pokemon::RARITIES') %}
 						<option value="{{ rarity }}">{{ rarity }}</option>
 					{% endfor %}
 				</select>
