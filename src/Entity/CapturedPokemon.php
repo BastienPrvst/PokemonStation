@@ -3,11 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\CapturedPokemonRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CapturedPokemonRepository::class)]
-class CapturedPokemon
+class CapturedPokemon extends \App\Entity\Pokemon
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -30,6 +32,24 @@ class CapturedPokemon
 
     #[ORM\Column]
     private ?int $timesCaptured = null;
+
+    /**
+     * @var Collection<int, Trade>
+     */
+    #[ORM\OneToMany(mappedBy: 'tradePoke1', targetEntity: Trade::class)]
+    private Collection $tradePoke1;
+
+    /**
+     * @var Collection<int, Trade>
+     */
+    #[ORM\OneToMany(mappedBy: 'tradePoke2', targetEntity: Trade::class)]
+    private Collection $tradePoke2;
+
+    public function __construct()
+    {
+        $this->tradePoke1 = new ArrayCollection();
+        $this->tradePoke2 = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -92,6 +112,66 @@ class CapturedPokemon
     public function setTimesCaptured(int $timesCaptured): static
     {
         $this->timesCaptured = $timesCaptured;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Trade>
+     */
+    public function getTradePoke1(): Collection
+    {
+        return $this->tradePoke1;
+    }
+
+    public function addTradePoke1(Trade $tradePoke1): static
+    {
+        if (!$this->tradePoke1->contains($tradePoke1)) {
+            $this->tradePoke1->add($tradePoke1);
+            $tradePoke1->setTradePoke1($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTradePoke1(Trade $tradePoke1): static
+    {
+        if ($this->tradePoke1->removeElement($tradePoke1)) {
+            // set the owning side to null (unless already changed)
+            if ($tradePoke1->getTradePoke1() === $this) {
+                $tradePoke1->setTradePoke1(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Trade>
+     */
+    public function getTradePoke2(): Collection
+    {
+        return $this->tradePoke2;
+    }
+
+    public function addTradePoke2(Trade $tradePoke2): static
+    {
+        if (!$this->tradePoke2->contains($tradePoke2)) {
+            $this->tradePoke2->add($tradePoke2);
+            $tradePoke2->setTradePoke2($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTradePoke2(Trade $tradePoke2): static
+    {
+        if ($this->tradePoke2->removeElement($tradePoke2)) {
+            // set the owning side to null (unless already changed)
+            if ($tradePoke2->getTradePoke2() === $this) {
+                $tradePoke2->setTradePoke2(null);
+            }
+        }
 
         return $this;
     }

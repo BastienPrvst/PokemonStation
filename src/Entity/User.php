@@ -75,11 +75,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?int $score = null;
 
+    /**
+     * @var Collection<int, Trade>
+     */
+    #[ORM\OneToMany(mappedBy: 'user1', targetEntity: Trade::class, orphanRemoval: true)]
+    private Collection $initiatedTrade;
+
+    /**
+     * @var Collection<int, Trade>
+     */
+    #[ORM\OneToMany(mappedBy: 'user2', targetEntity: Trade::class, orphanRemoval: true)]
+    private Collection $receivedTrade;
+
     public function __construct()
     {
         $this->capturedPokemon = new ArrayCollection();
         $this->friends = new ArrayCollection();
         $this->userItems = new ArrayCollection();
+        $this->initiatedTrade = new ArrayCollection();
+        $this->receivedTrade = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -324,4 +338,65 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Trade>
+     */
+    public function getInitiatedTrade(): Collection
+    {
+        return $this->initiatedTrade;
+    }
+
+    public function addInitiatedTrade(Trade $initiatedTrade): static
+    {
+        if (!$this->initiatedTrade->contains($initiatedTrade)) {
+            $this->initiatedTrade->add($initiatedTrade);
+            $initiatedTrade->setUser1($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInitiatedTrade(Trade $initiatedTrade): static
+    {
+        if ($this->initiatedTrade->removeElement($initiatedTrade)) {
+            // set the owning side to null (unless already changed)
+            if ($initiatedTrade->getUser1() === $this) {
+                $initiatedTrade->setUser1(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Trade>
+     */
+    public function getReceivedTrade(): Collection
+    {
+        return $this->receivedTrade;
+    }
+
+    public function addReceivedTrade(Trade $receivedTrade): static
+    {
+        if (!$this->receivedTrade->contains($receivedTrade)) {
+            $this->receivedTrade->add($receivedTrade);
+            $receivedTrade->setUser2($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceivedTrade(Trade $receivedTrade): static
+    {
+        if ($this->receivedTrade->removeElement($receivedTrade)) {
+            // set the owning side to null (unless already changed)
+            if ($receivedTrade->getUser2() === $this) {
+                $receivedTrade->setUser2(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

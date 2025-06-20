@@ -6,6 +6,7 @@ use App\Entity\CapturedPokemon;
 use App\Entity\User;
 use App\Form\EditModifyProfilFormType;
 use App\Repository\PokemonRepository;
+use App\Service\TradeService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
@@ -20,6 +21,7 @@ class UserController extends AbstractController
     public function __construct(
         private readonly PokemonRepository $pokemonRepository,
         private readonly EntityManagerInterface $entityManager,
+		private readonly TradeService  $tradeService,
     ) {
     }
 
@@ -170,5 +172,21 @@ class UserController extends AbstractController
             $realFiles[] = $file;
         }
         return $realFiles;
+    }
+
+    #[Route(path: '/trade/{id}', name: 'app_trade_create')]
+    public function createTrade(User $user): Response
+    {
+        $connectedUser = $this->getUser();
+        if ($user === $connectedUser) {
+            return new Response('Vous ne pouvez pas faire d\'échange avec vous même.', Response::HTTP_BAD_REQUEST);
+        }
+
+        try {
+			$this->tradeService->createTrade($connectedUser, $user);
+
+        } catch (\Exception $exception) {
+            return new Response($exception->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
     }
 }

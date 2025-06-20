@@ -71,10 +71,24 @@ class Pokemon
     #[ORM\JoinColumn(nullable: false)]
     private ?Generation $gen = null;
 
+    /**
+     * @var Collection<int, Trade>
+     */
+    #[ORM\OneToMany(mappedBy: 'pokemon1', targetEntity: Trade::class, orphanRemoval: true)]
+    private Collection $tradePoke1;
+
+    /**
+     * @var Collection<int, Trade>
+     */
+    #[ORM\OneToMany(mappedBy: 'pokemon2', targetEntity: Trade::class)]
+    private Collection $pokemon2;
+
     public function __construct()
     {
         $this->capturedPokemon = new ArrayCollection();
         $this->relatedPokemon = new ArrayCollection();
+        $this->tradePoke1 = new ArrayCollection();
+        $this->pokemon2 = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -248,4 +262,65 @@ class Pokemon
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Trade>
+     */
+    public function getTradePoke1(): Collection
+    {
+        return $this->tradePoke1;
+    }
+
+    public function addTradePoke1(Trade $tradePoke1): static
+    {
+        if (!$this->tradePoke1->contains($tradePoke1)) {
+            $this->tradePoke1->add($tradePoke1);
+            $tradePoke1->setPokemon1($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTradePoke1(Trade $tradePoke1): static
+    {
+        if ($this->tradePoke1->removeElement($tradePoke1)) {
+            // set the owning side to null (unless already changed)
+            if ($tradePoke1->getPokemon1() === $this) {
+                $tradePoke1->setPokemon1(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Trade>
+     */
+    public function getPokemon2(): Collection
+    {
+        return $this->pokemon2;
+    }
+
+    public function addPokemon2(Trade $pokemon2): static
+    {
+        if (!$this->pokemon2->contains($pokemon2)) {
+            $this->pokemon2->add($pokemon2);
+            $pokemon2->setPokemon2($this);
+        }
+
+        return $this;
+    }
+
+    public function removePokemon2(Trade $pokemon2): static
+    {
+        if ($this->pokemon2->removeElement($pokemon2)) {
+            // set the owning side to null (unless already changed)
+            if ($pokemon2->getPokemon2() === $this) {
+                $pokemon2->setPokemon2(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
