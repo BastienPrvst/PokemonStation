@@ -184,4 +184,14 @@ class CapturedPokemonRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+	public function findTradeable(User $user): array
+	{
+		return $this->createQueryBuilder('cp')
+			->where('cp.owner = :user AND cp.timesCaptured > 1')
+			->orWhere('cp.owner = :user AND cp.shiny = true')
+			->setParameter('user', $user)
+			->getQuery()
+			->getResult();
+	}
 }

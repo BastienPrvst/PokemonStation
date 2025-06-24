@@ -3604,3 +3604,18 @@ tfoot tr td {
 .top-badge{
   width: 20px;
 }
+
+
+/* Echanges */
+
+.main-trade{
+  display: flex;
+}
+
+.user-part{
+  width: 50%;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

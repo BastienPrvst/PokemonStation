@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CapturedPokemonRepository::class)]
-class CapturedPokemon extends \App\Entity\Pokemon
+class CapturedPokemon
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -36,19 +36,22 @@ class CapturedPokemon extends \App\Entity\Pokemon
     /**
      * @var Collection<int, Trade>
      */
-    #[ORM\OneToMany(mappedBy: 'tradePoke1', targetEntity: Trade::class)]
-    private Collection $tradePoke1;
+    #[ORM\OneToMany(mappedBy: 'pokemonTrade1', targetEntity: Trade::class)]
+    private Collection $pokeTrade1;
 
     /**
      * @var Collection<int, Trade>
      */
-    #[ORM\OneToMany(mappedBy: 'tradePoke2', targetEntity: Trade::class)]
-    private Collection $tradePoke2;
+    #[ORM\OneToMany(mappedBy: 'pokemonTrade2', targetEntity: Trade::class)]
+    private Collection $pokeTrade2;
+
+    #[ORM\Column]
+    private ?int $quantity = null;
 
     public function __construct()
     {
-        $this->tradePoke1 = new ArrayCollection();
-        $this->tradePoke2 = new ArrayCollection();
+        $this->pokeTrade1 = new ArrayCollection();
+        $this->pokeTrade2 = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -119,27 +122,27 @@ class CapturedPokemon extends \App\Entity\Pokemon
     /**
      * @return Collection<int, Trade>
      */
-    public function getTradePoke1(): Collection
+    public function getPokeTrade1(): Collection
     {
-        return $this->tradePoke1;
+        return $this->pokeTrade1;
     }
 
-    public function addTradePoke1(Trade $tradePoke1): static
+    public function addPokeTrade1(Trade $pokeTrade1): static
     {
-        if (!$this->tradePoke1->contains($tradePoke1)) {
-            $this->tradePoke1->add($tradePoke1);
-            $tradePoke1->setTradePoke1($this);
+        if (!$this->pokeTrade1->contains($pokeTrade1)) {
+            $this->pokeTrade1->add($pokeTrade1);
+            $pokeTrade1->setPokemonTrade1($this);
         }
 
         return $this;
     }
 
-    public function removeTradePoke1(Trade $tradePoke1): static
+    public function removePokeTrade1(Trade $pokeTrade1): static
     {
-        if ($this->tradePoke1->removeElement($tradePoke1)) {
+        if ($this->pokeTrade1->removeElement($pokeTrade1)) {
             // set the owning side to null (unless already changed)
-            if ($tradePoke1->getTradePoke1() === $this) {
-                $tradePoke1->setTradePoke1(null);
+            if ($pokeTrade1->getPokemonTrade1() === $this) {
+                $pokeTrade1->setPokemonTrade1(null);
             }
         }
 
@@ -149,33 +152,42 @@ class CapturedPokemon extends \App\Entity\Pokemon
     /**
      * @return Collection<int, Trade>
      */
-    public function getTradePoke2(): Collection
+    public function getPokeTrade2(): Collection
     {
-        return $this->tradePoke2;
+        return $this->pokeTrade2;
     }
 
-    public function addTradePoke2(Trade $tradePoke2): static
+    public function addPokeTrade2(Trade $pokeTrade2): static
     {
-        if (!$this->tradePoke2->contains($tradePoke2)) {
-            $this->tradePoke2->add($tradePoke2);
-            $tradePoke2->setTradePoke2($this);
+        if (!$this->pokeTrade2->contains($pokeTrade2)) {
+            $this->pokeTrade2->add($pokeTrade2);
+            $pokeTrade2->setPokemonTrade2($this);
         }
 
         return $this;
     }
 
-    public function removeTradePoke2(Trade $tradePoke2): static
+    public function removePokeTrade2(Trade $pokeTrade2): static
     {
-        if ($this->tradePoke2->removeElement($tradePoke2)) {
+        if ($this->pokeTrade2->removeElement($pokeTrade2)) {
             // set the owning side to null (unless already changed)
-            if ($tradePoke2->getTradePoke2() === $this) {
-                $tradePoke2->setTradePoke2(null);
+            if ($pokeTrade2->getPokemonTrade2() === $this) {
+                $pokeTrade2->setPokemonTrade2(null);
             }
         }
 
         return $this;
     }
 
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
 
+    public function setQuantity(int $quantity): static
+    {
+        $this->quantity = $quantity;
 
+        return $this;
+    }
 }

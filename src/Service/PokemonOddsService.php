@@ -130,6 +130,7 @@ class PokemonOddsService extends AbstractController
 
         if ($firstTimeNonShiny || $firstTimeShiny) {
             $capturedPokemon->setTimesCaptured(1);
+			$capturedPokemon->setQuantity(1);
             $this->entityManager->persist($capturedPokemon);
             $isNew = true;
             $cpDiscord = $capturedPokemon;
@@ -139,6 +140,7 @@ class PokemonOddsService extends AbstractController
             if ($isShiny) {
                 $this->entityManager->persist($capturedPokemon);
                 $capturedPokemon->setTimesCaptured(-1);
+				$capturedPokemon->setQuantity($capturedPokemon->getQuantity() + 1);
                 //Permet un comptage par mois du top shiny mais ne trouble pas le nombre de fois qu'il est capturé
             }
 
@@ -149,6 +151,7 @@ class PokemonOddsService extends AbstractController
                 $pokemonSpeciesCaptured
             );
             $alreadyCapturedPokemon->setTimesCaptured($alreadyCapturedPokemon->getTimesCaptured() + 1);
+	        $capturedPokemon->setQuantity($capturedPokemon->getQuantity() + 1);
             $alreadyCapturedPokemon->setCaptureDate(new \DateTime('', new \DateTimeZone('Europe/Paris')));
             $cpDiscord = $alreadyCapturedPokemon;
             $isNew = false;

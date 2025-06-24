@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Echanger avec {{ user.pseudonym|capitalize }}
+{% endblock %}
+
+{% block body %}
+
+    <h1 class="text-center text-white m-3">Echangez vos Pokémons !</h1>
+
+    <div class="main-trade">
+        <section class="user-part trade-1">
+            <h2 class="text-white">{{ app.user.pseudonym|capitalize }}</h2>
+            <img src="{{ asset('medias/images/trainers/' ~ app.user.avatar ~ '.gif') }}" alt="">
+
+            <div class="poke-trade">
+
+            </div>
+
+
+
+
+        </section>
+
+        <section class="user-part trade-2">
+            <h3 class="text-white">{{ user.pseudonym }}</h3>
+            <img src="{{ asset('medias/images/trainers/' ~ user.avatar ~ '.gif') }}" alt="">
+
+
+            <div class="poke-trade">
+
+            </div>
+
+        </section>
+    </div>
+
+
+
+
+
+{% endblock %}

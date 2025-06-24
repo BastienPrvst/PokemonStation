@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\CapturedPokemon;
 use App\Entity\User;
 use App\Form\EditModifyProfilFormType;
+use App\Repository\CapturedPokemonRepository;
 use App\Repository\PokemonRepository;
 use App\Service\TradeService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,8 +21,9 @@ class UserController extends AbstractController
 {
     public function __construct(
         private readonly PokemonRepository $pokemonRepository,
+		private readonly CapturedPokemonRepository $cpRepository,
         private readonly EntityManagerInterface $entityManager,
-		private readonly TradeService  $tradeService,
+		private readonly TradeService $tradeService,
     ) {
     }
 
@@ -182,11 +184,19 @@ class UserController extends AbstractController
             return new Response('Vous ne pouvez pas faire d\'échange avec vous même.', Response::HTTP_BAD_REQUEST);
         }
 
-        try {
-			$this->tradeService->createTrade($connectedUser, $user);
+		if ($connectedUser instanceof User) {
+			$trade = $this->tradeService->create($connectedUser, $user);
+		} else {
+			return $this->redirectToRoute('app_home');
+		}
 
-        } catch (\Exception $exception) {
-            return new Response($exception->getMessage(), Response::HTTP_BAD_REQUEST);
-        }
+		$availableUser1 = $this->cpRepository->findTradeable($connectedUser);
+		$availableUser2 = $this->cpRepository->findTradeable($user);
+
+
+		return $this->render('main/trade.html.twig', [
+			'user' => $user,
+			'trade' => $trade
+		]);
     }
 }
