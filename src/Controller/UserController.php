@@ -191,12 +191,13 @@ class UserController extends AbstractController
 		}
 
 		$availableUser1 = $this->cpRepository->findTradeable($connectedUser);
-		$availableUser2 = $this->cpRepository->findTradeable($user);
-
+		$availableUser2 = $this->cpRepository->findInteressting($user, $connectedUser);
 
 		return $this->render('main/trade.html.twig', [
 			'user' => $user,
-			'trade' => $trade
+			'trade' => $trade,
+			'pokeAvailable1' => $availableUser1,
+			'pokeAvailable2' => $availableUser2,
 		]);
     }
 }

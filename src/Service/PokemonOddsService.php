@@ -138,10 +138,9 @@ class PokemonOddsService extends AbstractController
             $this->setCoinByRarity($user, $capturedPokemon, $isShiny);
 
             if ($isShiny) {
-                $this->entityManager->persist($capturedPokemon);
                 $capturedPokemon->setTimesCaptured(-1);
 				$capturedPokemon->setQuantity($capturedPokemon->getQuantity() + 1);
-                //Permet un comptage par mois du top shiny mais ne trouble pas le nombre de fois qu'il est capturé
+                $this->entityManager->persist($capturedPokemon);
             }
 
             /* @var $alreadyCapturedPokemon CapturedPokemon */
@@ -151,7 +150,7 @@ class PokemonOddsService extends AbstractController
                 $pokemonSpeciesCaptured
             );
             $alreadyCapturedPokemon->setTimesCaptured($alreadyCapturedPokemon->getTimesCaptured() + 1);
-	        $capturedPokemon->setQuantity($capturedPokemon->getQuantity() + 1);
+	        $alreadyCapturedPokemon->setQuantity($alreadyCapturedPokemon->getQuantity() + 1);
             $alreadyCapturedPokemon->setCaptureDate(new \DateTime('', new \DateTimeZone('Europe/Paris')));
             $cpDiscord = $alreadyCapturedPokemon;
             $isNew = false;
@@ -167,8 +166,8 @@ class PokemonOddsService extends AbstractController
         $scoreToAdd = $this->rarityScale[$rarity[0]] * $multiplier;
         $user->setScore($user->getScore() + $scoreToAdd);
 
-        $this->entityManager->flush();
 
+	    $this->entityManager->flush();
         //Partie discord
         if ($_ENV['APP_ENV'] === 'prod') {
             $discordError = $this->discordWebHookService->sendToDiscordWebHook(

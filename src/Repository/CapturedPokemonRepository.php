@@ -7,6 +7,7 @@ use App\Entity\Pokemon;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @extends ServiceEntityRepository<CapturedPokemon>
@@ -188,10 +189,42 @@ class CapturedPokemonRepository extends ServiceEntityRepository
 	public function findTradeable(User $user): array
 	{
 		return $this->createQueryBuilder('cp')
-			->where('cp.owner = :user AND cp.timesCaptured > 1')
+			->where('cp.owner = :user AND cp.quantity > 1')
 			->orWhere('cp.owner = :user AND cp.shiny = true')
 			->setParameter('user', $user)
 			->getQuery()
 			->getResult();
+	}
+
+	public function findInteressting(User $user, User $connectedUser)
+	{
+		return $this->createQueryBuilder('cp')
+			->where('cp.owner = :user')
+			->andWhere('
+            (cp.shiny = true)
+            OR
+            (cp.shiny = false AND cp.quantity > 1 AND cp.pokemon NOT IN (
+                    SELECT p3.id
+                    FROM App\Entity\CapturedPokemon cp3
+                    JOIN cp3.pokemon p3
+                    WHERE cp3.owner = :user
+                    AND cp3.shiny = true
+                )
+            )
+        ')
+			->andWhere('cp.pokemon NOT IN (
+            SELECT p2.id
+            FROM App\Entity\CapturedPokemon cp2
+            JOIN cp2.pokemon p2
+            WHERE cp2.owner = :connectedUser
+            AND cp2.shiny = true
+        )')
+			->setParameters([
+				'user'           => $user,
+				'connectedUser'  => $connectedUser,
+			])
+			->getQuery()
+			->getResult();
+
 	}
 }

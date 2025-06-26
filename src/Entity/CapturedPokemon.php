@@ -36,13 +36,13 @@ class CapturedPokemon
     /**
      * @var Collection<int, Trade>
      */
-    #[ORM\OneToMany(mappedBy: 'pokemonTrade1', targetEntity: Trade::class)]
+    #[ORM\OneToMany(mappedBy: 'pokemonTrade1', targetEntity: Trade::class, cascade: ['remove'])]
     private Collection $pokeTrade1;
 
     /**
      * @var Collection<int, Trade>
      */
-    #[ORM\OneToMany(mappedBy: 'pokemonTrade2', targetEntity: Trade::class)]
+    #[ORM\OneToMany(mappedBy: 'pokemonTrade2', targetEntity: Trade::class, cascade: ['remove'])]
     private Collection $pokeTrade2;
 
     #[ORM\Column]

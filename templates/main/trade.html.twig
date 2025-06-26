@@ -6,28 +6,105 @@
 
 {% block body %}
 
-    <h1 class="text-center text-white m-3">Echangez vos Pokémons !</h1>
+    <h1 class="text-center text-white m-5">Echangez vos Pokémons !</h1>
 
     <div class="main-trade">
         <section class="user-part trade-1">
-            <h2 class="text-white">{{ app.user.pseudonym|capitalize }}</h2>
-            <img src="{{ asset('medias/images/trainers/' ~ app.user.avatar ~ '.gif') }}" alt="">
+
+            <div class="d-flex align-items-center">
+                <div class="d-flex flex-column align-items-center ">
+                    <h2 class="text-white trade-title">{{ app.user.pseudonym|capitalize }}</h2>
+                    <img class="mirror-x" src="{{ asset('medias/images/trainers/' ~ app.user.avatar ~ '.gif') }}" alt="">
+                </div>
+
+                {% if trade.pokemonTrade1 %}
+                    <div class="choosen-trade-poke">
+                        <img class="mirror-x" src="{{ asset('medias/images/gifs/' ~ trade.pokemonTrade1.pokemon.nameEn ~ '.gif') }}" alt="">
+                    </div>
+                {% else %}
+                    <div class="not-choosen-trade">
+                        <img src="{{ asset('medias/images/elements/what.png') }}" alt="">
+                    </div>
+
+                {% endif %}
+            </div>
 
             <div class="poke-trade">
+
+                <h2 class="trade-title">Vos Pokémons echangables</h2>
+
+                {% for poke in pokeAvailable1 %}
+
+                    <div class="poketrade">
+                        <p>{{ poke.pokemon.name|title }}</p>
+                        <img class="mirror-x" src="{{ asset('medias/images/gifs/' ~ poke.pokemon.nameEn ~ '.gif') }}" alt="">
+                        <img src="{{ asset('medias/images/elements/multiple.png') }}" alt="">
+
+                        {% if poke.shiny is true %}
+                            <p>{{ poke.quantity }}</p>
+                        {% else %}
+                            <p>{{ poke.quantity - 1 }}</p>
+                        {% endif %}
+                    </div>
+
+                {% endfor %}
+
+            </div>
+        </section>
+        
+        
+        <div class="arrow-div">
+            <img class="arrow-trade arrow-1" src="{{ asset('medias/images/elements/arrow.png') }}" alt="">
+            <img class="arrow-trade arrow-2" src="{{ asset('medias/images/elements/arrow.png') }}" alt="">
+        </div>
+        
+        
+
+        <section class="user-part trade-2">
+
+            <div class="d-flex flex-row-reverse align-items-center">
+                <div class="d-flex align-items-center flex-column">
+                    <h3 class="text-white">{{ user.pseudonym }}</h3>
+                    <img src="{{ asset('medias/images/trainers/' ~ user.avatar ~ '.gif') }}" alt="">
+                </div>
+
+
+
+
+                {% if trade.pokemonTrade2 %}
+                    <div class="choosen-trade-poke">
+
+                        <img src="{{ asset('medias/images/gifs/' ~ trade.pokemonTrade2.pokemon.nameEn ~ '.gif') }}" alt="">
+                    </div>
+                {% else %}
+                    <div class="not-choosen-trade">
+
+                        <img src="{{ asset('medias/images/elements/what.png') }}" alt="">
+                    </div>
+
+                {% endif %}
 
             </div>
 
 
-
-
-        </section>
-
-        <section class="user-part trade-2">
-            <h3 class="text-white">{{ user.pseudonym }}</h3>
-            <img src="{{ asset('medias/images/trainers/' ~ user.avatar ~ '.gif') }}" alt="">
-
-
             <div class="poke-trade">
+
+                <h2 class="trade-title">Les Pokémons de {{ user.pseudonym }}</h2>
+
+                {% for poke2 in pokeAvailable2 %}
+
+                    <div class="poketrade">
+                        <p>{{ poke2.pokemon.name|title }}</p>
+                        <img src="{{ asset('medias/images/gifs/' ~ poke2.pokemon.nameEn ~ '.gif') }}" alt="">
+                        <img src="{{ asset('medias/images/elements/multiple.png') }}" alt="">
+                        {% if poke2.shiny is true %}
+                            <p>{{ poke2.quantity }}</p>
+                        {% else %}
+                            <p>{{ poke2.quantity - 1 }}</p>
+                        {% endif %}
+                    </div>
+
+                {% endfor %}
 
             </div>
 
