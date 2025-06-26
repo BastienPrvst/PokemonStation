@@ -44,6 +44,7 @@
         "team-reflex/discord-php": "^10.4",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/intl-extra": "*",
+        "twig/string-extra": "^3.21",
         "twig/twig": "^2.12|^3.0"
     },
     "config": {

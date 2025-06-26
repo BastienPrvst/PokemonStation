@@ -3613,7 +3613,7 @@ tfoot tr td {
 }
 
 .user-part{
-  width: 45%;
+  width: 48%;
   height: 80vh;
   display: flex;
   flex-direction: column;
@@ -3622,7 +3622,7 @@ tfoot tr td {
   border-radius: 50px;
   border: solid #a62840 5px;
   padding: 40px;
-  margin: 3%;
+  margin: 2%;
 }
 
 .user-part * {
@@ -3635,6 +3635,52 @@ tfoot tr td {
 
 .trade-title{
   font-size: 15px;
+}
+
+.poke-trade{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+}
+
+.poketrade{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #9f1239;
+  border-radius: 15px;
+  width: 30%;
+  aspect-ratio: 1/1;
+  box-sizing: border-box;
+  border: solid 2px white;
+  margin: 1%;
+  position: relative;
+}
+
+.poketrade:hover{
+  background-color: white;
+  border: solid 2px #ffcd00;
+  color: #8c051c;
+  transition: 0.3s;
+}
+
+.poketrade > div{
+  display: flex;
+  align-items: center;
+}
+
+.x-trade{
+  width: 15px;
+  height: 15px;
+  aspect-ratio: 1/1;
+  margin: 0 5px;
+}
+
+.trade-name{
+  position: absolute;
+  top: 5px;
 }
 
 .arrow-div{
