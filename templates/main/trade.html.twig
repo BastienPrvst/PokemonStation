@@ -23,7 +23,7 @@
                     </div>
                 {% else %}
                     <div class="not-choosen-trade">
-                        <img src="{{ asset('medias/images/elements/what.png') }}" alt="">
+                        <span>?</span>
                     </div>
 
                 {% endif %}
@@ -34,21 +34,23 @@
             <div class="poke-trade">
 
                 {% for poke in pokeAvailable1 %}
-
+                <div class="main-trade-bubble my-pokemon-trade" data-id="{{ poke.id }}">
                     <div class="poketrade">
-                        <p class="trade-name">{{ poke.pokemon.name|title|u.truncate(15, '...') }}</p>
-                        <div>
-                            <img class="mirror-x" src="{{ asset('medias/images/gifs/' ~ poke.pokemon.nameEn ~ '.gif') }}" alt="">
-                            <img class="x-trade" src="{{ asset('medias/images/elements/multiple.png') }}" alt="">
-
-                            {% if poke.shiny is true %}
-                                <p class="m-0">{{ poke.quantity }}</p>
-                            {% else %}
-                                <p class="m-0">{{ poke.quantity - 1 }}</p>
-                            {% endif %}
-                        </div>
-
+                        <p class="trade-name">{{ poke.pokemon.name|title|u.truncate(13, '...') }}</p>
+                        <img class="poketrade-gif mirror-x" src="{{ asset('medias/images/gifs/' ~ poke.pokemon.nameEn ~ '.gif') }}" alt="">
+                        {% if poke.shiny %} <img class="shiny-trade-symbol" src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt=""> {% endif %}
                     </div>
+
+                    <div class="number-trade">
+                        <img class="x-trade" src="{{ asset('medias/images/elements/multiple.png') }}" alt="">
+
+                        {% if poke.shiny is true %}
+                            <p class="m-0 yellow-text">{{ poke.quantity }}</p>
+                        {% else %}
+                            <p class="m-0 yellow-text">{{ poke.quantity - 1 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
 
                 {% endfor %}
 
@@ -56,7 +58,11 @@
         </section>
         
         
-        <div class="arrow-div my-auto">
+        <div class="arrow-div my-auto d-flex align-items-center flex-column">
+            <div class="d-flex align-items-center">
+                <span class="trade-price text-white">0</span>
+                <img class="coin-trade" src="{{ asset('medias/images/elements/coin-resized.png') }}" alt="">
+            </div>
             <img class="arrow-trade arrow-1" src="{{ asset('medias/images/elements/arrow.png') }}" alt="">
             <img class="arrow-trade arrow-2" src="{{ asset('medias/images/elements/arrow.png') }}" alt="">
         </div>
@@ -79,7 +85,7 @@
                 {% else %}
                     <div class="not-choosen-trade">
 
-                        <img src="{{ asset('medias/images/elements/what.png') }}" alt="">
+                        <span>?</span>
                     </div>
 
                 {% endif %}
@@ -91,19 +97,22 @@
             <div class="poke-trade">
 
                 {% for poke2 in pokeAvailable2 %}
-
-                    <div class="poketrade">
-                        <p class="trade-name">{{ poke2.pokemon.name|title|u.truncate(15, '...') }}</p>
-                        <div>
-                            <img src="{{ asset('medias/images/gifs/' ~ poke2.pokemon.nameEn ~ '.gif') }}" alt="">
-                            <img class="x-trade" class="m-0" src="{{ asset('medias/images/elements/multiple.png') }}" alt="">
-                            {% if poke2.shiny is true %}
-                                <p class="m-0">{{ poke2.quantity }}</p>
-                            {% else %}
-                                <p class="m-0">{{ poke2.quantity - 1 }}</p>
-                            {% endif %}
+                    <div class="main-trade-bubble">
+                        <div class="poketrade">
+                            <p class="trade-name">{{ poke2.pokemon.name|title|u.truncate(13, '...') }}</p>
+                            <img class="poketrade-gif" src="{{ asset('medias/images/gifs/' ~ poke2.pokemon.nameEn ~ '.gif') }}" alt="">
+                            {% if poke2.shiny %} <img class="shiny-trade-symbol" src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt=""> {% endif %}
                         </div>
 
+                        <div class="number-trade">
+                            <img class="x-trade" src="{{ asset('medias/images/elements/multiple.png') }}" alt="">
+
+                            {% if poke2.shiny is true %}
+                                <p class="m-0 yellow-text">{{ poke2.quantity }}</p>
+                            {% else %}
+                                <p class="m-0 yellow-text">{{ poke2.quantity - 1 }}</p>
+                            {% endif %}
+                        </div>
                     </div>
 
                 {% endfor %}
@@ -114,6 +123,10 @@
     </div>
 
 
+
+    {% block js %}
+        <script type="module" src="{{ asset('js/trade.js') }}?version=1.0"></script>
+    {% endblock %}
 
 
 

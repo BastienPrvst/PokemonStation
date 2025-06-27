@@ -104,13 +104,11 @@ class AddGenCommand extends Command
 
                     $pokemonResponse = $httpClient->request('GET', $filtered_variety->pokemon->url);
                     if ($pokemonResponse->getStatusCode() !== 200) {
-                        error_log("Erreur HTTP sur {$filtered_variety->pokemon->url}");
                         continue;
                     }
 
                     $pokemonFormResponse = $httpClient->request('GET', "{$this->apiUrl}/pokemon-form/{$name}");
                     if ($pokemonFormResponse->getStatusCode() !== 200) {
-                        error_log("Erreur HTTP sur {$this->apiUrl}/pokemon-form/{$name}");
                         continue;
                     }
 
@@ -122,7 +120,6 @@ class AddGenCommand extends Command
                     \JsonException |
                     TransportExceptionInterface $e
                 ) {
-                    error_log($e->getMessage());
                     $this->skipArray[] = $name;
                     continue;
                 }

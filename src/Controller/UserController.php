@@ -190,8 +190,29 @@ class UserController extends AbstractController
 			return $this->redirectToRoute('app_home');
 		}
 
+	    $rarityScale = [
+		    'UR' => 1,
+		    'EX' => 2,
+		    'SR' => 3,
+		    'GMAX' => 4,
+		    'ME' => 5,
+		    'TR' => 6,
+		    'R' => 7,
+		    'PC' => 8,
+		    'C' => 9,
+	    ];
+
 		$availableUser1 = $this->cpRepository->findTradeable($connectedUser);
+
+		usort($availableUser1, static function ($a, $b) use ($rarityScale) {
+			return $rarityScale[$a->getPokemon()->getRarity()] <=> $rarityScale[$b->getPokemon()->getRarity()];
+		});
+
 		$availableUser2 = $this->cpRepository->findInteressting($user, $connectedUser);
+
+	    usort($availableUser2, static function ($a, $b) use ($rarityScale) {
+		    return $rarityScale[$a->getPokemon()->getRarity()] <=> $rarityScale[$b->getPokemon()->getRarity()];
+	    });
 
 		return $this->render('main/trade.html.twig', [
 			'user' => $user,

@@ -10,10 +10,6 @@ use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
  */
 final class UserFactory extends PersistentProxyObjectFactory
 {
-    public function __construct()
-    {
-    }
-
     public static function class(): string
     {
         return User::class;
