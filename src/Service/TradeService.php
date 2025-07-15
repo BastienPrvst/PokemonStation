@@ -78,7 +78,7 @@ class TradeService
      * @param CapturedPokemon $pokemon
      * @return array
      */
-    public function update(Trade $trade, User $user, CapturedPokemon $pokemon): array|JsonResponse
+    public function update(Trade $trade, User $user, CapturedPokemon $pokemon): JsonResponse
     {
         if ($user !== $trade->getUser1() && $user !== $trade->getUser2()) {
             return new JsonResponse(
@@ -90,17 +90,17 @@ class TradeService
         }
 
         if ($user === $trade->getUser1()) {
-            $trade->setTradePoke1($pokemon);
+            $trade->setPokemonTrade1($pokemon);
         } else {
-            $trade->setTradePoke2($pokemon);
+            $trade->setPokemonTrade2($pokemon);
         }
 
 		$price = $this->calculatePrice($trade);
 
-        return [
+		return new JsonResponse([
 			'price' => $price,
-	        'trade' => $trade,
-        ];
+			'trade' => $trade,
+		], Response::HTTP_OK, [], false);
     }
 
     /**
@@ -115,19 +115,19 @@ class TradeService
         /* @var User $user2 */
         $user2 = $trade->getUser2();
         /* @var CapturedPokemon $cp1 */
-        $cp1 = $trade->getTradePoke1();
+        $cp1 = $trade->getPokemonTrade1();
         /* @var CapturedPokemon $cp2 */
-        $cp2 = $trade->getTradePoke2();
+        $cp2 = $trade->getPokemonTrade2();
 
         if ($user === $user1) {
-            $trade->setUser1Status(1);
+            $trade->setUser1Status(TradeUserStatus::ACCEPTED);
         } else {
-            $trade->setUser2Status(1);
+            $trade->setUser2Status(TradeUserStatus::ACCEPTED);
         }
 
         $price = $this->calculatePrice($trade);
 
-        if ($trade->getUser1Status() === 0 || $trade->getUser2Status() === 0) {
+        if ($trade->getUser1Status() === TradeUserStatus::ONGOING || $trade->getUser2Status() === TradeUserStatus::ONGOING) {
             return $trade;
         }
 

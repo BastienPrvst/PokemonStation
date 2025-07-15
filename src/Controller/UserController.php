@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\CapturedPokemon;
+use App\Entity\Trade;
 use App\Entity\User;
 use App\Form\EditModifyProfilFormType;
 use App\Repository\CapturedPokemonRepository;
@@ -11,10 +12,11 @@ use App\Service\TradeService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UserController extends AbstractController
@@ -179,16 +181,13 @@ class UserController extends AbstractController
     #[Route(path: '/trade/{id}', name: 'app_trade_create')]
     public function createTrade(User $user): Response
     {
+	    /* @var User $connectedUser */
         $connectedUser = $this->getUser();
         if ($user === $connectedUser) {
             return new Response('Vous ne pouvez pas faire d\'échange avec vous même.', Response::HTTP_BAD_REQUEST);
         }
 
-		if ($connectedUser instanceof User) {
-			$trade = $this->tradeService->create($connectedUser, $user);
-		} else {
-			return $this->redirectToRoute('app_home');
-		}
+		$trade = $this->tradeService->create($connectedUser, $user);
 
 	    $rarityScale = [
 		    'UR' => 1,
@@ -221,4 +220,29 @@ class UserController extends AbstractController
 			'pokeAvailable2' => $availableUser2,
 		]);
     }
+
+	#[Route(path: '/trade/update/{trade}', name: 'app_trade_update')]
+	public function updateTrade(Trade $trade, Request $request): JsonResponse
+	{
+		$pokemonId = $request->request->get('pokemonId');
+		/* @var CapturedPokemon $capturedPokemon */
+		$capturedPokemon = $this->cpRepository->find($pokemonId);
+		if (
+            !$capturedPokemon ||
+			$capturedPokemon->getQuantity() <= 1 || $capturedPokemon->getOwner() !== $this->getUser()
+        ) {
+			return new JsonResponse([
+				'error' => 'Impossible de valider ce Pokémon',
+			], Response::HTTP_BAD_REQUEST, [], false);
+		}
+
+		/* @var User $user */
+		$user = $this->getUser();
+		$tradeService = $this->tradeService;
+		$result = $tradeService->update($trade, $user, $capturedPokemon);
+
+		return new JsonResponse([
+			'result' => $result,
+		], Response::HTTP_OK, [], true);
+	}
 }

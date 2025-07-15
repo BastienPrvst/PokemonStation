@@ -17,16 +17,17 @@
                     <img class="mirror-x" src="{{ asset('medias/images/trainers/' ~ app.user.avatar ~ '.gif') }}" alt="">
                 </div>
 
-                {% if trade.pokemonTrade1 %}
-                    <div class="choosen-trade-poke">
-                        <img class="mirror-x" src="{{ asset('medias/images/gifs/' ~ trade.pokemonTrade1.pokemon.nameEn ~ '.gif') }}" alt="">
-                    </div>
-                {% else %}
-                    <div class="not-choosen-trade">
-                        <span>?</span>
-                    </div>
+                <div class="not-choosen-trade">
+                    <span class="not-1">?</span>
+                    {% if trade.pokemonTrade1 %}
+                        <img class="d-none choose-1" src="{{ asset('medias/images/gifs/' ~ trade.pokemonTrade1.pokemon.nameEn ~ '.gif') }}" alt="">
+                    {% else %}
+                        <img class="d-none choose-1" src="" alt="">
+                    {% endif %}
+                </div>
 
-                {% endif %}
+                <button class="btn-success trade-v"><a href="{{ path('app_trade_update', { trade: trade.id }) }}">Valider</a></button>
+
             </div>
 
             <h2 class="trade-title">Vos Pokémons echangables</h2>
@@ -66,8 +67,10 @@
             <img class="arrow-trade arrow-1" src="{{ asset('medias/images/elements/arrow.png') }}" alt="">
             <img class="arrow-trade arrow-2" src="{{ asset('medias/images/elements/arrow.png') }}" alt="">
         </div>
-        
-        
+
+
+
+
 
         <section class="user-part trade-2">
 
@@ -77,18 +80,14 @@
                     <img src="{{ asset('medias/images/trainers/' ~ user.avatar ~ '.gif') }}" alt="">
                 </div>
 
-                {% if trade.pokemonTrade2 %}
-                    <div class="choosen-trade-poke">
-
-                        <img src="{{ asset('medias/images/gifs/' ~ trade.pokemonTrade2.pokemon.nameEn ~ '.gif') }}" alt="">
-                    </div>
-                {% else %}
-                    <div class="not-choosen-trade">
-
-                        <span>?</span>
-                    </div>
-
-                {% endif %}
+                <div class="not-choosen-trade">
+                    <span class="not-2">?</span>
+                    {% if trade.pokemonTrade2 %}
+                        <img class="d-none choose-2" src="{{ asset('medias/images/gifs/' ~ trade.pokemonTrade2.pokemon.nameEn ~ '.gif') }}" alt="">
+                    {% else %}
+                        <img class="d-none choose-2" src="" alt="">
+                    {% endif %}
+                </div>
 
             </div>
 
@@ -122,9 +121,9 @@
         </section>
     </div>
 
-
-
     {% block js %}
+        <script src="http://localhost:4000/socket.io/socket.io.js"></script>
+        <script>window.updateUrl = '{{ url('app_trade_update', {trade:trade.id}) }}'</script>
         <script type="module" src="{{ asset('js/trade.js') }}?version=1.0"></script>
     {% endblock %}
 
