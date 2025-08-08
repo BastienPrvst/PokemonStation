@@ -260,7 +260,7 @@ document
               }
             }
 
-            if (["UR", "SR"].includes(pokemon.rarity) || raRand >= 999) {
+            if (["UR"].includes(pokemon.rarity)) {
               tl.to(
                 ".logo-oh",
                 {

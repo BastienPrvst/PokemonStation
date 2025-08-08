@@ -41,20 +41,20 @@ let validateButton = document.querySelector('.trade-v');
 
 validateButton.addEventListener('click', (event) => {
     let pokemonId = document.querySelector('.choose-1').dataset.id;
-    let postData = new FormData();
-    let updateUrl = fetch(window.updateUrl)
-    postData.append('pokemonId', pokemonId);
-
-    fetch(updateUrl,{
+    let formData = new FormData();
+    formData.append('pokemonId', pokemonId);
+    fetch(window.tradeUpdateUrl,{
         method: 'POST',
-        body: postData,
+        body: formData,
     })
         .then((response) => response.json())
         .then((data) => {
             console.log(data)
         })
         .catch((error) => {
+            console.log(error)
         })
+
 })
 
 

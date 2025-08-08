@@ -95,6 +95,9 @@ class TradeService
             $trade->setPokemonTrade2($pokemon);
         }
 
+		$this->entityManager->persist($trade);
+		$this->entityManager->flush();
+
 		$price = $this->calculatePrice($trade);
 
 		return new JsonResponse([
@@ -239,8 +242,8 @@ class TradeService
 			'UR'   => 5000,
 		];
 
-		$rarity1 = $trade->getTradePoke1()?->getRarity() ?? '';
-		$rarity2 = $trade->getTradePoke2()?->getRarity() ?? '';
+		$rarity1 = $trade->getPokemonTrade1()?->getPokemon()?->getRarity() ?? '';
+		$rarity2 = $trade->getPokemonTrade2()?->getPokemon()?->getRarity() ?? '';
 
 		$price1 = $prices[$rarity1] ?? 0;
 		$price2 = $prices[$rarity2] ?? 0;
