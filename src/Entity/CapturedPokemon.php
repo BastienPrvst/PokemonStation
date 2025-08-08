@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CapturedPokemonRepository::class)]
 class CapturedPokemon
@@ -14,23 +15,29 @@ class CapturedPokemon
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["getTrade"])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'capturedPokemon')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["getTrade"])]
     private ?User $owner = null;
 
     #[ORM\ManyToOne(fetch: "EAGER", inversedBy: 'capturedPokemon')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["getTrade"])]
     private ?Pokemon $pokemon = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(["getTrade"])]
     private ?\DateTimeInterface $captureDate = null;
 
     #[ORM\Column]
+    #[Groups(["getTrade"])]
     private ?bool $shiny = null;
 
     #[ORM\Column]
+    #[Groups(["getTrade"])]
     private ?int $timesCaptured = null;
 
     /**

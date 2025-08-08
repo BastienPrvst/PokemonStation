@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 
 final class TradeController extends AbstractController
 {
@@ -31,7 +32,6 @@ final class TradeController extends AbstractController
 		}
 
 		$trade = $this->tradeService->create($connectedUser, $user);
-
 		$rarityScale = [
 			'UR' => 1,
 			'EX' => 2,
@@ -64,6 +64,9 @@ final class TradeController extends AbstractController
 		]);
 	}
 
+	/**
+	 * @throws ExceptionInterface
+	 */
 	#[Route(path: '/trade/update/{trade}', name: 'app_trade_update', methods: ['POST'])]
 	public function updateTrade(Trade $trade, Request $request): JsonResponse
 	{
@@ -75,21 +78,21 @@ final class TradeController extends AbstractController
 		/* @var CapturedPokemon $capturedPokemon */
 		$capturedPokemon = $this->cpRepository->find($pokeId);
 		if (
-			!$capturedPokemon ||
-			$capturedPokemon->getQuantity() <= 1 || $capturedPokemon->getOwner() !== $user
-		) {
+            !$capturedPokemon ||
+            $capturedPokemon->getOwner() !== $user
+        ) {
 			return new JsonResponse([
 				'error' => 'Impossible de valider ce Pokémon',
 			], Response::HTTP_BAD_REQUEST, [], false);
 		}
-		$tradeService = $this->tradeService;
-		$result = $tradeService->update($trade, $user, $capturedPokemon);
 
-		return new JsonResponse(
-			$result,
-            Response::HTTP_OK,
-            [],
-            true
-        );
+		if (
+			$capturedPokemon->getShiny() === false && $capturedPokemon->getQuantity() <= 1
+		) {
+			return new JsonResponse([
+				'error' => 'Quantité du Pokémon insuffisant.',
+			], Response::HTTP_BAD_REQUEST, [], false);
+		}
+		return $this->tradeService->update($trade, $user, $capturedPokemon);
 	}
 }

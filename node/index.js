@@ -20,6 +20,10 @@ io.sockets.on('connection', (socket) => {
         console.log(pokemon)
         socket.to('tradeRoom').emit('changeOtherPokemon', pokemon);
     })
+
+    socket.on('validatePokemon', () => {
+        socket.to('tradeRoom').emit('validatePokemonFromOther');
+    });
 })
 
 httpServer.listen(4000,() => {

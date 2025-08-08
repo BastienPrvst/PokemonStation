@@ -16,7 +16,12 @@ socket.on("connect", () => {
             let pokemonId = button.getAttribute('data-id');
             pokemon.id = parseInt(pokemonId);
             pokemon.img = button.firstElementChild.children[1].src;
-            document.querySelector('.not-1').classList.add('d-none');
+            const el = document.querySelector('.not-1');
+            if (el) {
+                el.classList.add('d-none');
+            }
+            document.querySelector('.select-trade-1').classList.remove
+            ('validate-pokemon');
             let image = document.querySelector('.choose-1');
             image.classList.remove('d-none');
             image.src = pokemon.img;
@@ -29,12 +34,15 @@ socket.on("connect", () => {
 });
 
 socket.on('changeOtherPokemon', (pokemon) => {
-    document.querySelector('.not-2').classList.add('d-none');
+    const el = document.querySelector('.not-2');
+    if (el) {
+        el.classList.add('d-none');
+    }
     let imageToChange = document.querySelector('.choose-2');
     imageToChange.classList.remove('d-none');
     imageToChange.src = pokemon.img;
     imageToChange.dataset.id = pokemon.id;
-    console.log(pokemon)
+    document.querySelector('.select-trade-2').classList.remove('validate-pokemon');
 });
 
 let validateButton = document.querySelector('.trade-v');
@@ -43,18 +51,24 @@ validateButton.addEventListener('click', (event) => {
     let pokemonId = document.querySelector('.choose-1').dataset.id;
     let formData = new FormData();
     formData.append('pokemonId', pokemonId);
-    fetch(window.tradeUpdateUrl,{
+    fetch(tradeUpdateUrl,{
         method: 'POST',
         body: formData,
     })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data)
+            document.querySelector('.select-trade').classList.add
+            ('validate-pokemon');
+            socket.emit('validatePokemon');
         })
         .catch((error) => {
             console.log(error)
         })
 
+})
+
+socket.on('validatePokemonFromOther', () => {
+    document.querySelector('.select-trade-2').classList.add('validate-pokemon');
 })
 
 

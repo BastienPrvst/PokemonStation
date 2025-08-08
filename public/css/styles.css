@@ -3723,7 +3723,7 @@ tfoot tr td {
   font-size: 28px;
 }
 
-.not-choosen-trade {
+.select-trade {
   width: 150px;
   height: 150px;
   background-color: #666666;
@@ -3734,7 +3734,12 @@ tfoot tr td {
   border: #333333 solid 3px;
   box-shadow: #333333 2px 2px 2px;
 }
-.not-choosen-trade span {
+
+.validate-pokemon{
+  background-color: darkseagreen;
+}
+
+.select-trade span {
   color: #333333;
   font-weight: bold;
   font-size: 150px;

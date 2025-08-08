@@ -11,8 +11,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Lock\LockFactory;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
-class TradeService
+readonly class TradeService
 {
     /**
      * @param EntityManagerInterface $entityManager
@@ -39,8 +41,9 @@ class TradeService
      * Pour les shiny, c'est 2000 pour chaque rareté si ME ou + 8000
      */
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly LockFactory $lockFactory,
+        private EntityManagerInterface $entityManager,
+        private LockFactory            $lockFactory,
+	    private SerializerInterface    $serializer,
     ) {
     }
 
@@ -72,12 +75,13 @@ class TradeService
         return $trade;
     }
 
-    /**
-     * @param Trade $trade
-     * @param User $user
-     * @param CapturedPokemon $pokemon
-     * @return array
-     */
+	/**
+	 * @param Trade $trade
+	 * @param User $user
+	 * @param CapturedPokemon $pokemon
+	 * @return JsonResponse
+	 * @throws ExceptionInterface
+	 */
     public function update(Trade $trade, User $user, CapturedPokemon $pokemon): JsonResponse
     {
         if ($user !== $trade->getUser1() && $user !== $trade->getUser2()) {
@@ -91,19 +95,23 @@ class TradeService
 
         if ($user === $trade->getUser1()) {
             $trade->setPokemonTrade1($pokemon);
+			$trade->setUser1Status(TradeUserStatus::ACCEPTED);
         } else {
             $trade->setPokemonTrade2($pokemon);
+	        $trade->setUser2Status(TradeUserStatus::ACCEPTED);
         }
 
 		$this->entityManager->persist($trade);
 		$this->entityManager->flush();
-
 		$price = $this->calculatePrice($trade);
+	    $data = [
+		    'price' => $price,
+		    'trade' => $trade,
+	    ];
 
-		return new JsonResponse([
-			'price' => $price,
-			'trade' => $trade,
-		], Response::HTTP_OK, [], false);
+	    $json = $this->serializer->serialize($data, 'json', ['groups' => 'getTrade']);
+
+	    return new JsonResponse($json, Response::HTTP_OK, [], true);
     }
 
     /**

@@ -6,6 +6,7 @@ use App\Repository\PokemonRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PokemonRepository::class)]
 class Pokemon
@@ -35,29 +36,37 @@ class Pokemon
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["getTrade"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Groups(["getTrade"])]
     private ?string $name = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(["getTrade"])]
     private ?string $type = null;
     #[ORM\Column(length: 50, nullable: true)]
+    #[Groups(["getTrade"])]
     private ?string $type2 = null;
 
     #[ORM\Column(length: 5000)]
+    #[Groups(["getTrade"])]
     private ?string $description = null;
 
     #[ORM\OneToMany(mappedBy: 'pokemon', targetEntity: CapturedPokemon::class, fetch: 'EAGER', orphanRemoval: true)]
     private Collection $capturedPokemon;
 
     #[ORM\Column(length: 50)]
+    #[Groups(["getTrade"])]
     private ?string $name_en = null;
 
     #[ORM\Column(length: 30)]
+    #[Groups(["getTrade"])]
     private ?string $rarity = null;
 
     #[ORM\Column]
+    #[Groups(["getTrade"])]
     private ?int $pokeId = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, cascade: ['persist'], inversedBy: 'relatedPokemon')]
@@ -71,24 +80,10 @@ class Pokemon
     #[ORM\JoinColumn(nullable: false)]
     private ?Generation $gen = null;
 
-    /**
-     * @var Collection<int, Trade>
-     */
-    #[ORM\OneToMany(mappedBy: 'pokemon1', targetEntity: Trade::class, orphanRemoval: true)]
-    private Collection $tradePoke1;
-
-    /**
-     * @var Collection<int, Trade>
-     */
-    #[ORM\OneToMany(mappedBy: 'pokemon2', targetEntity: Trade::class)]
-    private Collection $pokemon2;
-
     public function __construct()
     {
         $this->capturedPokemon = new ArrayCollection();
         $this->relatedPokemon = new ArrayCollection();
-        $this->tradePoke1 = new ArrayCollection();
-        $this->pokemon2 = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -262,65 +257,4 @@ class Pokemon
 
         return $this;
     }
-
-    /**
-     * @return Collection<int, Trade>
-     */
-    public function getTradePoke1(): Collection
-    {
-        return $this->tradePoke1;
-    }
-
-    public function addTradePoke1(Trade $tradePoke1): static
-    {
-        if (!$this->tradePoke1->contains($tradePoke1)) {
-            $this->tradePoke1->add($tradePoke1);
-            $tradePoke1->setPokemon1($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTradePoke1(Trade $tradePoke1): static
-    {
-        if ($this->tradePoke1->removeElement($tradePoke1)) {
-            // set the owning side to null (unless already changed)
-            if ($tradePoke1->getPokemon1() === $this) {
-                $tradePoke1->setPokemon1(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Trade>
-     */
-    public function getPokemon2(): Collection
-    {
-        return $this->pokemon2;
-    }
-
-    public function addPokemon2(Trade $pokemon2): static
-    {
-        if (!$this->pokemon2->contains($pokemon2)) {
-            $this->pokemon2->add($pokemon2);
-            $pokemon2->setPokemon2($this);
-        }
-
-        return $this;
-    }
-
-    public function removePokemon2(Trade $pokemon2): static
-    {
-        if ($this->pokemon2->removeElement($pokemon2)) {
-            // set the owning side to null (unless already changed)
-            if ($pokemon2->getPokemon2() === $this) {
-                $pokemon2->setPokemon2(null);
-            }
-        }
-
-        return $this;
-    }
-
 }

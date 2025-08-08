@@ -6,6 +6,7 @@ use App\Enum\TradeStatus;
 use App\Enum\TradeUserStatus;
 use App\Repository\TradeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: TradeRepository::class)]
 class Trade
@@ -13,29 +14,37 @@ class Trade
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["getTrade"])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'initiatedTrade')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["getTrade"])]
     private ?User $user1 = null;
 
     #[ORM\ManyToOne(inversedBy: 'receivedTrade')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["getTrade"])]
     private ?User $user2 = null;
 
     #[ORM\Column]
+    #[Groups(["getTrade"])]
     private TradeStatus $status = TradeStatus::CREATED;
 
     #[ORM\Column]
+    #[Groups(["getTrade"])]
     private TradeUserStatus $user1Status = TradeUserStatus::ONGOING;
 
     #[ORM\Column]
+    #[Groups(["getTrade"])]
     private TradeUserStatus $user2Status = TradeUserStatus::ONGOING;
 
     #[ORM\ManyToOne(inversedBy: 'pokeTrade1')]
+    #[Groups(["getTrade"])]
     private ?CapturedPokemon $pokemonTrade1 = null;
 
     #[ORM\ManyToOne(inversedBy: 'pokeTrade2')]
+    #[Groups(["getTrade"])]
     private ?CapturedPokemon $pokemonTrade2 = null;
 
     public function getId(): ?int
