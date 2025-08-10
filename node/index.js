@@ -21,8 +21,8 @@ io.sockets.on('connection', (socket) => {
         socket.to('tradeRoom').emit('changeOtherPokemon', pokemon);
     })
 
-    socket.on('validatePokemon', () => {
-        socket.to('tradeRoom').emit('validatePokemonFromOther');
+    socket.on('validatePokemon', (price) => {
+        socket.to('tradeRoom').emit('validatePokemonFromOther', price);
     });
 })
 

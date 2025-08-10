@@ -59,7 +59,9 @@ validateButton.addEventListener('click', (event) => {
         .then((data) => {
             document.querySelector('.select-trade').classList.add
             ('validate-pokemon');
-            socket.emit('validatePokemon');
+            let price = data.price;
+            document.querySelector('.trade-price').textContent = data.price;
+            socket.emit('validatePokemon', price);
         })
         .catch((error) => {
             console.log(error)
@@ -67,8 +69,8 @@ validateButton.addEventListener('click', (event) => {
 
 })
 
-socket.on('validatePokemonFromOther', () => {
-    document.querySelector('.select-trade-2').classList.add('validate-pokemon');
+socket.on('validatePokemonFromOther', (price) => {
+    document.querySelector('.select-trade-2').classList.add('validate-pokemon');document.querySelector('.trade-price').textContent = price;
 })
 
 

@@ -47,6 +47,9 @@ class Trade
     #[Groups(["getTrade"])]
     private ?CapturedPokemon $pokemonTrade2 = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $price = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -132,6 +135,18 @@ class Trade
     public function setPokemonTrade2(?CapturedPokemon $pokemonTrade2): static
     {
         $this->pokemonTrade2 = $pokemonTrade2;
+
+        return $this;
+    }
+
+    public function getPrice(): ?int
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?int $price): static
+    {
+        $this->price = $price;
 
         return $this;
     }

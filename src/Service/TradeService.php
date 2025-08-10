@@ -42,8 +42,8 @@ readonly class TradeService
      */
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private LockFactory            $lockFactory,
-	    private SerializerInterface    $serializer,
+        private LockFactory $lockFactory,
+	    private SerializerInterface $serializer,
     ) {
     }
 
@@ -68,7 +68,8 @@ readonly class TradeService
             ->setUser2($user2)
             ->setStatus(TradeStatus::CREATED)
 			->setUser1Status(TradeUserStatus::ONGOING)
-	        ->setUser2Status(TradeUserStatus::ONGOING);
+	        ->setUser2Status(TradeUserStatus::ONGOING)
+            ->setPrice(0);
 
         $this->entityManager->persist($trade);
         $this->entityManager->flush();
@@ -93,17 +94,28 @@ readonly class TradeService
             );
         }
 
-        if ($user === $trade->getUser1()) {
-            $trade->setPokemonTrade1($pokemon);
-			$trade->setUser1Status(TradeUserStatus::ACCEPTED);
-        } else {
-            $trade->setPokemonTrade2($pokemon);
-	        $trade->setUser2Status(TradeUserStatus::ACCEPTED);
-        }
+	    $lock = $this->lockFactory->createLock('TradeValidateLock_' . $trade->getId());
+
+	    if (!$lock->acquire()) {
+		    return new JsonResponse(['error' => 'Trade déjà en cours de traitement'], 423);
+	    }
+
+	    try {
+			if ($user === $trade->getUser1()) {
+                $trade->setPokemonTrade1($pokemon);
+                $trade->setUser1Status(TradeUserStatus::VALIDATED);
+		    } else {
+			    $trade->setPokemonTrade2($pokemon);
+			    $trade->setUser2Status(TradeUserStatus::VALIDATED);
+		    }
+		    $price = $this->calculatePrice($trade);
+		    $trade->setPrice($price);
+	    } finally {
+		    $lock->release();
+	    }
 
 		$this->entityManager->persist($trade);
 		$this->entityManager->flush();
-		$price = $this->calculatePrice($trade);
 	    $data = [
 		    'price' => $price,
 		    'trade' => $trade,
@@ -255,6 +267,9 @@ readonly class TradeService
 
 		$price1 = $prices[$rarity1] ?? 0;
 		$price2 = $prices[$rarity2] ?? 0;
+
+		$price1 *= ($trade->getPokemonTrade1()?->getShiny() ? 5 : 1);
+		$price2 *= ($trade->getPokemonTrade2()?->getShiny() ? 5 : 1);
 
 		return max($price1, $price2);
 	}
