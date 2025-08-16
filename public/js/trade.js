@@ -73,12 +73,16 @@ socket.on('validatePokemonFromOther', (price) => {
     document.querySelector('.select-trade-2').classList.add('validate-pokemon');document.querySelector('.trade-price').textContent = price;
 })
 
+
+// let validateTrade = document.querySelector('.trade-c');
+// validateTrade.addEventListener('click', (event) => {
+//
+// })
+
 //Partie filtre
 
-
-let activeFilters = [];
 function filterTrade(filtersB, classToFilter) {
-
+    let activeFilters = [];
     let pokemonToFilter = document.querySelectorAll(classToFilter);
 
     filtersB.forEach(button => {
