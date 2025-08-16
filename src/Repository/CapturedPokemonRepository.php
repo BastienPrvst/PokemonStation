@@ -7,6 +7,7 @@ use App\Entity\Pokemon;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+
 use function Doctrine\ORM\QueryBuilder;
 
 /**
@@ -190,7 +191,7 @@ class CapturedPokemonRepository extends ServiceEntityRepository
 	{
 		return $this->createQueryBuilder('cp')
 			->where('cp.owner = :user AND cp.quantity > 1')
-			->orWhere('cp.owner = :user AND cp.shiny = true')
+			->orWhere('cp.owner = :user AND cp.shiny = true AND cp.timesCaptured > 0')
 			->setParameter('user', $user)
 			->getQuery()
 			->getResult();
@@ -201,7 +202,7 @@ class CapturedPokemonRepository extends ServiceEntityRepository
 		return $this->createQueryBuilder('cp')
 			->where('cp.owner = :user')
 			->andWhere('
-            (cp.shiny = true)
+            (cp.shiny = true AND cp.timesCaptured > 0)
             OR
             (cp.shiny = false AND cp.quantity > 1 AND cp.pokemon NOT IN (
                     SELECT p3.id
@@ -225,6 +226,5 @@ class CapturedPokemonRepository extends ServiceEntityRepository
 			])
 			->getQuery()
 			->getResult();
-
 	}
 }

@@ -73,4 +73,72 @@ socket.on('validatePokemonFromOther', (price) => {
     document.querySelector('.select-trade-2').classList.add('validate-pokemon');document.querySelector('.trade-price').textContent = price;
 })
 
+//Partie filtre
+
+
+let activeFilters = [];
+function filterTrade(filtersB, classToFilter) {
+
+    let pokemonToFilter = document.querySelectorAll(classToFilter);
+
+    filtersB.forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.target.classList.toggle('checked-filter');
+            let filterValue = event.target.textContent;
+
+            if (event.target.classList.contains('checked-filter')) {
+                if (!activeFilters.includes(filterValue)) {
+                    activeFilters.push(filterValue);
+                }
+            } else {
+                activeFilters = activeFilters.filter(f => f !== filterValue);
+            }
+
+            pokemonToFilter.forEach((poke) =>{
+                poke.classList.add('hidden');
+            })
+
+            if (activeFilters.length === 1 && activeFilters.includes('Shiny')){
+                document.querySelectorAll(`${classToFilter}[data-shiny="1"]`).forEach((item) => {
+                    item.classList.remove('hidden');
+                })
+            } else if (activeFilters.length > 0) {
+                activeFilters.forEach(filter => {
+
+                    if (filter === "Shiny") return;
+                    let filtersButtons;
+                    if (activeFilters.includes('Shiny')){
+                        filtersButtons = document.querySelectorAll(`${classToFilter}[data-filter="${filter}"][data-shiny="1"]`);
+
+                    }else{
+                        filtersButtons = document.querySelectorAll(`${classToFilter}[data-filter="${filter}"]`);
+                    }
+
+                    filtersButtons.forEach(button => {
+                        button.classList.remove('hidden');
+                    });
+                });
+                filtersButtons.forEach(button => {
+                    button.classList.remove('hidden');
+                })
+            }else{
+                pokemonToFilter.forEach(button => {
+                    button.classList.remove('hidden');
+                });
+            }
+        })
+    })
+}
+
+let filtersButtons = document.querySelectorAll('.filters button');
+let targetClass = '.my-pokemon-trade';
+
+filterTrade(filtersButtons, targetClass);
+
+let filterButtons2 = document.querySelectorAll('.filters-2 button');
+let allOtherPokemonsTrade = '.other-trade';
+
+filterTrade(filterButtons2, allOtherPokemonsTrade);
+
+
 

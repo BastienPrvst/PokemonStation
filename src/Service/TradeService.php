@@ -32,7 +32,6 @@ readonly class TradeService
      * Conditions:
      *
      * Uniquement si les deux usagers ont au minimum un pokemon de la rareté en double.
-     * Echanges rareté equivalente sauf shiny
      *
      * Prix pour les deux joueurs :
      *
@@ -150,7 +149,10 @@ readonly class TradeService
 
         $price = $this->calculatePrice($trade);
 
-        if ($trade->getUser1Status() === TradeUserStatus::ONGOING || $trade->getUser2Status() === TradeUserStatus::ONGOING) {
+        if (
+			$trade->getUser1Status() === TradeUserStatus::ONGOING ||
+			$trade->getUser2Status() === TradeUserStatus::ONGOING
+        ) {
             return $trade;
         }
 

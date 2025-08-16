@@ -4,7 +4,18 @@ manageSound();
 clickSound();
 
 let captureInProcess = false;
-const pokeballButton = document.querySelectorAll(".capture-poke-button");
+
+function autoCapture() {
+  let autoButton = document.querySelector(".auto-launch");
+  let countBalls = parseInt(document.querySelector('.carousel-item.active').lastElementChild.textContent, 10);
+
+  setTimeout(() => {
+    if (autoButton.checked && countBalls >= 1 && !captureInProcess) {
+      document.querySelector(".carousel-item.active .capture-poke-button").click();
+    }
+  }, 1000);
+
+}
 
 document
   .querySelector(".carousel-inner")
@@ -376,6 +387,7 @@ document
 
         setTimeout(() => {
           captureInProcess = false;
+          autoCapture()
         });
       }
     }
@@ -537,3 +549,6 @@ buyButton.addEventListener("click", function () {
       });
   }
 });
+
+
+

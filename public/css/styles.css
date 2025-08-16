@@ -3626,6 +3626,52 @@ tfoot tr td {
   border: solid #a62840 5px;
   margin: 2%;
 }
+
+.trade-head{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 240px;
+}
+
+.trade-head-2{
+  flex-direction: row-reverse;
+}
+
+.trade-window{
+  margin-top: 30px;
+}
+
+.filters,
+.filters-2{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.filters button,
+.filters-2 button{
+  background-color: #9f1239;
+  border: #ffcd00 2px solid;
+  border-radius: 15px;
+  width: 8%;
+  margin: 5px;
+}
+
+.filters button:hover,
+.filters-2 button:hover{
+  background-color: #3A8CD6;
+  color: white;
+}
+
+.checked-filter{
+  background-color: red !important;
+  color: white !important;
+}
+
 .user-part * {
   color: white;
 }
@@ -3733,6 +3779,7 @@ tfoot tr td {
   border-radius: 15px;
   border: #333333 solid 3px;
   box-shadow: #333333 2px 2px 2px;
+  overflow: hidden;
 }
 
 .validate-pokemon{
@@ -3762,5 +3809,9 @@ tfoot tr td {
 .coin-trade{
   width: 10px;
   margin-left: 10px;
+}
+
+.hidden{
+  display: none;
 }
 
