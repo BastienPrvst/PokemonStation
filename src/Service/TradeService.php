@@ -57,9 +57,15 @@ readonly class TradeService
 		$tradeRepo = $this->entityManager->getRepository(Trade::class);
 
 		$tradeAlreadyExist = $tradeRepo->tradeExist($user1, $user2);
-		if ($tradeAlreadyExist !== null) {
-			return $tradeAlreadyExist;
-		}
+	    if (
+		    $tradeAlreadyExist !== null
+		    && (
+			    $tradeAlreadyExist->getStatus() === TradeStatus::CREATED
+			    || $tradeAlreadyExist->getStatus() === TradeStatus::ONGOING
+		    )
+	    ) {
+		    return $tradeAlreadyExist;
+	    }
 
         $trade = new Trade();
         $trade
@@ -93,6 +99,8 @@ readonly class TradeService
             );
         }
 
+		$trade->setStatus(TradeStatus::ONGOING);
+
 	    $lock = $this->lockFactory->createLock('TradeValidateLock_' . $trade->getId());
 
 	    if (!$lock->acquire()) {
@@ -103,9 +111,15 @@ readonly class TradeService
 			if ($user === $trade->getUser1()) {
                 $trade->setPokemonTrade1($pokemon);
                 $trade->setUser1Status(TradeUserStatus::VALIDATED);
+				if ($trade->getUser2Status() === TradeUserStatus::ACCEPTED) {
+					$trade->setUser2Status(TradeUserStatus::VALIDATED);
+				}
 		    } else {
 			    $trade->setPokemonTrade2($pokemon);
 			    $trade->setUser2Status(TradeUserStatus::VALIDATED);
+				if ($trade->getUser1Status() === TradeUserStatus::ACCEPTED) {
+					$trade->setUser1Status(TradeUserStatus::VALIDATED);
+				}
 		    }
 		    $price = $this->calculatePrice($trade);
 		    $trade->setPrice($price);
@@ -125,12 +139,12 @@ readonly class TradeService
 	    return new JsonResponse($json, Response::HTTP_OK, [], true);
     }
 
-    /**
-     * @param Trade $trade
-     * @param User $user
-     * @return Trade|JsonResponse
-     */
-    public function validate(Trade $trade, User $user): Trade|JsonResponse
+	/**
+	 * @param Trade $trade
+	 * @param User $user
+	 * @return JsonResponse
+	 */
+    public function validate(Trade $trade, User $user): JsonResponse
     {
         /* @var User $user1 */
         $user1 = $trade->getUser1();
@@ -147,13 +161,21 @@ readonly class TradeService
             $trade->setUser2Status(TradeUserStatus::ACCEPTED);
         }
 
+		$this->entityManager->flush();
+
         $price = $this->calculatePrice($trade);
 
         if (
-			$trade->getUser1Status() === TradeUserStatus::ONGOING ||
-			$trade->getUser2Status() === TradeUserStatus::ONGOING
+			$trade->getUser1Status() !== TradeUserStatus::ACCEPTED ||
+			$trade->getUser2Status() !== TradeUserStatus::ACCEPTED
         ) {
-            return $trade;
+            return new JsonResponse(
+	            ['error' => 'Tous les Pokémons ne sont pas validés et acceptés.',
+				'validate' => false],
+                Response::HTTP_OK,
+                [],
+                false
+            );
         }
 
         $poorGuy = null;
@@ -166,9 +188,10 @@ readonly class TradeService
         if ($poorGuy) {
             return new JsonResponse(
                 [
-                    'erreur' => sprintf('L\'utilisateur %s ne dispose pas d\'assez d\'argent.', $poorGuy),
+                    'error' => sprintf('L\'utilisateur %s ne dispose pas d\'assez d\'argent.', $poorGuy),
+	                'validate' => false
                 ],
-                Response::HTTP_FORBIDDEN,
+                Response::HTTP_OK,
                 [],
                 false
             );
@@ -180,14 +203,14 @@ readonly class TradeService
         try {
             $capturedPokemonRepo = $this->entityManager->getRepository(CapturedPokemon::class);
 
-            $cp1->setTimesCaptured($cp1->getTimesCaptured() - 1);
+            $cp1->setQuantity($cp1->getQuantity() - 1);
             $cp1AlreadyExist = $capturedPokemonRepo->findOneBy(
                 [
                     'owner'   => $user2,
                     'pokemon' => $cp1->getPokemon(),
                 ]
             );
-            $cp2->setTimesCaptured($cp2->getTimesCaptured() - 1);
+            $cp2->setQuantity($cp2->getQuantity() - 1);
             $cp2AlreadyExist = $capturedPokemonRepo->findOneBy(
                 [
                     'owner'   => $user1,
@@ -204,11 +227,13 @@ readonly class TradeService
                     ->setOwner($user2)
                     ->setPokemon($cp1->getPokemon())
                     ->setCaptureDate(new \DateTime())
+	                ->setTimesCaptured(0)
+	                ->setQuantity(1)
                     ->setShiny($cp1->getShiny());
 
                 $this->entityManager->persist($poke);
             } else {
-                $cp1AlreadyExist->setTimesCaptured($cp1AlreadyExist->getTimesCaptured() + 1);
+                $cp1AlreadyExist->setQuantity(($cp1AlreadyExist->getQuantity() + 1));
             }
 
             if (!$cp2AlreadyExist) {
@@ -217,26 +242,31 @@ readonly class TradeService
                     ->setOwner($user1)
                     ->setPokemon($cp2->getPokemon())
                     ->setCaptureDate(new \DateTime())
+	                ->setTimesCaptured(0)
+	                ->setQuantity(1)
                     ->setShiny($cp2->getShiny());
 
                 $this->entityManager->persist($poke);
             } else {
-                $cp2AlreadyExist->setTimesCaptured($cp2AlreadyExist->getTimesCaptured() + 1);
+                $cp2AlreadyExist->setQuantity(($cp2AlreadyExist->getQuantity() + 1));
             }
 
-            $this->entityManager->flush();
             $trade->setStatus(TradeStatus::COMPLETED);
+            $this->entityManager->flush();
         } catch (\Exception $exception) {
             return new JsonResponse(
-                ['error' => 'Une erreur s\'est produite pendant la validation de l\'échange.'],
-                500,
+                ['error' => $exception->getMessage(),
+                'validate' => false
+                ],
+                Response::HTTP_INTERNAL_SERVER_ERROR,
                 [],
                 false
             );
         }
 
         $lock->release();
-        return $trade;
+
+		return new JsonResponse(['validate' => true], Response::HTTP_OK, [], false);
     }
 
 

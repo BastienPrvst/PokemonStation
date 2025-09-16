@@ -191,7 +191,7 @@ class CapturedPokemonRepository extends ServiceEntityRepository
 	{
 		return $this->createQueryBuilder('cp')
 			->where('cp.owner = :user AND cp.quantity > 1')
-			->orWhere('cp.owner = :user AND cp.shiny = true AND cp.timesCaptured > 0')
+			->orWhere('cp.owner = :user AND cp.shiny = true AND cp.quantity > 0')
 			->setParameter('user', $user)
 			->getQuery()
 			->getResult();
@@ -202,7 +202,7 @@ class CapturedPokemonRepository extends ServiceEntityRepository
 		return $this->createQueryBuilder('cp')
 			->where('cp.owner = :user')
 			->andWhere('
-            (cp.shiny = true AND cp.timesCaptured > 0)
+            (cp.shiny = true AND cp.quantity > 0)
             OR
             (cp.shiny = false AND cp.quantity > 1 AND cp.pokemon NOT IN (
                     SELECT p3.id
@@ -210,6 +210,7 @@ class CapturedPokemonRepository extends ServiceEntityRepository
                     JOIN cp3.pokemon p3
                     WHERE cp3.owner = :user
                     AND cp3.shiny = true
+                    AND cp3.quantity > 0
                 )
             )
         ')
@@ -219,6 +220,7 @@ class CapturedPokemonRepository extends ServiceEntityRepository
             JOIN cp2.pokemon p2
             WHERE cp2.owner = :connectedUser
             AND cp2.shiny = true
+            AND cp2.quantity > 0
         )')
 			->setParameters([
 				'user'           => $user,

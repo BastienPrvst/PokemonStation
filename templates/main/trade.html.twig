@@ -22,6 +22,7 @@
             <div class="trade-head">
                 <div class="d-flex flex-column align-items-center ">
                     <h2 class="text-white">{{ app.user.pseudonym|capitalize }}</h2>
+                    <div>{{ userActive.money }}<img class="coin-trade" src="{{ asset('medias/images/elements/coin-resized.png') }}" alt=""></div>
                     <img class="mirror-x" src="{{ asset('medias/images/trainers/' ~ app.user.avatar ~ '.gif') }}" alt="">
                 </div>
 
@@ -41,7 +42,7 @@
                     {% else %}
                         {% if trade.pokemonTrade2 is not null %}
                             <div class="select-trade select-trade-1 validate-pokemon">
-                                <img class="choose-1" src="{{ asset('medias/images/gifs/' ~ urlPokemon2 ~ '.gif') }}" alt="" data-id="{{ trade.pokemonTrade2.id }}">
+                                <img class="choose-1 mirror-x" src="{{ asset('medias/images/gifs/' ~ urlPokemon2 ~ '.gif') }}" alt="" data-id="{{ trade.pokemonTrade2.id }}">
                             </div>
                         {% else %}
                             <div class="select-trade select-trade-1">
@@ -51,7 +52,26 @@
                         {% endif %}
                     {% endif %}
 
-                <button class="btn-success trade-v">Valider</button>
+                    <div class="trade-buttons d-flex align-items-center justify-content-center">
+                        <button class="btn-success trade-v">Choisir ce Pokémon</button>
+
+                        {% if userActive == trade.user1 %}
+                            {% if trade.pokemonTrade1 is not null %}
+                                <button class="btn-success trade-c">Confirmer</button>
+                            {% else %}
+                                <button class="btn-success trade-c d-none">Confirmer</button>
+                            {% endif %}
+                        {% else %}
+                            {% if trade.pokemonTrade2 is not null %}
+                                <button class="btn-success trade-c">Confirmer</button>
+                            {% else %}
+                                <button class="btn-success trade-c d-none">Confirmer</button>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+
+
+
 
                 </div>
 
@@ -113,6 +133,7 @@
             <div class="trade-head trade-head-2">
                 <div class="d-flex align-items-center flex-column">
                     <h3 class="text-white">{{ user.pseudonym }}</h3>
+                    <div>{{ user.money }}<img class="coin-trade" src="{{ asset('medias/images/elements/coin-resized.png') }}" alt=""></div>
                     <img src="{{ asset('medias/images/trainers/' ~ user.avatar ~ '.gif') }}" alt="">
                 </div>
 
@@ -194,8 +215,9 @@
     {% block js %}
         <script>
             var tradeUpdateUrl = '{{ url('app_trade_update', {trade: trade.id}) }}';
+            var tradeValidateUrl = '{{ url('app_trade_validate', {trade: trade.id}) }}'
         </script>
-        <script type="module" src="{{ asset('js/trade.js') }}?version=1.0"></script>
+        <script type="module" src="{{ asset('js/trade.js') }}?version=1.1"></script>
         <script src="http://localhost:4000/socket.io/socket.io.js"></script>
     {% endblock %}
 

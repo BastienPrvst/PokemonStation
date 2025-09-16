@@ -120,12 +120,13 @@ class PokemonRepository extends ServiceEntityRepository
                 'p.relateTo IS NULL AND (
                     EXISTS (
                         SELECT 1 FROM App\Entity\CapturedPokemon cp1
-                        WHERE cp1.pokemon = p AND cp1.owner = :user
+                        WHERE cp1.pokemon = p AND cp1.owner = :user AND cp1.quantity > 0
                     )
                     OR EXISTS (
                         SELECT 1 FROM App\Entity\CapturedPokemon cp2
                         JOIN cp2.pokemon pAlt2
                         WHERE pAlt2.relateTo = p AND cp2.owner = :user
+                        AND cp2.quantity > 0
                     )
                 )
             '

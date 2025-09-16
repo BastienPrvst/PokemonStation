@@ -26,6 +26,7 @@ socket.on("connect", () => {
             image.classList.remove('d-none');
             image.src = pokemon.img;
             image.dataset.id = pokemonId;
+            document.querySelector('.trade-c').classList.add('d-none');
             socket.emit('changePokemon', pokemon);
 
         })
@@ -61,6 +62,7 @@ validateButton.addEventListener('click', (event) => {
             ('validate-pokemon');
             let price = data.price;
             document.querySelector('.trade-price').textContent = data.price;
+            document.querySelector('.trade-c').classList.remove('d-none');
             socket.emit('validatePokemon', price);
         })
         .catch((error) => {
@@ -74,10 +76,20 @@ socket.on('validatePokemonFromOther', (price) => {
 })
 
 
-// let validateTrade = document.querySelector('.trade-c');
-// validateTrade.addEventListener('click', (event) => {
-//
-// })
+
+let validateTrade = document.querySelector('.trade-c');
+validateTrade.addEventListener('click', (event) => {
+    fetch(tradeValidateUrl, {
+        method: 'POST',
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        console.log(data.error)
+    })
+    .catch((error) => {
+        console.log(error)
+    })
+})
 
 //Partie filtre
 

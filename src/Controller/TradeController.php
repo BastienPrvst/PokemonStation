@@ -22,7 +22,7 @@ final class TradeController extends AbstractController
 	) {
 	}
 
-	#[\Symfony\Component\Routing\Annotation\Route(path: '/trade/{id}', name: 'app_trade_create')]
+	#[Route(path: '/trade/{id}', name: 'app_trade_create')]
 	public function createTrade(User $user): Response
 	{
 		/* @var User $connectedUser */
@@ -67,7 +67,7 @@ final class TradeController extends AbstractController
 	/**
 	 * @throws ExceptionInterface
 	 */
-	#[Route(path: '/trade/update/{trade}', name: 'app_trade_update', methods: ['POST'])]
+	#[Route(path: '/trade/update/{trade}', name: 'app_trade_update')]
 	public function updateTrade(Trade $trade, Request $request): JsonResponse
 	{
 		$pokeId = $request->request->get('pokemonId');
@@ -94,5 +94,13 @@ final class TradeController extends AbstractController
 			], Response::HTTP_BAD_REQUEST, [], false);
 		}
 		return $this->tradeService->update($trade, $user, $capturedPokemon);
+	}
+
+	#[Route(path: '/trade/validate/{trade}', name: 'app_trade_validate')]
+	public function finalizeTrade(Trade $trade): null|JsonResponse
+	{
+		/* @var User $user */
+		$user = $this->getUser();
+		return $this->tradeService->validate($trade, $user);
 	}
 }
