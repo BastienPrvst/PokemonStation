@@ -3639,6 +3639,14 @@ tfoot tr td {
   flex-direction: row-reverse;
 }
 
+.trade-info{
+  width: 150px;
+}
+
+.trade-user-img{
+  width: 100%;
+}
+
 .trade-window{
   margin-top: 30px;
 }
@@ -3705,6 +3713,7 @@ tfoot tr td {
   flex-wrap: wrap;
   overflow-y: auto;
   padding: 25px;
+  border-radius: 0 0 10px 10px;
 }
 
 .poketrade {
@@ -3815,3 +3824,107 @@ tfoot tr td {
   display: none;
 }
 
+@media screen and (max-width: 992px) {
+  /*.main-trade{*/
+  /*  flex-direction: column;*/
+  /*}*/
+}
+
+/*Partie hub échanges*/
+
+.mini-mini-gif{
+  max-height: 50px;
+  max-width: 60px;
+}
+
+.section-trade, .section-social{
+  font-family: "Jersey 10", sans-serif;
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.trade-list{
+  background-color: #9f1239;
+  padding: 15px;
+  border-radius: 10px;
+  color: white;
+  width: 100%;
+}
+
+.trade-list-table{
+  width: 100%;
+  background-color: #E34042;
+  border-radius: 10px;
+  overflow: hidden;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: clamp(1rem, 1.5rem, 3rem);
+  font-weight: 400 !important;
+}
+
+.trade-list-table thead{
+  background-color: #B1364C;
+}
+
+.trade-list-table a{
+  color: white;
+  text-decoration: underline #ffcd00;
+}
+
+.yel{
+  text-decoration: underline #ffcd00;
+}
+
+.tr-head th{
+  margin: 100px 0;
+  font-weight: 10;
+}
+
+.trade-list-table th,
+.trade-list-table td {
+  vertical-align: middle;
+  padding: 0.6rem 0.9rem;
+}
+
+.poke-tronq-3{
+  overflow: hidden;
+  max-width: 120px;
+  text-overflow: ellipsis;
+}
+
+.trade-tr{
+  border-bottom: 1px solid #9f1239;
+}
+
+.section-social{
+  background-color: #9f1239;
+  color: white;
+  font-size: clamp(1rem, 1.5rem, 3rem);
+  text-align: center;
+  margin: 20px;
+  height: auto;
+}
+
+.section-social a{
+  text-decoration: none;
+}
+
+.friend-list{
+  margin-bottom: 50px;
+}
+
+@media screen and (max-width: 992px){
+  .section-trade{
+    padding: 0;
+    margin-bottom: 50px;
+  }
+
+  .section-social{
+    margin: 0 0 50px;
+  }
+
+  .trade-list-table td,
+  .trade-list-table th{
+    padding: 5px;
+  }
+}

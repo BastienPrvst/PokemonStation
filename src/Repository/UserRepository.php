@@ -117,4 +117,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+	public function findLastConnected()
+	{
+		return $this->createQueryBuilder('u')
+			->select('u')
+			->orderBy('u.lastObtainedLaunch', 'DESC')
+			->setMaxResults(10)
+			->getQuery()
+			->getResult();
+	}
 }

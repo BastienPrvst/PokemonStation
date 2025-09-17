@@ -6,6 +6,8 @@ use App\Entity\CapturedPokemon;
 use App\Entity\Trade;
 use App\Entity\User;
 use App\Repository\CapturedPokemonRepository;
+use App\Repository\TradeRepository;
+use App\Repository\UserRepository;
 use App\Service\TradeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,6 +23,22 @@ final class TradeController extends AbstractController
 		private readonly CapturedPokemonRepository $cpRepository,
 	) {
 	}
+
+	#[Route(path: '/trades/', name: 'app_trades')]
+	public function allUserTrades(TradeRepository $tradeRepository, UserRepository $userRepository): Response
+    {
+	    /** @var User $user */
+	    $user = $this->getUser();
+		$userTrades = $tradeRepository->findByUser($user);
+		$friends = $user->getFriendships();
+		$lastConnectedPpl = $userRepository->findLastConnected();
+		return $this->render('main/allTrades.html.twig', [
+			'trades' => $userTrades,
+			'friends' => $friends,
+			'lastConnectedPpl' => $lastConnectedPpl,
+		]);
+	}
+
 
 	#[Route(path: '/trade/{id}', name: 'app_trade_create')]
 	public function createTrade(User $user): Response

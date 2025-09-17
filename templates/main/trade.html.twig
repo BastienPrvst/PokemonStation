@@ -20,10 +20,16 @@
         <section class="user-part trade-1">
 
             <div class="trade-head">
-                <div class="d-flex flex-column align-items-center ">
-                    <h2 class="text-white">{{ app.user.pseudonym|capitalize }}</h2>
-                    <div>{{ userActive.money }}<img class="coin-trade" src="{{ asset('medias/images/elements/coin-resized.png') }}" alt=""></div>
-                    <img class="mirror-x" src="{{ asset('medias/images/trainers/' ~ app.user.avatar ~ '.gif') }}" alt="">
+                <div class="d-flex flex-column align-items-center trade-info">
+                    <div class="d-flex flex-row align-items-center justify-content-center mt-3">
+                        <h2 class="text-white mx-2 my-0">{{ app.user.pseudonym|capitalize }}</h2>
+
+                        <div class="d-flex align-items-center">
+                            {{ userActive.money }}<img class="coin-trade" src="{{ asset('medias/images/elements/coin-resized.png') }}" alt="">
+                        </div>
+                    </div>
+
+                    <img class="mirror-x trade-user-img" src="{{ asset('medias/images/trainers/' ~ app.user.avatar ~ '.gif') }}" alt="">
                 </div>
 
                 <div class="d-flex flex-column align-items-center trade-window">
@@ -36,7 +42,7 @@
                         {% else %}
                             <div class="select-trade select-trade-1">
                                 <span class="not-1">?</span>
-                                <img class="d-none choose-1" src="" alt="">
+                                <img class="d-none choose-1 mirror-x" src="" alt="">
                             </div>
                         {% endif %}
                     {% else %}
@@ -47,7 +53,7 @@
                         {% else %}
                             <div class="select-trade select-trade-1">
                                 <span class="not-1">?</span>
-                                <img class="d-none choose-1" src="" alt="">
+                                <img class="d-none choose-1 mirror-x" src="" alt="">
                             </div>
                         {% endif %}
                     {% endif %}
@@ -131,10 +137,15 @@
         <section class="user-part trade-2">
 
             <div class="trade-head trade-head-2">
-                <div class="d-flex align-items-center flex-column">
-                    <h3 class="text-white">{{ user.pseudonym }}</h3>
-                    <div>{{ user.money }}<img class="coin-trade" src="{{ asset('medias/images/elements/coin-resized.png') }}" alt=""></div>
-                    <img src="{{ asset('medias/images/trainers/' ~ user.avatar ~ '.gif') }}" alt="">
+                <div class="d-flex align-items-center flex-column trade-info">
+                    <div class="d-flex flex-row mt-3">
+                        <h3 class="text-white mx-2 my-0">{{ user.pseudonym }}</h3>
+                        <div class="d-flex align-items-center">
+                            {{ user.money }}<img class="coin-trade" src="{{ asset('medias/images/elements/coin-resized.png') }}" alt="">
+                        </div>
+                    </div>
+
+                    <img class="trade-user-img" src="{{ asset('medias/images/trainers/' ~ user.avatar ~ '.gif') }}" alt="">
                 </div>
 
 

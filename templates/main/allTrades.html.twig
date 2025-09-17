@@ -1,0 +1,126 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Mes échanges
+{% endblock %}
+
+{% block body %}
+
+    <h1 class="text-center text-white my-5">Echanges</h1>
+<div class="container">
+    <div class="row">
+        <section class="section-trade col-12 col-lg-7 text-center">
+            <div class="trade-list">
+                <h2 class="yel">Mes derniers échanges</h2>
+                <table class="trade-list-table">
+                    <thead>
+                        <tr class="tr-head">
+                            <th scope="col">Dres. 1</th>
+                            <th scope="col">Poke. 1</th>
+                            <th scope="col">Dres. 2</th>
+                            <th scope="col">Poke. 2</th>
+                            <th scope="col">Statut</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for trade in trades %}
+                            <tr class="trade-tr">
+
+                                <td class="poke-tronq-3">
+                                    {{ trade.user1.pseudonym  }}
+                                </td>
+
+                                {% if trade.pokemonTrade1 %}
+                                    {% set url = trade.pokemonTrade1.shiny ? 'shiny-' ~ trade.pokemonTrade1.pokemon.nameEn ~ '.gif' : trade.pokemonTrade1.pokemon.nameEn ~ '.gif' %}
+
+                                    <td>
+                                        <img class="mini-mini-gif mirror-x" src="{{ asset('medias/images/gifs/' ~ trade.pokemonTrade1.pokemon.nameEn ~ '.gif') }}" alt="">
+                                    </td>
+                                {% else %}
+                                    <td>
+                                        <span class="not-2">?</span>
+                                    </td>
+                                {% endif %}
+                                <td class="poke-tronq-3">
+                                    {{ trade.user2.pseudonym }}
+                                </td>
+
+                                {% if trade.pokemonTrade2 %}
+                                    {% set url = trade.pokemonTrade2.shiny ? 'shiny-' ~ trade.pokemonTrade2.pokemon.nameEn ~ '.gif' : trade.pokemonTrade2.pokemon.nameEn ~ '.gif' %}
+                                    <td>
+                                        <img class="mini-mini-gif" src="{{ asset('medias/images/gifs/' ~ url ) }}" alt="">
+                                    </td>
+                                {% else %}
+                                    <td>
+                                        <span class="not-2">?</span>
+                                    </td>
+                                {% endif %}
+
+                                <td>
+                                    {% set editableStatuses = ['En cours', 'Créé'] %}
+                                    {% set user = trade.user1 == app.user ? trade.user2 : trade.user1 %}
+
+                                    {% if trade.status.label() in editableStatuses %}
+                                        <a href="{{ path('app_trade_create', {'id': user.id}) }}">
+                                            {{ trade.status.label() }}
+                                        </a>
+                                    {% else %}
+                                        {{ trade.status.label() }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="section-social col-12 col-lg-3">
+            <h3 class="my-4 yel">Ma liste d'amis</h3>
+            <div class="friend-list d-flex flex-column align-items-start justify-content-center">
+                {% for friendship in friends %}
+                    {% if friendship.friendA.pseudonym != app.user.pseudonym %}
+                        <div class="d-flex flex-row w-100 justify-content-between">
+                            <p>
+                                {{ friendship.friendA.pseudonym }}
+                            </p>
+                            <a class="text-white text-decoration-underline" href="{{ path('app_trade_create', {id : friendship.friendA.id }) }}">Echanger
+                            </a>
+                        </div>
+
+                    {% else %}
+                        <div class="d-flex flex-row w-100 justify-content-between">
+                            <p>
+                                {{ friendship.friendB.pseudonym }}
+                            </p>
+                            <a class="text-white text-decoration-underline" href="{{ path('app_trade_create', {id : friendship.friendB.id }) }}">
+                                Echanger
+                            </a>
+                        </div>
+
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="last-ppl d-flex flex-column align-items-start justify-content-between">
+                <h4 class="align-self-center my-4 yel">Derniers utilisateurs connectés</h4>
+                {% for ppl in lastConnectedPpl %}
+                    <div class="d-flex flex-row justify-content-between w-100">
+                        <p>
+                            {{ ppl.pseudonym }}
+                        </p>
+                        <a class="text-white text-decoration-underline" href="{{ path('app_trade_create', {id : ppl.id}) }}">
+                            Echanger
+                        </a>
+                    </div>
+
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}
+
+

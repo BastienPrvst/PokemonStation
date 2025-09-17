@@ -31,4 +31,16 @@ class TradeRepository extends ServiceEntityRepository
 			->getQuery()
 			->getOneOrNullResult();
 	}
+
+	public function findByUser(User $user)
+	{
+		return $this->createQueryBuilder('t')
+			->where('t.user1 = :user')
+			->orWhere('t.user2 = :user')
+			->setParameter('user', $user)
+			->orderBy('t.id', 'DESC')
+			->setMaxResults(15)
+			->getQuery()
+			->getResult();
+	}
 }
