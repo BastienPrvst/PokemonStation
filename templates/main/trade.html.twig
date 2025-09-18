@@ -7,17 +7,24 @@
 {% block body %}
 
     {% set userActive = app.user.pseudonym == trade.user1.pseudonym ? trade.user1 : trade.user2 %}
-    {% if trade.pokemonTrade1 %}
-        {% set urlPokemon1 = trade.pokemonTrade1.shiny == true ? 'shiny-' ~ trade.pokemonTrade1.pokemon.nameEn : trade.pokemonTrade1.pokemon.nameEn %}
-    {% endif %}
+    {% set userPassive = app.user.pseudonym != trade.user1.pseudonym ? trade.user1 : trade.user2 %}
 
-    {% if trade.pokemonTrade2 %}
-        {% set urlPokemon2 = trade.pokemonTrade2.shiny == true ? 'shiny-' ~ trade.pokemonTrade2.pokemon.nameEn : trade.pokemonTrade2.pokemon.nameEn %}
-    {% endif %}
+    {% set pokemonActive = userActive == trade.user1 ? trade.pokemonTrade1 : trade.pokemonTrade2 %}
+    {% set pokemonPassive = userActive == trade.user1 ? trade.pokemonTrade2 : trade.pokemonTrade1 %}
+
+    {% set urlPokemonActive = pokemonActive ? (pokemonActive.shiny ? 'shiny-' ~ pokemonActive.pokemon.nameEn : pokemonActive.pokemon.nameEn) : null %}
+    {% set urlPokemonPassive = pokemonPassive ? (pokemonPassive.shiny ? 'shiny-' ~ pokemonPassive.pokemon.nameEn : pokemonPassive.pokemon.nameEn) : null %}
+
+    {% set statusActive = userActive == trade.user1 ? trade.user1Status : trade.user2Status %}
+    {% set statusPassive = userActive == trade.user1 ? trade.user2Status : trade.user1Status %}
+
+
     <h1 class="text-center text-white m-5">Echangez vos Pokémons !</h1>
+<div class="container-fluid w-100">
+    <div class="main-trade d-flex flex-column flex-lg-row p-0 mx-auto row">
 
-    <div class="main-trade">
-        <section class="user-part trade-1">
+        {#        PREMIERE PARTIE --------------------------------------------------#}
+        <section class="user-part trade-1 col-12 col-lg-5">
 
             <div class="trade-head">
                 <div class="d-flex flex-column align-items-center trade-info">
@@ -34,57 +41,47 @@
 
                 <div class="d-flex flex-column align-items-center trade-window">
 
-                    {% if userActive == trade.user1 %}
-                        {% if trade.pokemonTrade1 is not null %}
-                            <div class="select-trade select-trade-1 validate-pokemon">
-                                <img class="choose-1 mirror-x" src="{{ asset('medias/images/gifs/' ~ urlPokemon1 ~ '.gif') }}" alt="" data-id="{{ trade.pokemonTrade1.id }}">
-                            </div>
-                        {% else %}
-                            <div class="select-trade select-trade-1">
-                                <span class="not-1">?</span>
-                                <img class="d-none choose-1 mirror-x" src="" alt="">
-                            </div>
-                        {% endif %}
+                    {% if pokemonActive is not null %}
+                        <div class="select-trade select-trade-1 validate-pokemon">
+                            <img class="choose-1 mirror-x" src="{{ asset('medias/images/gifs/' ~ urlPokemonActive ~ '.gif') }}" alt="" data-id="{{ pokemonActive.id }}">
+                        </div>
                     {% else %}
-                        {% if trade.pokemonTrade2 is not null %}
-                            <div class="select-trade select-trade-1 validate-pokemon">
-                                <img class="choose-1 mirror-x" src="{{ asset('medias/images/gifs/' ~ urlPokemon2 ~ '.gif') }}" alt="" data-id="{{ trade.pokemonTrade2.id }}">
-                            </div>
-                        {% else %}
-                            <div class="select-trade select-trade-1">
-                                <span class="not-1">?</span>
-                                <img class="d-none choose-1 mirror-x" src="" alt="">
-                            </div>
-                        {% endif %}
+                        <div class="select-trade select-trade-1">
+                            <span class="not-1">?</span>
+                            <img class="d-none choose-1 mirror-x" src="" alt="">
+                        </div>
                     {% endif %}
 
                     <div class="trade-buttons d-flex align-items-center justify-content-center">
                         <button class="btn-success trade-v">Choisir ce Pokémon</button>
 
-                        {% if userActive == trade.user1 %}
-                            {% if trade.pokemonTrade1 is not null %}
-                                <button class="btn-success trade-c">Confirmer</button>
-                            {% else %}
-                                <button class="btn-success trade-c d-none">Confirmer</button>
-                            {% endif %}
+                        {% if pokemonActive is not null %}
+                            <button class="btn-success trade-c">Confirmer <img class="validate-img" src="{{ asset('medias/images/elements/checked.png') }}" alt=""></button>
                         {% else %}
-                            {% if trade.pokemonTrade2 is not null %}
-                                <button class="btn-success trade-c">Confirmer</button>
-                            {% else %}
-                                <button class="btn-success trade-c d-none">Confirmer</button>
-                            {% endif %}
+                            <button class="btn-success trade-c d-none">Confirmer <img class="validate-img" src="{{ asset('medias/images/elements/checked.png') }}" alt=""></button>
                         {% endif %}
                     </div>
-
-
-
-
                 </div>
+
+
+                {% if statusActive.value == 4 %}
+                    <p class="ready d-flex flex-column">
+                        Prêt <img src="{{ asset('medias/images/elements/checked.png') }}" alt="">
+                    </p>
+
+                {% else %}
+                    <p class="ready d-flex flex-column d-none">
+                        Prêt <img src="{{ asset('medias/images/elements/checked.png') }}" alt="">
+                    </p>
+                {% endif %}
 
             </div>
 
             <h2 class="trade-title">Vos Pokémons echangables</h2>
 
+            <div class="my-0 filters-2 filters-2-5">
+
+            </div>
             <div class="filters">
                 <button>Shiny</button>
                 <button>UR</button>
@@ -101,46 +98,52 @@
             <div class="poke-trade">
 
                 {% for poke in pokeAvailable1 %}
-                <div class="main-trade-bubble my-pokemon-trade" data-id="{{ poke.id }}" data-filter="{{ poke.pokemon.rarity }}" data-shiny="{{ poke.shiny }}">
-                    <div class="poketrade">
-                        <p class="trade-name">{{ poke.pokemon.name|title|u.truncate(13, '...') }}</p>
-                        {% set pokeUrl = poke.shiny == true ? 'shiny-' ~ poke.pokemon.nameEn : poke.pokemon.nameEn %}
-                        <img class="poketrade-gif mirror-x" src="{{ asset('medias/images/gifs/' ~ pokeUrl ~ '.gif') }}" alt="">
-                        {% if poke.shiny %} <img class="shiny-trade-symbol" src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt=""> {% endif %}
-                    </div>
+                    <div class="main-trade-bubble my-pokemon-trade" data-id="{{ poke.id }}" data-filter="{{ poke.pokemon.rarity }}" data-shiny="{{ poke.shiny }}">
+                        <div class="poketrade">
+                            <p class="trade-name">{{ poke.pokemon.name|title|u.truncate(13, '...') }}</p>
+                            {% set pokeUrl = poke.shiny == true ? 'shiny-' ~ poke.pokemon.nameEn : poke.pokemon.nameEn %}
+                            <img class="poketrade-gif mirror-x" src="{{ asset('medias/images/gifs/' ~ pokeUrl ~ '.gif') }}" alt="">
+                            {% if poke.shiny %} <img class="shiny-trade-symbol" src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt=""> {% endif %}
+                        </div>
 
-                    <div class="number-trade">
-                        <img class="x-trade" src="{{ asset('medias/images/elements/multiple.png') }}" alt="">
+                        <div class="number-trade">
+                            <img class="x-trade" src="{{ asset('medias/images/elements/multiple.png') }}" alt="">
 
-                        {% if poke.shiny is true %}
-                            <p class="m-0 yellow-text">{{ poke.quantity }}</p>
-                        {% else %}
-                            <p class="m-0 yellow-text">{{ poke.quantity - 1 }}</p>
-                        {% endif %}
+                            {% if poke.shiny is true %}
+                                <p class="m-0 yellow-text">{{ poke.quantity }}</p>
+                            {% else %}
+                                <p class="m-0 yellow-text">{{ poke.quantity - 1 }}</p>
+                            {% endif %}
+                        </div>
                     </div>
-                </div>
 
                 {% endfor %}
 
             </div>
         </section>
 
-        <div class="arrow-div my-auto d-flex align-items-center flex-column">
+        {#        PARTIE DU MILIEU-----------------------------------------#}
+
+        <div class="arrow-div my-auto d-flex align-items-center flex-column col-12 col-lg-2 mx-auto">
             <div class="d-flex align-items-center">
-                <span class="trade-price text-white">{{ trade.price }}</span>
-                <img class="coin-trade" src="{{ asset('medias/images/elements/coin-resized.png') }}" alt="">
+                <span class="trade-price text-white fs-3">Prix: {{ trade.price }}</span>
+                <img class="coin-trade w-25" src="{{ asset('medias/images/elements/coin-resized.png') }}" alt="">
             </div>
-            <img class="arrow-trade arrow-1" src="{{ asset('medias/images/elements/arrow.png') }}" alt="">
-            <img class="arrow-trade arrow-2" src="{{ asset('medias/images/elements/arrow.png') }}" alt="">
+            <img class="arrow-trade arrow-1 mt-1" src="{{ asset('medias/images/elements/grouped-arrow.png') }}" alt="">
         </div>
 
-        <section class="user-part trade-2">
+
+
+        {#        SECONDE PARTIE---------------------------------------------#}
+
+        <section class="user-part trade-2 col-12 col-lg-5">
 
             <div class="trade-head trade-head-2">
+
                 <div class="d-flex align-items-center flex-column trade-info">
                     <div class="d-flex flex-row mt-3">
-                        <h3 class="text-white mx-2 my-0">{{ user.pseudonym }}</h3>
-                        <div class="d-flex align-items-center">
+                        <h3 class="text-white mx-2 my-0 mt-3">{{ user.pseudonym }}</h3>
+                        <div class="d-flex align-items-center mt-3">
                             {{ user.money }}<img class="coin-trade" src="{{ asset('medias/images/elements/coin-resized.png') }}" alt="">
                         </div>
                     </div>
@@ -149,37 +152,36 @@
                 </div>
 
 
+                {% if pokemonPassive is not null %}
+                    <div class="select-trade select-trade-2 validate-pokemon mt-1">
+                        <img class="choose-2 va" src="{{ asset('medias/images/gifs/' ~ urlPokemonPassive ~ '.gif') }}" alt="">
+                    </div>
+                {% else %}
+                    <div class="select-trade select-trade-2 ">
+                        <span class="not-2">?</span>
+                        <img class="d-none choose-2" src="" alt="">
+                    </div>
+                {% endif %}
 
-                {% if userActive == trade.user1 %}
-
-                    {% if trade.pokemonTrade2 is not null %}
-                        <div class="select-trade select-trade-2 validate-pokemon">
-                            <img class="choose-2 va" src="{{ asset('medias/images/gifs/' ~ urlPokemon2 ~ '.gif') }}" alt="">
-                        </div>
-                    {% else %}
-                        <div class="select-trade select-trade-2 ">
-                            <span class="not-2">?</span>
-                            <img class="d-none choose-2" src="" alt="">
-                        </div>
-                    {% endif %}
+                {% if statusPassive.value == 4 %}
+                    <p class="ready-2  d-flex flex-column">
+                        Prêt <img src="{{ asset('medias/images/elements/checked.png') }}" alt="">
+                    </p>
 
                 {% else %}
-                    {% if trade.pokemonTrade1 is not null %}
-                        <div class="select-trade select-trade-2 validate-pokemon">
-                            <img class="choose-2" src="{{ asset('medias/images/gifs/' ~ urlPokemon1 ~ '.gif') }}" alt="">
-                        </div>
-                    {% else %}
-                        <div class="select-trade select-trade-2 ">
-                            <span class="not-2">?</span>
-                            <img class="d-none choose-2" src="" alt="">
-                        </div>
-                    {% endif %}
-
+                    <p class="ready-2 d-none">
+                        Prêt <img src="{{ asset('medias/images/elements/checked.png') }}" alt="">
+                    </p>
                 {% endif %}
 
             </div>
 
-            <h2 class="trade-title">Les Pokémons de {{ user.pseudonym }}</h2>
+            <h2 class="trade-title margin-title">Les Pokémons de {{ user.pseudonym }}</h2>
+
+            <div class="my-0 filters-2 filters-2-5">
+                <button>Possédé</button>
+                <button>Non-possédé</button>
+            </div>
 
             <div class="filters-2">
                 <button>Shiny</button>
@@ -197,9 +199,13 @@
             <div class="poke-trade">
 
                 {% for poke2 in pokeAvailable2 %}
-                    <div class="main-trade-bubble other-trade" data-filter="{{ poke2.pokemon.rarity }}" data-shiny="{{ poke2.shiny }}">
-                        <div class="poketrade">
-                            <p class="trade-name">{{ poke2.pokemon.name|title|u.truncate(13, '...') }}</p>
+                    <div class="main-trade-bubble other-trade"
+                         data-id="{{ poke2.id }}"
+                         data-filter="{{ poke2.pokemon.rarity }}"
+                         data-shiny="{{ poke2.shiny ? 1 : 0 }}"
+                         data-possessed="{{ poke2.inPossession ? 1 : 0 }}">
+                        <div class="poketrade {{ poke2.inPossession is true ? 'possessed' : '' }}">
+                            <p class="trade-name">{{ poke2.pokemon.name|title|u.truncate(10, '...') }}</p>
                             {% set pokeUrl2 = poke2.shiny == true ? 'shiny-' ~ poke2.pokemon.nameEn : poke2.pokemon.nameEn %}
                             <img class="poketrade-gif" src="{{ asset('medias/images/gifs/' ~ pokeUrl2 ~ '.gif') }}" alt="">
                             {% if poke2.shiny %} <img class="shiny-trade-symbol" src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt=""> {% endif %}
@@ -222,6 +228,8 @@
 
         </section>
     </div>
+</div>
+
 
     {% block js %}
         <script>

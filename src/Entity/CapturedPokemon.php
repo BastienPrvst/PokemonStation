@@ -55,6 +55,8 @@ class CapturedPokemon
     #[ORM\Column]
     private ?int $quantity = null;
 
+	private bool $inPossession = false;
+
     public function __construct()
     {
         $this->pokeTrade1 = new ArrayCollection();
@@ -197,4 +199,15 @@ class CapturedPokemon
 
         return $this;
     }
+
+	public function isInPossession(): ?bool
+	{
+		return $this->inPossession;
+	}
+
+	public function setInPossession(bool $inPossession): self
+	{
+		$this->inPossession = $inPossession;
+		return $this;
+	}
 }

@@ -68,7 +68,18 @@ final class TradeController extends AbstractController
 			return $rarityScale[$a->getPokemon()->getRarity()] <=> $rarityScale[$b->getPokemon()->getRarity()];
 		});
 
-		$availableUser2 = $this->cpRepository->findInteressting($user, $connectedUser);
+		//Touuut ce que l'utilisateur 2 a de disponible a l'echange
+		$availableUser2 = $this->cpRepository->findTradeable($user);
+		//Tout ce qui peut interesser l'utilisateur 1 dans ce qu'a le 2
+		$interesstingUser2 = $this->cpRepository->findInteressting($user, $connectedUser);
+
+		$availableIds = array_map(fn($cp) => $cp->getId(), $interesstingUser2);
+		foreach ($availableUser2 as $cp) {
+			if (!in_array($cp->getId(), $availableIds, true)) {
+				/** @var CapturedPokemon $cp */
+				$cp->setInPossession(true);
+			}
+		}
 
 		usort($availableUser2, static function ($a, $b) use ($rarityScale) {
 			return $rarityScale[$a->getPokemon()->getRarity()] <=> $rarityScale[$b->getPokemon()->getRarity()];

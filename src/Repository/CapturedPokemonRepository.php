@@ -205,27 +205,15 @@ class CapturedPokemonRepository extends ServiceEntityRepository
             (cp.shiny = true AND cp.quantity > 0)
             OR
             (cp.shiny = false AND cp.quantity > 1 AND cp.pokemon NOT IN (
-                    SELECT p3.id
-                    FROM App\Entity\CapturedPokemon cp3
-                    JOIN cp3.pokemon p3
-                    WHERE cp3.owner = :user
-                    AND cp3.shiny = true
-                    AND cp3.quantity > 0
-                )
-            )
+                SELECT p3.id
+                FROM App\Entity\CapturedPokemon cp3
+                JOIN cp3.pokemon p3
+                WHERE cp3.owner = :connectedUser
+                AND cp3.quantity > 0
+            ))
         ')
-			->andWhere('cp.pokemon NOT IN (
-            SELECT p2.id
-            FROM App\Entity\CapturedPokemon cp2
-            JOIN cp2.pokemon p2
-            WHERE cp2.owner = :connectedUser
-            AND cp2.shiny = true
-            AND cp2.quantity > 0
-        )')
-			->setParameters([
-				'user'           => $user,
-				'connectedUser'  => $connectedUser,
-			])
+			->setParameter('user', $user)
+			->setParameter('connectedUser', $connectedUser)
 			->getQuery()
 			->getResult();
 	}

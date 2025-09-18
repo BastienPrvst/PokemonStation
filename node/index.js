@@ -24,6 +24,14 @@ io.sockets.on('connection', (socket) => {
     socket.on('validatePokemon', (price) => {
         socket.to('tradeRoom').emit('validatePokemonFromOther', price);
     });
+
+    socket.on('confirmedPokemon', () => {
+        socket.to('tradeRoom').emit('confirmedPokemonFromOther');
+    })
+
+    socket.on('interested', (id) =>{
+        socket.to('tradeRoom').emit('interestedPokemonFromOther', id);
+    })
 })
 
 httpServer.listen(4000,() => {
