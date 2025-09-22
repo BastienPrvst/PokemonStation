@@ -27,6 +27,8 @@
         <div class="info-trade-message text-center">
 
         </div>
+
+
     </div>
 
     <div class="container-fluid w-100">
@@ -36,7 +38,6 @@
             <section class="user-part trade-1 col-12 col-lg-5">
 
                 <div class="trade-head position-relative">
-                    <a class="position-absolute cancel-trade" href="{{ path('app_trade_cancel', {trade:trade.id}) }}">Annuler l'échange</a>
                     <div class="d-flex flex-column align-items-center trade-info">
                         <div class="d-flex flex-row align-items-center justify-content-center mt-3">
                             <h2 class="text-white mx-2 my-0">{{ app.user.pseudonym|capitalize }}</h2>
@@ -97,7 +98,7 @@
                 <h2 class="trade-title">Vos Pokémons echangables</h2>
 
                 <div class="my-0 filters-2 filters-2-5">
-
+                    <input class="text-black" id="search1" type="search" placeholder="Rechercher">
                 </div>
                 <div class="filters">
                     <button>Shiny</button>
@@ -112,12 +113,12 @@
                     <button>C</button>
                 </div>
 
-                <div class="poke-trade">
+                <div class="poke-trade poke-trade-1">
 
                     {% for poke in pokeAvailable1 %}
                         <div class="main-trade-bubble my-pokemon-trade" data-id="{{ poke.id }}" data-filter="{{ poke.pokemon.rarity }}" data-shiny="{{ poke.shiny }}">
                             <div class="poketrade">
-                                <p class="trade-name">{{ poke.pokemon.name|title|u.truncate(13, '...') }}</p>
+                                <p class="trade-name"  data-name="{{ poke.pokemon.name }}">{{ poke.pokemon.name|title|u.truncate(16, '...') }}</p>
                                 {% set pokeUrl = poke.shiny == true ? 'shiny-' ~ poke.pokemon.nameEn : poke.pokemon.nameEn %}
                                 <img class="poketrade-gif mirror-x" src="{{ asset('medias/images/gifs/' ~ pokeUrl ~ '.gif') }}" alt="">
                                 {% if poke.shiny %} <img class="shiny-trade-symbol" src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt=""> {% endif %}
@@ -203,6 +204,7 @@
                 <h2 class="trade-title margin-title">Les Pokémons de {{ user.pseudonym }}</h2>
 
                 <div class="my-0 filters-2 filters-2-5">
+                    <input class="text-black" id="search2" type="search" placeholder="Rechercher">
                     <button>Possédé</button>
                     <button>Non-possédé</button>
                 </div>
@@ -220,7 +222,7 @@
                     <button>C</button>
                 </div>
 
-                <div class="poke-trade">
+                <div class="poke-trade poke-trade-2">
 
                     {% for poke2 in pokeAvailable2 %}
                         <div class="main-trade-bubble other-trade"
@@ -229,7 +231,7 @@
                              data-shiny="{{ poke2.shiny ? 1 : 0 }}"
                              data-possessed="{{ poke2.inPossession ? 1 : 0 }}">
                             <div class="poketrade {{ poke2.inPossession is true ? 'possessed' : '' }}">
-                                <p class="trade-name">{{ poke2.pokemon.name|title|u.truncate(10, '...') }}</p>
+                                <p class="trade-name" data-name="{{ poke2.pokemon.name }}">{{ poke2.pokemon.name|title|u.truncate(16, '...') }}</p>
                                 {% set pokeUrl2 = poke2.shiny == true ? 'shiny-' ~ poke2.pokemon.nameEn : poke2.pokemon.nameEn %}
                                 <img class="poketrade-gif" src="{{ asset('medias/images/gifs/' ~ pokeUrl2 ~ '.gif') }}" alt="">
                                 {% if poke2.shiny %} <img class="shiny-trade-symbol" src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt=""> {% endif %}
@@ -252,6 +254,7 @@
 
             </section>
         </div>
+        <a class="text-white cancel-trade text-center mx-auto" href="{{ path('app_trade_cancel', {trade:trade.id}) }}">Annuler l'échange</a>
     </div>
 
 

@@ -257,4 +257,28 @@ let allOtherPokemonsTrade = '.other-trade';
 filterTrade(filterButtons2, allOtherPokemonsTrade);
 
 
+//Recherche
+
+document.querySelector('#search1').addEventListener('input', (event) => {
+    const resultsSearch1 = document.querySelector('.poke-trade-1');
+    updateResults(resultsSearch1, event.target.value);
+})
+
+document.querySelector('#search2').addEventListener('input', (event) => {
+    const resultsSearch2 = document.querySelector('.poke-trade-2');
+    updateResults(resultsSearch2, event.target.value);
+})
+
+function updateResults(resultDiv, text){
+    let cards = resultDiv.querySelectorAll('.main-trade-bubble')
+    cards.forEach(card => {
+        const name = card.querySelector('.poketrade .trade-name').getAttribute('data-name');
+        if (name.toLowerCase().includes(text.toLowerCase())) {
+            card.classList.remove('d-none');
+        } else {
+            card.classList.add('d-none');
+        }
+    });
+}
+
 

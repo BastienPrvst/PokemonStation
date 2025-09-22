@@ -3631,20 +3631,21 @@ tfoot tr td {
 .trade-head {
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-evenly;
   height: auto;
 }
 
 .trade-head-2 {
   flex-direction: row-reverse;
-  margin-bottom: 11px;
+  align-items: center;
 }
 
 .trade-head,
 .trade-head-2 {
-  height: auto;
   position: relative;
+  height: 225px;
+  margin-bottom: 15px;
 }
 
 .trade-info {
@@ -3745,8 +3746,7 @@ tfoot tr td {
 }
 
 .main-trade-bubble {
-  width: 15.6666666667%;
-  max-width: 75px;
+  width: 22%;
   height: auto;
   box-sizing: border-box;
   margin: 0 0.5%;
@@ -3805,6 +3805,7 @@ tfoot tr td {
   position: absolute;
   top: 5px;
   z-index: 2;
+  padding: 0 5px 0 5px;
 }
 
 .number-trade {
@@ -3923,7 +3924,8 @@ tfoot tr td {
   }
 
   .main-trade-bubble{
-    width: 24%;
+    width: 32%;
+    max-width: unset;
   }
 
   .filters-2 button,
@@ -3932,6 +3934,15 @@ tfoot tr td {
     width: auto;
     min-width: 40px;
     max-width: 100px;
+  }
+
+  .poke-trade{
+    padding: 2px;
+  }
+
+  .trade-head,
+  .trade-head-2 {
+    height: 300px;
   }
 }
 
