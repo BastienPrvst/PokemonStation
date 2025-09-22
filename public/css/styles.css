@@ -1461,6 +1461,18 @@ i.fa-chevron-right {
   opacity: 0.5;
 }
 
+.select-input {
+  border-radius: 0;
+  opacity: 0.8;
+  width: auto;
+  appearance: auto;
+}
+
+.select-input:focus {
+  box-shadow: none;
+  border: none;
+}
+
 /* ----------------------------------------------------------------------------------------------------------- */
 /* Modification de la page de capture  */
 
@@ -2165,7 +2177,6 @@ tfoot tr td {
   justify-content: space-around;
   height: 70px;
   background-color: #a8273f;
-  border-radius: 0 0 10px 10px;
   color: white;
   font-family: "Jersey 10", sans-serif;
   font-size: 1.4rem;
@@ -2184,6 +2195,11 @@ tfoot tr td {
 #activeCountG1,
 .shinydex {
   font-size: 1.8rem;
+}
+
+.pokedex-filters select {
+  width: 33%;
+  padding-inline: 0;
 }
 
 .list {

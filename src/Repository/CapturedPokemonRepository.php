@@ -79,10 +79,10 @@ class CapturedPokemonRepository extends ServiceEntityRepository
             ->innerJoin('cp.pokemon', 'p')
             ->innerJoin('cp.owner', 'u')
             ->where('p.rarity IN (:rarities)')
-            ->orWhere('cp.shiny = true')
+            ->orWhere('cp.shiny = true AND cp.timesCaptured > 0')
             ->setParameter('rarities', ['UR', 'EX'])
             ->orderBy('cp.captureDate', 'DESC')
-            ->setMaxResults(10)
+            ->setMaxResults(20)
             ->getQuery()
             ->getResult();
     }

@@ -12,6 +12,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Pokemon
 {
     /** @var array<array-key, string> */
+    public const RARITIES = ['C','PC','R','TR','ME','GMAX','SR','EX','UR'];
+
+    /** @var array<array-key, string> */
     public const TYPES = [
         'acier',
         'combat',

@@ -19,9 +19,10 @@ class CapturedPokemonService extends AbstractController
     /**
      * @param  User $user
      * @param  Pokemon[] $pokemons
+     * @param  bool $hideRelated
      * @return CapturedPokemonDTO[]
      */
-    public function userCapturedByGeneration(User $user, array $pokemons): array
+    public function userCapturedByGeneration(User $user, array $pokemons, $hideRelated = true): array
     {
         $capturedPokemons = $this->capturedPokemonRepository->findSpeciesCapturedByPokemon($user, $pokemons);
         $shinyCapturedPokemons = $this->capturedPokemonRepository->findShinyCapturedByPokemon($user, $pokemons);
@@ -29,7 +30,9 @@ class CapturedPokemonService extends AbstractController
         $capturedPokemonsDTO = [];
 
         foreach ($pokemons as $pokemon) {
+
             if ($pokemon->getRelateTo()) {
+
                 $altForms[] = $pokemon;
 
                 continue;

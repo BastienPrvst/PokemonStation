@@ -39,28 +39,28 @@
 
     {#        Nombre de pièces #}
 
-        <!--Bouton de capture-->
-        <div class="mx-auto capture-ball text-center">
+    <!--Bouton de capture-->
+    <div class="mx-auto capture-ball text-center">
 
-            <div id="carouselExample" class="carousel carousel-ball slide">
+        <div id="carouselExample" class="carousel carousel-ball slide">
 
-                <div class="carousel-inner carou-ball">
+            <div class="carousel-inner carou-ball">
 
-                    <div class="carousel-item justify-content-center active" data-ball="default">
-                        <button class="capture-poke-button">
-                            <img src="{{ asset('medias/images/balls/poke-ball.png') }}" id="pokeball-animate" class="pokeball-animate too-big" alt="Lancers de base de Pokemon-Station" >
-                        </button>
-                        <br>
-                        <img class="multiple" src="{{ asset('medias/images/elements/multiple.png') }}" alt="Nombre de lancers disponibles Pokemon-Station">
-                        <div class="launch-items launch-1">
-                            {{ app.user.launchs}}
-                        </div>
-
+                <div class="carousel-item justify-content-center active" data-ball="default">
+                    <button class="capture-poke-button">
+                        <img src="{{ asset('medias/images/balls/poke-ball.png') }}" id="pokeball-animate" class="pokeball-animate too-big" alt="Lancers de base de Pokemon-Station" >
+                    </button>
+                    <br>
+                    <img class="multiple" src="{{ asset('medias/images/elements/multiple.png') }}" alt="Nombre de lancers disponibles Pokemon-Station">
+                    <div class="launch-items launch-1">
+                        {{ app.user.launchs}}
                     </div>
 
+                </div>
 
 
-                    {% for userItem in allUserItems %}
+
+                {% for userItem in allUserItems %}
 
                     <div class="carousel-item carou-not-base justify-content-center ball-{{ userItem.item.id }}" data-ball="{{ userItem.item.id }}">
                         <button class="capture-poke-button">
@@ -74,21 +74,26 @@
 
                     </div>
 
-                    {% endfor %}
+                {% endfor %}
 
-                </div>
-
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
             </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
+    </div>
+
+    <div class="mx-auto">
+        <input id="auto" name="auto" type="checkbox" class="auto-launch">
+        <label class="text-white" for="auto">Lancers automatiques</label>
+    </div>
 
     <div class="mx-auto">
         <input id="auto" name="auto" type="checkbox" class="auto-launch">
@@ -99,7 +104,7 @@
         <p class="pokemon-captured-infos visi-zero"></p>
     </div>
 
-{#    Partie slider#}
+    {#    Partie slider#}
 
     <div class="col-12 col-lg-10 mx-auto slider">
         {% if fiveLast is not empty %}
@@ -145,16 +150,16 @@
 
                         <div class="pokemon-five {% if pokemonCaptured.shiny is same as true %}shiny-slider{% endif %} slider-{{ pokemonCaptured.pokemon.rarity }}">
 
-                        <div class="mini-infos">
+                            <div class="mini-infos">
                                 <span class="poke-tronq">{{ pokemonCaptured.pokemon.name|title }}</span> ~
                                 <a class="poke-tronq-2" href="{{ path('app_user_showprofile', {pseudonym:pokemonCaptured.owner.pseudonym})}}">{{ pokemonCaptured.owner.pseudonym | capitalize }}</a>
-                            {% if "SHINY_WINNER" in pokemonCaptured.owner.roles %}
-                                <img class="top-badge" src="{{ asset('medias/images/items/key-stone.png') }}" alt="Vainqueur du mois pour les Shinys" title="Vainqueur du mois pour les Shinys Pokemon-Station">
-                            {% endif %}
-                            {% if "POINT_WINNER" in pokemonCaptured.owner.roles %}
-                                <img class="top-badge" src="{{ asset('medias/images/items/dragon-gem.png') }}" alt="Vainqueur du mois pour les points" title="Vainqueur du mois pour les points Pokemon-Station">
-                            {% endif %}
-                        </div>
+                                {% if "SHINY_WINNER" in pokemonCaptured.owner.roles %}
+                                    <img class="top-badge" src="{{ asset('medias/images/items/key-stone.png') }}" alt="Vainqueur du mois pour les Shinys" title="Vainqueur du mois pour les Shinys Pokemon-Station">
+                                {% endif %}
+                                {% if "POINT_WINNER" in pokemonCaptured.owner.roles %}
+                                    <img class="top-badge" src="{{ asset('medias/images/items/dragon-gem.png') }}" alt="Vainqueur du mois pour les points" title="Vainqueur du mois pour les points Pokemon-Station">
+                                {% endif %}
+                            </div>
 
                             <div class="mini-images">
                                 <div class="d-flex align-items-center justify-content-center">
@@ -177,7 +182,7 @@
     </div>
 
 
-{#    Shop #}
+    {#    Shop #}
 
     <div class="shop">
         <div class="mini-shop">
@@ -191,14 +196,14 @@
 
             <table class="text-center shop-table">
                 <thead>
-                    <tr>
-                        <th scope="col">Item</th>
-                        <th scope="col">Prix</th>
-                        <th scope="col">Descr</th>
-                        <th scope="col"></th>
-                        <th scope="col">Qte</th>
-                        <th scope="col"></th>
-                    </tr>
+                <tr>
+                    <th scope="col">Item</th>
+                    <th scope="col">Prix</th>
+                    <th scope="col">Descr</th>
+                    <th scope="col"></th>
+                    <th scope="col">Qte</th>
+                    <th scope="col"></th>
+                </tr>
                 </thead>
                 <tbody class="shop-list">
 
@@ -218,10 +223,10 @@
 
                 </tbody>
                 <tfoot class="text-start">
-                    <tr>
-                        <td colspan="4"></td>
-                        <td class="text-center total_shop">0</td>
-                    </tr>
+                <tr>
+                    <td colspan="4"></td>
+                    <td class="text-center total_shop">0</td>
+                </tr>
                 </tfoot>
             </table>
             <br>
