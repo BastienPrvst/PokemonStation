@@ -23,33 +23,33 @@ final class Version20250624114704 extends AbstractMigration
 //        $this->addSql(<<<'SQL'
 //            ALTER TABLE captured_pokemon DROP name, DROP type, DROP type2, DROP description, DROP name_en, DROP rarity, DROP poke_id
 //        SQL);
-//        $this->addSql(<<<'SQL'
-//            ALTER TABLE trade DROP FOREIGN KEY FK_7E1A43662D721C6
-//        SQL);
-//        $this->addSql(<<<'SQL'
-//            ALTER TABLE trade DROP FOREIGN KEY FK_7E1A436610628E28
-//        SQL);
-//        $this->addSql(<<<'SQL'
-//            DROP INDEX IDX_7E1A43662D721C6 ON trade
-//        SQL);
-//        $this->addSql(<<<'SQL'
-//            DROP INDEX IDX_7E1A436610628E28 ON trade
-//        SQL);
-//        $this->addSql(<<<'SQL'
-//            ALTER TABLE trade ADD pokemon_trade1_id INT DEFAULT NULL, ADD pokemon_trade2_id INT DEFAULT NULL, DROP trade_poke1_id, DROP trade_poke2_id
-//        SQL);
-//        $this->addSql(<<<'SQL'
-//            ALTER TABLE trade ADD CONSTRAINT FK_7E1A4366AA3B8B7A FOREIGN KEY (pokemon_trade1_id) REFERENCES captured_pokemon (id)
-//        SQL);
-//        $this->addSql(<<<'SQL'
-//            ALTER TABLE trade ADD CONSTRAINT FK_7E1A4366B88E2494 FOREIGN KEY (pokemon_trade2_id) REFERENCES captured_pokemon (id)
-//        SQL);
-//        $this->addSql(<<<'SQL'
-//            CREATE INDEX IDX_7E1A4366AA3B8B7A ON trade (pokemon_trade1_id)
-//        SQL);
-//        $this->addSql(<<<'SQL'
-//            CREATE INDEX IDX_7E1A4366B88E2494 ON trade (pokemon_trade2_id)
-//        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE trade DROP FOREIGN KEY FK_7E1A43662D721C6
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE trade DROP FOREIGN KEY FK_7E1A436610628E28
+        SQL);
+        $this->addSql(<<<'SQL'
+            DROP INDEX IDX_7E1A43662D721C6 ON trade
+        SQL);
+        $this->addSql(<<<'SQL'
+            DROP INDEX IDX_7E1A436610628E28 ON trade
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE trade ADD pokemon_trade1_id INT DEFAULT NULL, ADD pokemon_trade2_id INT DEFAULT NULL, DROP trade_poke1_id, DROP trade_poke2_id
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE trade ADD CONSTRAINT FK_7E1A4366AA3B8B7A FOREIGN KEY (pokemon_trade1_id) REFERENCES captured_pokemon (id)
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE trade ADD CONSTRAINT FK_7E1A4366B88E2494 FOREIGN KEY (pokemon_trade2_id) REFERENCES captured_pokemon (id)
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE INDEX IDX_7E1A4366AA3B8B7A ON trade (pokemon_trade1_id)
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE INDEX IDX_7E1A4366B88E2494 ON trade (pokemon_trade2_id)
+        SQL);
     }
 
     public function down(Schema $schema): void
