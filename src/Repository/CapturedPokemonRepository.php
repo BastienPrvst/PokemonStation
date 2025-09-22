@@ -94,8 +94,9 @@ class CapturedPokemonRepository extends ServiceEntityRepository
      */
     public function findSpeciesCapturedByPokemon(User $user, array $pokemons): array
     {
+		$totalResult = [];
         $result = $this->createQueryBuilder('cp')
-            ->select('DISTINCT p.pokeId AS pokeId')
+            ->select('DISTINCT p.pokeId AS pokeId, cp.quantity')
             ->innerJoin('cp.pokemon', 'p')
             ->where('cp.owner = :user')
             ->andWhere('cp.shiny = false')
@@ -108,7 +109,10 @@ class CapturedPokemonRepository extends ServiceEntityRepository
             ->getQuery()
             ->getScalarResult();
 
-        return array_column($result, 'pokeId');
+        $totalResult['pokeIds'] = array_column($result, 'pokeId');
+		$totalResult['quantities'] = array_column($result, 'quantity', 'pokeId');
+
+		return $totalResult;
     }
 
     /**
@@ -118,8 +122,9 @@ class CapturedPokemonRepository extends ServiceEntityRepository
      */
     public function findShinyCapturedByPokemon(User $user, array $pokemons): array
     {
+	    $totalResult = [];
         $result = $this->createQueryBuilder('cp')
-            ->select('DISTINCT p.pokeId AS pokeId')
+            ->select('DISTINCT p.pokeId AS pokeId, cp.quantity')
             ->innerJoin('cp.pokemon', 'p')
             ->where('cp.owner = :user')
             ->andWhere('cp.shiny = true')
@@ -130,9 +135,12 @@ class CapturedPokemonRepository extends ServiceEntityRepository
             ])
             ->orderBy('p.pokeId', 'ASC')
             ->getQuery()
-            ->getResult();
+            ->getScalarResult();
 
-        return array_column($result, 'pokeId');
+	    $totalResult['pokeIds'] = array_column($result, 'pokeId');
+	    $totalResult['quantities'] = array_column($result, 'quantity', 'pokeId');
+
+		return $totalResult;
     }
 
     public function findOnePokemon(User $user, bool $shiny, Pokemon $pokemon)
