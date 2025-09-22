@@ -17,6 +17,9 @@ final class CapturedPokemonDTO extends PokemonDTO
 
     public bool $altShiny = false;
 
+	public int $quantity = 0;
+	public int $shinyQuantity = 0;
+
     public function __construct(Pokemon $pokemon)
     {
         parent::__construct($pokemon);

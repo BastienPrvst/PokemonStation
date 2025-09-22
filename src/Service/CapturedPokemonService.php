@@ -13,7 +13,8 @@ class CapturedPokemonService extends AbstractController
 {
     public function __construct(
         private readonly CapturedPokemonRepository $capturedPokemonRepository,
-    ) {}
+    ) {
+    }
 
     /**
      * @param  User $user
@@ -30,16 +31,23 @@ class CapturedPokemonService extends AbstractController
 
         foreach ($pokemons as $pokemon) {
 
-            if ($hideRelated && $pokemon->getRelateTo()) {
+            if ($pokemon->getRelateTo()) {
+
                 $altForms[] = $pokemon;
 
                 continue;
             }
 
             $pokemonId = $pokemon->getPokeId();
-            $captured = in_array($pokemonId, $capturedPokemons);
-            $shiny = in_array($pokemonId, $shinyCapturedPokemons);
+            $captured = in_array($pokemonId, $capturedPokemons['pokeIds'], true);
+            $shiny = in_array($pokemonId, $shinyCapturedPokemons['pokeIds'], true);
             $capturedPokemonDTO = new CapturedPokemonDTO($pokemon);
+	        $capturedPokemonDTO->quantity = $captured
+			        ? $capturedPokemons['quantities'][$pokemonId]
+			        : 0;
+			$capturedPokemonDTO->shinyQuantity = $shiny
+				? $shinyCapturedPokemons['quantities'][$pokemonId]
+				: 0;
             $capturedPokemonDTO->captured = $captured || $shiny;
             $capturedPokemonDTO->shiny = $shiny;
             $capturedPokemonDTO->onlyShiny = !$captured && $shiny;
@@ -47,7 +55,6 @@ class CapturedPokemonService extends AbstractController
         }
 
         foreach ($altForms as $altForm) {
-
             $pokemonRelateTo = $altForm->getRelateTo();
             $pokemonId = $altForm->getPokeId();
 
@@ -59,7 +66,9 @@ class CapturedPokemonService extends AbstractController
             $key = array_key_first($basePokemonDTO);
             $basePokemonDTO = $capturedPokemonsDTO[$key] ?? null;
 
-            if (!$basePokemonDTO) continue;
+            if (!$basePokemonDTO) {
+                continue;
+            }
 
             $captured = in_array($pokemonId, $capturedPokemons);
             $shiny = in_array($pokemonId, $shinyCapturedPokemons);
@@ -88,5 +97,4 @@ class CapturedPokemonService extends AbstractController
 
         return $capturedPokemonsDTO;
     }
-
 }

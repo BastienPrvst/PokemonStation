@@ -8,6 +8,8 @@ use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+use function Doctrine\ORM\QueryBuilder;
+
 /**
  * @extends ServiceEntityRepository<CapturedPokemon>
  *
@@ -92,8 +94,9 @@ class CapturedPokemonRepository extends ServiceEntityRepository
      */
     public function findSpeciesCapturedByPokemon(User $user, array $pokemons): array
     {
+		$totalResult = [];
         $result = $this->createQueryBuilder('cp')
-            ->select('DISTINCT p.pokeId AS pokeId')
+            ->select('DISTINCT p.pokeId AS pokeId, cp.quantity')
             ->innerJoin('cp.pokemon', 'p')
             ->where('cp.owner = :user')
             ->andWhere('cp.shiny = false')
@@ -106,7 +109,10 @@ class CapturedPokemonRepository extends ServiceEntityRepository
             ->getQuery()
             ->getScalarResult();
 
-        return array_column($result, 'pokeId');
+        $totalResult['pokeIds'] = array_column($result, 'pokeId');
+		$totalResult['quantities'] = array_column($result, 'quantity', 'pokeId');
+
+		return $totalResult;
     }
 
     /**
@@ -116,8 +122,9 @@ class CapturedPokemonRepository extends ServiceEntityRepository
      */
     public function findShinyCapturedByPokemon(User $user, array $pokemons): array
     {
+	    $totalResult = [];
         $result = $this->createQueryBuilder('cp')
-            ->select('DISTINCT p.pokeId AS pokeId')
+            ->select('DISTINCT p.pokeId AS pokeId, cp.quantity')
             ->innerJoin('cp.pokemon', 'p')
             ->where('cp.owner = :user')
             ->andWhere('cp.shiny = true')
@@ -128,9 +135,12 @@ class CapturedPokemonRepository extends ServiceEntityRepository
             ])
             ->orderBy('p.pokeId', 'ASC')
             ->getQuery()
-            ->getResult();
+            ->getScalarResult();
 
-        return array_column($result, 'pokeId');
+	    $totalResult['pokeIds'] = array_column($result, 'pokeId');
+	    $totalResult['quantities'] = array_column($result, 'quantity', 'pokeId');
+
+		return $totalResult;
     }
 
     public function findOnePokemon(User $user, bool $shiny, Pokemon $pokemon)
@@ -184,4 +194,35 @@ class CapturedPokemonRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+	public function findTradeable(User $user): array
+	{
+		return $this->createQueryBuilder('cp')
+			->where('cp.owner = :user AND cp.quantity > 1')
+			->orWhere('cp.owner = :user AND cp.shiny = true AND cp.quantity > 0')
+			->setParameter('user', $user)
+			->getQuery()
+			->getResult();
+	}
+
+	public function findInteressting(User $user, User $connectedUser)
+	{
+		return $this->createQueryBuilder('cp')
+			->where('cp.owner = :user')
+			->andWhere('
+            (cp.shiny = true AND cp.quantity > 0)
+            OR
+            (cp.shiny = false AND cp.quantity > 1 AND cp.pokemon NOT IN (
+                SELECT p3.id
+                FROM App\Entity\CapturedPokemon cp3
+                JOIN cp3.pokemon p3
+                WHERE cp3.owner = :connectedUser
+                AND cp3.quantity > 0
+            ))
+        ')
+			->setParameter('user', $user)
+			->setParameter('connectedUser', $connectedUser)
+			->getQuery()
+			->getResult();
+	}
 }

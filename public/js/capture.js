@@ -17,6 +17,7 @@ function autoCapture() {
 
 }
 
+
 document
     .querySelector(".carousel-inner")
     .addEventListener("click", async function (event) {
@@ -237,7 +238,9 @@ document
                 );
               }
 
+
               if (["EX", "UR", "SR"].includes(pokemon.rarity) || raRand >= 90) {
+
                 {
                   tl.to(
                       ".logo-what",
@@ -390,7 +393,6 @@ document
             autoCapture()
           });
         }
-      }
     });
 
 //Code pour le SHOP
