@@ -41,9 +41,9 @@ final class Version20250624105543 extends AbstractMigration
         // $this->addSql(<<<'SQL'
         //     CREATE TABLE pokemon (id INT AUTO_INCREMENT NOT NULL, relate_to_id INT DEFAULT NULL, gen_id INT NOT NULL, name VARCHAR(100) NOT NULL, type VARCHAR(50) NOT NULL, type2 VARCHAR(50) DEFAULT NULL, description VARCHAR(5000) NOT NULL, name_en VARCHAR(50) NOT NULL, rarity VARCHAR(30) NOT NULL, poke_id INT NOT NULL, INDEX IDX_62DC90F3E8BF6915 (relate_to_id), INDEX IDX_62DC90F3B718FA6E (gen_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         // SQL);
-        $this->addSql(<<<'SQL'
-            CREATE TABLE trade (id INT AUTO_INCREMENT NOT NULL, user1_id INT NOT NULL, user2_id INT NOT NULL, trade_poke1_id INT DEFAULT NULL, trade_poke2_id INT DEFAULT NULL, status INT NOT NULL, user1_status INT NOT NULL, user2_status INT NOT NULL, INDEX IDX_7E1A436656AE248B (user1_id), INDEX IDX_7E1A4366441B8B65 (user2_id), INDEX IDX_7E1A43662D721C6 (trade_poke1_id), INDEX IDX_7E1A436610628E28 (trade_poke2_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
-        SQL);
+        // $this->addSql(<<<'SQL'
+        //     CREATE TABLE trade (id INT AUTO_INCREMENT NOT NULL, user1_id INT NOT NULL, user2_id INT NOT NULL, trade_poke1_id INT DEFAULT NULL, trade_poke2_id INT DEFAULT NULL, status INT NOT NULL, user1_status INT NOT NULL, user2_status INT NOT NULL, INDEX IDX_7E1A436656AE248B (user1_id), INDEX IDX_7E1A4366441B8B65 (user2_id), INDEX IDX_7E1A43662D721C6 (trade_poke1_id), INDEX IDX_7E1A436610628E28 (trade_poke2_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
+        // SQL);
         // $this->addSql(<<<'SQL'
         //     CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, pseudonym VARCHAR(20) NOT NULL, creation_date DATETIME NOT NULL, launchs INT NOT NULL, last_obtained_launch DATETIME NOT NULL, avatar VARCHAR(50) DEFAULT NULL, money INT DEFAULT NULL, launch_count INT DEFAULT NULL, score INT DEFAULT NULL, UNIQUE INDEX UNIQ_8D93D649E7927C74 (email), UNIQUE INDEX UNIQ_8D93D6493654B190 (pseudonym), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         // SQL);
