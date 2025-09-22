@@ -3612,6 +3612,7 @@ tfoot tr td {
 
 .main-trade {
   display: flex;
+  margin-bottom: 50px;
 }
 .main-trade > * {
   font-family: "Jersey 10", sans-serif;
@@ -3765,6 +3766,7 @@ tfoot tr td {
   flex-wrap: wrap;
   overflow-y: auto;
   padding: 25px;
+  margin-bottom: 20px;
   border-radius: 0 0 10px 10px;
 }
 
@@ -3833,6 +3835,13 @@ tfoot tr td {
   width: 25px;
 }
 
+.shiny-trade-symbol-2 {
+  position: absolute;
+  right: 10%;
+  top: 5%;
+  width: 25px;
+}
+
 .yellow-text {
   color: #ffcd00;
   -webkit-text-stroke: 1px #356abc;
@@ -3888,10 +3897,42 @@ tfoot tr td {
   border: solid 3px #0a53be;
 }
 
+.trade-rule{
+  background-color: #9f1239;
+  color: white;
+  width: 66%;
+  align-self: center;
+  margin-bottom: 25px;
+  padding: 10px;
+  border: 1px solid #8c051c;
+  border-radius: 10px;
+  font-family: "Jersey 10", sans-serif;
+  font-weight: 100;
+  font-size: 20px;
+}
+
+.cancel-trade{
+  top: 10px;
+  left: 10px;
+  text-decoration: underline #ffcd00 !important;
+}
+
 @media screen and (max-width: 992px) {
-  /*.main-trade{*/
-  /*  flex-direction: column;*/
-  /*}*/
+  .trade-rule{
+    width: 100%;
+  }
+
+  .main-trade-bubble{
+    width: 24%;
+  }
+
+  .filters-2 button,
+  .filters button
+  {
+    width: auto;
+    min-width: 40px;
+    max-width: 100px;
+  }
 }
 
 /*Partie hub échanges*/
@@ -3906,12 +3947,13 @@ tfoot tr td {
   font-family: "Jersey 10", sans-serif;
   padding: 20px;
   overflow-x: auto;
+  border-radius: 15px;
 }
 
 .trade-list {
   background-color: #9f1239;
   padding: 15px;
-  border-radius: 10px;
+  border-radius: 15px;
   color: white;
   width: 100%;
 }

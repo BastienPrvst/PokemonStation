@@ -33,10 +33,13 @@
                                 </td>
 
                                 {% if trade.pokemonTrade1 %}
-                                    {% set url = trade.pokemonTrade1.shiny ? 'shiny-' ~ trade.pokemonTrade1.pokemon.nameEn ~ '.gif' : trade.pokemonTrade1.pokemon.nameEn ~ '.gif' %}
+                                    {% set url = trade.pokemonTrade1.shiny ? 'shiny-' ~ trade.pokemonTrade1.pokemon.nameEn : trade.pokemonTrade1.pokemon.nameEn %}
 
-                                    <td>
-                                        <img class="mini-mini-gif mirror-x" src="{{ asset('medias/images/gifs/' ~ trade.pokemonTrade1.pokemon.nameEn ~ '.gif') }}" alt="">
+                                    <td class="position-relative">
+                                        <img class="mini-mini-gif mirror-x" src="{{ asset('medias/images/gifs/' ~ url ~ '.gif') }}" alt="">
+                                        {% if trade.pokemonTrade1.shiny is true %}
+                                            <img class="shiny-trade-symbol-2" src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt="">
+                                        {% endif %}
                                     </td>
                                 {% else %}
                                     <td>
@@ -48,9 +51,12 @@
                                 </td>
 
                                 {% if trade.pokemonTrade2 %}
-                                    {% set url = trade.pokemonTrade2.shiny ? 'shiny-' ~ trade.pokemonTrade2.pokemon.nameEn ~ '.gif' : trade.pokemonTrade2.pokemon.nameEn ~ '.gif' %}
-                                    <td>
-                                        <img class="mini-mini-gif" src="{{ asset('medias/images/gifs/' ~ url ) }}" alt="">
+                                    {% set url2 = trade.pokemonTrade2.shiny ? 'shiny-' ~ trade.pokemonTrade2.pokemon.nameEn : trade.pokemonTrade2.pokemon.nameEn %}
+                                    <td class="position-relative">
+                                        <img class="mini-mini-gif" src="{{ asset('medias/images/gifs/' ~ url2 ~ ".gif" ) }}" alt="">
+                                        {% if trade.pokemonTrade2.shiny is true %}
+                                            <img class="shiny-trade-symbol-2" src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt="">
+                                        {% endif %}
                                     </td>
                                 {% else %}
                                     <td>
@@ -108,12 +114,14 @@
                 <h4 class="align-self-center my-4 yel">Derniers utilisateurs connectés</h4>
                 {% for ppl in lastConnectedPpl %}
                     <div class="d-flex flex-row justify-content-between w-100">
-                        <p>
-                            {{ ppl.pseudonym }}
-                        </p>
-                        <a class="text-white text-decoration-underline" href="{{ path('app_trade_create', {id : ppl.id}) }}">
-                            Echanger
-                        </a>
+                        {% if ppl.pseudonym != app.user.pseudonym %}
+                            <p>
+                                {{ ppl.pseudonym }}
+                            </p>
+                            <a class="text-white text-decoration-underline" href="{{ path('app_trade_create', {id : ppl.id}) }}">
+                                Echanger
+                            </a>
+                        {% endif %}
                     </div>
 
                 {% endfor %}

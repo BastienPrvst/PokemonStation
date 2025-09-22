@@ -54,31 +54,41 @@ readonly class TradeService
 	 */
     public function create(User $user1, User $user2): Trade
     {
-		$tradeRepo = $this->entityManager->getRepository(Trade::class);
+	    $lock = $this->lockFactory->createLock(
+		    'trade_lock_' . $user1->getId() . '_' . $user2->getId()
+	    );
 
-		$tradeAlreadyExist = $tradeRepo->tradeExist($user1, $user2);
-	    if (
-		    $tradeAlreadyExist !== null
-		    && (
-			    $tradeAlreadyExist->getStatus() === TradeStatus::CREATED
-			    || $tradeAlreadyExist->getStatus() === TradeStatus::ONGOING
-		    )
-	    ) {
-		    return $tradeAlreadyExist;
+	    if (!$lock->acquire(true)) {
+		    throw new \RuntimeException('Impossible de créer un trade, verrou non obtenu.');
 	    }
 
-        $trade = new Trade();
-        $trade
-	        ->setUser1($user1)
-            ->setUser2($user2)
-            ->setStatus(TradeStatus::CREATED)
-			->setUser1Status(TradeUserStatus::ONGOING)
-	        ->setUser2Status(TradeUserStatus::ONGOING)
-            ->setPrice(0);
+	    try {
+		    $tradeRepo = $this->entityManager->getRepository(Trade::class);
 
-        $this->entityManager->persist($trade);
-        $this->entityManager->flush();
-        return $trade;
+		    $tradeAlreadyExist = $tradeRepo->tradeExist($user1, $user2);
+
+		    if (
+			    $tradeAlreadyExist !== null &&
+			    in_array($tradeAlreadyExist->getStatus(), [TradeStatus::CREATED, TradeStatus::ONGOING], true)
+		    ) {
+			    return $tradeAlreadyExist;
+		    }
+
+		    $trade = (new Trade())
+			    ->setUser1($user1)
+			    ->setUser2($user2)
+			    ->setStatus(TradeStatus::CREATED)
+			    ->setUser1Status(TradeUserStatus::ONGOING)
+			    ->setUser2Status(TradeUserStatus::ONGOING)
+			    ->setPrice(0);
+
+		    $this->entityManager->persist($trade);
+		    $this->entityManager->flush();
+
+		    return $trade;
+	    } finally {
+		    $lock->release();
+	    }
     }
 
 	/**
@@ -104,7 +114,7 @@ readonly class TradeService
 	    $lock = $this->lockFactory->createLock('TradeValidateLock_' . $trade->getId());
 
 	    if (!$lock->acquire()) {
-		    return new JsonResponse(['error' => 'Trade déjà en cours de traitement'], 423);
+		    return new JsonResponse(['error' => 'Echange déjà en cours de traitement'], 423);
 	    }
 
 	    try {
@@ -170,13 +180,14 @@ readonly class TradeService
 			$trade->getUser2Status() !== TradeUserStatus::ACCEPTED
         ) {
             return new JsonResponse(
-	            ['error' => 'Tous les Pokémons ne sont pas validés et acceptés.',
+	            ['info' => 'En attente de validation du second Pokémon.',
 				'validate' => false],
                 Response::HTTP_OK,
                 [],
                 false
             );
         }
+	    $lock = $this->lockFactory->createLock('trade' . $trade->getId());
 
         $poorGuy = null;
         if ($price > $user1->getMoney()) {
@@ -188,7 +199,7 @@ readonly class TradeService
         if ($poorGuy) {
             return new JsonResponse(
                 [
-                    'error' => sprintf('L\'utilisateur %s ne dispose pas d\'assez d\'argent.', $poorGuy),
+                    'info' => sprintf('L\'utilisateur %s ne dispose pas d\'assez d\'argent.', $poorGuy),
 	                'validate' => false
                 ],
                 Response::HTTP_OK,
@@ -198,7 +209,26 @@ readonly class TradeService
         }
 
         // Partie validation de l'échange
-        $lock = $this->lockFactory->createLock('trade' . $trade->getId());
+
+	    foreach ([$cp1, $cp2] as $cp) {
+		    $required = $cp->getShiny() === true ? 1 : 2;
+
+		    if ($cp->getQuantity() < $required) {
+			    return new JsonResponse(
+				    [
+					    'info' => sprintf(
+						    "L'utilisateur %s ne dispose pas du Pokémon %s en quantité suffisante",
+						    $cp->getOwner()?->getPseudonym() ?? 'inconnu',
+						    $cp->getPokemon()?->getName() ?? 'inconnu'
+					    ),
+					    'validate' => false
+				    ],
+				    Response::HTTP_OK,
+				    [],
+				    false
+			    );
+		    }
+	    }
 
         try {
             $capturedPokemonRepo = $this->entityManager->getRepository(CapturedPokemon::class);

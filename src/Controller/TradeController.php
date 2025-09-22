@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 
 final class TradeController extends AbstractController
@@ -25,6 +26,7 @@ final class TradeController extends AbstractController
 	}
 
 	#[Route(path: '/trades/', name: 'app_trades')]
+	#[IsGranted('ROLE_USER')]
 	public function allUserTrades(TradeRepository $tradeRepository, UserRepository $userRepository): Response
     {
 	    /** @var User $user */
@@ -41,6 +43,7 @@ final class TradeController extends AbstractController
 
 
 	#[Route(path: '/trade/{id}', name: 'app_trade_create')]
+	#[IsGranted('ROLE_USER')]
 	public function createTrade(User $user): Response
 	{
 		/* @var User $connectedUser */
@@ -97,6 +100,7 @@ final class TradeController extends AbstractController
 	 * @throws ExceptionInterface
 	 */
 	#[Route(path: '/trade/update/{trade}', name: 'app_trade_update')]
+	#[IsGranted('ROLE_USER')]
 	public function updateTrade(Trade $trade, Request $request): JsonResponse
 	{
 		$pokeId = $request->request->get('pokemonId');
@@ -126,10 +130,20 @@ final class TradeController extends AbstractController
 	}
 
 	#[Route(path: '/trade/validate/{trade}', name: 'app_trade_validate')]
+	#[IsGranted('ROLE_USER')]
 	public function finalizeTrade(Trade $trade): null|JsonResponse
 	{
 		/* @var User $user */
 		$user = $this->getUser();
 		return $this->tradeService->validate($trade, $user);
 	}
+
+	#[Route(path: '/trade/cancel/{trade}', name: 'app_trade_cancel')]
+	#[IsGranted('ROLE_USER')]
+	public function cancelTrade(Trade $trade): Response
+	{
+		$this->tradeService->cancel($trade);
+		return $this->redirectToRoute('app_trades');
+	}
+
 }

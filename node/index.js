@@ -3,7 +3,6 @@ const { createServer } = require("http");
 const { Server } = require("socket.io");
 
 const httpServer = createServer(function(req, res) {
-    console.log('skibidi');
 });
 
 const io = new Server(httpServer, {
@@ -12,27 +11,42 @@ const io = new Server(httpServer, {
     }
 });
 
-io.sockets.on('connection', (socket) => {
+io.on('connection', (socket) => {
 
-    socket.on('joinRoom', (room) => socket.join(room) );
+    socket.on('joinRoom', (roomName) => {
+        if (!roomName) return;
+        socket.join(roomName);
+        socket.currentRoom = roomName;
+        console.log(`${socket.id} a rejoint la room ${roomName}`);
+    });
 
     socket.on('changePokemon', (pokemon) => {
-        console.log(pokemon)
-        socket.to('tradeRoom').emit('changeOtherPokemon', pokemon);
-    })
+        if (!socket.currentRoom) return;
+        console.log('changePokemon reçu dans', socket.currentRoom, pokemon);
+        socket.to(socket.currentRoom).emit('changeOtherPokemon', pokemon);
+    });
 
     socket.on('validatePokemon', (price) => {
-        socket.to('tradeRoom').emit('validatePokemonFromOther', price);
+        if (!socket.currentRoom) return;
+        socket.to(socket.currentRoom).emit('validatePokemonFromOther', price);
     });
 
     socket.on('confirmedPokemon', () => {
-        socket.to('tradeRoom').emit('confirmedPokemonFromOther');
+        if (!socket.currentRoom) return;
+        socket.to(socket.currentRoom).emit('confirmedPokemonFromOther');
+    });
+
+    socket.on('interested', (id) => {
+        if (!socket.currentRoom) return;
+        socket.to(socket.currentRoom).emit('interestedPokemonFromOther', id);
+    });
+
+    socket.on('successRedirect', () => {
+        if (!socket.currentRoom) return;
+        socket.to(socket.currentRoom).emit('successRedirectFromOther');
     })
 
-    socket.on('interested', (id) =>{
-        socket.to('tradeRoom').emit('interestedPokemonFromOther', id);
-    })
-})
+});
 
 httpServer.listen(4000,() => {
     console.log(`Serveur WebSocket en écoute sur le port ${process.env.PORT}`);

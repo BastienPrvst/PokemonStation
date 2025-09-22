@@ -3,9 +3,10 @@ const socket = io.connect("http://localhost:4000");
 
 socket.on("connect", () => {
 
-    console.log("Connecté avec l'ID :", socket.id);
+    let tradeId = document.querySelector('.trade-id').getAttribute("data-id");
+    let roomName = `trade_${tradeId}`;
 
-    socket.emit('joinRoom', 'tradeRoom')
+    socket.emit('joinRoom', roomName);
 
     let myButtons = document.querySelectorAll('.my-pokemon-trade');
 
@@ -29,6 +30,14 @@ socket.on("connect", () => {
             image.src = pokemon.img;
             image.dataset.id = pokemonId;
             document.querySelector('.trade-c').classList.add('d-none');
+            document.querySelector('.trade-v').classList.remove('d-none');
+            if (event.currentTarget.getAttribute('data-shiny') === "1") {
+                document.querySelector('.main-trade-symbol').classList.remove('d-none');
+                pokemon.shiny = true;
+            } else {
+                document.querySelector('.main-trade-symbol').classList.add('d-none');
+                pokemon.shiny = false;
+            }
             socket.emit('changePokemon', pokemon);
 
         })
@@ -47,6 +56,11 @@ socket.on('changeOtherPokemon', (pokemon) => {
     imageToChange.classList.remove('d-none');
     imageToChange.src = pokemon.img;
     imageToChange.dataset.id = pokemon.id;
+    if (pokemon.shiny === true){
+        document.querySelector('.second-trade-symbol').classList.remove('d-none');
+    }else{
+        document.querySelector('.second-trade-symbol').classList.add('d-none');
+    }
     document.querySelector('.select-trade-2').classList.remove('validate-pokemon');
 });
 
@@ -71,7 +85,9 @@ validateButton.addEventListener('click', (event) => {
             document.querySelector('.trade-price').textContent = data.price;
             document.querySelector('.trade-c').classList.remove('d-none');
             socket.emit('validatePokemon', price);
+            document.querySelector('.ready').classList.add('d-none');
             document.querySelector('.ready-2').classList.add('d-none');
+
         })
         .catch((error) => {
             console.log(error)
@@ -82,9 +98,11 @@ validateButton.addEventListener('click', (event) => {
 //Confirmation pour un autre utilisateur
 
 socket.on('validatePokemonFromOther', (price) => {
-    document.querySelector('.select-trade-2').classList.add('validate-pokemon');document.querySelector('.trade-price').textContent = price;
+    document.querySelector('.select-trade-2').classList.add('validate-pokemon');
+    document.querySelector('.trade-price').textContent = price;
     document.querySelector('.ready').classList.add('d-none');
 })
+
 
 //Validation poké
 
@@ -95,14 +113,27 @@ validateTrade.addEventListener('click', (event) => {
     })
     .then((response) => response.json())
     .then((data) => {
-        console.log(data.error)
+        if (data.info !== undefined){
+            let d = document.querySelector('.info-trade-message').textContent = data.info
+        }
         socket.emit('confirmedPokemon')
         document.querySelector('.ready').classList.remove('d-none');
+
+        if (data.validate === true){
+
+            window.location.replace('/trades/');
+            socket.emit('successRedirect');
+        }
     })
     .catch((error) => {
         console.log(error)
     })
 })
+
+socket.on('successRedirectFromOther', () => {
+    location.replace('/trades/');
+})
+
 
 //Validation pour autre utilisateur
 
