@@ -55,7 +55,6 @@ h1 {
   width: 100%;
   max-width: 200px;
   border-radius: 25px;
-
 }
 
 .connexion-deconnexion a:hover {
@@ -182,7 +181,7 @@ h1 {
   transition: 0.5s;
 }
 
-.notification{
+.notification {
   color: #fff8e1;
   background-color: #9f1239;
   border-radius: 50%;
@@ -566,7 +565,7 @@ footer {
   text-decoration: underline #ffd83e 3px;
 }
 
-.top-info-div{
+.top-info-div {
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -587,25 +586,24 @@ footer {
   padding: 7px 20px 0;
 }
 
-.top-info{
+.top-info {
   background-color: #fff8e1;
   margin: 20px 0 0 0;
   z-index: 2;
 }
 
-.countdown{
+.countdown {
   width: auto;
   margin: 20px 0 0 -10px;
-  background-color: #E34042;
+  background-color: #e34042;
   color: white;
   z-index: 1;
 }
 
-.top-info-bis{
+.top-info-bis {
   margin-left: 0;
   align-self: start;
 }
-
 
 .table-pokedex {
   border-collapse: collapse;
@@ -706,7 +704,7 @@ footer {
     transform: scaleX(-1) scale(2.3);
   }
 
-  .concept{
+  .concept {
     margin: 5%;
   }
 
@@ -997,7 +995,7 @@ footer {
   z-index: 0;
 }
 
-.stats-table{
+.stats-table {
   width: 100%;
   text-align: center;
 }
@@ -1009,11 +1007,11 @@ footer {
 }
 
 .tr-stats,
-.tr-shiny{
+.tr-shiny {
   line-height: 90%;
 }
 
-.back-card-1{
+.back-card-1 {
   background-color: rgba(6, 42, 58, 0.6);
 
   padding: 10px;
@@ -1021,7 +1019,7 @@ footer {
   border-radius: 15px;
 }
 
-table:has(.tr-stats){
+table:has(.tr-stats) {
   text-align: center;
 }
 
@@ -1045,8 +1043,8 @@ table:has(.tr-stats){
   color: #4439cd;
 }
 
-.tr-shiny{
-  color: #41BAFD;
+.tr-shiny {
+  color: #41bafd;
 }
 
 .stats {
@@ -1083,7 +1081,7 @@ table:has(.tr-stats){
   margin: 2% 0 0 2%;
 }
 
-.stats-list-item{
+.stats-list-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1578,7 +1576,7 @@ i.fa-chevron-right {
   }
 }
 
-.mini-infos{
+.mini-infos {
   width: 90%;
 }
 
@@ -1588,8 +1586,7 @@ i.fa-chevron-right {
 }
 
 .poke-tronq,
-.poke-tronq-2
-{
+.poke-tronq-2 {
   display: inline-block;
   white-space: nowrap;
   overflow: hidden;
@@ -1636,7 +1633,7 @@ i.fa-chevron-right {
   overflow-y: hidden;
 }
 
-.rarity-scale{
+.rarity-scale {
   max-width: 1000px;
 }
 
@@ -2592,25 +2589,25 @@ tfoot tr td {
   height: 40px;
 }
 
-.btn-dex-container{
+.btn-dex-container {
   position: absolute;
 }
 
-.volume-dex-container{
+.volume-dex-container {
   top: 0;
   left: 0;
 }
 
-.shiny-dex-container{
+.shiny-dex-container {
   top: 0;
   right: 0;
 }
 
-.btn-volume:last-child{
+.btn-volume:last-child {
   border-bottom-right-radius: 25px;
 }
 
-.btn-shiny:last-child{
+.btn-shiny:last-child {
   border-bottom-left-radius: 25px;
 }
 
@@ -2634,7 +2631,7 @@ tfoot tr td {
 
 /*Partie basse du pokedex*/
 
-.pokedex-bottom{
+.pokedex-bottom {
   position: relative;
   display: flex;
   align-items: center;
@@ -2660,7 +2657,9 @@ tfoot tr td {
   border-radius: 15%;
   font-size: 100%;
   cursor: pointer;
-  box-shadow: inset 0 0 5px #000, 0 2px 5px rgba(0, 0, 0, 0.5);
+  box-shadow:
+    inset 0 0 5px #000,
+    0 2px 5px rgba(0, 0, 0, 0.5);
   transition: background-color 0.2s;
   display: flex;
   align-items: center;
@@ -2703,18 +2702,20 @@ tfoot tr td {
   top: 50%;
   transform: translate(-50%, -50%);
   background-color: #333;
-  box-shadow: inset 0 0 5px #000, 0 2px 5px rgba(0, 0, 0, 0.5);
+  box-shadow:
+    inset 0 0 5px #000,
+    0 2px 5px rgba(0, 0, 0, 0.5);
   border-radius: 15%;
 }
 
-.alt-div{
+.alt-div {
   height: 200px;
   display: flex;
   align-items: center;
   justify-content: start;
   width: 40%;
   margin: 15px 6%;
-  background-color: #6AA671;
+  background-color: #6aa671;
   position: relative;
   border-radius: 10px;
   /*border: 4px solid #ffcd00;*/
@@ -2736,8 +2737,8 @@ tfoot tr td {
   display: none;
 }
 
-.alt-forms{
-  scrollbar-width: none
+.alt-forms {
+  scrollbar-width: none;
 }
 
 .alt {
@@ -2780,13 +2781,13 @@ tfoot tr td {
   width: 50px;
 }
 
-.arrow-left-dex{
+.arrow-left-dex {
   top: 0;
   left: 10px;
   transform: scaleX(-1);
 }
 
-.arrow-right-dex{
+.arrow-right-dex {
   top: 0;
   right: 10px;
 }
@@ -2813,7 +2814,9 @@ tfoot tr td {
   max-height: 70px;
   aspect-ratio: 1 / 1;
   background-color: #333;
-  box-shadow: inset 0 0 5px #000, 0 2px 5px rgba(0, 0, 0, 0.5);
+  box-shadow:
+    inset 0 0 5px #000,
+    0 2px 5px rgba(0, 0, 0, 0.5);
   border-radius: 50%;
   font-family: "Press Start 2P", serif;
   color: white;
@@ -2929,12 +2932,12 @@ tfoot tr td {
     transform: translateY(-50%);
   }
 
-  .gb-button-a{
+  .gb-button-a {
     top: calc(0% + 0.5vw);
     right: calc(0% + 0.5vw);
   }
 
-  .gb-button-b{
+  .gb-button-b {
     bottom: calc(0% + 0.5vw);
     left: calc(0% + 0.5vw);
   }
@@ -3617,6 +3620,443 @@ tfoot tr td {
   margin: 200px 0;
 }
 
-.top-badge{
+.top-badge {
   width: 20px;
+}
+
+/* Echanges */
+
+.main-trade {
+  display: flex;
+  margin-bottom: 50px;
+}
+.main-trade > * {
+  font-family: "Jersey 10", sans-serif;
+}
+
+.user-part {
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #9f1239;
+  border-radius: 50px;
+  border: solid #a62840 5px;
+}
+
+.trade-head {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-evenly;
+  height: auto;
+}
+
+.trade-head-2 {
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.trade-head,
+.trade-head-2 {
+  position: relative;
+  height: 225px;
+  margin-bottom: 15px;
+}
+
+.trade-info {
+  width: 150px;
+}
+
+.trade-user-img {
+  width: 100%;
+}
+
+.trade-window {
+  margin-top: 30px;
+}
+
+.filters {
+  height: auto;
+}
+
+.filters,
+.filters-2 {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.filters button,
+.filters-2 button {
+  background-color: #9f1239;
+  border: #ffcd00 2px solid;
+  border-radius: 15px;
+  width: 7%;
+  max-width: 9%;
+  margin: 5px;
+}
+
+.filters button:hover,
+.filters-2 button:hover {
+  background-color: #3a8cd6;
+  color: white;
+}
+
+.filters-2-5 {
+  min-height: 40px;
+}
+
+.filters-2-5 button {
+  width: auto;
+  max-width: 200px;
+}
+
+.checked-filter {
+  background-color: red !important;
+  color: white !important;
+}
+
+.user-part * {
+  color: white;
+}
+
+.mirror-x {
+  transform: scaleX(-1);
+}
+
+.trade-v,
+.trade-c {
+  border: solid 1px #de0c30;
+  background-color: #af374d;
+  border-radius: 5px;
+  margin: 10px 10px 10px 0;
+}
+
+.trade-v:active,
+.trade-c:active {
+  background-color: white;
+  color: #9f1239;
+}
+
+.validate-img {
+  width: 20px;
+}
+
+.ready {
+  position: absolute;
+  right: 1%;
+}
+
+.ready-2 {
+  position: absolute;
+  left: 1%;
+}
+
+.trade-title {
+  font-size: 15px;
+}
+
+.main-trade-bubble {
+  width: 22%;
+  height: auto;
+  box-sizing: border-box;
+  margin: 0 0.5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.my-pokemon-trade {
+  cursor: pointer;
+}
+
+.poke-trade {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  overflow-y: auto;
+  padding: 25px;
+  margin-bottom: 20px;
+  border-radius: 0 0 10px 10px;
+}
+
+.poketrade {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #9f1239;
+  border-radius: 15px 15px 0 0;
+  border-collapse: collapse;
+  aspect-ratio: 1/1;
+  box-sizing: border-box;
+  border: solid 2px #ffcd00;
+  margin: 0 0.5%;
+  position: relative;
+}
+
+.possessed {
+  background-image: url("../medias/images/elements/pokeball-icon.png");
+  background-position: bottom right;
+  background-size: 20px;
+  background-repeat: no-repeat;
+}
+
+.poketrade,
+.number-trade {
+  width: 100%;
+}
+
+.poketrade-gif {
+  max-width: 60%;
+}
+
+.trade-name {
+  position: absolute;
+  top: 5px;
+  z-index: 2;
+  padding: 0 5px 0 5px;
+}
+
+.number-trade {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #8c051c;
+  margin-bottom: 15px;
+  flex: 0 0 auto;
+  border-radius: 0 0 15px 15px;
+  border: solid 2px #ffcd00;
+  border-top: unset;
+  box-sizing: border-box;
+  border-collapse: collapse;
+}
+
+.x-trade {
+  width: 10px;
+  height: 10px;
+  aspect-ratio: 1/1;
+  margin: 0 5px;
+}
+
+.shiny-trade-symbol {
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  width: 25px;
+}
+
+.shiny-trade-symbol-2 {
+  position: absolute;
+  right: 10%;
+  top: 5%;
+  width: 25px;
+}
+
+.yellow-text {
+  color: #ffcd00;
+  -webkit-text-stroke: 1px #356abc;
+  font-size: 28px;
+}
+
+.select-trade {
+  width: 150px;
+  height: 150px;
+  background-color: #666666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  border: #333333 solid 3px;
+  box-shadow: #333333 2px 2px 2px;
+  overflow: hidden;
+}
+
+.validate-pokemon {
+  background-color: darkseagreen;
+}
+
+.select-trade span {
+  color: #333333;
+  font-weight: bold;
+  font-size: 150px;
+}
+
+.arrow-div {
+  position: relative;
+  width: 110px;
+}
+.arrow-trade {
+  width: 100px;
+}
+.arrow-2 {
+  transform: rotate(-180deg);
+  position: absolute;
+  top: 50px;
+}
+
+.coin-trade {
+  width: 10px;
+  margin-left: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+.interestedPokemon {
+  border: solid 3px #0a53be;
+}
+
+.trade-rule {
+  background-color: #9f1239;
+  color: white;
+  width: 66%;
+  align-self: center;
+  margin-bottom: 25px;
+  padding: 10px;
+  border: 1px solid #8c051c;
+  border-radius: 10px;
+  font-family: "Jersey 10", sans-serif;
+  font-weight: 100;
+  font-size: 20px;
+}
+
+.cancel-trade {
+  top: 10px;
+  left: 10px;
+  text-decoration: underline #ffcd00 !important;
+}
+
+@media screen and (max-width: 992px) {
+  .trade-rule {
+    width: 100%;
+  }
+
+  .main-trade-bubble {
+    width: 32%;
+    max-width: unset;
+  }
+
+  .filters-2 button,
+  .filters button {
+    width: auto;
+    min-width: 40px;
+    max-width: 100px;
+  }
+
+  .poke-trade {
+    padding: 2px;
+  }
+
+  .trade-head,
+  .trade-head-2 {
+    height: 300px;
+  }
+}
+
+/*Partie hub échanges*/
+
+.mini-mini-gif {
+  max-height: 50px;
+  max-width: 60px;
+}
+
+.section-trade,
+.section-social {
+  font-family: "Jersey 10", sans-serif;
+  padding: 20px;
+  overflow-x: auto;
+  border-radius: 15px;
+}
+
+.trade-list {
+  background-color: #9f1239;
+  padding: 15px;
+  border-radius: 15px;
+  color: white;
+  width: 100%;
+}
+
+.trade-list-table {
+  width: 100%;
+  background-color: #e34042;
+  border-radius: 10px;
+  overflow: hidden;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: clamp(1rem, 1.5rem, 3rem);
+  font-weight: 400 !important;
+}
+
+.trade-list-table thead {
+  background-color: #b1364c;
+}
+
+.trade-list-table a {
+  color: white;
+  text-decoration: underline #ffcd00;
+}
+
+.yel {
+  text-decoration: underline #ffcd00;
+}
+
+.tr-head th {
+  margin: 100px 0;
+  font-weight: 10;
+}
+
+.trade-list-table th,
+.trade-list-table td {
+  vertical-align: middle;
+  padding: 0.6rem 0.9rem;
+}
+
+.poke-tronq-3 {
+  overflow: hidden;
+  max-width: 120px;
+  text-overflow: ellipsis;
+}
+
+.trade-tr {
+  border-bottom: 1px solid #9f1239;
+}
+
+.section-social {
+  background-color: #9f1239;
+  color: white;
+  font-size: clamp(1rem, 1.5rem, 3rem);
+  text-align: center;
+  margin: 20px;
+  height: auto;
+}
+
+.section-social a {
+  text-decoration: none;
+}
+
+.friend-list {
+  margin-bottom: 50px;
+}
+
+@media screen and (max-width: 992px) {
+  .section-trade {
+    padding: 0;
+    margin-bottom: 50px;
+  }
+
+  .section-social {
+    margin: 0 0 50px;
+  }
+
+  .trade-list-table td,
+  .trade-list-table th {
+    padding: 5px;
+  }
 }

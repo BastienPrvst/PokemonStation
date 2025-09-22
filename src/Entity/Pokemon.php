@@ -6,6 +6,7 @@ use App\Repository\PokemonRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PokemonRepository::class)]
 class Pokemon
@@ -38,29 +39,37 @@ class Pokemon
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["getTrade"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Groups(["getTrade"])]
     private ?string $name = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(["getTrade"])]
     private ?string $type = null;
     #[ORM\Column(length: 50, nullable: true)]
+    #[Groups(["getTrade"])]
     private ?string $type2 = null;
 
     #[ORM\Column(length: 5000)]
+    #[Groups(["getTrade"])]
     private ?string $description = null;
 
     #[ORM\OneToMany(mappedBy: 'pokemon', targetEntity: CapturedPokemon::class, fetch: 'EAGER', orphanRemoval: true)]
     private Collection $capturedPokemon;
 
     #[ORM\Column(length: 50)]
+    #[Groups(["getTrade"])]
     private ?string $name_en = null;
 
     #[ORM\Column(length: 30)]
+    #[Groups(["getTrade"])]
     private ?string $rarity = null;
 
     #[ORM\Column]
+    #[Groups(["getTrade"])]
     private ?int $pokeId = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, cascade: ['persist'], inversedBy: 'relatedPokemon')]

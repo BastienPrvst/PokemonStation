@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -21,8 +22,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["getTrade"])]
     private ?int $id = null;
     #[ORM\Column(length: 180, unique: true)]
+    #[Groups(["getTrade"])]
     private ?string $email = null;
     #[ORM\Column]
     private array $roles = [];
@@ -38,20 +41,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         message: "Les emojis ne sont pas autorisés, dommage :)",
         match: false
     )]
+    #[Groups(["getTrade"])]
     private ?string $pseudonym = null;
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(["getTrade"])]
     private ?\DateTimeInterface $creationDate = null;
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: CapturedPokemon::class, fetch: 'EAGER', orphanRemoval: true)]
     private Collection $capturedPokemon;
     #[ORM\Column]
+    #[Groups(["getTrade"])]
     private ?int $launchs = null;
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $lastObtainedLaunch = null;
     #[ORM\Column(length: 50, nullable: true)]
+    #[Groups(["getTrade"])]
     private ?string $avatar = null;
     #[ORM\Column(nullable: true)]
+    #[Groups(["getTrade"])]
     private ?int $money = null;
     #[ORM\Column(nullable: true)]
+    #[Groups(["getTrade"])]
     private ?int $launch_count = null;
     private Collection $friends;
     #[ORM\OneToMany(mappedBy: 'friendA', targetEntity: Friendship::class, cascade: ['persist'], orphanRemoval: true)]
@@ -75,11 +84,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?int $score = null;
 
+    /**
+     * @var Collection<int, Trade>
+     */
+    #[ORM\OneToMany(mappedBy: 'user1', targetEntity: Trade::class, orphanRemoval: true)]
+    private Collection $initiatedTrade;
+
+    /**
+     * @var Collection<int, Trade>
+     */
+    #[ORM\OneToMany(mappedBy: 'user2', targetEntity: Trade::class, orphanRemoval: true)]
+    private Collection $receivedTrade;
+
     public function __construct()
     {
         $this->capturedPokemon = new ArrayCollection();
         $this->friends = new ArrayCollection();
         $this->userItems = new ArrayCollection();
+        $this->initiatedTrade = new ArrayCollection();
+        $this->receivedTrade = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -324,4 +347,65 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Trade>
+     */
+    public function getInitiatedTrade(): Collection
+    {
+        return $this->initiatedTrade;
+    }
+
+    public function addInitiatedTrade(Trade $initiatedTrade): static
+    {
+        if (!$this->initiatedTrade->contains($initiatedTrade)) {
+            $this->initiatedTrade->add($initiatedTrade);
+            $initiatedTrade->setUser1($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInitiatedTrade(Trade $initiatedTrade): static
+    {
+        if ($this->initiatedTrade->removeElement($initiatedTrade)) {
+            // set the owning side to null (unless already changed)
+            if ($initiatedTrade->getUser1() === $this) {
+                $initiatedTrade->setUser1(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Trade>
+     */
+    public function getReceivedTrade(): Collection
+    {
+        return $this->receivedTrade;
+    }
+
+    public function addReceivedTrade(Trade $receivedTrade): static
+    {
+        if (!$this->receivedTrade->contains($receivedTrade)) {
+            $this->receivedTrade->add($receivedTrade);
+            $receivedTrade->setUser2($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceivedTrade(Trade $receivedTrade): static
+    {
+        if ($this->receivedTrade->removeElement($receivedTrade)) {
+            // set the owning side to null (unless already changed)
+            if ($receivedTrade->getUser2() === $this) {
+                $receivedTrade->setUser2(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

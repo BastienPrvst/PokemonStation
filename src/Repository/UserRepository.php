@@ -71,10 +71,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     public function topMonthlyRarity(): array
     {
-        $firstDay = new \DateTime('first day of this month');
-        $firstDay->setTime(0, 0, 0);
-        $lastDay = (clone $firstDay)->modify('+1 month');
-
         $query = $this->createQueryBuilder('u')
             ->select('u as user, u.score as total_points')
             ->groupBy('u')
@@ -121,4 +117,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+	public function findLastConnected()
+	{
+		return $this->createQueryBuilder('u')
+			->select('u')
+			->orderBy('u.lastObtainedLaunch', 'DESC')
+			->setMaxResults(10)
+			->getQuery()
+			->getResult();
+	}
 }

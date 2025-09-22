@@ -32,7 +32,7 @@
         "symfony/monolog-bundle": "*",
         "symfony/notifier": "^7.2",
         "symfony/password-hasher": "^7.2",
-        "symfony/runtime": "*",
+        "symfony/runtime": "^7.3",
         "symfony/security-bundle": "^7.2",
         "symfony/serializer": "^7.2",
         "symfony/string": "^7.2",
@@ -40,10 +40,11 @@
         "symfony/twig-bundle": "^7.2",
         "symfony/validator": "^7.2",
         "symfony/web-link": "^7.2",
+        "symfony/webpack-encore-bundle": "^2.2",
         "symfony/yaml": "^7.2",
-        "team-reflex/discord-php": "^10.4",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/intl-extra": "*",
+        "twig/string-extra": "^3.21",
         "twig/twig": "^2.12|^3.0"
     },
     "config": {
