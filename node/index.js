@@ -7,7 +7,7 @@ const httpServer = createServer(function(req, res) {
 
 const io = new Server(httpServer, {
     cors: {
-        origin: ["http://127.0.0.1:8000", "https://localhost"]
+        origin: ["https://pokemon-station.fr"]
     }
 });
 
@@ -17,12 +17,10 @@ io.on('connection', (socket) => {
         if (!roomName) return;
         socket.join(roomName);
         socket.currentRoom = roomName;
-        console.log(`${socket.id} a rejoint la room ${roomName}`);
     });
 
     socket.on('changePokemon', (pokemon) => {
         if (!socket.currentRoom) return;
-        console.log('changePokemon reçu dans', socket.currentRoom, pokemon);
         socket.to(socket.currentRoom).emit('changeOtherPokemon', pokemon);
     });
 

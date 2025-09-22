@@ -90,7 +90,6 @@ validateButton.addEventListener('click', (event) => {
 
         })
         .catch((error) => {
-            console.log(error)
         })
 
 })
@@ -126,7 +125,6 @@ validateTrade.addEventListener('click', (event) => {
         }
     })
     .catch((error) => {
-        console.log(error)
     })
 })
 

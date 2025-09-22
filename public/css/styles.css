@@ -3690,11 +3690,11 @@ tfoot tr td {
   color: white;
 }
 
-.filters-2-5{
+.filters-2-5 {
   min-height: 40px;
 }
 
-.filters-2-5 button{
+.filters-2-5 button {
   width: auto;
   max-width: 200px;
 }
@@ -3721,22 +3721,21 @@ tfoot tr td {
 }
 
 .trade-v:active,
-.trade-c:active
-{
+.trade-c:active {
   background-color: white;
   color: #9f1239;
 }
 
-.validate-img{
+.validate-img {
   width: 20px;
 }
 
-.ready{
+.ready {
   position: absolute;
   right: 1%;
 }
 
-.ready-2{
+.ready-2 {
   position: absolute;
   left: 1%;
 }
@@ -3785,8 +3784,8 @@ tfoot tr td {
   position: relative;
 }
 
-.possessed{
-  background-image: url('../medias/images/elements/pokeball-icon.png');
+.possessed {
+  background-image: url("../medias/images/elements/pokeball-icon.png");
   background-position: bottom right;
   background-size: 20px;
   background-repeat: no-repeat;
@@ -3894,11 +3893,11 @@ tfoot tr td {
   display: none;
 }
 
-.interestedPokemon{
+.interestedPokemon {
   border: solid 3px #0a53be;
 }
 
-.trade-rule{
+.trade-rule {
   background-color: #9f1239;
   color: white;
   width: 66%;
@@ -3912,31 +3911,30 @@ tfoot tr td {
   font-size: 20px;
 }
 
-.cancel-trade{
+.cancel-trade {
   top: 10px;
   left: 10px;
   text-decoration: underline #ffcd00 !important;
 }
 
 @media screen and (max-width: 992px) {
-  .trade-rule{
+  .trade-rule {
     width: 100%;
   }
 
-  .main-trade-bubble{
+  .main-trade-bubble {
     width: 32%;
     max-width: unset;
   }
 
   .filters-2 button,
-  .filters button
-  {
+  .filters button {
     width: auto;
     min-width: 40px;
     max-width: 100px;
   }
 
-  .poke-trade{
+  .poke-trade {
     padding: 2px;
   }
 
