@@ -1,5 +1,5 @@
 
-const socket = io.connect("https://websocket.pokemon-station.fr");
+const socket = io.connect("https://websocket.pokemon-station.fr:3000");
 
 socket.on("connect", () => {
 
