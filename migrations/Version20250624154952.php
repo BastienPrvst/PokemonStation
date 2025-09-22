@@ -20,9 +20,9 @@ final class Version20250624154952 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql(<<<'SQL'
-            ALTER TABLE captured_pokemon ADD quantity INT NOT NULL
-        SQL);
+//        $this->addSql(<<<'SQL'
+//            ALTER TABLE captured_pokemon ADD quantity INT NOT NULL
+//        SQL);
     }
 
     public function down(Schema $schema): void
