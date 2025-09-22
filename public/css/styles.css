@@ -3749,6 +3749,7 @@ tfoot tr td {
 .ready {
   position: absolute;
   right: 1%;
+  top: 50px;
 }
 
 .ready-2 {
@@ -3930,7 +3931,12 @@ tfoot tr td {
 .cancel-trade {
   top: 10px;
   left: 10px;
-  text-decoration: underline #ffcd00 !important;
+  color: #8c051c;
+  font-size: x-large;
+  font-family: "Jersey 10", sans-serif;
+  text-decoration: underline #8c051c !important;
+  margin-right: auto;
+
 }
 
 @media screen and (max-width: 992px) {
