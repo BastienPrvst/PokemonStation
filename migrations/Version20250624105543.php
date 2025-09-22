@@ -83,9 +83,9 @@ final class Version20250624105543 extends AbstractMigration
         $this->addSql(<<<'SQL'
             ALTER TABLE trade ADD CONSTRAINT FK_7E1A436610628E28 FOREIGN KEY (trade_poke2_id) REFERENCES captured_pokemon (id)
         SQL);
-        $this->addSql(<<<'SQL'
-            ALTER TABLE user_items ADD CONSTRAINT FK_3DC1215A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)
-        SQL);
+        // $this->addSql(<<<'SQL'
+        //     ALTER TABLE user_items ADD CONSTRAINT FK_3DC1215A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)
+        // SQL);
         // $this->addSql(<<<'SQL'
         //     ALTER TABLE user_items ADD CONSTRAINT FK_3DC1215126F525E FOREIGN KEY (item_id) REFERENCES items (id)
         // SQL);
