@@ -68,8 +68,8 @@ class CapturedPokemonService extends AbstractController
                 continue;
             }
 
-            $captured = in_array($pokemonId, $capturedPokemons);
-            $shiny = in_array($pokemonId, $shinyCapturedPokemons);
+            $captured = in_array($pokemonId, $capturedPokemons['pokeIds'], true);
+            $shiny = in_array($pokemonId, $shinyCapturedPokemons['pokeIds'], true);
 
             $capturedPokemonDTO = $capturedPokemonsDTO[$key];
             $capturedPokemonDTO->altCaptured = $capturedPokemonDTO->altCaptured ?: $captured || $shiny;
