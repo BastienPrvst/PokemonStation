@@ -142,12 +142,6 @@
             </div>
         </div>
     </section>
-
-    <div>
-        {% if user != app.user %}
-            <button><a href="{{ path('app_trade_create', {id: user.id}) }}">Echanger avec cet utilisateur</a></button>
-        {% endif %}
-    </div>
 </main>
 {% endblock %}
 {% block js %}
