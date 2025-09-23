@@ -120,7 +120,7 @@
                             <div class="poketrade">
                                 <p class="trade-name"  data-name="{{ poke.pokemon.name }}">{{ poke.pokemon.name|title|u.truncate(16, '...') }}</p>
                                 {% set pokeUrl = poke.shiny == true ? 'shiny-' ~ poke.pokemon.nameEn : poke.pokemon.nameEn %}
-                                <img class="poketrade-gif mirror-x" src="{{ asset('medias/images/gifs/' ~ pokeUrl ~ '.gif') }}" alt="">
+                                <img class="poketrade-gif mirror-x" src="{{ asset('medias/images/gifs/' ~ pokeUrl ~ '.gif') }}" loading="lazy" alt="">
                                 {% if poke.shiny %} <img class="shiny-trade-symbol" src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt=""> {% endif %}
                             </div>
 
@@ -233,7 +233,7 @@
                             <div class="poketrade {{ poke2.inPossession is true ? 'possessed' : '' }}">
                                 <p class="trade-name" data-name="{{ poke2.pokemon.name }}">{{ poke2.pokemon.name|title|u.truncate(16, '...') }}</p>
                                 {% set pokeUrl2 = poke2.shiny == true ? 'shiny-' ~ poke2.pokemon.nameEn : poke2.pokemon.nameEn %}
-                                <img class="poketrade-gif" src="{{ asset('medias/images/gifs/' ~ pokeUrl2 ~ '.gif') }}" alt="">
+                                <img class="poketrade-gif" src="{{ asset('medias/images/gifs/' ~ pokeUrl2 ~ '.gif') }}" loading="lazy" alt="">
                                 {% if poke2.shiny %} <img class="shiny-trade-symbol" src="{{ asset('medias/images/sparkle/etoiles-shiny.png') }}" alt=""> {% endif %}
                             </div>
 
