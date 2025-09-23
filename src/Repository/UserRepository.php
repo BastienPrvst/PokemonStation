@@ -56,6 +56,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->innerJoin('cp.pokemon', 'p')
             ->where('cp.shiny = 1')
             ->andWhere('cp.captureDate BETWEEN :firstDay AND :lastDay')
+            ->andWhere('cp.timesCaptured > 0')
             ->setParameters([
                 'firstDay' => $firstDay,
                 'lastDay' => $lastDay,
