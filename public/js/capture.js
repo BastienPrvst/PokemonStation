@@ -393,7 +393,8 @@ document
             autoCapture()
           });
         }
-    });
+      }
+    })
 
 //Code pour le SHOP
 
