@@ -26,7 +26,7 @@ final class TradeController extends AbstractController
 	}
 
 	#[Route(path: '/trades/', name: 'app_trades')]
-	#[IsGranted('ROLE_USER')]
+	#[IsGranted('ROLE_SUPER_ADMIN')]
 	public function allUserTrades(TradeRepository $tradeRepository, UserRepository $userRepository): Response
     {
 	    /** @var User $user */
@@ -43,7 +43,7 @@ final class TradeController extends AbstractController
 
 
 	#[Route(path: '/trade/{id}', name: 'app_trade_create')]
-	#[IsGranted('ROLE_USER')]
+	#[IsGranted('ROLE_SUPER_ADMIN')]
 	public function createTrade(User $user): Response
 	{
 		/* @var User $connectedUser */
@@ -100,7 +100,7 @@ final class TradeController extends AbstractController
 	 * @throws ExceptionInterface
 	 */
 	#[Route(path: '/trade/update/{trade}', name: 'app_trade_update')]
-	#[IsGranted('ROLE_USER')]
+	#[IsGranted('ROLE_SUPER_ADMIN')]
 	public function updateTrade(Trade $trade, Request $request): JsonResponse
 	{
 		$pokeId = $request->request->get('pokemonId');
@@ -130,7 +130,7 @@ final class TradeController extends AbstractController
 	}
 
 	#[Route(path: '/trade/validate/{trade}', name: 'app_trade_validate')]
-	#[IsGranted('ROLE_USER')]
+	#[IsGranted('ROLE_SUPER_ADMIN')]
 	public function finalizeTrade(Trade $trade): null|JsonResponse
 	{
 		/* @var User $user */
@@ -139,7 +139,7 @@ final class TradeController extends AbstractController
 	}
 
 	#[Route(path: '/trade/cancel/{trade}', name: 'app_trade_cancel')]
-	#[IsGranted('ROLE_USER')]
+	#[IsGranted('ROLE_SUPER_ADMIN')]
 	public function cancelTrade(Trade $trade): Response
 	{
 		$this->tradeService->cancel($trade);
