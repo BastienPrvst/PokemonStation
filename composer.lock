@@ -1433,7 +1433,7 @@
                 "symfony/filesystem": "^5.4|^6.0|^7.0",
                 "symfony/form": "^5.4|^6.0|^7.0",
                 "symfony/framework-bundle": "^5.4|^6.0|^7.0",
-                "symfony/http-foundation": "^5.4|^6.0|^7.0",
+                "symfony/http-foundation": "7.3.7",
                 "symfony/http-kernel": "^5.4|^6.0|^7.0",
                 "symfony/intl": "^5.4|^6.0|^7.0",
                 "symfony/property-access": "^5.4|^6.0|^7.0",
@@ -2920,11 +2920,11 @@
                 "php": ">=8.2"
             },
             "conflict": {
-                "symfony/http-foundation": "<6.4"
+                "symfony/http-foundation": "7.3.7"
             },
             "require-dev": {
                 "symfony/http-client": "^6.4|^7.0",
-                "symfony/http-foundation": "^6.4|^7.0",
+                "symfony/http-foundation": "7.3.7",
                 "symfony/http-kernel": "^6.4|^7.0"
             },
             "type": "library",
@@ -3330,7 +3330,7 @@
                 "symfony/config": "^6.4|^7.0",
                 "symfony/dependency-injection": "^6.4|^7.0",
                 "symfony/event-dispatcher": "^6.4|^7.0",
-                "symfony/http-foundation": "^6.4|^7.0",
+                "symfony/http-foundation": "7.3.7",
                 "symfony/http-kernel": "^6.4|^7.0",
                 "symfony/lock": "^6.4|^7.0",
                 "symfony/messenger": "^6.4|^7.0",
@@ -3566,7 +3566,7 @@
                 "symfony/cache": "<6.4",
                 "symfony/dependency-injection": "<6.4",
                 "symfony/form": "<6.4.6|>=7,<7.0.6",
-                "symfony/http-foundation": "<6.4",
+                "symfony/http-foundation": "7.3.7",
                 "symfony/http-kernel": "<6.4",
                 "symfony/lock": "<6.4",
                 "symfony/messenger": "<6.4",
@@ -3899,7 +3899,7 @@
                 "symfony/dependency-injection": "^6.4|^7.0",
                 "symfony/error-handler": "^6.4|^7.0",
                 "symfony/expression-language": "^6.4|^7.0",
-                "symfony/http-foundation": "^6.4|^7.0",
+                "symfony/http-foundation": "7.3.7",
                 "symfony/service-contracts": "^2.5|^3",
                 "symfony/stopwatch": "^6.4|^7.0"
             },
@@ -4260,7 +4260,7 @@
                 "symfony/dependency-injection": "^6.4|^7.0",
                 "symfony/expression-language": "^6.4|^7.0",
                 "symfony/html-sanitizer": "^6.4|^7.0",
-                "symfony/http-foundation": "^6.4|^7.0",
+                "symfony/http-foundation": "7.3.7",
                 "symfony/http-kernel": "^6.4|^7.0",
                 "symfony/intl": "^6.4|^7.0",
                 "symfony/security-core": "^6.4|^7.0",
@@ -4340,7 +4340,7 @@
                 "symfony/event-dispatcher": "^6.4|^7.0",
                 "symfony/filesystem": "^7.1",
                 "symfony/finder": "^6.4|^7.0",
-                "symfony/http-foundation": "^7.3",
+                "symfony/http-foundation": "7.3.7",
                 "symfony/http-kernel": "^7.2",
                 "symfony/polyfill-mbstring": "~1.0",
                 "symfony/routing": "^6.4|^7.0"
@@ -4492,7 +4492,7 @@
             "conflict": {
                 "amphp/amp": "<2.5",
                 "php-http/discovery": "<1.15",
-                "symfony/http-foundation": "<6.4"
+                "symfony/http-foundation": "7.3.7"
             },
             "provide": {
                 "php-http/async-client-implementation": "*",
@@ -4643,7 +4643,7 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v7.3.0",
+            "version": "7.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
@@ -4702,7 +4702,7 @@
             "description": "Defines an object-oriented layer for the HTTP specification",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-foundation/tree/v7.3.0"
+                "source": "https://github.com/symfony/http-foundation/tree/v7.3.7"
             },
             "funding": [
                 {
@@ -4740,7 +4740,7 @@
                 "symfony/deprecation-contracts": "^2.5|^3",
                 "symfony/error-handler": "^6.4|^7.0",
                 "symfony/event-dispatcher": "^7.3",
-                "symfony/http-foundation": "^7.3",
+                "symfony/http-foundation": "7.3.7",
                 "symfony/polyfill-ctype": "^1.8"
             },
             "conflict": {
@@ -5273,7 +5273,7 @@
             },
             "conflict": {
                 "symfony/console": "<6.4",
-                "symfony/http-foundation": "<6.4",
+                "symfony/http-foundation": "7.3.7",
                 "symfony/security-core": "<6.4"
             },
             "require-dev": {
@@ -5437,7 +5437,7 @@
             "require-dev": {
                 "symfony/event-dispatcher-contracts": "^2.5|^3",
                 "symfony/http-client-contracts": "^2.5|^3",
-                "symfony/http-foundation": "^6.4|^7.0",
+                "symfony/http-foundation": "7.3.7",
                 "symfony/messenger": "^6.4|^7.0"
             },
             "type": "library",
@@ -6455,7 +6455,7 @@
                 "symfony/config": "^6.4|^7.0",
                 "symfony/dependency-injection": "^6.4|^7.0",
                 "symfony/expression-language": "^6.4|^7.0",
-                "symfony/http-foundation": "^6.4|^7.0",
+                "symfony/http-foundation": "7.3.7",
                 "symfony/yaml": "^6.4|^7.0"
             },
             "type": "library",
@@ -6533,7 +6533,7 @@
                 "composer/composer": "^2.6",
                 "symfony/console": "^6.4|^7.0",
                 "symfony/dotenv": "^6.4|^7.0",
-                "symfony/http-foundation": "^6.4|^7.0",
+                "symfony/http-foundation": "7.3.7",
                 "symfony/http-kernel": "^6.4|^7.0"
             },
             "type": "composer-plugin",
@@ -6609,7 +6609,7 @@
                 "symfony/config": "^7.3",
                 "symfony/dependency-injection": "^6.4.11|^7.1.4",
                 "symfony/event-dispatcher": "^6.4|^7.0",
-                "symfony/http-foundation": "^6.4|^7.0",
+                "symfony/http-foundation": "7.3.7",
                 "symfony/http-kernel": "^6.4|^7.0",
                 "symfony/password-hasher": "^6.4|^7.0",
                 "symfony/security-core": "^7.3",
@@ -6717,7 +6717,7 @@
             "conflict": {
                 "symfony/dependency-injection": "<6.4",
                 "symfony/event-dispatcher": "<6.4",
-                "symfony/http-foundation": "<6.4",
+                "symfony/http-foundation": "7.3.7",
                 "symfony/ldap": "<6.4",
                 "symfony/translation": "<6.4.3|>=7.0,<7.0.3",
                 "symfony/validator": "<6.4"
@@ -6730,7 +6730,7 @@
                 "symfony/dependency-injection": "^6.4|^7.0",
                 "symfony/event-dispatcher": "^6.4|^7.0",
                 "symfony/expression-language": "^6.4|^7.0",
-                "symfony/http-foundation": "^6.4|^7.0",
+                "symfony/http-foundation": "7.3.7",
                 "symfony/ldap": "^6.4|^7.0",
                 "symfony/string": "^6.4|^7.0",
                 "symfony/translation": "^6.4.3|^7.0.3",
@@ -6799,11 +6799,11 @@
                 "symfony/security-core": "^6.4|^7.0"
             },
             "conflict": {
-                "symfony/http-foundation": "<6.4"
+                "symfony/http-foundation": "7.3.7"
             },
             "require-dev": {
                 "psr/log": "^1|^2|^3",
-                "symfony/http-foundation": "^6.4|^7.0",
+                "symfony/http-foundation": "7.3.7",
                 "symfony/http-kernel": "^6.4|^7.0"
             },
             "type": "library",
@@ -6867,7 +6867,7 @@
             "require": {
                 "php": ">=8.2",
                 "symfony/deprecation-contracts": "^2.5|^3",
-                "symfony/http-foundation": "^6.4|^7.0",
+                "symfony/http-foundation": "7.3.7",
                 "symfony/http-kernel": "^6.4|^7.0",
                 "symfony/polyfill-mbstring": "~1.0",
                 "symfony/property-access": "^6.4|^7.0",
@@ -6978,7 +6978,7 @@
                 "symfony/error-handler": "^6.4|^7.0",
                 "symfony/filesystem": "^6.4|^7.0",
                 "symfony/form": "^6.4|^7.0",
-                "symfony/http-foundation": "^6.4|^7.0",
+                "symfony/http-foundation": "7.3.7",
                 "symfony/http-kernel": "^6.4|^7.0",
                 "symfony/messenger": "^6.4|^7.0",
                 "symfony/mime": "^6.4|^7.0",
@@ -7467,7 +7467,7 @@
                 "phpdocumentor/type-resolver": "<1.4.0",
                 "symfony/console": "<6.4",
                 "symfony/form": "<6.4",
-                "symfony/http-foundation": "<6.4",
+                "symfony/http-foundation": "7.3.7",
                 "symfony/http-kernel": "<6.4",
                 "symfony/mime": "<6.4",
                 "symfony/serializer": "<6.4",
@@ -7487,7 +7487,7 @@
                 "symfony/finder": "^6.4|^7.0",
                 "symfony/form": "^6.4.20|^7.2.5",
                 "symfony/html-sanitizer": "^6.4|^7.0",
-                "symfony/http-foundation": "^7.3",
+                "symfony/http-foundation": "7.3.7",
                 "symfony/http-kernel": "^6.4|^7.0",
                 "symfony/intl": "^6.4|^7.0",
                 "symfony/mime": "^6.4|^7.0",
@@ -7572,7 +7572,7 @@
                 "php": ">=8.2",
                 "symfony/config": "^7.3",
                 "symfony/dependency-injection": "^6.4|^7.0",
-                "symfony/http-foundation": "^6.4|^7.0",
+                "symfony/http-foundation": "7.3.7",
                 "symfony/http-kernel": "^6.4|^7.0",
                 "symfony/twig-bridge": "^7.3",
                 "twig/twig": "^3.12"
@@ -7915,7 +7915,7 @@
                 "symfony/expression-language": "^6.4|^7.0",
                 "symfony/finder": "^6.4|^7.0",
                 "symfony/http-client": "^6.4|^7.0",
-                "symfony/http-foundation": "^6.4|^7.0",
+                "symfony/http-foundation": "7.3.7",
                 "symfony/http-kernel": "^6.4|^7.0",
                 "symfony/intl": "^6.4|^7.0",
                 "symfony/mime": "^6.4|^7.0",
@@ -10451,7 +10451,7 @@
                 "symfony/form": ">=2.3,<2.3.35|>=2.4,<2.6.12|>=2.7,<2.7.50|>=2.8,<2.8.49|>=3,<3.4.20|>=4,<4.0.15|>=4.1,<4.1.9|>=4.2,<4.2.1",
                 "symfony/framework-bundle": ">=2,<2.3.18|>=2.4,<2.4.8|>=2.5,<2.5.2|>=2.7,<2.7.51|>=2.8,<2.8.50|>=3,<3.4.26|>=4,<4.1.12|>=4.2,<4.2.7|>=5.3.14,<5.3.15|>=5.4.3,<5.4.4|>=6.0.3,<6.0.4",
                 "symfony/http-client": ">=4.3,<5.4.47|>=6,<6.4.15|>=7,<7.1.8",
-                "symfony/http-foundation": "<5.4.46|>=6,<6.4.14|>=7,<7.1.7",
+                "symfony/http-foundation": "7.3.7",
                 "symfony/http-kernel": ">=2,<4.4.50|>=5,<5.4.20|>=6,<6.0.20|>=6.1,<6.1.12|>=6.2,<6.2.6",
                 "symfony/intl": ">=2.7,<2.7.38|>=2.8,<2.8.31|>=3,<3.2.14|>=3.3,<3.3.13",
                 "symfony/maker-bundle": ">=1.27,<1.29.2|>=1.30,<1.31.1",
