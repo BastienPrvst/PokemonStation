@@ -27,7 +27,8 @@ document
         if (!captureInProcess) {
           captureInProcess = true;
 
-          let pokeballData = button.parentElement.getAttribute("data-ball");
+          let container = button.closest("[data-ball]");
+          let pokeballData = container ? container.getAttribute("data-ball") : null;
 
           let postData = new FormData();
 

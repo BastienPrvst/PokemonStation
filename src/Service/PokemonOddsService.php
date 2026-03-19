@@ -10,6 +10,7 @@ use App\Entity\UserItems;
 use App\Repository\CapturedPokemonRepository;
 use App\Repository\PokemonRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Random\RandomException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,6 +41,7 @@ class PokemonOddsService extends AbstractController
     /**
      * @throws RandomException
      * @throws TransportExceptionInterface
+     * @throws NonUniqueResultException
      */
     public function calculationOdds(User $user, string $pokeballId): Response
     {
@@ -58,9 +60,7 @@ class PokemonOddsService extends AbstractController
                 $rarity = $this->getRarity();
                 $pokemons = $this->pokemonRepository->findByRarity($rarity[0]);
             } while (empty($pokemons));
-
-            $randomPoke = array_rand($pokemons);
-            $pokemonSpeciesCaptured = $pokemons[$randomPoke];
+            $pokemonSpeciesCaptured = $pokemons[array_rand($pokemons)];
             $capturedPokemon = new CapturedPokemon();
             $capturedPokemon
                 ->setPokemon($pokemonSpeciesCaptured)
@@ -99,47 +99,52 @@ class PokemonOddsService extends AbstractController
                 $pokemonsFound = $this->pokemonRepository->findByRarityAndType($rarity[0], $type);
             } while (empty($pokemonsFound));
 
-            $randomPoke = array_rand($pokemonsFound);
-            $pokemonSpeciesCaptured = $pokemonsFound[$randomPoke];
+            $pokemonSpeciesCaptured = $pokemonsFound[array_rand($pokemonsFound)];
 
             /* @var $userItem UserItems */
             $userItem->setQuantity($userItem->getQuantity() - 1);
             if ($userItem->getQuantity() === 0) {
                 $this->entityManager->remove($userItem);
             }
-
-            $capturedPokemon = new CapturedPokemon();
-            $capturedPokemon
-                ->setPokemon($pokemonSpeciesCaptured)
-                ->setOwner($user)
-                ->setCaptureDate(new \DateTime('', new \DateTimeZone('Europe/Paris')))
-                ->setShiny($isShiny);
         }
 
-        $pokemonCapturedPokeId = $pokemonSpeciesCaptured->getPokeId();
+	    $firstTimeShiny = false;
+	    $firstTimeNonShiny = false;
 
         if ($isShiny) {
-            $capturedPokeIds = $this->capturedPokemonRepository->findShinyCaptured($user);
-            $firstTimeShiny = !in_array($pokemonCapturedPokeId, $capturedPokeIds, true);
-            $firstTimeNonShiny = false;
-        } else {
-            $capturedPokeIds = $this->capturedPokemonRepository->findSpeciesCaptured($user);
-            $firstTimeNonShiny = !in_array($pokemonCapturedPokeId, $capturedPokeIds, true);
-            $firstTimeShiny = false;
+			if (!$this->capturedPokemonRepository->exists($user, $pokemonSpeciesCaptured, true)) {
+				$firstTimeShiny = true;
+			}
+        } elseif (
+			!$this->capturedPokemonRepository->exists($user, $pokemonSpeciesCaptured, false)
+        ) {
+			$firstTimeNonShiny = true;
         }
 
         if ($firstTimeNonShiny || $firstTimeShiny) {
-            $capturedPokemon->setTimesCaptured(1);
-			$capturedPokemon->setQuantity(1);
+	        $capturedPokemon = new CapturedPokemon();
+	        $capturedPokemon
+		        ->setPokemon($pokemonSpeciesCaptured)
+		        ->setOwner($user)
+		        ->setCaptureDate(new \DateTime('', new \DateTimeZone('Europe/Paris')))
+		        ->setShiny($isShiny)
+                ->setTimesCaptured(1)
+				->setQuantity(1);
             $this->entityManager->persist($capturedPokemon);
             $isNew = true;
             $cpDiscord = $capturedPokemon;
         } else {
-            $this->setCoinByRarity($user, $capturedPokemon, $isShiny);
+            $this->setCoinByRarity($user, $pokemonSpeciesCaptured, $isShiny);
 
             if ($isShiny) {
-                $capturedPokemon->setTimesCaptured(-1);
-				$capturedPokemon->setQuantity($capturedPokemon->getQuantity() + 1);
+	            $capturedPokemon = new CapturedPokemon();
+				$capturedPokemon
+	                ->setPokemon($pokemonSpeciesCaptured)
+		            ->setOwner($user)
+		            ->setCaptureDate(new \DateTime('', new \DateTimeZone('Europe/Paris')))
+		            ->setShiny($isShiny)
+                    ->setTimesCaptured(-1)
+					->setQuantity($capturedPokemon->getQuantity() + 1);
                 $this->entityManager->persist($capturedPokemon);
             }
 
@@ -270,12 +275,12 @@ class PokemonOddsService extends AbstractController
         return $isShiny;
     }
 
-    private function setCoinByRarity(User $user, CapturedPokemon $pokemonCaptured, bool $shiny): void
+    private function setCoinByRarity(User $user, Pokemon $pokemonCaptured, bool $shiny): void
     {
         //Valeur en pièce si le Pokémon à déja été vu
 
 
-        $capturedRarity = $pokemonCaptured->getPokemon()->getRarity();
+        $capturedRarity = $pokemonCaptured->getRarity();
         $numberToAdd = $this->rarityScale[$capturedRarity];
         if ($shiny === true) {
             $numberToAdd *= 10;
@@ -301,7 +306,7 @@ class PokemonOddsService extends AbstractController
             1000 => 1000
         ];
 
-        $capturedRarity = $pokemonCaptured->getPokemon()->getRarity();
+        $capturedRarity = $pokemonCaptured->getPokemon()?->getRarity();
 
         $timeCaptured = $pokemonCaptured->getTimesCaptured();
         in_array($timeCaptured, $multipliers, true) ?

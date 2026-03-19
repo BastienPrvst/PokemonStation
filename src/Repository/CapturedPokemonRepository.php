@@ -6,6 +6,7 @@ use App\Entity\CapturedPokemon;
 use App\Entity\Pokemon;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 use function Doctrine\ORM\QueryBuilder;
@@ -143,7 +144,10 @@ class CapturedPokemonRepository extends ServiceEntityRepository
 		return $totalResult;
     }
 
-    public function findOnePokemon(User $user, bool $shiny, Pokemon $pokemon)
+	/**
+	 * @throws NonUniqueResultException
+	 */
+	public function findOnePokemon(User $user, bool $shiny, Pokemon $pokemon)
     {
         return $this->createQueryBuilder('cp')
             ->where('cp.owner = :user')
@@ -224,5 +228,25 @@ class CapturedPokemonRepository extends ServiceEntityRepository
 			->setParameter('connectedUser', $connectedUser)
 			->getQuery()
 			->getResult();
+	}
+
+	/**
+	 * @throws NonUniqueResultException
+	 */
+	public function exists(User $user, Pokemon $pokemon, bool $shiny): bool
+	{
+		return (bool) $this->createQueryBuilder('cp')
+			->select('1')
+			->where('cp.owner = :user')
+			->andWhere('cp.pokemon = :pokemon')
+			->andWhere('cp.shiny = :shiny')
+			->setMaxResults(1)
+			->setParameters([
+				'user' => $user,
+				'pokemon' => $pokemon,
+				'shiny' => $shiny,
+			])
+			->getQuery()
+			->getOneOrNullResult();
 	}
 }
