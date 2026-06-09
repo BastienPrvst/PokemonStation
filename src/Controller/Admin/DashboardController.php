@@ -2,9 +2,6 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Items;
-use App\Entity\News;
-use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -40,16 +37,16 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::section('Données');
         yield MenuItem::subMenu('Items', 'fas fa-bars')->setSubItems([
-            MenuItem::linkToCrud('Ajouter un Item', 'fas fa-plus', Items::class)->setAction(Crud::PAGE_NEW),
-            MenuItem::linkToCrud('Liste des Items', 'fas fa-list', Items::class)->setAction(Crud::PAGE_INDEX),
+            MenuItem::linkTo(ItemsCrudController::class, 'Ajouter un Item', 'fas fa-plus')->setAction(Crud::PAGE_NEW),
+            MenuItem::linkTo(ItemsCrudController::class, 'Liste des Items', 'fas fa-list')->setAction(Crud::PAGE_INDEX),
         ]);
         yield MenuItem::subMenu('Utilisateurs', 'fas fa-bars')->setSubItems([
-            MenuItem::linkToCrud('Ajouter un utilisateur', 'fas fa-plus', User::class)->setAction(Crud::PAGE_NEW),
-            MenuItem::linkToCrud('Liste Utilisateurs', 'fas fa-list', User::class)->setAction(Crud::PAGE_INDEX),
+            MenuItem::linkTo(UserCrudController::class, 'Ajouter un utilisateur', 'fas fa-plus')->setAction(Crud::PAGE_NEW),
+            MenuItem::linkTo(UserCrudController::class, 'Liste Utilisateurs', 'fas fa-list')->setAction(Crud::PAGE_INDEX),
         ]);
         yield MenuItem::subMenu('News', 'fas fa-bars')->setSubItems([
-            MenuItem::linkToCrud('Ajouter une news', 'fas fa-plus', News::class)->setAction(Crud::PAGE_NEW),
-            MenuItem::linkToCrud('Liste des news', 'fas fa-list', News::class)->setAction(Crud::PAGE_INDEX),
+            MenuItem::linkTo(NewsCrudController::class, 'Ajouter une news', 'fas fa-plus')->setAction(Crud::PAGE_NEW),
+            MenuItem::linkTo(NewsCrudController::class, 'Liste des news', 'fas fa-list')->setAction(Crud::PAGE_INDEX),
         ]);
     }
 }
