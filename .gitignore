@@ -15,6 +15,7 @@
 
 ###> node/component
 node_modules/*
+node/*
 ##< node/component
 
 ###> phpunit/phpunit ###
