@@ -61,12 +61,6 @@ class PokemonOddsService extends AbstractController
                 $pokemons = $this->pokemonRepository->findByRarity($rarity[0]);
             } while (empty($pokemons));
             $pokemonSpeciesCaptured = $pokemons[array_rand($pokemons)];
-            $capturedPokemon = new CapturedPokemon();
-            $capturedPokemon
-                ->setPokemon($pokemonSpeciesCaptured)
-                ->setOwner($user)
-                ->setCaptureDate(new \DateTime('', new \DateTimeZone('Europe/Paris')))
-                ->setShiny($isShiny);
 
             /* @var Pokemon $pokemon*/
         } else {
@@ -142,7 +136,7 @@ class PokemonOddsService extends AbstractController
 	                ->setPokemon($pokemonSpeciesCaptured)
 		            ->setOwner($user)
 		            ->setCaptureDate(new \DateTime('', new \DateTimeZone('Europe/Paris')))
-		            ->setShiny($isShiny)
+		            ->setShiny(true)
                     ->setTimesCaptured(-1)
 					->setQuantity($capturedPokemon->getQuantity() + 1);
                 $this->entityManager->persist($capturedPokemon);
@@ -191,7 +185,7 @@ class PokemonOddsService extends AbstractController
                 'type2' => $pokemonSpeciesCaptured->getType2(),
                 'description' => $pokemonSpeciesCaptured->getDescription(),
                 'nameEN' => $pokemonSpeciesCaptured->getNameEN(),
-                'shiny' => $capturedPokemon->getShiny(),
+	            'shiny' => $isShiny,
                 'rarity' => $rarity[0],
                 'rarityRandom' => ($rarity[1] * 100),
                 'new' => $isNew,
